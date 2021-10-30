@@ -3,7 +3,7 @@
 This project was made in the context of the Discrete Modelling, Optimization  and Search (DMOS) course, given by Prof. Dr. Bart Bogaerts at the [VUB](https://www.vub.be/).  
 
 Underneath you can find our contact information:
-| Name     | Student id | Email address    | Linkedin |
-| :---     | :---       |:---              | :---     |
-| Wolf De Wulf | 0546395 | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) | https://www.linkedin.com/in/wolf-de-wulf/         |
-| Dieter Vandesande | 00000 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) | 00000 |
+| Name     | Student id | Email address    |
+| :---     | :---       |:---              |
+| Wolf De Wulf | 0546395 | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) |
+| Dieter Vandesande | 00000 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
