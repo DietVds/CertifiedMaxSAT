@@ -10,25 +10,33 @@ Underneath you can find our contact information:
 
 ## Installation
 
-### Setting up the virtual environment
+### 1. Setting up the virtual environment
 
 ```console
 python3 -m venv venv
 ```
 
-### Activating the virtual environment
+### 2. Activating the virtual environment
 
 ```console
 source venv/bin/activate
 ```
 
-### Deactivating the virtual environment
+To deactivate the virtual environment, use:
 
 ```console
 deactivate
 ```
 
-### Installing veripb
+### 3. Installing the required packages
+
+Make sure the virtual environment is active!
+
+```console
+pip3 install -r requirements.txt
+```
+
+### 4. Installing veripb
 
 Make sure the virtual environment is active!
 

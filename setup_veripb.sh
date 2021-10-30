@@ -2,15 +2,15 @@
 
 # Assumptions
 # - Virtual env is activated
-# - User has access to veripb repository
 
-# Clone veripb
-git clone git@gitlab.com:miao_research/VeriPB.git
+# Unrar
+cd veripb
+unrar x -ad veripb-54cf2c28b1ebea7292dc618f213878d716644bc3.rar 
+cd veripb-54cf2c28b1ebea7292dc618f213878d716644bc3
 
 # Build 
-cd VeriPB
 pip3 install ./
 
 # Clean up
 cd ..
-rm -rf VeriPB
+rm -rf veripb-54cf2c28b1ebea7292dc618f213878d716644bc3 
