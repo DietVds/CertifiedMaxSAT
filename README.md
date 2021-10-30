@@ -6,3 +6,4 @@ Underneath you can find our contact information:
 | Name     | Student id | Email address    | Linkedin |
 | :---     | :---       |:---              | :---     |
 | Wolf De Wulf | 0546395 | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) | https://www.linkedin.com/in/wolf-de-wulf/         |
+| Dieter Vandesande | 00000 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) | 00000 |
