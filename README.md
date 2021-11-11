@@ -13,7 +13,7 @@ Underneath you can find our contact information:
 ### 1. Setting up the virtual environment
 
 ```console
-python3 -m venv venv
+python -m venv venv
 ```
 
 ### 2. Activating the virtual environment
@@ -43,3 +43,15 @@ Make sure the virtual environment is active!
 ```console
 ./setup_veripb.sh
 ```
+
+## Usage
+
+```console
+python main.py -h
+```
+
+## Input format
+
+The solver expects [WDIMACS](http://www.maxhs.org/docs/wdimacs.html) input.
+
+## Output format

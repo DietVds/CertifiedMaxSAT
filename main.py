@@ -1,4 +1,4 @@
-from solver import run_solver
+from solver.solver import run_solver
 
 if __name__ == '__main__':
 
