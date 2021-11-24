@@ -1,0 +1,27 @@
+--- SolverTypes.h	2021-11-24 15:34:48.447745748 +0100
++++ SolverTypesN.h	2021-11-24 15:33:09.536570323 +0100
+@@ -119,11 +119,7 @@
+ 
+     // -- use this function instead:
+     template<class V>
+-    friend Clause* Clause_new(const V& ps, bool learnt = false) {
+-        assert(sizeof(Lit)      == sizeof(uint32_t));
+-        assert(sizeof(float)    == sizeof(uint32_t));
+-        void* mem = malloc(sizeof(Clause) + sizeof(uint32_t)*(ps.size()));
+-        return new (mem) Clause(ps, learnt); }
++    friend Clause* Clause_new(const V& ps, bool learnt); 
+ 
+     int          size        ()      const   { return size_etc >> 3; }
+     void         shrink      (int i)         { assert(i <= size()); size_etc = (((size_etc >> 3) - i) << 3) | (size_etc & 7); }
+@@ -194,4 +190,11 @@
+     calcAbstraction();
+ }
+ 
++template<class V>
++inline Clause* Clause_new(const V& ps, bool learnt) {
++    assert(sizeof(Lit)      == sizeof(uint32_t));
++    assert(sizeof(float)    == sizeof(uint32_t));
++    void* mem = malloc(sizeof(Clause) + sizeof(uint32_t)*(ps.size()));
++    return new (mem) Clause(ps, learnt); }
++
+ #endif

@@ -1,0 +1,117 @@
+diff -ruN ./src_tmp/core/Main.C ./src/core/Main.C
+--- ./src_tmp/core/Main.C	2021-11-24 18:09:54.408301226 +0100
++++ ./src/core/Main.C	2021-11-24 17:51:07.061891554 +0100
+@@ -393,6 +393,10 @@
+     if (!S.simplify()){
+         reportf("Solved by unit propagation\n");
+         if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
++            fprintf(S.proof_file,"u >= 1 ;\n"); 
++            S.constraint_pointer++;
++            fprintf(S.proof_file, "c %d", S.constraint_pointer);
++            fclose(S.proof_file);
+         printf("UNSATISFIABLE\n");
+         exit(20);
+     }
+diff -ruN ./src_tmp/core/Solver.C ./src/core/Solver.C
+--- ./src_tmp/core/Solver.C	2021-11-24 18:09:54.408301226 +0100
++++ ./src/core/Solver.C	2021-11-24 17:51:07.061891554 +0100
+@@ -53,7 +53,9 @@
+   , random_seed      (91648253)
+   , progress_estimate(0)
+   , remove_satisfied (true)
+-{}
++{
++    fprintf(proof_file, "pseudo-Boolean proof version 1.0\n");
++}
+ 
+ 
+ Solver::~Solver()
+@@ -560,12 +562,30 @@
+         if (confl != NULL){
+             // CONFLICT
+             conflicts++; conflictC++;
+-            if (decisionLevel() == 0) return l_False;
++            if (decisionLevel() == 0){ //unresolvable conflict
++                fprintf(proof_file,"u >= 1 ;\n"); 
++                constraint_pointer++;
++                fprintf(proof_file, "c %d", constraint_pointer);               
++                return l_False;
++            }
+ 
+             first = false;
+ 
+             learnt_clause.clear();
+             analyze(confl, learnt_clause, backtrack_level);
++
++            // Save the learnt clause to the proof file
++            fprintf(proof_file, "u ");        
++            for (int i = 0; i < learnt_clause.size(); i++)
++            {
++                if (sign(learnt_clause[i])==1)
++                    fprintf(proof_file, "1 ~x%d ", var(learnt_clause[i])+1);
++                else
++                    fprintf(proof_file, "1 x%d ", var(learnt_clause[i])+1);
++            }
++            fprintf(proof_file, " >= 1 ;\n");
++            constraint_pointer++;
++
+             cancelUntil(backtrack_level);
+             assert(value(learnt_clause[0]) == l_Undef);
+ 
+@@ -592,8 +612,12 @@
+                 return l_Undef; }
+ 
+             // Simplify the set of problem clauses:
+-            if (decisionLevel() == 0 && !simplify())
++            if (decisionLevel() == 0 && !simplify()) {
++                fprintf(proof_file,"u >= 1 ;\n"); 
++                constraint_pointer++;
++                fprintf(proof_file, "c %d", constraint_pointer);
+                 return l_False;
++            }
+ 
+             if (nof_learnts >= 0 && learnts.size()-nAssigns() >= nof_learnts)
+                 // Reduce the set of learnt clauses:
+@@ -651,10 +675,19 @@
+ 
+ bool Solver::solve(const vec<Lit>& assumps)
+ {
++    fprintf(proof_file, "f %d ;\n", clauses.size());
++    constraint_pointer= clauses.size();
++
+     model.clear();
+     conflict.clear();
+ 
+-    if (!ok) return false;
++    if (!ok){ 
++        fprintf(proof_file,"u >= 1 ;\n"); 
++        constraint_pointer++;
++        fprintf(proof_file,"c %d", constraint_pointer); 
++        fclose(proof_file);
++        return false; 
++    }
+ 
+     assumps.copyTo(assumptions);
+ 
+@@ -678,6 +711,7 @@
+         nof_learnts   *= learntsize_inc;
+     }
+ 
++    fclose(proof_file); 
+     if (verbosity >= 1)
+         reportf("===============================================================================\n");
+ 
+diff -ruN ./src_tmp/core/Solver.h ./src/core/Solver.h
+--- ./src_tmp/core/Solver.h	2021-11-24 18:09:54.408301226 +0100
++++ ./src/core/Solver.h	2021-11-24 17:51:07.061891554 +0100
+@@ -36,6 +36,10 @@
+ class Solver {
+ public:
+ 
++    // Proof logging:
++    FILE *proof_file = fopen("maxsat_proof_log.proof", "w");
++    int constraint_pointer=0;
++
+     // Constructor/Destructor:
+     //
+     Solver();

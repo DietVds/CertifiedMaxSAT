@@ -8,50 +8,36 @@ Underneath you can find our contact information:
 | Wolf De Wulf | 0546395 | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) |
 | Dieter Vandesande | 00000 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
 
-## Installation
+## Building the solver
 
-### 1. Setting up the virtual environment
+Run the `build.sh` script to extract the minisat and qmaxsat archives, combine them, apply the patches to them and build the final solver:
 
 ```console
-python -m venv venv
+./scripts/build.sh
 ```
 
-### 2. Activating the virtual environment
+## Building veripb
+
+Run the `build_src.sh` script to extract the veripb archive and build/install the proof verifier:
 
 ```console
-source venv/bin/activate
+./scripts/build_veripb.sh
 ```
 
-To deactivate the virtual environment, use:
+## Building the source code
+
+Run the `build_src.sh` script to extract the minisat and qmaxsat archives, combine them and apply the patches to them:
 
 ```console
-deactivate
+./scripts/build_src.sh PATH_TO_SRC
 ```
 
-### 3. Installing the required packages
+## Creating a patch file for the current src folder
 
-Make sure the virtual environment is active!
-
-```console
-pip3 install -r requirements.txt
-```
-
-### 4. Installing veripb
-
-Make sure the virtual environment is active!
+Run the `build_patch.sh` script to create a patch file that compares the current `src` to a fresh `src` built by `build_src.sh`:
 
 ```console
-./setup_veripb.sh
+./scripts/build_patch.sh PATCH_FILE_NAME
 ```
 
 ## Usage
-
-```console
-python main.py -h
-```
-
-## Input format
-
-The solver expects [WDIMACS](http://www.maxhs.org/docs/wdimacs.html) input.
-
-## Output format
