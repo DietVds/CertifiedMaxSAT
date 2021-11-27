@@ -27,6 +27,7 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #include <zlib.h>
 
 #include "Solver.h"
+#include "Prooflogger.h"
 
 /*************************************************************************************/
 #ifdef _MSC_VER
@@ -236,6 +237,7 @@ void printUsage(char** argv)
     reportf("  -decay         = <num> [ 0 - 1 ]\n");
     reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
     reportf("  -verbosity     = {0,1,2}\n");
+    reportf("  -proof-file    = /path/to/proof_file.proof (default: maxsat_proof.proof)");
     reportf("\n");
 }
 
@@ -249,9 +251,11 @@ const char* hasPrefix(const char* str, const char* prefix)
         return NULL;
 }
 
+
+
 // koshi 10.01.08
 void genCardinals(int from, int to, 
-		  Solver& S, vec<Lit>& lits, vec<Lit>& linkingVar) {
+		  Solver& S, Prooflogger& PL, vec<Lit>& lits, vec<Lit>& linkingVar) {
   int inputSize = to - from + 1;
   linkingVar.clear();
 
@@ -266,11 +270,11 @@ void genCardinals(int from, int to,
 
   if (inputSize > 2) {
     int middle = inputSize/2;
-    genCardinals(from, from+middle, S,lits,linkingAlpha);
-    genCardinals(from+middle+1, to, S,lits,linkingBeta);
+    genCardinals(from, from+middle, S,PL,lits,linkingAlpha);
+    genCardinals(from+middle+1, to, S,PL,lits,linkingBeta);
   } else if (inputSize == 2) {
-    genCardinals(from, from, S,lits,linkingAlpha);
-    genCardinals(to, to, S,lits,linkingBeta);
+    genCardinals(from, from, S,PL,lits,linkingAlpha);
+    genCardinals(to, to, S,PL,lits,linkingBeta);
   }
   if (inputSize == 1) {
     linkingVar.push(Lit(varZero));
@@ -304,9 +308,9 @@ void genCardinals(int from, int to,
 
 int main(int argc, char** argv)
 {
-    Solver      S;
+    Prooflogger PL;
+    Solver      S(&PL);
     S.verbosity = 1;
-
 
     int         i, j;
     const char* value;
@@ -346,6 +350,9 @@ int main(int argc, char** argv)
         }else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-help") == 0 || strcmp(argv[i], "--help") == 0){
             printUsage(argv);
             exit(0);
+
+        } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
+            PL.set_name(value);
 
         }else if (strncmp(argv[i], "-", 1) == 0){
             reportf("ERROR! unknown flag %s\n", argv[i]);
@@ -387,16 +394,19 @@ int main(int argc, char** argv)
     gzclose(in);
     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
 
+    // Open proof file
+    PL.open();
+    PL.write_header(S.nClauses());
+    PL.constraint_counter = S.nClauses();
+
     double parse_time = cpuTime() - cpu_time;
     reportf("|  Parsing time:         %-12.2f s                                       |\n", parse_time);
 
     if (!S.simplify()){
         reportf("Solved by unit propagation\n");
         if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
-            fprintf(S.proof_file,"u >= 1 ;\n"); 
-            S.constraint_pointer++;
-            fprintf(S.proof_file, "c %d", S.constraint_pointer);
-            fclose(S.proof_file);
+        PL.derived_empty_clause();
+        PL.close();
         printf("UNSATISFIABLE\n");
         exit(20);
     }
@@ -406,6 +416,7 @@ int main(int argc, char** argv)
     int lcnt = 0; // loop count
     vec<Lit> linkingVar;
  solve:
+    PL.constraint_counter = S.nClauses();
     bool ret = S.solve();
     if (ret) { // koshi 09.12.25
       lcnt++;
@@ -413,19 +424,23 @@ int main(int argc, char** argv)
       for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
 	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinal constraints
-	genCardinals(nbvar,nbvar+nbsoft-1, S,lits,linkingVar);
+	genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
 	for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	  lits.clear();
 	  lits.push(~linkingVar[i]);
 	  S.addClause(lits);
+      PL.write_learnt_clause(lits);
 	}
+
 	answer = answerNew;
       } else { // lcnt > 1 
 	for (int i = answerNew; i < answer; i++) {
 	  lits.clear();
 	  lits.push(~linkingVar[i]);
 	  S.addClause(lits);
+      PL.write_learnt_clause(lits);
 	}
+
 	answer = answerNew;
       }
       reportf("Current answer = %d\n",answer);
@@ -445,6 +460,7 @@ int main(int argc, char** argv)
             fprintf(res, " 0\n");
         }else
             fprintf(res, "UNSAT\n");
+        PL.close();
         fclose(res);
     }
 

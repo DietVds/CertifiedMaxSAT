@@ -26,7 +26,7 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 // Constructor/Destructor:
 
 
-Solver::Solver() :
+Solver::Solver(Prooflogger *PL) :
 
     // Parameters: (formerly in 'SearchParams')
     var_decay(1 / 0.95), clause_decay(1 / 0.999), random_var_freq(0.02)
@@ -53,9 +53,11 @@ Solver::Solver() :
   , random_seed      (91648253)
   , progress_estimate(0)
   , remove_satisfied (true)
-{
-    fprintf(proof_file, "pseudo-Boolean proof version 1.0\n");
-}
+
+  // Prooflogger
+  //
+  , PL(PL)
+{}
 
 
 Solver::~Solver()
@@ -546,7 +548,7 @@ bool Solver::simplify()
 |    all variables are decision variables, this means that the clause set is satisfiable. 'l_False'
 |    if the clause set is unsatisfiable. 'l_Undef' if the bound on number of conflicts is reached.
 |________________________________________________________________________________________________@*/
-lbool Solver::search(int nof_conflicts, int nof_learnts)
+lbool Solver::search(int nof_conflicts, int nof_learnts) 
 {
     assert(ok);
     int         backtrack_level;
@@ -562,10 +564,8 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
         if (confl != NULL){
             // CONFLICT
             conflicts++; conflictC++;
-            if (decisionLevel() == 0){ //unresolvable conflict
-                fprintf(proof_file,"u >= 1 ;\n"); 
-                constraint_pointer++;
-                fprintf(proof_file, "c %d", constraint_pointer);               
+            if (decisionLevel() == 0) {
+                PL->derived_empty_clause();
                 return l_False;
             }
 
@@ -574,17 +574,8 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
             learnt_clause.clear();
             analyze(confl, learnt_clause, backtrack_level);
 
-            // Save the learnt clause to the proof file
-            fprintf(proof_file, "u ");        
-            for (int i = 0; i < learnt_clause.size(); i++)
-            {
-                if (sign(learnt_clause[i])==1)
-                    fprintf(proof_file, "1 ~x%d ", var(learnt_clause[i])+1);
-                else
-                    fprintf(proof_file, "1 x%d ", var(learnt_clause[i])+1);
-            }
-            fprintf(proof_file, " >= 1 ;\n");
-            constraint_pointer++;
+            // Write the learnt clause to the proof file
+            PL->write_learnt_clause(learnt_clause);
 
             cancelUntil(backtrack_level);
             assert(value(learnt_clause[0]) == l_Undef);
@@ -613,9 +604,7 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
 
             // Simplify the set of problem clauses:
             if (decisionLevel() == 0 && !simplify()) {
-                fprintf(proof_file,"u >= 1 ;\n"); 
-                constraint_pointer++;
-                fprintf(proof_file, "c %d", constraint_pointer);
+                PL->derived_empty_clause();
                 return l_False;
             }
 
@@ -675,18 +664,12 @@ double Solver::progressEstimate() const
 
 bool Solver::solve(const vec<Lit>& assumps)
 {
-    fprintf(proof_file, "f %d ;\n", clauses.size());
-    constraint_pointer= clauses.size();
-
     model.clear();
     conflict.clear();
 
-    if (!ok){ 
-        fprintf(proof_file,"u >= 1 ;\n"); 
-        constraint_pointer++;
-        fprintf(proof_file,"c %d", constraint_pointer); 
-        fclose(proof_file);
-        return false; 
+    if (!ok) {
+        PL->derived_empty_clause();
+        return false;
     }
 
     assumps.copyTo(assumptions);
@@ -711,7 +694,6 @@ bool Solver::solve(const vec<Lit>& assumps)
         nof_learnts   *= learntsize_inc;
     }
 
-    fclose(proof_file); 
     if (verbosity >= 1)
         reportf("===============================================================================\n");
 

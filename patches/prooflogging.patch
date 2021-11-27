@@ -1,40 +1,283 @@
-diff -ruN ./src_tmp/core/Main.C ./src/core/Main.C
---- ./src_tmp/core/Main.C	2021-11-24 18:09:54.408301226 +0100
-+++ ./src/core/Main.C	2021-11-24 17:51:07.061891554 +0100
-@@ -393,6 +393,10 @@
+diff -ruN src_tmp/core/Main.C src/core/Main.C
+--- src_tmp/core/Main.C	2021-11-27 11:29:45.346390047 +0100
++++ src/core/Main.C	2021-11-27 11:27:47.576595498 +0100
+@@ -27,6 +27,7 @@
+ #include <zlib.h>
+ 
+ #include "Solver.h"
++#include "Prooflogger.h"
+ 
+ /*************************************************************************************/
+ #ifdef _MSC_VER
+@@ -236,6 +237,7 @@
+     reportf("  -decay         = <num> [ 0 - 1 ]\n");
+     reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
+     reportf("  -verbosity     = {0,1,2}\n");
++    reportf("  -proof-file    = /path/to/proof_file.proof (default: maxsat_proof.proof)");
+     reportf("\n");
+ }
+ 
+@@ -249,9 +251,11 @@
+         return NULL;
+ }
+ 
++
++
+ // koshi 10.01.08
+ void genCardinals(int from, int to, 
+-		  Solver& S, vec<Lit>& lits, vec<Lit>& linkingVar) {
++		  Solver& S, Prooflogger& PL, vec<Lit>& lits, vec<Lit>& linkingVar) {
+   int inputSize = to - from + 1;
+   linkingVar.clear();
+ 
+@@ -266,11 +270,11 @@
+ 
+   if (inputSize > 2) {
+     int middle = inputSize/2;
+-    genCardinals(from, from+middle, S,lits,linkingAlpha);
+-    genCardinals(from+middle+1, to, S,lits,linkingBeta);
++    genCardinals(from, from+middle, S,PL,lits,linkingAlpha);
++    genCardinals(from+middle+1, to, S,PL,lits,linkingBeta);
+   } else if (inputSize == 2) {
+-    genCardinals(from, from, S,lits,linkingAlpha);
+-    genCardinals(to, to, S,lits,linkingBeta);
++    genCardinals(from, from, S,PL,lits,linkingAlpha);
++    genCardinals(to, to, S,PL,lits,linkingBeta);
+   }
+   if (inputSize == 1) {
+     linkingVar.push(Lit(varZero));
+@@ -304,10 +308,10 @@
+ 
+ int main(int argc, char** argv)
+ {
+-    Solver      S;
++    Prooflogger PL;
++    Solver      S(&PL);
+     S.verbosity = 1;
+ 
+-
+     int         i, j;
+     const char* value;
+     for (i = j = 0; i < argc; i++){
+@@ -347,6 +351,9 @@
+             printUsage(argv);
+             exit(0);
+ 
++        } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
++            PL.set_name(value);
++
+         }else if (strncmp(argv[i], "-", 1) == 0){
+             reportf("ERROR! unknown flag %s\n", argv[i]);
+             exit(0);
+@@ -387,12 +394,19 @@
+     gzclose(in);
+     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
+ 
++    // Open proof file
++    PL.open();
++    PL.write_header(S.nClauses());
++    PL.constraint_counter = S.nClauses();
++
+     double parse_time = cpuTime() - cpu_time;
+     reportf("|  Parsing time:         %-12.2f s                                       |\n", parse_time);
+ 
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
-+            fprintf(S.proof_file,"u >= 1 ;\n"); 
-+            S.constraint_pointer++;
-+            fprintf(S.proof_file, "c %d", S.constraint_pointer);
-+            fclose(S.proof_file);
++        PL.derived_empty_clause();
++        PL.close();
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-diff -ruN ./src_tmp/core/Solver.C ./src/core/Solver.C
---- ./src_tmp/core/Solver.C	2021-11-24 18:09:54.408301226 +0100
-+++ ./src/core/Solver.C	2021-11-24 17:51:07.061891554 +0100
-@@ -53,7 +53,9 @@
+@@ -402,6 +416,7 @@
+     int lcnt = 0; // loop count
+     vec<Lit> linkingVar;
+  solve:
++    PL.constraint_counter = S.nClauses();
+     bool ret = S.solve();
+     if (ret) { // koshi 09.12.25
+       lcnt++;
+@@ -409,19 +424,23 @@
+       for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
+ 	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
+       if (lcnt == 1) { // first model: generate cardinal constraints
+-	genCardinals(nbvar,nbvar+nbsoft-1, S,lits,linkingVar);
++	genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
+ 	for (int i = answerNew; i < linkingVar.size()-1; i++) {
+ 	  lits.clear();
+ 	  lits.push(~linkingVar[i]);
+ 	  S.addClause(lits);
++      PL.write_learnt_clause(lits);
+ 	}
++
+ 	answer = answerNew;
+       } else { // lcnt > 1 
+ 	for (int i = answerNew; i < answer; i++) {
+ 	  lits.clear();
+ 	  lits.push(~linkingVar[i]);
+ 	  S.addClause(lits);
++      PL.write_learnt_clause(lits);
+ 	}
++
+ 	answer = answerNew;
+       }
+       reportf("Current answer = %d\n",answer);
+@@ -441,6 +460,7 @@
+             fprintf(res, " 0\n");
+         }else
+             fprintf(res, "UNSAT\n");
++        PL.close();
+         fclose(res);
+     }
+ 
+diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
+--- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
++++ src/core/Prooflogger.C	2021-11-27 11:08:56.995547339 +0100
+@@ -0,0 +1,55 @@
++#include "Prooflogger.h"
++
++//=================================================================================================
++// File methods
++
++void Prooflogger::open()
++{
++    proof_file.open(proof_file_name);
++}
++
++void Prooflogger::close()
++{
++    proof_file.close();
++}
++
++void Prooflogger::set_name(const char* new_name)
++{
++    proof_file_name = new_name;
++}
++
++
++//=================================================================================================
++// Writing methods
++
++
++void Prooflogger::write_header(int nClauses)
++{
++    proof_file << "pseudo-Boolean proof version 1.0\n";
++    proof_file << "f " << nClauses << ";\n";
++}
++
++void Prooflogger::derived_empty_clause()
++{
++    proof_file << "u >= 1 ;\n";
++    constraint_counter++;
++    write_contradiction();
++}
++
++void Prooflogger::write_learnt_clause(vec<Lit>& clause)
++{
++    proof_file << "u ";
++    for (int i = 0; i < clause.size(); i++) {
++        if (sign(clause[i]) == 1)
++            proof_file << "1 ~x" << var(clause[i]) + 1 << " ";
++        else
++            proof_file << "1 x" << var(clause[i]) + 1 << " ";
++    }
++    proof_file << " >= 1;\n";
++    constraint_counter++;
++}
++
++void Prooflogger::write_contradiction()
++{
++    proof_file << "c " << constraint_counter;
++}
+\ No newline at end of file
+diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
+--- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
++++ src/core/Prooflogger.h	2021-11-27 11:26:25.157740993 +0100
+@@ -0,0 +1,44 @@
++#ifndef Prooflogger_h
++#define Prooflogger_h
++
++#include <cstdio>
++#include <fstream>
++#include <iostream>
++
++#include "Vec.h"
++#include "Heap.h"
++#include "Alg.h"
++
++#include "SolverTypes.h"
++
++
++//=================================================================================================
++// Prooflogger -- the main class:
++
++
++class Prooflogger {
++public:
++
++    // Constrain counter
++    //
++    int constraint_counter = 0;
++
++    // Proof file
++    std::ofstream proof_file;
++    const char *proof_file_name = "maxsat_proof.proof";
++    void open    ();
++    void close   ();
++    void set_name(const char* name);
++    
++    // Printing functions
++    //
++    void write_header       (int nClauses);
++    void derived_empty_clause ();
++    void write_learnt_clause(vec<Lit>& clause);
++    void write_constraint   (vec<Lit>& clause);
++    void write_contradiction();
++
++};
++
++//=================================================================================================
++#endif
+\ No newline at end of file
+diff -ruN src_tmp/core/Solver.C src/core/Solver.C
+--- src_tmp/core/Solver.C	2021-11-27 11:29:45.346390047 +0100
++++ src/core/Solver.C	2021-11-27 11:29:42.386143852 +0100
+@@ -26,7 +26,7 @@
+ // Constructor/Destructor:
+ 
+ 
+-Solver::Solver() :
++Solver::Solver(Prooflogger *PL) :
+ 
+     // Parameters: (formerly in 'SearchParams')
+     var_decay(1 / 0.95), clause_decay(1 / 0.999), random_var_freq(0.02)
+@@ -53,6 +53,10 @@
    , random_seed      (91648253)
    , progress_estimate(0)
    , remove_satisfied (true)
--{}
-+{
-+    fprintf(proof_file, "pseudo-Boolean proof version 1.0\n");
-+}
++
++  // Prooflogger
++  //
++  , PL(PL)
+ {}
  
  
- Solver::~Solver()
-@@ -560,12 +562,30 @@
+@@ -544,7 +548,7 @@
+ |    all variables are decision variables, this means that the clause set is satisfiable. 'l_False'
+ |    if the clause set is unsatisfiable. 'l_Undef' if the bound on number of conflicts is reached.
+ |________________________________________________________________________________________________@*/
+-lbool Solver::search(int nof_conflicts, int nof_learnts)
++lbool Solver::search(int nof_conflicts, int nof_learnts) 
+ {
+     assert(ok);
+     int         backtrack_level;
+@@ -560,12 +564,19 @@
          if (confl != NULL){
              // CONFLICT
              conflicts++; conflictC++;
 -            if (decisionLevel() == 0) return l_False;
-+            if (decisionLevel() == 0){ //unresolvable conflict
-+                fprintf(proof_file,"u >= 1 ;\n"); 
-+                constraint_pointer++;
-+                fprintf(proof_file, "c %d", constraint_pointer);               
++            if (decisionLevel() == 0) {
++                PL->derived_empty_clause();
 +                return l_False;
 +            }
  
@@ -43,75 +286,100 @@ diff -ruN ./src_tmp/core/Solver.C ./src/core/Solver.C
              learnt_clause.clear();
              analyze(confl, learnt_clause, backtrack_level);
 +
-+            // Save the learnt clause to the proof file
-+            fprintf(proof_file, "u ");        
-+            for (int i = 0; i < learnt_clause.size(); i++)
-+            {
-+                if (sign(learnt_clause[i])==1)
-+                    fprintf(proof_file, "1 ~x%d ", var(learnt_clause[i])+1);
-+                else
-+                    fprintf(proof_file, "1 x%d ", var(learnt_clause[i])+1);
-+            }
-+            fprintf(proof_file, " >= 1 ;\n");
-+            constraint_pointer++;
++            // Write the learnt clause to the proof file
++            PL->write_learnt_clause(learnt_clause);
 +
              cancelUntil(backtrack_level);
              assert(value(learnt_clause[0]) == l_Undef);
  
-@@ -592,8 +612,12 @@
+@@ -592,8 +603,10 @@
                  return l_Undef; }
  
              // Simplify the set of problem clauses:
 -            if (decisionLevel() == 0 && !simplify())
 +            if (decisionLevel() == 0 && !simplify()) {
-+                fprintf(proof_file,"u >= 1 ;\n"); 
-+                constraint_pointer++;
-+                fprintf(proof_file, "c %d", constraint_pointer);
++                PL->derived_empty_clause();
                  return l_False;
 +            }
  
              if (nof_learnts >= 0 && learnts.size()-nAssigns() >= nof_learnts)
                  // Reduce the set of learnt clauses:
-@@ -651,10 +675,19 @@
- 
- bool Solver::solve(const vec<Lit>& assumps)
- {
-+    fprintf(proof_file, "f %d ;\n", clauses.size());
-+    constraint_pointer= clauses.size();
-+
+@@ -654,7 +667,10 @@
      model.clear();
      conflict.clear();
  
 -    if (!ok) return false;
-+    if (!ok){ 
-+        fprintf(proof_file,"u >= 1 ;\n"); 
-+        constraint_pointer++;
-+        fprintf(proof_file,"c %d", constraint_pointer); 
-+        fclose(proof_file);
-+        return false; 
++    if (!ok) {
++        PL->derived_empty_clause();
++        return false;
 +    }
  
      assumps.copyTo(assumptions);
  
-@@ -678,6 +711,7 @@
-         nof_learnts   *= learntsize_inc;
-     }
+diff -ruN src_tmp/core/Solver.h src/core/Solver.h
+--- src_tmp/core/Solver.h	2021-11-27 11:29:45.346390047 +0100
++++ src/core/Solver.h	2021-11-27 11:28:03.309903975 +0100
+@@ -21,12 +21,15 @@
+ #define Solver_h
  
-+    fclose(proof_file); 
-     if (verbosity >= 1)
-         reportf("===============================================================================\n");
+ #include <cstdio>
++#include <fstream>
++#include <iostream>
  
-diff -ruN ./src_tmp/core/Solver.h ./src/core/Solver.h
---- ./src_tmp/core/Solver.h	2021-11-24 18:09:54.408301226 +0100
-+++ ./src/core/Solver.h	2021-11-24 17:51:07.061891554 +0100
-@@ -36,6 +36,10 @@
- class Solver {
- public:
+ #include "Vec.h"
+ #include "Heap.h"
+ #include "Alg.h"
  
-+    // Proof logging:
-+    FILE *proof_file = fopen("maxsat_proof_log.proof", "w");
-+    int constraint_pointer=0;
-+
+ #include "SolverTypes.h"
++#include "Prooflogger.h"
+ 
+ 
+ //=================================================================================================
+@@ -38,9 +41,13 @@
+ 
      // Constructor/Destructor:
      //
-     Solver();
+-    Solver();
++    Solver(Prooflogger *PL);
+     ~Solver();
+ 
++    // Proof logging:
++    //
++    Prooflogger* PL;
++
+     // Problem specification:
+     //
+     Var     newVar    (bool polarity = true, bool dvar = true); // Add a new variable with parameters specifying variable mode.
+@@ -146,19 +153,19 @@
+ 
+     // Main internal methods:
+     //
+-    void     insertVarOrder   (Var x);                                                 // Insert a variable in the decision order priority queue.
+-    Lit      pickBranchLit    (int polarity_mode, double random_var_freq);             // Return the next decision variable.
+-    void     newDecisionLevel ();                                                      // Begins a new decision level.
+-    void     uncheckedEnqueue (Lit p, Clause* from = NULL);                            // Enqueue a literal. Assumes value of literal is undefined.
+-    bool     enqueue          (Lit p, Clause* from = NULL);                            // Test if fact 'p' contradicts current state, enqueue otherwise.
+-    Clause*  propagate        ();                                                      // Perform unit propagation. Returns possibly conflicting clause.
+-    void     cancelUntil      (int level);                                             // Backtrack until a certain level.
+-    void     analyze          (Clause* confl, vec<Lit>& out_learnt, int& out_btlevel); // (bt = backtrack)
+-    void     analyzeFinal     (Lit p, vec<Lit>& out_conflict);                         // COULD THIS BE IMPLEMENTED BY THE ORDINARIY "analyze" BY SOME REASONABLE GENERALIZATION?
+-    bool     litRedundant     (Lit p, uint32_t abstract_levels);                       // (helper method for 'analyze()')
+-    lbool    search           (int nof_conflicts, int nof_learnts);                    // Search for a given number of conflicts.
+-    void     reduceDB         ();                                                      // Reduce the set of learnt clauses.
+-    void     removeSatisfied  (vec<Clause*>& cs);                                      // Shrink 'cs' to contain only non-satisfied clauses.
++    void     insertVarOrder   (Var x);                                                  // Insert a variable in the decision order priority queue.
++    Lit      pickBranchLit    (int polarity_mode, double random_var_freq);              // Return the next decision variable.
++    void     newDecisionLevel ();                                                       // Begins a new decision level.
++    void     uncheckedEnqueue (Lit p, Clause* from = NULL);                             // Enqueue a literal. Assumes value of literal is undefined.
++    bool     enqueue          (Lit p, Clause* from = NULL);                             // Test if fact 'p' contradicts current state, enqueue otherwise.
++    Clause*  propagate        ();                                                       // Perform unit propagation. Returns possibly conflicting clause.
++    void     cancelUntil      (int level);                                              // Backtrack until a certain level.
++    void     analyze          (Clause* confl, vec<Lit>& out_learnt, int& out_btlevel);  // (bt = backtrack)
++    void     analyzeFinal     (Lit p, vec<Lit>& out_conflict);                          // COULD THIS BE IMPLEMENTED BY THE ORDINARIY "analyze" BY SOME REASONABLE GENERALIZATION?
++    bool     litRedundant     (Lit p, uint32_t abstract_levels);                        // (helper method for 'analyze()')
++    lbool    search           (int nof_conflicts, int nof_learnts);                     // Search for a given number of conflicts.
++    void     reduceDB         ();                                                       // Reduce the set of learnt clauses.
++    void     removeSatisfied  (vec<Clause*>& cs);                                       // Shrink 'cs' to contain only non-satisfied clauses.
+ 
+     // Maintaining Variable/Clause activity:
+     //
