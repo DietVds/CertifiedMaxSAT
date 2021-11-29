@@ -132,10 +132,10 @@ static int parseInt(B& in) {
     return neg ? -val : val; }
 
 template<class B>
-static void readClause(B& in, Solver& S, vec<Lit>& lits, 
+static void readClause(B& in, Solver& S, Prooflogger &PL, vec<Lit>& lits, 
 		       int nbvar, int top, int& nbsoft) { // koshi 10.01.04
 
-    int     parsed_lit, var;
+    int parsed_lit, var;
     lits.clear();
     parsed_lit = parseInt(in); // koshi 10.01.04
     if (parsed_lit == 1) { // soft clause
@@ -152,6 +152,9 @@ static void readClause(B& in, Solver& S, vec<Lit>& lits,
 	// koshi 10.01.04        while (var >= S.nVars()) S.newVar();
         lits.push( (parsed_lit > 0) ? Lit(var) : ~Lit(var) );
     }
+
+    // Write the whole as a subsitution redundancy line in the proof file
+    PL.write_sub_red(lits, 0);
 }
 
 template<class B>
@@ -164,42 +167,52 @@ static bool match(B& in, char* str) {
 
 
 template<class B>
-static void parse_DIMACS_main(B& in, Solver& S, 
+static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL, 
 			      int& out_nbvar, int& out_top, int& out_nbsoft) {
     vec<Lit> lits;
+
+    // Read header
+    skipWhitespace(in);
+    if (*in == 'p'){
+	     if (match(in, "p wcnf")){ // koshi 10.01.04
+            int vars    = parseInt(in);
+            int clauses = parseInt(in);
+		      int top     = parseInt(in);
+		      out_nbvar   = vars;
+		      out_top     = top;
+            reportf("|  Number of variables:    %-12d                                       |\n", vars);
+            reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
+            reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
+            PL.write_header(clauses);
+		    while (vars > S.nVars()) S.newVar();
+        } else {
+            reportf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);
+        }
+    } else reportf("PARSE ERROR! No header given!");
+
+    // Read clauses
+    PL.write_comment("==============================================================\n");
+    PL.write_comment("Adding blocking variables using substitution redundancy:\n");
     for (;;){
         skipWhitespace(in);
         if (*in == EOF)
             break;
-        else if (*in == 'p'){
-	  if (match(in, "p wcnf")){ // koshi 10.01.04
-                int vars    = parseInt(in);
-                int clauses = parseInt(in);
-		int top     = parseInt(in);
-		out_nbvar   = vars;
-		out_top     = top;
-                reportf("|  Number of variables:    %-12d                                       |\n", vars);
-                reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
-                reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
-		while (vars > S.nVars()) S.newVar();
-            }else{
-                reportf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);
-            }
-        } else if (*in == 'c' || *in == 'p')
-            skipLine(in);
-        else
-	  readClause(in, S, lits, out_nbvar,out_top,out_nbsoft),
+        else if (*in == 'c' || *in == 'p') skipLine(in);
+        else {
+	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
             S.addClause(lits);
+        }
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
+    PL.write_comment("==============================================================\n");
 }
 
 // Inserts problem into solver.
 //
-static void parse_DIMACS(gzFile input_stream, Solver& S, 
+static void parse_DIMACS(gzFile input_stream, Solver& S, Prooflogger &PL, 
 			 int& out_nbvar, int& out_top, int& out_nbsoft) { // koshi 10.01.04
     StreamBuffer in(input_stream);
-    parse_DIMACS_main(in, S, out_nbvar, out_top, out_nbsoft); }
+    parse_DIMACS_main(in, S, PL, out_nbvar, out_top, out_nbsoft); }
 
 
 //=================================================================================================
@@ -383,6 +396,9 @@ int main(int argc, char** argv)
     if (in == NULL)
         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
 
+    // Open proof file
+    PL.open();
+
     reportf("============================[ Problem Statistics ]=============================\n");
     reportf("|                                                                             |\n");
 
@@ -390,13 +406,10 @@ int main(int argc, char** argv)
     int nbvar  = 0; // number of original variables
     int top    = 0; // weight of hard clause
     int nbsoft = 0; // number of soft clauses
-    parse_DIMACS(in, S, nbvar, top, nbsoft);
+    parse_DIMACS(in, S, PL, nbvar, top, nbsoft);
     gzclose(in);
     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
 
-    // Open proof file
-    PL.open();
-    PL.write_header(S.nClauses());
     PL.constraint_counter = S.nClauses();
 
     double parse_time = cpuTime() - cpu_time;

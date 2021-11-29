@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-11-27 11:29:45.346390047 +0100
-+++ src/core/Main.C	2021-11-27 11:27:47.576595498 +0100
+--- src_tmp/core/Main.C	2021-11-29 14:36:13.361450103 +0100
++++ src/core/Main.C	2021-11-29 14:36:06.581436536 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -9,7 +9,103 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
  /*************************************************************************************/
  #ifdef _MSC_VER
-@@ -236,6 +237,7 @@
+@@ -131,10 +132,10 @@
+     return neg ? -val : val; }
+ 
+ template<class B>
+-static void readClause(B& in, Solver& S, vec<Lit>& lits, 
++static void readClause(B& in, Solver& S, Prooflogger &PL, vec<Lit>& lits, 
+ 		       int nbvar, int top, int& nbsoft) { // koshi 10.01.04
+ 
+-    int     parsed_lit, var;
++    int parsed_lit, var;
+     lits.clear();
+     parsed_lit = parseInt(in); // koshi 10.01.04
+     if (parsed_lit == 1) { // soft clause
+@@ -151,6 +152,9 @@
+ 	// koshi 10.01.04        while (var >= S.nVars()) S.newVar();
+         lits.push( (parsed_lit > 0) ? Lit(var) : ~Lit(var) );
+     }
++
++    // Write the whole as a subsitution redundancy line in the proof file
++    PL.write_sub_red(lits, 0);
+ }
+ 
+ template<class B>
+@@ -163,42 +167,51 @@
+ 
+ 
+ template<class B>
+-static void parse_DIMACS_main(B& in, Solver& S, 
++static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL, 
+ 			      int& out_nbvar, int& out_top, int& out_nbsoft) {
+     vec<Lit> lits;
++
++    // Read header
++    skipWhitespace(in);
++    if (*in == 'p'){
++	     if (match(in, "p wcnf")){ // koshi 10.01.04
++            int vars    = parseInt(in);
++            int clauses = parseInt(in);
++		      int top     = parseInt(in);
++		      out_nbvar   = vars;
++		      out_top     = top;
++            reportf("|  Number of variables:    %-12d                                       |\n", vars);
++            reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
++            reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
++            PL.write_header(clauses);
++		    while (vars > S.nVars()) S.newVar();
++        } else {
++            reportf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);
++        }
++    } else reportf("PARSE ERROR! No header given!");
++
++    // Read clauses
++    PL.write_comment("Adding blocking variables using substitution redundancy:\n");
+     for (;;){
+         skipWhitespace(in);
+         if (*in == EOF)
+             break;
+-        else if (*in == 'p'){
+-	  if (match(in, "p wcnf")){ // koshi 10.01.04
+-                int vars    = parseInt(in);
+-                int clauses = parseInt(in);
+-		int top     = parseInt(in);
+-		out_nbvar   = vars;
+-		out_top     = top;
+-                reportf("|  Number of variables:    %-12d                                       |\n", vars);
+-                reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
+-                reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
+-		while (vars > S.nVars()) S.newVar();
+-            }else{
+-                reportf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);
+-            }
+-        } else if (*in == 'c' || *in == 'p')
+-            skipLine(in);
+-        else
+-	  readClause(in, S, lits, out_nbvar,out_top,out_nbsoft),
++        else if (*in == 'c' || *in == 'p') skipLine(in);
++        else {
++	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
+             S.addClause(lits);
++        }
+     }
+     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
++    PL.write_comment("==============================================================\n");
+ }
+ 
+ // Inserts problem into solver.
+ //
+-static void parse_DIMACS(gzFile input_stream, Solver& S, 
++static void parse_DIMACS(gzFile input_stream, Solver& S, Prooflogger &PL, 
+ 			 int& out_nbvar, int& out_top, int& out_nbsoft) { // koshi 10.01.04
+     StreamBuffer in(input_stream);
+-    parse_DIMACS_main(in, S, out_nbvar, out_top, out_nbsoft); }
++    parse_DIMACS_main(in, S, PL, out_nbvar, out_top, out_nbsoft); }
+ 
+ 
+ //=================================================================================================
+@@ -236,6 +249,7 @@
      reportf("  -decay         = <num> [ 0 - 1 ]\n");
      reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
      reportf("  -verbosity     = {0,1,2}\n");
@@ -17,7 +113,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("\n");
  }
  
-@@ -249,9 +251,11 @@
+@@ -249,9 +263,11 @@
          return NULL;
  }
  
@@ -30,7 +126,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -266,11 +270,11 @@
+@@ -266,11 +282,11 @@
  
    if (inputSize > 2) {
      int middle = inputSize/2;
@@ -46,7 +142,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    }
    if (inputSize == 1) {
      linkingVar.push(Lit(varZero));
-@@ -304,10 +308,10 @@
+@@ -304,10 +320,10 @@
  
  int main(int argc, char** argv)
  {
@@ -59,7 +155,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      int         i, j;
      const char* value;
      for (i = j = 0; i < argc; i++){
-@@ -347,6 +351,9 @@
+@@ -347,6 +363,9 @@
              printUsage(argv);
              exit(0);
  
@@ -69,13 +165,25 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -387,12 +394,19 @@
-     gzclose(in);
-     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
+@@ -376,6 +395,9 @@
+     if (in == NULL)
+         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
 +    // Open proof file
 +    PL.open();
-+    PL.write_header(S.nClauses());
++
+     reportf("============================[ Problem Statistics ]=============================\n");
+     reportf("|                                                                             |\n");
+ 
+@@ -383,16 +405,20 @@
+     int nbvar  = 0; // number of original variables
+     int top    = 0; // weight of hard clause
+     int nbsoft = 0; // number of soft clauses
+-    parse_DIMACS(in, S, nbvar, top, nbsoft);
++    parse_DIMACS(in, S, PL, nbvar, top, nbsoft);
+     gzclose(in);
+     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
+ 
 +    PL.constraint_counter = S.nClauses();
 +
      double parse_time = cpuTime() - cpu_time;
@@ -89,7 +197,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -402,6 +416,7 @@
+@@ -402,6 +428,7 @@
      int lcnt = 0; // loop count
      vec<Lit> linkingVar;
   solve:
@@ -97,7 +205,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      bool ret = S.solve();
      if (ret) { // koshi 09.12.25
        lcnt++;
-@@ -409,19 +424,23 @@
+@@ -409,19 +436,23 @@
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
  	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
        if (lcnt == 1) { // first model: generate cardinal constraints
@@ -122,7 +230,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -441,6 +460,7 @@
+@@ -441,6 +472,7 @@
              fprintf(res, " 0\n");
          }else
              fprintf(res, "UNSAT\n");
@@ -132,8 +240,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-11-27 11:08:56.995547339 +0100
-@@ -0,0 +1,55 @@
++++ src/core/Prooflogger.C	2021-11-29 14:33:53.101104643 +0100
+@@ -0,0 +1,67 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -159,21 +267,34 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +// Writing methods
 +
 +
-+void Prooflogger::write_header(int nClauses)
-+{
++void Prooflogger::write_header(int nClauses) {
 +    proof_file << "pseudo-Boolean proof version 1.0\n";
 +    proof_file << "f " << nClauses << ";\n";
 +}
 +
-+void Prooflogger::derived_empty_clause()
-+{
-+    proof_file << "u >= 1 ;\n";
++void Prooflogger::write_comment(const char* comment) {
++    proof_file << "\nc " << comment << "\n";
++}
++
++void Prooflogger::derived_empty_clause() {
++    proof_file << "u >= 1;\n";
 +    constraint_counter++;
 +    write_contradiction();
 +}
 +
-+void Prooflogger::write_learnt_clause(vec<Lit>& clause)
-+{
++void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
++    proof_file << "red ";
++    for (int i = 1; i < definition.size(); i++) {
++        if (sign(definition[i]) == 1)
++            proof_file << "1 ~x" << var(definition[i]) + 1 << " ";
++        else
++            proof_file << "1 x" << var(definition[i]) + 1 << " ";
++    }
++    proof_file << "1 y" << var(definition[0])+1 << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
++    constraint_counter++;
++}
++
++void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
 +    proof_file << "u ";
 +    for (int i = 0; i < clause.size(); i++) {
 +        if (sign(clause[i]) == 1)
@@ -185,15 +306,14 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    constraint_counter++;
 +}
 +
-+void Prooflogger::write_contradiction()
-+{
++void Prooflogger::write_contradiction() {
 +    proof_file << "c " << constraint_counter;
 +}
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-11-27 11:26:25.157740993 +0100
-@@ -0,0 +1,44 @@
++++ src/core/Prooflogger.h	2021-11-29 14:33:09.260955813 +0100
+@@ -0,0 +1,46 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -222,17 +342,19 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    // Proof file
 +    std::ofstream proof_file;
 +    const char *proof_file_name = "maxsat_proof.proof";
-+    void open    ();
-+    void close   ();
-+    void set_name(const char* name);
++    void open                 ();
++    void close                ();
++    void set_name             (const char* name);
 +    
 +    // Printing functions
 +    //
-+    void write_header       (int nClauses);
++    void write_header         (int nClauses);
++    void write_comment        (const char* comment);
 +    void derived_empty_clause ();
-+    void write_learnt_clause(vec<Lit>& clause);
-+    void write_constraint   (vec<Lit>& clause);
-+    void write_contradiction();
++    void write_learnt_clause  (vec<Lit>& clause);
++    void write_sub_red        (vec<Lit>& definition, bool ass);
++    void write_constraint     (vec<Lit>& clause);
++    void write_contradiction  ();
 +
 +};
 +
@@ -240,8 +362,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-11-27 11:29:45.346390047 +0100
-+++ src/core/Solver.C	2021-11-27 11:29:42.386143852 +0100
+--- src_tmp/core/Solver.C	2021-11-29 14:36:13.361450103 +0100
++++ src/core/Solver.C	2021-11-27 11:30:38.696712462 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -317,7 +439,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-11-27 11:29:45.346390047 +0100
+--- src_tmp/core/Solver.h	2021-11-29 14:36:13.361450103 +0100
 +++ src/core/Solver.h	2021-11-27 11:28:03.309903975 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h

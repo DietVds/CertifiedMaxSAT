@@ -23,21 +23,34 @@ void Prooflogger::set_name(const char* new_name)
 // Writing methods
 
 
-void Prooflogger::write_header(int nClauses)
-{
+void Prooflogger::write_header(int nClauses) {
     proof_file << "pseudo-Boolean proof version 1.0\n";
     proof_file << "f " << nClauses << ";\n";
 }
 
-void Prooflogger::derived_empty_clause()
-{
-    proof_file << "u >= 1 ;\n";
+void Prooflogger::write_comment(const char* comment) {
+    proof_file << "\nc " << comment << "\n";
+}
+
+void Prooflogger::derived_empty_clause() {
+    proof_file << "u >= 1;\n";
     constraint_counter++;
     write_contradiction();
 }
 
-void Prooflogger::write_learnt_clause(vec<Lit>& clause)
-{
+void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
+    proof_file << "red ";
+    for (int i = 1; i < definition.size(); i++) {
+        if (sign(definition[i]) == 1)
+            proof_file << "1 ~x" << var(definition[i]) + 1 << " ";
+        else
+            proof_file << "1 x" << var(definition[i]) + 1 << " ";
+    }
+    proof_file << "1 y" << var(definition[0])+1 << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
+    constraint_counter++;
+}
+
+void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     proof_file << "u ";
     for (int i = 0; i < clause.size(); i++) {
         if (sign(clause[i]) == 1)
@@ -49,7 +62,6 @@ void Prooflogger::write_learnt_clause(vec<Lit>& clause)
     constraint_counter++;
 }
 
-void Prooflogger::write_contradiction()
-{
+void Prooflogger::write_contradiction() {
     proof_file << "c " << constraint_counter;
 }
