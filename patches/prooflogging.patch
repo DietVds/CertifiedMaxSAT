@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-11-29 14:36:13.361450103 +0100
-+++ src/core/Main.C	2021-11-29 14:36:06.581436536 +0100
+--- src_tmp/core/Main.C	2021-11-30 17:35:53.238336536 +0100
++++ src/core/Main.C	2021-11-30 17:35:49.810361405 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -32,7 +32,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  }
  
  template<class B>
-@@ -163,42 +167,51 @@
+@@ -163,42 +167,52 @@
  
  
  template<class B>
@@ -61,7 +61,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +    } else reportf("PARSE ERROR! No header given!");
 +
 +    // Read clauses
-+    PL.write_comment("Adding blocking variables using substitution redundancy:\n");
++    PL.write_comment("==============================================================");
++    PL.write_comment("Adding blocking variables using substitution redundancy:");
      for (;;){
          skipWhitespace(in);
          if (*in == EOF)
@@ -88,10 +89,10 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +        else {
 +	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
              S.addClause(lits);
++            PL.write_delete(S.nClauses());
 +        }
      }
      reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
-+    PL.write_comment("==============================================================\n");
  }
  
  // Inserts problem into solver.
@@ -105,7 +106,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
  
  //=================================================================================================
-@@ -236,6 +249,7 @@
+@@ -236,6 +250,7 @@
      reportf("  -decay         = <num> [ 0 - 1 ]\n");
      reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
      reportf("  -verbosity     = {0,1,2}\n");
@@ -113,7 +114,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("\n");
  }
  
-@@ -249,9 +263,11 @@
+@@ -249,52 +264,68 @@
          return NULL;
  }
  
@@ -126,7 +127,25 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -266,11 +282,11 @@
++  PL.write_comment("-------------------------------------------");
++  PL.write_comment("Adding cardinality constraint for new node:");
++
+   vec<Lit> linkingAlpha;
+   vec<Lit> linkingBeta;
+ 
+   Var varZero = S.newVar();
+   Var varLast = S.newVar();
+ 
++  // First
+   lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
++  PL.write_comment("- First variable:");
++  PL.write_sub_red(lits, true);
++
++  // Last
+   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
++  PL.write_comment("- Last variable:");
++  PL.write_sub_red(lits, true);
++
  
    if (inputSize > 2) {
      int middle = inputSize/2;
@@ -142,7 +161,47 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    }
    if (inputSize == 1) {
      linkingVar.push(Lit(varZero));
-@@ -304,10 +320,10 @@
+     linkingVar.push(Lit(from));
+     linkingVar.push(Lit(varLast));
+   } else { // inputSize >= 2
++    PL.write_comment("- Node clauses:");
+     linkingVar.push(Lit(varZero));
+     for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
+     linkingVar.push(Lit(varLast));
+     for (int sigma = 0; sigma <= inputSize; sigma++) {
+       for (int alpha = 0; alpha < linkingAlpha.size()-1; alpha++) {
+-	int beta = sigma - alpha;
+-	if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
+-	  lits.clear();
+-	  lits.push(~linkingAlpha[alpha]);
+-	  lits.push(~linkingBeta[beta]);
+-	  lits.push(linkingVar[sigma]);
+-	  S.addClause(lits);
+-	  lits.clear();
+-	  lits.push(linkingAlpha[alpha+1]);
+-	  lits.push(linkingBeta[beta+1]);
+-	  lits.push(~linkingVar[sigma+1]);
+-	  S.addClause(lits);
+-	}
++	    int beta = sigma - alpha;
++	    if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
++	      lits.clear();
++	      lits.push(linkingVar[sigma]);
++	      lits.push(~linkingAlpha[alpha]);
++	      lits.push(~linkingBeta[beta]);
++	      S.addClause(lits);
++          PL.write_sub_red(lits, true, lits.size());
++	      lits.clear();
++	      lits.push(linkingAlpha[alpha+1]);
++	      lits.push(linkingBeta[beta+1]);
++	      lits.push(~linkingVar[sigma+1]);
++          PL.write_sub_red(lits, false, lits.size());
++	      S.addClause(lits);
++	    }
+       }
+     }
+   }
+@@ -304,10 +335,10 @@
  
  int main(int argc, char** argv)
  {
@@ -155,7 +214,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      int         i, j;
      const char* value;
      for (i = j = 0; i < argc; i++){
-@@ -347,6 +363,9 @@
+@@ -347,6 +378,9 @@
              printUsage(argv);
              exit(0);
  
@@ -165,7 +224,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -376,6 +395,9 @@
+@@ -376,6 +410,9 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
@@ -175,7 +234,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,16 +405,20 @@
+@@ -383,16 +420,20 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
@@ -197,7 +256,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -402,6 +428,7 @@
+@@ -402,6 +443,7 @@
      int lcnt = 0; // loop count
      vec<Lit> linkingVar;
   solve:
@@ -205,43 +264,56 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      bool ret = S.solve();
      if (ret) { // koshi 09.12.25
        lcnt++;
-@@ -409,19 +436,23 @@
+@@ -409,19 +451,24 @@
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
  	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
        if (lcnt == 1) { // first model: generate cardinal constraints
 -	genCardinals(nbvar,nbvar+nbsoft-1, S,lits,linkingVar);
-+	genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
- 	for (int i = answerNew; i < linkingVar.size()-1; i++) {
- 	  lits.clear();
- 	  lits.push(~linkingVar[i]);
- 	  S.addClause(lits);
-+      PL.write_learnt_clause(lits);
- 	}
-+
- 	answer = answerNew;
-       } else { // lcnt > 1 
- 	for (int i = answerNew; i < answer; i++) {
- 	  lits.clear();
- 	  lits.push(~linkingVar[i]);
- 	  S.addClause(lits);
-+      PL.write_learnt_clause(lits);
+-	for (int i = answerNew; i < linkingVar.size()-1; i++) {
+-	  lits.clear();
+-	  lits.push(~linkingVar[i]);
+-	  S.addClause(lits);
+-	}
+-	answer = answerNew;
+-      } else { // lcnt > 1 
+-	for (int i = answerNew; i < answer; i++) {
+-	  lits.clear();
+-	  lits.push(~linkingVar[i]);
+-	  S.addClause(lits);
++        PL.write_comment("==============================================================");
++        PL.write_comment("Cardinality constraint:"); 
++	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
++	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
++	      lits.clear();
++	      lits.push(~linkingVar[i]);
++	      S.addClause(lits);
++          //PL.write_learnt_clause(lits);
++	    }
++        answer = answerNew;
++    } else { // lcnt > 1 
++	    for (int i = answerNew; i < answer; i++) {
++	      lits.clear();
++	      lits.push(~linkingVar[i]);
++	      S.addClause(lits);
++         //PL.write_learnt_clause(lits);
  	}
 +
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -441,6 +472,7 @@
+@@ -441,6 +488,8 @@
              fprintf(res, " 0\n");
          }else
              fprintf(res, "UNSAT\n");
++        PL.write_comment("==============================================================\n");
 +        PL.close();
          fclose(res);
      }
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-11-29 14:33:53.101104643 +0100
-@@ -0,0 +1,67 @@
++++ src/core/Prooflogger.C	2021-11-30 17:31:00.396535154 +0100
+@@ -0,0 +1,74 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -273,7 +345,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 +
 +void Prooflogger::write_comment(const char* comment) {
-+    proof_file << "\nc " << comment << "\n";
++    proof_file << "c " << comment << "\n";
 +}
 +
 +void Prooflogger::derived_empty_clause() {
@@ -282,15 +354,17 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    write_contradiction();
 +}
 +
-+void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
++void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass, int start_x) {
++    const char* symbol = "y";
 +    proof_file << "red ";
-+    for (int i = 1; i < definition.size(); i++) {
++    for (int i = 0; i < definition.size(); i++) {
++        if(i == start_x) symbol = "x";
 +        if (sign(definition[i]) == 1)
-+            proof_file << "1 ~x" << var(definition[i]) + 1 << " ";
++            proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
 +        else
-+            proof_file << "1 x" << var(definition[i]) + 1 << " ";
++            proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
 +    }
-+    proof_file << "1 y" << var(definition[0])+1 << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
++    proof_file << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
 +    constraint_counter++;
 +}
 +
@@ -309,11 +383,16 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +void Prooflogger::write_contradiction() {
 +    proof_file << "c " << constraint_counter;
 +}
++
++void Prooflogger::write_delete(int number) {
++    proof_file << "d " << number << "\n";
++    constraint_counter--;
++}
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-11-29 14:33:09.260955813 +0100
-@@ -0,0 +1,46 @@
++++ src/core/Prooflogger.h	2021-11-30 17:33:14.371508796 +0100
+@@ -0,0 +1,47 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -335,7 +414,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +class Prooflogger {
 +public:
 +
-+    // Constrain counter
++    // Constraint counter
 +    //
 +    int constraint_counter = 0;
 +
@@ -352,9 +431,10 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_comment        (const char* comment);
 +    void derived_empty_clause ();
 +    void write_learnt_clause  (vec<Lit>& clause);
-+    void write_sub_red        (vec<Lit>& definition, bool ass);
++    void write_sub_red        (vec<Lit>& definition, bool ass, int start_x = 1);
 +    void write_constraint     (vec<Lit>& clause);
 +    void write_contradiction  ();
++    void write_delete         (int number);
 +
 +};
 +
@@ -362,8 +442,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-11-29 14:36:13.361450103 +0100
-+++ src/core/Solver.C	2021-11-27 11:30:38.696712462 +0100
+--- src_tmp/core/Solver.C	2021-11-30 17:35:53.238336536 +0100
++++ src/core/Solver.C	2021-11-30 09:59:45.672141567 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -439,8 +519,8 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-11-29 14:36:13.361450103 +0100
-+++ src/core/Solver.h	2021-11-27 11:28:03.309903975 +0100
+--- src_tmp/core/Solver.h	2021-11-30 17:35:53.238336536 +0100
++++ src/core/Solver.h	2021-11-30 09:59:45.672141567 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
  

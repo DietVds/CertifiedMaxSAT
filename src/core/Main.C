@@ -191,8 +191,8 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     } else reportf("PARSE ERROR! No header given!");
 
     // Read clauses
-    PL.write_comment("==============================================================\n");
-    PL.write_comment("Adding blocking variables using substitution redundancy:\n");
+    PL.write_comment("==============================================================");
+    PL.write_comment("Adding blocking variables using substitution redundancy:");
     for (;;){
         skipWhitespace(in);
         if (*in == EOF)
@@ -201,10 +201,10 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
         else {
 	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
             S.addClause(lits);
+            PL.write_delete(S.nClauses());
         }
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
-    PL.write_comment("==============================================================\n");
 }
 
 // Inserts problem into solver.
@@ -272,14 +272,25 @@ void genCardinals(int from, int to,
   int inputSize = to - from + 1;
   linkingVar.clear();
 
+  PL.write_comment("-------------------------------------------");
+  PL.write_comment("Adding cardinality constraint for new node:");
+
   vec<Lit> linkingAlpha;
   vec<Lit> linkingBeta;
 
   Var varZero = S.newVar();
   Var varLast = S.newVar();
 
+  // First
   lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
+  PL.write_comment("- First variable:");
+  PL.write_sub_red(lits, true);
+
+  // Last
   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
+  PL.write_comment("- Last variable:");
+  PL.write_sub_red(lits, true);
+
 
   if (inputSize > 2) {
     int middle = inputSize/2;
@@ -294,24 +305,27 @@ void genCardinals(int from, int to,
     linkingVar.push(Lit(from));
     linkingVar.push(Lit(varLast));
   } else { // inputSize >= 2
+    PL.write_comment("- Node clauses:");
     linkingVar.push(Lit(varZero));
     for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
     linkingVar.push(Lit(varLast));
     for (int sigma = 0; sigma <= inputSize; sigma++) {
       for (int alpha = 0; alpha < linkingAlpha.size()-1; alpha++) {
-	int beta = sigma - alpha;
-	if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
-	  lits.clear();
-	  lits.push(~linkingAlpha[alpha]);
-	  lits.push(~linkingBeta[beta]);
-	  lits.push(linkingVar[sigma]);
-	  S.addClause(lits);
-	  lits.clear();
-	  lits.push(linkingAlpha[alpha+1]);
-	  lits.push(linkingBeta[beta+1]);
-	  lits.push(~linkingVar[sigma+1]);
-	  S.addClause(lits);
-	}
+	    int beta = sigma - alpha;
+	    if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
+	      lits.clear();
+	      lits.push(linkingVar[sigma]);
+	      lits.push(~linkingAlpha[alpha]);
+	      lits.push(~linkingBeta[beta]);
+	      S.addClause(lits);
+          PL.write_sub_red(lits, true, lits.size());
+	      lits.clear();
+	      lits.push(linkingAlpha[alpha+1]);
+	      lits.push(linkingBeta[beta+1]);
+	      lits.push(~linkingVar[sigma+1]);
+          PL.write_sub_red(lits, false, lits.size());
+	      S.addClause(lits);
+	    }
       }
     }
   }
@@ -437,21 +451,22 @@ int main(int argc, char** argv)
       for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
 	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinal constraints
-	genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
-	for (int i = answerNew; i < linkingVar.size()-1; i++) {
-	  lits.clear();
-	  lits.push(~linkingVar[i]);
-	  S.addClause(lits);
-      PL.write_learnt_clause(lits);
-	}
-
-	answer = answerNew;
-      } else { // lcnt > 1 
-	for (int i = answerNew; i < answer; i++) {
-	  lits.clear();
-	  lits.push(~linkingVar[i]);
-	  S.addClause(lits);
-      PL.write_learnt_clause(lits);
+        PL.write_comment("==============================================================");
+        PL.write_comment("Cardinality constraint:"); 
+	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
+	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
+	      lits.clear();
+	      lits.push(~linkingVar[i]);
+	      S.addClause(lits);
+          //PL.write_learnt_clause(lits);
+	    }
+        answer = answerNew;
+    } else { // lcnt > 1 
+	    for (int i = answerNew; i < answer; i++) {
+	      lits.clear();
+	      lits.push(~linkingVar[i]);
+	      S.addClause(lits);
+         //PL.write_learnt_clause(lits);
 	}
 
 	answer = answerNew;
@@ -473,6 +488,7 @@ int main(int argc, char** argv)
             fprintf(res, " 0\n");
         }else
             fprintf(res, "UNSAT\n");
+        PL.write_comment("==============================================================\n");
         PL.close();
         fclose(res);
     }

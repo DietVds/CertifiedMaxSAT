@@ -29,7 +29,7 @@ void Prooflogger::write_header(int nClauses) {
 }
 
 void Prooflogger::write_comment(const char* comment) {
-    proof_file << "\nc " << comment << "\n";
+    proof_file << "c " << comment << "\n";
 }
 
 void Prooflogger::derived_empty_clause() {
@@ -38,15 +38,17 @@ void Prooflogger::derived_empty_clause() {
     write_contradiction();
 }
 
-void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
+void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass, int start_x) {
+    const char* symbol = "y";
     proof_file << "red ";
-    for (int i = 1; i < definition.size(); i++) {
+    for (int i = 0; i < definition.size(); i++) {
+        if(i == start_x) symbol = "x";
         if (sign(definition[i]) == 1)
-            proof_file << "1 ~x" << var(definition[i]) + 1 << " ";
+            proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
         else
-            proof_file << "1 x" << var(definition[i]) + 1 << " ";
+            proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
     }
-    proof_file << "1 y" << var(definition[0])+1 << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
+    proof_file << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
     constraint_counter++;
 }
 
@@ -64,4 +66,9 @@ void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
 
 void Prooflogger::write_contradiction() {
     proof_file << "c " << constraint_counter;
+}
+
+void Prooflogger::write_delete(int number) {
+    proof_file << "d " << number << "\n";
+    constraint_counter--;
 }

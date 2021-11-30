@@ -19,7 +19,7 @@
 class Prooflogger {
 public:
 
-    // Constrain counter
+    // Constraint counter
     //
     int constraint_counter = 0;
 
@@ -36,9 +36,10 @@ public:
     void write_comment        (const char* comment);
     void derived_empty_clause ();
     void write_learnt_clause  (vec<Lit>& clause);
-    void write_sub_red        (vec<Lit>& definition, bool ass);
+    void write_sub_red        (vec<Lit>& definition, bool ass, int start_x = 1);
     void write_constraint     (vec<Lit>& clause);
     void write_contradiction  ();
+    void write_delete         (int number);
 
 };
 
