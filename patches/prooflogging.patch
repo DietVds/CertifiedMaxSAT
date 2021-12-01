@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-11-30 17:35:53.238336536 +0100
-+++ src/core/Main.C	2021-11-30 17:35:49.810361405 +0100
+--- src_tmp/core/Main.C	2021-12-01 15:29:24.599287064 +0100
++++ src/core/Main.C	2021-12-01 15:29:19.387258396 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -9,26 +9,38 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
  /*************************************************************************************/
  #ifdef _MSC_VER
-@@ -131,10 +132,10 @@
+@@ -131,18 +132,18 @@
      return neg ? -val : val; }
  
  template<class B>
 -static void readClause(B& in, Solver& S, vec<Lit>& lits, 
-+static void readClause(B& in, Solver& S, Prooflogger &PL, vec<Lit>& lits, 
++static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits, 
  		       int nbvar, int top, int& nbsoft) { // koshi 10.01.04
  
 -    int     parsed_lit, var;
-+    int parsed_lit, var;
++    int parsed_lit, var, weight;
      lits.clear();
-     parsed_lit = parseInt(in); // koshi 10.01.04
-     if (parsed_lit == 1) { // soft clause
+-    parsed_lit = parseInt(in); // koshi 10.01.04
+-    if (parsed_lit == 1) { // soft clause
++    weight = parseInt(in); // koshi 10.01.04
++    if (weight == 1) { // soft clause
+       nbsoft++;
+       lits.push(Lit(S.newVar()));
+-    } else if (parsed_lit != top) { // weight of hard clause must be top
++    } else if (weight != top) { // weight of hard clause must be top
+       reportf("Unexpected weight %c\n", *in), exit(3);
+-    }
++    } else weight = top;
+ 
+     for (;;){
+         parsed_lit = parseInt(in);
 @@ -151,6 +152,9 @@
  	// koshi 10.01.04        while (var >= S.nVars()) S.newVar();
          lits.push( (parsed_lit > 0) ? Lit(var) : ~Lit(var) );
      }
 +
-+    // Write the whole as a subsitution redundancy line in the proof file
-+    PL.write_sub_red(lits, 0);
++    // Write the clause to the OPB file
++    PL.write_OPB_constraint(lits, weight);
  }
  
  template<class B>
@@ -40,20 +52,20 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL, 
  			      int& out_nbvar, int& out_top, int& out_nbsoft) {
      vec<Lit> lits;
++    int vars, clauses;
 +
 +    // Read header
 +    skipWhitespace(in);
 +    if (*in == 'p'){
 +	     if (match(in, "p wcnf")){ // koshi 10.01.04
-+            int vars    = parseInt(in);
-+            int clauses = parseInt(in);
-+		      int top     = parseInt(in);
-+		      out_nbvar   = vars;
-+		      out_top     = top;
++            vars    = parseInt(in);
++            clauses = parseInt(in);
++		    int top     = parseInt(in);
++		    out_nbvar   = vars;
++		    out_top     = top;
 +            reportf("|  Number of variables:    %-12d                                       |\n", vars);
 +            reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
 +            reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
-+            PL.write_header(clauses);
 +		    while (vars > S.nVars()) S.newVar();
 +        } else {
 +            reportf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);
@@ -61,8 +73,6 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +    } else reportf("PARSE ERROR! No header given!");
 +
 +    // Read clauses
-+    PL.write_comment("==============================================================");
-+    PL.write_comment("Adding blocking variables using substitution redundancy:");
      for (;;){
          skipWhitespace(in);
          if (*in == EOF)
@@ -89,10 +99,12 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +        else {
 +	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
              S.addClause(lits);
-+            PL.write_delete(S.nClauses());
 +        }
      }
      reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
++    PL.write_proof_header(clauses);
++    PL.write_OPB_header(vars, clauses);
++    PL.write_minimise(out_nbvar, out_nbsoft);
  }
  
  // Inserts problem into solver.
@@ -144,7 +156,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +  // Last
    lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
 +  PL.write_comment("- Last variable:");
-+  PL.write_sub_red(lits, true);
++  PL.write_sub_red(lits, false);
 +
  
    if (inputSize > 2) {
@@ -189,12 +201,12 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +	      lits.push(linkingVar[sigma]);
 +	      lits.push(~linkingAlpha[alpha]);
 +	      lits.push(~linkingBeta[beta]);
-+	      S.addClause(lits);
 +          PL.write_sub_red(lits, true, lits.size());
++	      S.addClause(lits);
 +	      lits.clear();
++	      lits.push(~linkingVar[sigma+1]);
 +	      lits.push(linkingAlpha[alpha+1]);
 +	      lits.push(linkingBeta[beta+1]);
-+	      lits.push(~linkingVar[sigma+1]);
 +          PL.write_sub_red(lits, false, lits.size());
 +	      S.addClause(lits);
 +	    }
@@ -214,59 +226,76 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      int         i, j;
      const char* value;
      for (i = j = 0; i < argc; i++){
-@@ -347,6 +378,9 @@
+@@ -347,6 +378,12 @@
              printUsage(argv);
              exit(0);
  
 +        } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
-+            PL.set_name(value);
++            PL.set_proof_name(value);
++
++        } else if ((value = hasPrefix(argv[i], "-opb-file="))) {
++            PL.set_OPB_name(value);
 +
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -376,6 +410,9 @@
+@@ -357,7 +394,7 @@
+     argc = j;
+ 
+ 
+-    reportf("This is QMaxSAT 0.1 based on MiniSat 2.0 beta\n");
++    reportf("This is QMaxSAT 0.1 based on MiniSat 2.0 beta, extended for prooflogging\n");
+ #if defined(__linux__)
+     fpu_control_t oldcw, newcw;
+     _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
+@@ -376,6 +413,12 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
 +    // Open proof file
-+    PL.open();
++    PL.open_proof();
++
++    // Open OPB file
++    PL.open_OPB();
 +
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,16 +420,20 @@
+@@ -383,8 +426,18 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
 -    parse_DIMACS(in, S, nbvar, top, nbsoft);
 +    parse_DIMACS(in, S, PL, nbvar, top, nbsoft);
-     gzclose(in);
-     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
- 
++    
++    // Initialise PL constraint counter
 +    PL.constraint_counter = S.nClauses();
 +
-     double parse_time = cpuTime() - cpu_time;
-     reportf("|  Parsing time:         %-12.2f s                                       |\n", parse_time);
++    // Close input file
+     gzclose(in);
++
++    // Close written OPB file
++    PL.close_OPB();
++
++    // Open output file
+     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
+     double parse_time = cpuTime() - cpu_time;
+@@ -393,6 +446,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
 +        PL.derived_empty_clause();
-+        PL.close();
++        PL.close_proof();
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -402,6 +443,7 @@
-     int lcnt = 0; // loop count
-     vec<Lit> linkingVar;
-  solve:
-+    PL.constraint_counter = S.nClauses();
-     bool ret = S.solve();
-     if (ret) { // koshi 09.12.25
+@@ -407,21 +462,30 @@
        lcnt++;
-@@ -409,19 +451,24 @@
+       int answerNew = 0;
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
- 	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
+-	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
++	  if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
        if (lcnt == 1) { // first model: generate cardinal constraints
 -	genCardinals(nbvar,nbvar+nbsoft-1, S,lits,linkingVar);
 -	for (int i = answerNew; i < linkingVar.size()-1; i++) {
@@ -283,69 +312,57 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +        PL.write_comment("==============================================================");
 +        PL.write_comment("Cardinality constraint:"); 
 +	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
++        PL.write_comment("==============================================================");
++        PL.write_comment("Assigning linking variables:"); 
 +	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 +	      lits.clear();
 +	      lits.push(~linkingVar[i]);
 +	      S.addClause(lits);
-+          //PL.write_learnt_clause(lits);
++          PL.write_learnt_clause(lits);
 +	    }
 +        answer = answerNew;
 +    } else { // lcnt > 1 
++        PL.write_comment("==============================================================");
++        PL.write_comment("Assigning linking variables:"); 
 +	    for (int i = answerNew; i < answer; i++) {
 +	      lits.clear();
 +	      lits.push(~linkingVar[i]);
 +	      S.addClause(lits);
-+         //PL.write_learnt_clause(lits);
++          PL.write_learnt_clause(lits);
  	}
 +
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -441,6 +488,8 @@
+@@ -439,8 +503,10 @@
+                 if (S.model[i] != l_Undef)
+                     fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
-         }else
+-        }else
++        } else
              fprintf(res, "UNSAT\n");
 +        PL.write_comment("==============================================================\n");
-+        PL.close();
++        PL.close_proof();
          fclose(res);
      }
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-11-30 17:31:00.396535154 +0100
-@@ -0,0 +1,74 @@
++++ src/core/Prooflogger.C	2021-12-01 15:10:30.921037323 +0100
+@@ -0,0 +1,83 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
-+// File methods
-+
-+void Prooflogger::open()
-+{
-+    proof_file.open(proof_file_name);
-+}
-+
-+void Prooflogger::close()
-+{
-+    proof_file.close();
-+}
-+
-+void Prooflogger::set_name(const char* new_name)
-+{
-+    proof_file_name = new_name;
-+}
++// Proof writing methods
 +
 +
-+//=================================================================================================
-+// Writing methods
-+
-+
-+void Prooflogger::write_header(int nClauses) {
++void Prooflogger::write_proof_header(int nClauses) {
 +    proof_file << "pseudo-Boolean proof version 1.0\n";
-+    proof_file << "f " << nClauses << ";\n";
++    proof_file << "f " << nClauses << "\n";
 +}
 +
 +void Prooflogger::write_comment(const char* comment) {
-+    proof_file << "c " << comment << "\n";
++    proof_file << "* " << comment << "\n";
 +}
 +
 +void Prooflogger::derived_empty_clause() {
@@ -381,24 +398,52 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 +
 +void Prooflogger::write_contradiction() {
-+    proof_file << "c " << constraint_counter;
++    proof_file << "c " << constraint_counter << "\n";
 +}
 +
 +void Prooflogger::write_delete(int number) {
 +    proof_file << "d " << number << "\n";
 +    constraint_counter--;
 +}
-\ No newline at end of file
++
++//=================================================================================================
++// OPB writing methods
++
++void Prooflogger::write_OPB_header(int nbvar, int nbclause) {
++    OPB_file << "* #variable= " << nbvar << " #constraint= " << nbclause << "\n";
++    OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
++}
++
++void Prooflogger::write_minimise(int start_var, int num) {
++    if(num > 0) {
++        OPB_file << "min: ";
++        for(int i = start_var+1; i < start_var+num+1; i++) {
++            OPB_file << "1 x" << i << " ";
++        } 
++        OPB_file << ";\n";
++    }
++}
++
++void Prooflogger::write_OPB_constraint(vec<Lit>& constraint, int weight) {
++    for (int i = 0; i < constraint.size(); i++) {
++        if (sign(constraint[i]) == 1)
++            constraints << "-1 x" << var(constraint[i]) + 1 << " ";
++        else
++            constraints << "1 x" << var(constraint[i]) + 1 << " ";
++    }
++    constraints << " >= " << weight << " ;\n";
++}
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-11-30 17:33:14.371508796 +0100
-@@ -0,0 +1,47 @@
++++ src/core/Prooflogger.h	2021-12-01 14:34:22.812126754 +0100
+@@ -0,0 +1,57 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
 +#include <cstdio>
 +#include <fstream>
 +#include <iostream>
++#include <sstream>
 +
 +#include "Vec.h"
 +#include "Heap.h"
@@ -421,13 +466,11 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    // Proof file
 +    std::ofstream proof_file;
 +    const char *proof_file_name = "maxsat_proof.proof";
-+    void open                 ();
-+    void close                ();
-+    void set_name             (const char* name);
-+    
-+    // Printing functions
-+    //
-+    void write_header         (int nClauses);
++    void open_proof                 ()                 {proof_file.open(proof_file_name);};
++    void close_proof                ()                 {proof_file.close();};
++    void set_proof_name             (const char* name) {proof_file_name = name;};
++
++    void write_proof_header         (int nClauses);
 +    void write_comment        (const char* comment);
 +    void derived_empty_clause ();
 +    void write_learnt_clause  (vec<Lit>& clause);
@@ -436,14 +479,25 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_contradiction  ();
 +    void write_delete         (int number);
 +
++    // OPB file
++    std::ofstream OPB_file;
++    std::stringstream constraints;
++    const char *OPB_file_name = "maxsat_problem.opb";
++    void open_OPB                 ()                   {OPB_file.open(OPB_file_name);};
++    void close_OPB                ()                   {OPB_file << constraints.rdbuf(); OPB_file.close();};
++    void set_OPB_name             (const char* name)   {OPB_file_name = name;};
++
++    void write_OPB_header         (int nbvar, int nbclause);
++    void write_minimise           (int start_var, int num);
++    void write_OPB_constraint     (vec<Lit>& constraint, int weight);
 +};
 +
 +//=================================================================================================
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-11-30 17:35:53.238336536 +0100
-+++ src/core/Solver.C	2021-11-30 09:59:45.672141567 +0100
+--- src_tmp/core/Solver.C	2021-12-01 15:29:24.599287064 +0100
++++ src/core/Solver.C	2021-12-01 11:33:19.867138205 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -519,8 +573,8 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-11-30 17:35:53.238336536 +0100
-+++ src/core/Solver.h	2021-11-30 09:59:45.672141567 +0100
+--- src_tmp/core/Solver.h	2021-12-01 15:29:24.599287064 +0100
++++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
  

@@ -1,35 +1,16 @@
 #include "Prooflogger.h"
 
 //=================================================================================================
-// File methods
-
-void Prooflogger::open()
-{
-    proof_file.open(proof_file_name);
-}
-
-void Prooflogger::close()
-{
-    proof_file.close();
-}
-
-void Prooflogger::set_name(const char* new_name)
-{
-    proof_file_name = new_name;
-}
+// Proof writing methods
 
 
-//=================================================================================================
-// Writing methods
-
-
-void Prooflogger::write_header(int nClauses) {
+void Prooflogger::write_proof_header(int nClauses) {
     proof_file << "pseudo-Boolean proof version 1.0\n";
-    proof_file << "f " << nClauses << ";\n";
+    proof_file << "f " << nClauses << "\n";
 }
 
 void Prooflogger::write_comment(const char* comment) {
-    proof_file << "c " << comment << "\n";
+    proof_file << "* " << comment << "\n";
 }
 
 void Prooflogger::derived_empty_clause() {
@@ -65,10 +46,38 @@ void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
 }
 
 void Prooflogger::write_contradiction() {
-    proof_file << "c " << constraint_counter;
+    proof_file << "c " << constraint_counter << "\n";
 }
 
 void Prooflogger::write_delete(int number) {
     proof_file << "d " << number << "\n";
     constraint_counter--;
+}
+
+//=================================================================================================
+// OPB writing methods
+
+void Prooflogger::write_OPB_header(int nbvar, int nbclause) {
+    OPB_file << "* #variable= " << nbvar << " #constraint= " << nbclause << "\n";
+    OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
+}
+
+void Prooflogger::write_minimise(int start_var, int num) {
+    if(num > 0) {
+        OPB_file << "min: ";
+        for(int i = start_var+1; i < start_var+num+1; i++) {
+            OPB_file << "1 x" << i << " ";
+        } 
+        OPB_file << ";\n";
+    }
+}
+
+void Prooflogger::write_OPB_constraint(vec<Lit>& constraint, int weight) {
+    for (int i = 0; i < constraint.size(); i++) {
+        if (sign(constraint[i]) == 1)
+            constraints << "-1 x" << var(constraint[i]) + 1 << " ";
+        else
+            constraints << "1 x" << var(constraint[i]) + 1 << " ";
+    }
+    constraints << " >= " << weight << " ;\n";
 }

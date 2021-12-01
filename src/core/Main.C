@@ -132,18 +132,18 @@ static int parseInt(B& in) {
     return neg ? -val : val; }
 
 template<class B>
-static void readClause(B& in, Solver& S, Prooflogger &PL, vec<Lit>& lits, 
+static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits, 
 		       int nbvar, int top, int& nbsoft) { // koshi 10.01.04
 
-    int parsed_lit, var;
+    int parsed_lit, var, weight;
     lits.clear();
-    parsed_lit = parseInt(in); // koshi 10.01.04
-    if (parsed_lit == 1) { // soft clause
+    weight = parseInt(in); // koshi 10.01.04
+    if (weight == 1) { // soft clause
       nbsoft++;
       lits.push(Lit(S.newVar()));
-    } else if (parsed_lit != top) { // weight of hard clause must be top
+    } else if (weight != top) { // weight of hard clause must be top
       reportf("Unexpected weight %c\n", *in), exit(3);
-    }
+    } else weight = top;
 
     for (;;){
         parsed_lit = parseInt(in);
@@ -153,8 +153,8 @@ static void readClause(B& in, Solver& S, Prooflogger &PL, vec<Lit>& lits,
         lits.push( (parsed_lit > 0) ? Lit(var) : ~Lit(var) );
     }
 
-    // Write the whole as a subsitution redundancy line in the proof file
-    PL.write_sub_red(lits, 0);
+    // Write the clause to the OPB file
+    PL.write_OPB_constraint(lits, weight);
 }
 
 template<class B>
@@ -170,20 +170,20 @@ template<class B>
 static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL, 
 			      int& out_nbvar, int& out_top, int& out_nbsoft) {
     vec<Lit> lits;
+    int vars, clauses;
 
     // Read header
     skipWhitespace(in);
     if (*in == 'p'){
 	     if (match(in, "p wcnf")){ // koshi 10.01.04
-            int vars    = parseInt(in);
-            int clauses = parseInt(in);
-		      int top     = parseInt(in);
-		      out_nbvar   = vars;
-		      out_top     = top;
+            vars    = parseInt(in);
+            clauses = parseInt(in);
+		    int top     = parseInt(in);
+		    out_nbvar   = vars;
+		    out_top     = top;
             reportf("|  Number of variables:    %-12d                                       |\n", vars);
             reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
             reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
-            PL.write_header(clauses);
 		    while (vars > S.nVars()) S.newVar();
         } else {
             reportf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);
@@ -191,8 +191,6 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     } else reportf("PARSE ERROR! No header given!");
 
     // Read clauses
-    PL.write_comment("==============================================================");
-    PL.write_comment("Adding blocking variables using substitution redundancy:");
     for (;;){
         skipWhitespace(in);
         if (*in == EOF)
@@ -201,10 +199,12 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
         else {
 	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
             S.addClause(lits);
-            PL.write_delete(S.nClauses());
         }
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
+    PL.write_proof_header(clauses);
+    PL.write_OPB_header(vars, clauses);
+    PL.write_minimise(out_nbvar, out_nbsoft);
 }
 
 // Inserts problem into solver.
@@ -289,7 +289,7 @@ void genCardinals(int from, int to,
   // Last
   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
   PL.write_comment("- Last variable:");
-  PL.write_sub_red(lits, true);
+  PL.write_sub_red(lits, false);
 
 
   if (inputSize > 2) {
@@ -317,12 +317,12 @@ void genCardinals(int from, int to,
 	      lits.push(linkingVar[sigma]);
 	      lits.push(~linkingAlpha[alpha]);
 	      lits.push(~linkingBeta[beta]);
-	      S.addClause(lits);
           PL.write_sub_red(lits, true, lits.size());
+	      S.addClause(lits);
 	      lits.clear();
+	      lits.push(~linkingVar[sigma+1]);
 	      lits.push(linkingAlpha[alpha+1]);
 	      lits.push(linkingBeta[beta+1]);
-	      lits.push(~linkingVar[sigma+1]);
           PL.write_sub_red(lits, false, lits.size());
 	      S.addClause(lits);
 	    }
@@ -379,7 +379,10 @@ int main(int argc, char** argv)
             exit(0);
 
         } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
-            PL.set_name(value);
+            PL.set_proof_name(value);
+
+        } else if ((value = hasPrefix(argv[i], "-opb-file="))) {
+            PL.set_OPB_name(value);
 
         }else if (strncmp(argv[i], "-", 1) == 0){
             reportf("ERROR! unknown flag %s\n", argv[i]);
@@ -391,7 +394,7 @@ int main(int argc, char** argv)
     argc = j;
 
 
-    reportf("This is QMaxSAT 0.1 based on MiniSat 2.0 beta\n");
+    reportf("This is QMaxSAT 0.1 based on MiniSat 2.0 beta, extended for prooflogging\n");
 #if defined(__linux__)
     fpu_control_t oldcw, newcw;
     _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
@@ -411,7 +414,10 @@ int main(int argc, char** argv)
         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
 
     // Open proof file
-    PL.open();
+    PL.open_proof();
+
+    // Open OPB file
+    PL.open_OPB();
 
     reportf("============================[ Problem Statistics ]=============================\n");
     reportf("|                                                                             |\n");
@@ -421,10 +427,18 @@ int main(int argc, char** argv)
     int top    = 0; // weight of hard clause
     int nbsoft = 0; // number of soft clauses
     parse_DIMACS(in, S, PL, nbvar, top, nbsoft);
-    gzclose(in);
-    FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
-
+    
+    // Initialise PL constraint counter
     PL.constraint_counter = S.nClauses();
+
+    // Close input file
+    gzclose(in);
+
+    // Close written OPB file
+    PL.close_OPB();
+
+    // Open output file
+    FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
 
     double parse_time = cpuTime() - cpu_time;
     reportf("|  Parsing time:         %-12.2f s                                       |\n", parse_time);
@@ -433,7 +447,7 @@ int main(int argc, char** argv)
         reportf("Solved by unit propagation\n");
         if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
         PL.derived_empty_clause();
-        PL.close();
+        PL.close_proof();
         printf("UNSATISFIABLE\n");
         exit(20);
     }
@@ -443,30 +457,33 @@ int main(int argc, char** argv)
     int lcnt = 0; // loop count
     vec<Lit> linkingVar;
  solve:
-    PL.constraint_counter = S.nClauses();
     bool ret = S.solve();
     if (ret) { // koshi 09.12.25
       lcnt++;
       int answerNew = 0;
       for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
-	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
+	  if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinal constraints
         PL.write_comment("==============================================================");
         PL.write_comment("Cardinality constraint:"); 
 	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
+        PL.write_comment("==============================================================");
+        PL.write_comment("Assigning linking variables:"); 
 	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
 	      S.addClause(lits);
-          //PL.write_learnt_clause(lits);
+          PL.write_learnt_clause(lits);
 	    }
         answer = answerNew;
     } else { // lcnt > 1 
+        PL.write_comment("==============================================================");
+        PL.write_comment("Assigning linking variables:"); 
 	    for (int i = answerNew; i < answer; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
 	      S.addClause(lits);
-         //PL.write_learnt_clause(lits);
+          PL.write_learnt_clause(lits);
 	}
 
 	answer = answerNew;
@@ -486,10 +503,10 @@ int main(int argc, char** argv)
                 if (S.model[i] != l_Undef)
                     fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
             fprintf(res, " 0\n");
-        }else
+        } else
             fprintf(res, "UNSAT\n");
         PL.write_comment("==============================================================\n");
-        PL.close();
+        PL.close_proof();
         fclose(res);
     }
 
