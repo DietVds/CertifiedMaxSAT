@@ -20,6 +20,10 @@
 class Prooflogger {
 public:
 
+    // Formula number of clauses
+    //
+    int formula_length = 0;
+
     // Constraint counter
     //
     int constraint_counter = 0;
@@ -31,14 +35,15 @@ public:
     void close_proof                ()                 {proof_file.close();};
     void set_proof_name             (const char* name) {proof_file_name = name;};
 
-    void write_proof_header         (int nClauses);
-    void write_comment        (const char* comment);
-    void derived_empty_clause ();
-    void write_learnt_clause  (vec<Lit>& clause);
-    void write_sub_red        (vec<Lit>& definition, bool ass, int start_x = 1);
-    void write_constraint     (vec<Lit>& clause);
-    void write_contradiction  ();
-    void write_delete         (int number);
+    void write_proof_header    (int nClauses);
+    void write_comment         (const char* comment);
+    void derived_empty_clause  ();
+    const char* literal_symbol (Lit lit); 
+    void write_learnt_clause   (vec<Lit>& clause);
+    void write_sub_red         (vec<Lit>& definition, bool ass);
+    void write_constraint      (vec<Lit>& clause);
+    void write_contradiction   ();
+    void write_delete          (int number);
 
     // OPB file
     std::ofstream OPB_file;

@@ -5,6 +5,7 @@
 
 
 void Prooflogger::write_proof_header(int nClauses) {
+    formula_length = nClauses;
     proof_file << "pseudo-Boolean proof version 1.0\n";
     proof_file << "f " << nClauses << "\n";
 }
@@ -19,11 +20,16 @@ void Prooflogger::derived_empty_clause() {
     write_contradiction();
 }
 
-void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass, int start_x) {
-    const char* symbol = "y";
+const char* Prooflogger::literal_symbol(Lit lit) {
+    if(var(lit) + 1 > formula_length) return "y";
+    else return "x";
+}
+
+void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
+    const char* symbol;
     proof_file << "red ";
     for (int i = 0; i < definition.size(); i++) {
-        if(i == start_x) symbol = "x";
+        symbol = literal_symbol(definition[i]);
         if (sign(definition[i]) == 1)
             proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
         else
@@ -34,12 +40,14 @@ void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass, int start_x) {
 }
 
 void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
+    const char* symbol;
     proof_file << "u ";
     for (int i = 0; i < clause.size(); i++) {
+        symbol = literal_symbol(clause[i]);
         if (sign(clause[i]) == 1)
-            proof_file << "1 ~x" << var(clause[i]) + 1 << " ";
+            proof_file << "1 ~" << symbol << var(clause[i]) + 1 << " ";
         else
-            proof_file << "1 x" << var(clause[i]) + 1 << " ";
+            proof_file << "1 " << symbol << var(clause[i]) + 1 << " ";
     }
     proof_file << " >= 1;\n";
     constraint_counter++;

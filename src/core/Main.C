@@ -317,13 +317,13 @@ void genCardinals(int from, int to,
 	      lits.push(linkingVar[sigma]);
 	      lits.push(~linkingAlpha[alpha]);
 	      lits.push(~linkingBeta[beta]);
-          PL.write_sub_red(lits, true, lits.size());
+          PL.write_sub_red(lits, true);
 	      S.addClause(lits);
 	      lits.clear();
 	      lits.push(~linkingVar[sigma+1]);
 	      lits.push(linkingAlpha[alpha+1]);
 	      lits.push(linkingBeta[beta+1]);
-          PL.write_sub_red(lits, false, lits.size());
+          PL.write_sub_red(lits, false);
 	      S.addClause(lits);
 	    }
       }
@@ -472,8 +472,8 @@ int main(int argc, char** argv)
 	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
-	      S.addClause(lits);
           PL.write_learnt_clause(lits);
+	      S.addClause(lits);
 	    }
         answer = answerNew;
     } else { // lcnt > 1 
@@ -482,8 +482,8 @@ int main(int argc, char** argv)
 	    for (int i = answerNew; i < answer; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
-	      S.addClause(lits);
           PL.write_learnt_clause(lits);
+	      S.addClause(lits);
 	}
 
 	answer = answerNew;
