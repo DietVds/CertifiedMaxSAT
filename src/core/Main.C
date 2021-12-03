@@ -203,6 +203,7 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
     PL.write_proof_header(clauses);
+    PL.write_order(vars+out_nbsoft);
     PL.write_OPB_header(vars, clauses);
     PL.write_minimise(out_nbvar, out_nbsoft);
 }
@@ -273,7 +274,7 @@ void genCardinals(int from, int to,
   linkingVar.clear();
 
   PL.write_comment("-------------------------------------------");
-  PL.write_comment("Adding cardinality constraint for new node:");
+  PL.write_comment("New node:");
 
   vec<Lit> linkingAlpha;
   vec<Lit> linkingBeta;
@@ -465,24 +466,24 @@ int main(int argc, char** argv)
 	  if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinal constraints
         PL.write_comment("==============================================================");
-        PL.write_comment("Cardinality constraint:"); 
+        PL.write_comment("Cardinality encoding:"); 
 	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
         PL.write_comment("==============================================================");
-        PL.write_comment("Assigning linking variables:"); 
+        PL.write_comment("Constraining through linking variables:"); 
 	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
-          PL.write_learnt_clause(lits);
+          PL.write_dom(lits);
 	      S.addClause(lits);
 	    }
         answer = answerNew;
     } else { // lcnt > 1 
         PL.write_comment("==============================================================");
-        PL.write_comment("Assigning linking variables:"); 
+        PL.write_comment("Constraining through linking variables:"); 
 	    for (int i = answerNew; i < answer; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
-          PL.write_learnt_clause(lits);
+          PL.write_dom(lits);
 	      S.addClause(lits);
 	}
 
