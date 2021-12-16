@@ -1,28 +1,5 @@
 pseudo-Boolean proof version 1.0
 f 2
-pre_order exp2
-     vars
-         left u1 u2 u3 u4 
-         right v1 v2 v3 v4 
-         aux
-     end
-     def
-       -1 u4 1 v4 -2 u3 2 v3 -4 u2 4 v2 -8 u1 8 v1  >= 0;
-     end
-
-     transitivity
-         vars
-             fresh_right w1 w2 w3 w4 
-         end
-         proof
-             proofgoal #1
-                 p 1 2 + 3 +
-                 c -1
-             qed
-         qed
-     end
-end
-load_order exp2 x1 x2 x3 x4 
 * ==============================================================
 * Cardinality encoding:
 * -------------------------------------------
@@ -53,13 +30,32 @@ red 1 ~y12 1 y8 1 y4  >= 1; y12 -> 0
 red 1 y12 1 ~y3 1 ~y4  >= 1; y12 -> 1
 red 1 ~y6 1 y8 1 y10  >= 1; y6 -> 0
 * ==============================================================
+* Linking variables order:
+pre_order exp2
+     vars
+         left u1 u2 u3 u4 
+         right v1 v2 v3 v4 
+         aux
+     end
+     def
+       -1 u4 1 v4 -2 u3 2 v3 -4 u2 4 v2 -8 u1 8 v1  >= 0;
+     end
+
+     transitivity
+         vars
+             fresh_right w1 w2 w3 w4 
+         end
+         proof
+             proofgoal #1
+                 p 1 2 + 3 +
+                 c -1
+             qed
+         qed
+     end
+end
+load_order exp2 y5 y11 y12 y6 
+* ==============================================================
 * Constraining through linking variables:
-dom 1 ~y5 >= 1; y5 -> 0 ; begin
-    proofgoal #2
-        p -1 -2 +
-        c -1
-    qed
-dom 1 ~y11 >= 1; y11 -> 0
-dom 1 ~y12 >= 1; y12 -> 0
+dom 1 ~y11 1 ~y12 >= 1; y11 -> 0 y12 -> 0 
 u >= 1;
-c 20
+c 18

@@ -203,7 +203,6 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
     PL.write_proof_header(clauses);
-    PL.write_order(vars+out_nbsoft);
     PL.write_OPB_header(vars, clauses);
     PL.write_minimise(out_nbvar, out_nbsoft);
 }
@@ -463,27 +462,30 @@ int main(int argc, char** argv)
       lcnt++;
       int answerNew = 0;
       for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
-	  if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
+	    if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinal constraints
         PL.write_comment("==============================================================");
         PL.write_comment("Cardinality encoding:"); 
 	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
         PL.write_comment("==============================================================");
+        PL.write_comment("Linking variables order:"); 
+        PL.write_order(linkingVar);
+        PL.write_comment("==============================================================");
         PL.write_comment("Constraining through linking variables:"); 
+        PL.write_dom(linkingVar, answerNew, linkingVar.size()-1);
 	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
-          PL.write_dom(lits);
 	      S.addClause(lits);
 	    }
         answer = answerNew;
     } else { // lcnt > 1 
         PL.write_comment("==============================================================");
         PL.write_comment("Constraining through linking variables:"); 
+        PL.write_dom(linkingVar, answerNew, answer);
 	    for (int i = answerNew; i < answer; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
-          PL.write_dom(lits);
 	      S.addClause(lits);
 	}
 

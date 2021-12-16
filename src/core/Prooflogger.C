@@ -10,17 +10,17 @@ void Prooflogger::write_proof_header(int nbclause) {
     proof_file << "f " << nbclause << "\n";
 }
 
-void Prooflogger::write_order(int nbvar) {
-    proof_file << "pre_order exp" << formula_length << "\n";
+void Prooflogger::write_order(vec<Lit>& linkingVar) {
+    proof_file << "pre_order exp2\n";
 
     // Auxiliairy variables
     proof_file << "     vars\n";
     proof_file << "         left ";
-    for(int i = 0; i < nbvar; i++) {
+    for(int i = 0; i < linkingVar.size(); i++) {
         proof_file << "u" << i + 1 << " ";
     }
     proof_file << "\n         right ";
-    for(int i = 0; i < nbvar; i++) {
+    for(int i = 0; i < linkingVar.size(); i++) {
         proof_file << "v" << i + 1 << " ";
     }
     proof_file << "\n         aux";
@@ -29,7 +29,7 @@ void Prooflogger::write_order(int nbvar) {
     // Constraint
     proof_file << "     def\n       ";
     int current_weight = 1;
-    for(int i = nbvar; i > 0; i--) {
+    for(int i = linkingVar.size(); i > 0; i--) {
         proof_file << "-" << current_weight << " u" << i << " ";
         proof_file << current_weight << " v" << i << " ";
         current_weight = current_weight * 2;
@@ -41,7 +41,7 @@ void Prooflogger::write_order(int nbvar) {
     proof_file << "     transitivity\n";
     proof_file << "         vars\n";
     proof_file << "             fresh_right ";
-    for(int i = 0; i < nbvar; i++) {
+    for(int i = 0; i < linkingVar.size(); i++) {
         proof_file << "w" << i + 1 << " ";
     }
     proof_file << "\n         end\n";
@@ -55,9 +55,9 @@ void Prooflogger::write_order(int nbvar) {
     proof_file << "end\n";
 
     // Load
-    proof_file << "load_order exp" << formula_length << " ";
-    for(int i = 0; i < nbvar; i++) {
-        proof_file << "x" << i + 1 << " ";
+    proof_file << "load_order exp2 ";
+    for(int i = 0; i < linkingVar.size(); i++) {
+        proof_file << "y" << var(linkingVar[i])+1 << " ";
     }
     proof_file << "\n";
 }
@@ -91,12 +91,23 @@ void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
     constraint_counter++;
 }
 
-void Prooflogger::write_dom(vec<Lit>& constraint) {
-    const char* symbol;
-    proof_file << "dom 1 ~y" << var(constraint[0]) + 1 << " >= 1; y" << var(constraint[0])+1 << " -> 0; begin\n";
-    proof_file << "     proofgoal #2\n"
+void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {
+    proof_file << "dom ";
+
+    // Constraint
+    for(int i = start; i < stop; i++) {
+        proof_file << "1 ~y" << var(linkingVar[i]) + 1 << " ";
+    }
+    proof_file << ">= 1; ";
+
+    // Witness
+    for(int i = start; i < stop; i++) {
+        proof_file << "y" << var(linkingVar[i]) + 1 << " -> 0 ";
+
+    }
+    proof_file << "\n";
+
     // TODO: subproof 
-    proof_file << "     qed\n"
     constraint_counter++;
 }
 
