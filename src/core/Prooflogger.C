@@ -98,7 +98,7 @@ void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {
     for(int i = start; i < stop; i++) {
         proof_file << "1 ~y" << var(linkingVar[i]) + 1 << " ";
     }
-    proof_file << ">= 1; ";
+    proof_file << ">= " << stop - start << "; ";
 
     // Witness
     for(int i = start; i < stop; i++) {

@@ -1,5 +1,5 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-16 14:48:47.544512871 +0100
+--- src_tmp/core/Main.C	2021-12-16 17:59:32.891593846 +0100
 +++ src/core/Main.C	2021-12-16 14:45:43.019620628 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
@@ -351,7 +351,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-16 14:48:43.532007184 +0100
++++ src/core/Prooflogger.C	2021-12-16 17:59:16.891541187 +0100
 @@ -0,0 +1,163 @@
 +#include "Prooflogger.h"
 +
@@ -453,7 +453,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    for(int i = start; i < stop; i++) {
 +        proof_file << "1 ~y" << var(linkingVar[i]) + 1 << " ";
 +    }
-+    proof_file << ">= 1; ";
++    proof_file << ">= " << stop - start << "; ";
 +
 +    // Witness
 +    for(int i = start; i < stop; i++) {
@@ -586,7 +586,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-16 14:48:47.544512871 +0100
+--- src_tmp/core/Solver.C	2021-12-16 17:59:32.891593846 +0100
 +++ src/core/Solver.C	2021-12-01 11:33:19.867138205 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -663,7 +663,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-16 14:48:47.544512871 +0100
+--- src_tmp/core/Solver.h	2021-12-16 17:59:32.891593846 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
