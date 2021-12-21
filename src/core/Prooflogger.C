@@ -111,6 +111,19 @@ void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {
     constraint_counter++;
 }
 
+void Prooflogger::write_bound_update(vec<lbool>& model) {
+    proof_file << "o ";
+
+    for(int i = 0; i < model.size(); i++) {
+        if(model[i] == l_True) proof_file << "x" << i+1 << " ";
+        else if(model[i] == l_False) proof_file << "~x" << i+1 << " ";
+    }
+    proof_file << "\n";
+
+    // Veripb automatically adds an improvement constraint so counter needs to be incremented
+    constraint_counter++;
+}
+
 void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     const char* symbol;
     proof_file << "u ";
@@ -138,7 +151,7 @@ void Prooflogger::write_delete(int number) {
 // OPB writing methods
 
 void Prooflogger::write_OPB_header(int nbvar, int nbclause) {
-    OPB_file << "* #variable= " << nbvar << " #constraint= " << nbclause << "\n";
+    OPB_file << "* #variable= " << nbvar+nbclause << " #constraint= " << nbclause << "\n";
     OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
 }
 
@@ -155,9 +168,9 @@ void Prooflogger::write_minimise(int start_var, int num) {
 void Prooflogger::write_OPB_constraint(vec<Lit>& constraint, int weight) {
     for (int i = 0; i < constraint.size(); i++) {
         if (sign(constraint[i]) == 1)
-            constraints << "-1 x" << var(constraint[i]) + 1 << " ";
-        else
             constraints << "1 x" << var(constraint[i]) + 1 << " ";
+        else
+            constraints << "1 ~x" << var(constraint[i]) + 1 << " ";
     }
     constraints << " >= " << weight << " ;\n";
 }

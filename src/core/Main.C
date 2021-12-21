@@ -463,29 +463,36 @@ int main(int argc, char** argv)
       int answerNew = 0;
       for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
 	    if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
-      if (lcnt == 1) { // first model: generate cardinal constraints
+      if (lcnt == 1) { // first model: generate cardinality constraints
+        PL.write_comment("==============================================================");
+        PL.write_comment("First model found:"); 
+        PL.write_bound_update(S.model);
         PL.write_comment("==============================================================");
         PL.write_comment("Cardinality encoding:"); 
 	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
-        PL.write_comment("==============================================================");
-        PL.write_comment("Linking variables order:"); 
-        PL.write_order(linkingVar);
+        //PL.write_comment("==============================================================");
+        //PL.write_comment("Linking variables order:"); 
+        //PL.write_order(linkingVar);
         PL.write_comment("==============================================================");
         PL.write_comment("Constraining through linking variables:"); 
-        PL.write_dom(linkingVar, answerNew, linkingVar.size()-1);
 	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
+          PL.write_learnt_clause(lits);
 	      S.addClause(lits);
 	    }
         answer = answerNew;
     } else { // lcnt > 1 
         PL.write_comment("==============================================================");
+        PL.write_comment("New model found:"); 
+        PL.write_bound_update(S.model);
+        PL.write_comment("==============================================================");
         PL.write_comment("Constraining through linking variables:"); 
-        PL.write_dom(linkingVar, answerNew, answer);
+        PL.write_constraining_clause(linkingVar, answerNew, answer);
 	    for (int i = answerNew; i < answer; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
+          PL.write_learnt_clause(lits);
 	      S.addClause(lits);
 	}
 

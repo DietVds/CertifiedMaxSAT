@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-16 17:59:32.891593846 +0100
-+++ src/core/Main.C	2021-12-16 14:45:43.019620628 +0100
+--- src_tmp/core/Main.C	2021-12-21 20:47:53.378386401 +0100
++++ src/core/Main.C	2021-12-21 20:47:48.962354434 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -290,13 +290,12 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -407,21 +462,33 @@
+@@ -407,21 +462,41 @@
        lcnt++;
        int answerNew = 0;
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
 -	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
-+	    if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
-       if (lcnt == 1) { // first model: generate cardinal constraints
+-      if (lcnt == 1) { // first model: generate cardinal constraints
 -	genCardinals(nbvar,nbvar+nbsoft-1, S,lits,linkingVar);
 -	for (int i = answerNew; i < linkingVar.size()-1; i++) {
 -	  lits.clear();
@@ -309,35 +308,45 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 -	  lits.clear();
 -	  lits.push(~linkingVar[i]);
 -	  S.addClause(lits);
++	    if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
++      if (lcnt == 1) { // first model: generate cardinality constraints
++        PL.write_comment("==============================================================");
++        PL.write_comment("First model found:"); 
++        PL.write_bound_update(S.model);
 +        PL.write_comment("==============================================================");
 +        PL.write_comment("Cardinality encoding:"); 
 +	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
-+        PL.write_comment("==============================================================");
-+        PL.write_comment("Linking variables order:"); 
-+        PL.write_order(linkingVar);
++        //PL.write_comment("==============================================================");
++        //PL.write_comment("Linking variables order:"); 
++        //PL.write_order(linkingVar);
 +        PL.write_comment("==============================================================");
 +        PL.write_comment("Constraining through linking variables:"); 
-+        PL.write_dom(linkingVar, answerNew, linkingVar.size()-1);
++        //PL.write_constraining_clause(linkingVar, answerNew, linkingVar.size()-1);
 +	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 +	      lits.clear();
 +	      lits.push(~linkingVar[i]);
++          PL.write_learnt_clause(lits);
 +	      S.addClause(lits);
 +	    }
 +        answer = answerNew;
 +    } else { // lcnt > 1 
 +        PL.write_comment("==============================================================");
++        PL.write_comment("New model found:"); 
++        PL.write_bound_update(S.model);
++        PL.write_comment("==============================================================");
 +        PL.write_comment("Constraining through linking variables:"); 
-+        PL.write_dom(linkingVar, answerNew, answer);
++        PL.write_constraining_clause(linkingVar, answerNew, answer);
 +	    for (int i = answerNew; i < answer; i++) {
 +	      lits.clear();
 +	      lits.push(~linkingVar[i]);
++          PL.write_learnt_clause(lits);
 +	      S.addClause(lits);
  	}
 +
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -439,8 +506,10 @@
+@@ -439,8 +514,10 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -351,8 +360,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-16 17:59:16.891541187 +0100
-@@ -0,0 +1,163 @@
++++ src/core/Prooflogger.C	2021-12-21 19:27:02.235834412 +0100
+@@ -0,0 +1,185 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -466,6 +475,28 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    constraint_counter++;
 +}
 +
++void Prooflogger::write_bound_update(vec<lbool>& model) {
++    proof_file << "o ";
++
++    for(int i = 0; i < model.size(); i++) {
++        if(model[i] == l_True) proof_file << "x" << i+1 << " ";
++        else if(model[i] == l_False) proof_file << "~x" << i+1 << " ";
++    }
++    proof_file << "\n";
++
++    // Veripb automatically adds an improvement constraint so counter needs to be incremented
++    constraint_counter++;
++}
++
++void Prooflogger::write_constraining_clause(vec<Lit>& linkingVar, int start, int stop) {
++    proof_file << "u ";
++    for(int i = start; i < stop; i++) {
++        proof_file << "1 ~y" << var(linkingVar[i]) + 1 << " ";
++    }
++    proof_file << ">= " << stop - start << ";\n";
++    constraint_counter++;
++}
++
 +void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
 +    const char* symbol;
 +    proof_file << "u ";
@@ -493,7 +524,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +// OPB writing methods
 +
 +void Prooflogger::write_OPB_header(int nbvar, int nbclause) {
-+    OPB_file << "* #variable= " << nbvar << " #constraint= " << nbclause << "\n";
++    OPB_file << "* #variable= " << nbvar+nbclause << " #constraint= " << nbclause << "\n";
 +    OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
 +}
 +
@@ -510,16 +541,16 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +void Prooflogger::write_OPB_constraint(vec<Lit>& constraint, int weight) {
 +    for (int i = 0; i < constraint.size(); i++) {
 +        if (sign(constraint[i]) == 1)
-+            constraints << "-1 x" << var(constraint[i]) + 1 << " ";
-+        else
 +            constraints << "1 x" << var(constraint[i]) + 1 << " ";
++        else
++            constraints << "1 ~x" << var(constraint[i]) + 1 << " ";
 +    }
 +    constraints << " >= " << weight << " ;\n";
 +}
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-12-16 14:44:39.352044972 +0100
-@@ -0,0 +1,64 @@
++++ src/core/Prooflogger.h	2021-12-21 18:34:28.665000802 +0100
+@@ -0,0 +1,66 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -557,17 +588,19 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void close_proof                ()                 {proof_file.close();};
 +    void set_proof_name             (const char* name) {proof_file_name = name;};
 +
-+    void write_proof_header    (int nbclause);
-+    void write_order           (vec<Lit>& linkingVarint);
-+    void write_comment         (const char* comment);
-+    void derived_empty_clause  ();
-+    const char* literal_symbol (Lit lit); 
-+    void write_learnt_clause   (vec<Lit>& clause);
-+    void write_sub_red         (vec<Lit>& definition, bool ass);
-+    void write_dom             (vec<Lit>& linkingVar, int start, int stop); 
-+    void write_constraint      (vec<Lit>& clause);
-+    void write_contradiction   ();
-+    void write_delete          (int number);
++    void write_proof_header         (int nbclause);
++    void write_order                (vec<Lit>& linkingVarint);
++    void write_comment              (const char* comment);
++    void derived_empty_clause       ();
++    const char* literal_symbol      (Lit lit); 
++    void write_learnt_clause        (vec<Lit>& clause);
++    void write_sub_red              (vec<Lit>& definition, bool ass);
++    void write_dom                  (vec<Lit>& linkingVar, int start, int stop); 
++    void write_bound_update         (vec<lbool>& model); 
++    void write_constraining_clause  (vec<Lit>& linkingVar, int start, int stop);
++    void write_constraint           (vec<Lit>& clause);
++    void write_contradiction        ();
++    void write_delete               (int number);
 +
 +    // OPB file
 +    std::ofstream OPB_file;
@@ -586,7 +619,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-16 17:59:32.891593846 +0100
+--- src_tmp/core/Solver.C	2021-12-21 20:47:53.378386401 +0100
 +++ src/core/Solver.C	2021-12-01 11:33:19.867138205 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -663,7 +696,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-16 17:59:32.891593846 +0100
+--- src_tmp/core/Solver.h	2021-12-21 20:47:53.378386401 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
