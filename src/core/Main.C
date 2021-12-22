@@ -488,7 +488,6 @@ int main(int argc, char** argv)
         PL.write_bound_update(S.model);
         PL.write_comment("==============================================================");
         PL.write_comment("Constraining through linking variables:"); 
-        PL.write_constraining_clause(linkingVar, answerNew, answer);
 	    for (int i = answerNew; i < answer; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);

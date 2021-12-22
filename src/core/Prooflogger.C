@@ -168,9 +168,9 @@ void Prooflogger::write_minimise(int start_var, int num) {
 void Prooflogger::write_OPB_constraint(vec<Lit>& constraint, int weight) {
     for (int i = 0; i < constraint.size(); i++) {
         if (sign(constraint[i]) == 1)
-            constraints << "1 x" << var(constraint[i]) + 1 << " ";
-        else
             constraints << "1 ~x" << var(constraint[i]) + 1 << " ";
+        else
+            constraints << "1 x" << var(constraint[i]) + 1 << " ";
     }
     constraints << " >= " << weight << " ;\n";
 }
