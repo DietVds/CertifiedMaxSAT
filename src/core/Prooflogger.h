@@ -20,9 +20,10 @@
 class Prooflogger {
 public:
 
-    // Formula number of clauses
+    // Formula number of clauses and number of variables
     //
     int formula_length = 0;
+    int n_variables = 0;
 
     // Constraint counter
     //

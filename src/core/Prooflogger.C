@@ -5,7 +5,6 @@
 
 
 void Prooflogger::write_proof_header(int nbclause) {
-    formula_length = nbclause;
     proof_file << "pseudo-Boolean proof version 1.0\n";
     proof_file << "f " << nbclause << "\n";
 }
@@ -73,7 +72,8 @@ void Prooflogger::derived_empty_clause() {
 }
 
 const char* Prooflogger::literal_symbol(Lit lit) {
-    if(var(lit) + 1 > formula_length) return "y";
+    std::cout << var(lit) +1 << "\n";
+    if(var(lit) + 1 > formula_length + n_variables) return "y";
     else return "x";
 }
 
@@ -151,6 +151,8 @@ void Prooflogger::write_delete(int number) {
 // OPB writing methods
 
 void Prooflogger::write_OPB_header(int nbvar, int nbclause) {
+    formula_length = nbclause;
+    n_variables = nbvar;
     OPB_file << "* #variable= " << nbvar+nbclause << " #constraint= " << nbclause << "\n";
     OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
 }

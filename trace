@@ -1,0 +1,3085 @@
+
+=== begin trace ===
+line 002: f 12
+  ConstraintId 001: 1 x2 1 x6 1 x9 >= 1
+  ConstraintId 002: 1 x2 1 ~x6 1 x10 >= 1
+  ConstraintId 003: 1 x1 1 ~x2 1 x11 >= 1
+  ConstraintId 004: 1 ~x1 1 x12 >= 1
+  ConstraintId 005: 1 ~x6 1 x8 1 x13 >= 1
+  ConstraintId 006: 1 x6 1 ~x8 1 x14 >= 1
+  ConstraintId 007: 1 x2 1 x4 1 x15 >= 1
+  ConstraintId 008: 1 ~x4 1 x5 1 x16 >= 1
+  ConstraintId 009: 1 x5 1 x7 1 x17 >= 1
+  ConstraintId 010: 1 x5 1 ~x7 1 x18 >= 1
+  ConstraintId 011: 1 x3 1 ~x5 1 x19 >= 1
+  ConstraintId 012: 1 ~x3 1 x20 >= 1
+line 003: * ==============================================================
+line 004: * First model found:
+line 005: o ~x1 x2 ~x3 ~x4 ~x5 ~x6 ~x7 ~x8 ~x9 ~x10 x11 ~x12 ~x13 ~x14 ~x15 ~x16 x17 ~x18 ~x19 ~x20
+  ConstraintId 013: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 11
+line 006: * ==============================================================
+line 007: * Cardinality encoding:
+line 008: * -------------------------------------------
+line 009: * New node:
+line 010: * - First variable:
+line 011: red 1 y21  >= 1; y21 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 014: 1 y21 >= 1
+line 012: * - Last variable:
+line 013: red 1 ~y22  >= 1; y22 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 015: 1 ~y22 >= 1
+line 014: * -------------------------------------------
+line 015: * New node:
+line 016: * - First variable:
+line 017: red 1 y23  >= 1; y23 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 016: 1 y23 >= 1
+line 018: * - Last variable:
+line 019: red 1 ~y24  >= 1; y24 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 017: 1 ~y24 >= 1
+line 020: * -------------------------------------------
+line 021: * New node:
+line 022: * - First variable:
+line 023: red 1 y25  >= 1; y25 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 018: 1 y25 >= 1
+line 024: * - Last variable:
+line 025: red 1 ~y26  >= 1; y26 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 019: 1 ~y26 >= 1
+line 026: * -------------------------------------------
+line 027: * New node:
+line 028: * - First variable:
+line 029: red 1 y27  >= 1; y27 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 020: 1 y27 >= 1
+line 030: * - Last variable:
+line 031: red 1 ~y28  >= 1; y28 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 021: 1 ~y28 >= 1
+line 032: * -------------------------------------------
+line 033: * New node:
+line 034: * - First variable:
+line 035: red 1 y29  >= 1; y29 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 022: 1 y29 >= 1
+line 036: * - Last variable:
+line 037: red 1 ~y30  >= 1; y30 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 023: 1 ~y30 >= 1
+line 038: * -------------------------------------------
+line 039: * New node:
+line 040: * - First variable:
+line 041: red 1 y31  >= 1; y31 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 024: 1 y31 >= 1
+line 042: * - Last variable:
+line 043: red 1 ~y32  >= 1; y32 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 025: 1 ~y32 >= 1
+line 044: * -------------------------------------------
+line 045: * New node:
+line 046: * - First variable:
+line 047: red 1 y33  >= 1; y33 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 026: 1 y33 >= 1
+line 048: * - Last variable:
+line 049: red 1 ~y34  >= 1; y34 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 027: 1 ~y34 >= 1
+line 050: * - Node clauses:
+line 051: red 1 y29 1 ~y31 1 ~y33  >= 1; y29 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y31 1 ~y33 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 028: 1 y29 1 ~y31 1 ~y33 >= 1
+line 052: red 1 ~y35 1 x9 1 x10  >= 1; y35 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 029: 1 x9 1 x10 1 ~y35 >= 1
+line 053: red 1 y35 1 ~y31 1 ~x10  >= 1; y35 -> 1
+  ** proofgoals from formula **
+  proofgoal 029: 1 x9 1 x10 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x10 1 ~y31 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 030: 1 ~x10 1 ~y31 1 y35 >= 1
+line 054: red 1 ~y36 1 x9 1 y34  >= 1; y36 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 y34 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 031: 1 x9 1 y34 1 ~y36 >= 1
+line 055: red 1 y35 1 ~x9 1 ~y33  >= 1; y35 -> 1
+  ** proofgoals from formula **
+  proofgoal 029: 1 x9 1 x10 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~y33 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 032: 1 ~x9 1 ~y33 1 y35 >= 1
+line 056: red 1 ~y36 1 y32 1 x10  >= 1; y36 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x10 1 y32 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 033: 1 x10 1 y32 1 ~y36 >= 1
+line 057: red 1 y36 1 ~x9 1 ~x10  >= 1; y36 -> 1
+  ** proofgoals from formula **
+  proofgoal 031: 1 x9 1 y34 >= 1
+  proofgoal 033: 1 x10 1 y32 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 034: 1 ~x9 1 ~x10 1 y36 >= 1
+line 058: red 1 ~y30 1 y32 1 y34  >= 1; y30 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y32 1 y34 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 035: 1 ~y30 1 y32 1 y34 >= 1
+line 059: * -------------------------------------------
+line 060: * New node:
+line 061: * - First variable:
+line 062: red 1 y37  >= 1; y37 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 036: 1 y37 >= 1
+line 063: * - Last variable:
+line 064: red 1 ~y38  >= 1; y38 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 037: 1 ~y38 >= 1
+line 065: * - Node clauses:
+line 066: red 1 y27 1 ~y29 1 ~y37  >= 1; y27 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y29 1 ~y37 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 038: 1 y27 1 ~y29 1 ~y37 >= 1
+line 067: red 1 ~y39 1 y35 1 x11  >= 1; y39 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x11 1 y35 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 039: 1 x11 1 y35 1 ~y39 >= 1
+line 068: red 1 y39 1 ~y29 1 ~x11  >= 1; y39 -> 1
+  ** proofgoals from formula **
+  proofgoal 039: 1 x11 1 y35 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x11 1 ~y29 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 040: 1 ~x11 1 ~y29 1 y39 >= 1
+line 069: red 1 ~y40 1 y35 1 y38  >= 1; y40 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y35 1 y38 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 041: 1 y35 1 y38 1 ~y40 >= 1
+line 070: red 1 y39 1 ~y35 1 ~y37  >= 1; y39 -> 1
+  ** proofgoals from formula **
+  proofgoal 039: 1 x11 1 y35 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y35 1 ~y37 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 042: 1 ~y35 1 ~y37 1 y39 >= 1
+line 071: red 1 ~y40 1 y36 1 x11  >= 1; y40 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x11 1 y36 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 043: 1 x11 1 y36 1 ~y40 >= 1
+line 072: red 1 y40 1 ~y35 1 ~x11  >= 1; y40 -> 1
+  ** proofgoals from formula **
+  proofgoal 041: 1 y35 1 y38 >= 1
+  proofgoal 043: 1 x11 1 y36 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x11 1 ~y35 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 044: 1 ~x11 1 ~y35 1 y40 >= 1
+line 073: red 1 ~y41 1 y36 1 y38  >= 1; y41 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y36 1 y38 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 045: 1 y36 1 y38 1 ~y41 >= 1
+line 074: red 1 y40 1 ~y36 1 ~y37  >= 1; y40 -> 1
+  ** proofgoals from formula **
+  proofgoal 041: 1 y35 1 y38 >= 1
+  proofgoal 043: 1 x11 1 y36 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y36 1 ~y37 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 046: 1 ~y36 1 ~y37 1 y40 >= 1
+line 075: red 1 ~y41 1 y30 1 x11  >= 1; y41 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x11 1 y30 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 047: 1 x11 1 y30 1 ~y41 >= 1
+line 076: red 1 y41 1 ~y36 1 ~x11  >= 1; y41 -> 1
+  ** proofgoals from formula **
+  proofgoal 045: 1 y36 1 y38 >= 1
+  proofgoal 047: 1 x11 1 y30 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x11 1 ~y36 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 048: 1 ~x11 1 ~y36 1 y41 >= 1
+line 077: red 1 ~y28 1 y30 1 y38  >= 1; y28 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y30 1 y38 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 049: 1 ~y28 1 y30 1 y38 >= 1
+line 078: * -------------------------------------------
+line 079: * New node:
+line 080: * - First variable:
+line 081: red 1 y42  >= 1; y42 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 050: 1 y42 >= 1
+line 082: * - Last variable:
+line 083: red 1 ~y43  >= 1; y43 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 051: 1 ~y43 >= 1
+line 084: * - Node clauses:
+line 085: red 1 y25 1 ~y27 1 ~y42  >= 1; y25 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y27 1 ~y42 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 052: 1 y25 1 ~y27 1 ~y42 >= 1
+line 086: red 1 ~y44 1 y39 1 x12  >= 1; y44 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x12 1 y39 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 053: 1 x12 1 y39 1 ~y44 >= 1
+line 087: red 1 y44 1 ~y27 1 ~x12  >= 1; y44 -> 1
+  ** proofgoals from formula **
+  proofgoal 053: 1 x12 1 y39 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x12 1 ~y27 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 054: 1 ~x12 1 ~y27 1 y44 >= 1
+line 088: red 1 ~y45 1 y39 1 y43  >= 1; y45 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y39 1 y43 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 055: 1 y39 1 y43 1 ~y45 >= 1
+line 089: red 1 y44 1 ~y39 1 ~y42  >= 1; y44 -> 1
+  ** proofgoals from formula **
+  proofgoal 053: 1 x12 1 y39 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y39 1 ~y42 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 056: 1 ~y39 1 ~y42 1 y44 >= 1
+line 090: red 1 ~y45 1 y40 1 x12  >= 1; y45 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x12 1 y40 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 057: 1 x12 1 y40 1 ~y45 >= 1
+line 091: red 1 y45 1 ~y39 1 ~x12  >= 1; y45 -> 1
+  ** proofgoals from formula **
+  proofgoal 055: 1 y39 1 y43 >= 1
+  proofgoal 057: 1 x12 1 y40 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x12 1 ~y39 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 058: 1 ~x12 1 ~y39 1 y45 >= 1
+line 092: red 1 ~y46 1 y40 1 y43  >= 1; y46 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y40 1 y43 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 059: 1 y40 1 y43 1 ~y46 >= 1
+line 093: red 1 y45 1 ~y40 1 ~y42  >= 1; y45 -> 1
+  ** proofgoals from formula **
+  proofgoal 055: 1 y39 1 y43 >= 1
+  proofgoal 057: 1 x12 1 y40 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y40 1 ~y42 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 060: 1 ~y40 1 ~y42 1 y45 >= 1
+line 094: red 1 ~y46 1 y41 1 x12  >= 1; y46 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x12 1 y41 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 061: 1 x12 1 y41 1 ~y46 >= 1
+line 095: red 1 y46 1 ~y40 1 ~x12  >= 1; y46 -> 1
+  ** proofgoals from formula **
+  proofgoal 059: 1 y40 1 y43 >= 1
+  proofgoal 061: 1 x12 1 y41 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x12 1 ~y40 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 062: 1 ~x12 1 ~y40 1 y46 >= 1
+line 096: red 1 ~y47 1 y41 1 y43  >= 1; y47 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y41 1 y43 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 063: 1 y41 1 y43 1 ~y47 >= 1
+line 097: red 1 y46 1 ~y41 1 ~y42  >= 1; y46 -> 1
+  ** proofgoals from formula **
+  proofgoal 059: 1 y40 1 y43 >= 1
+  proofgoal 061: 1 x12 1 y41 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y41 1 ~y42 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 064: 1 ~y41 1 ~y42 1 y46 >= 1
+line 098: red 1 ~y47 1 y28 1 x12  >= 1; y47 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x12 1 y28 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 065: 1 x12 1 y28 1 ~y47 >= 1
+line 099: red 1 y47 1 ~y41 1 ~x12  >= 1; y47 -> 1
+  ** proofgoals from formula **
+  proofgoal 063: 1 y41 1 y43 >= 1
+  proofgoal 065: 1 x12 1 y28 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x12 1 ~y41 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 066: 1 ~x12 1 ~y41 1 y47 >= 1
+line 100: red 1 ~y26 1 y28 1 y43  >= 1; y26 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y28 1 y43 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 067: 1 ~y26 1 y28 1 y43 >= 1
+line 101: * -------------------------------------------
+line 102: * New node:
+line 103: * - First variable:
+line 104: red 1 y48  >= 1; y48 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 068: 1 y48 >= 1
+line 105: * - Last variable:
+line 106: red 1 ~y49  >= 1; y49 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 069: 1 ~y49 >= 1
+line 107: * -------------------------------------------
+line 108: * New node:
+line 109: * - First variable:
+line 110: red 1 y50  >= 1; y50 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 070: 1 y50 >= 1
+line 111: * - Last variable:
+line 112: red 1 ~y51  >= 1; y51 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 071: 1 ~y51 >= 1
+line 113: * -------------------------------------------
+line 114: * New node:
+line 115: * - First variable:
+line 116: red 1 y52  >= 1; y52 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 072: 1 y52 >= 1
+line 117: * - Last variable:
+line 118: red 1 ~y53  >= 1; y53 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 073: 1 ~y53 >= 1
+line 119: * -------------------------------------------
+line 120: * New node:
+line 121: * - First variable:
+line 122: red 1 y54  >= 1; y54 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 074: 1 y54 >= 1
+line 123: * - Last variable:
+line 124: red 1 ~y55  >= 1; y55 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 075: 1 ~y55 >= 1
+line 125: * - Node clauses:
+line 126: red 1 y50 1 ~y52 1 ~y54  >= 1; y50 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y52 1 ~y54 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 076: 1 y50 1 ~y52 1 ~y54 >= 1
+line 127: red 1 ~y56 1 y13 1 y14  >= 1; y56 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y13 1 y14 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 077: 1 y13 1 y14 1 ~y56 >= 1
+line 128: red 1 y56 1 ~y52 1 ~y14  >= 1; y56 -> 1
+  ** proofgoals from formula **
+  proofgoal 077: 1 y13 1 y14 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y14 1 ~y52 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 078: 1 ~y14 1 ~y52 1 y56 >= 1
+line 129: red 1 ~y57 1 y13 1 y55  >= 1; y57 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y13 1 y55 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 079: 1 y13 1 y55 1 ~y57 >= 1
+line 130: red 1 y56 1 ~y13 1 ~y54  >= 1; y56 -> 1
+  ** proofgoals from formula **
+  proofgoal 077: 1 y13 1 y14 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y13 1 ~y54 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 080: 1 ~y13 1 ~y54 1 y56 >= 1
+line 131: red 1 ~y57 1 y53 1 y14  >= 1; y57 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y14 1 y53 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 081: 1 y14 1 y53 1 ~y57 >= 1
+line 132: red 1 y57 1 ~y13 1 ~y14  >= 1; y57 -> 1
+  ** proofgoals from formula **
+  proofgoal 079: 1 y13 1 y55 >= 1
+  proofgoal 081: 1 y14 1 y53 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y13 1 ~y14 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 082: 1 ~y13 1 ~y14 1 y57 >= 1
+line 133: red 1 ~y51 1 y53 1 y55  >= 1; y51 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y53 1 y55 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 083: 1 ~y51 1 y53 1 y55 >= 1
+line 134: * -------------------------------------------
+line 135: * New node:
+line 136: * - First variable:
+line 137: red 1 y58  >= 1; y58 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 084: 1 y58 >= 1
+line 138: * - Last variable:
+line 139: red 1 ~y59  >= 1; y59 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 085: 1 ~y59 >= 1
+line 140: * - Node clauses:
+line 141: red 1 y48 1 ~y50 1 ~y58  >= 1; y48 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y50 1 ~y58 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 086: 1 y48 1 ~y50 1 ~y58 >= 1
+line 142: red 1 ~y60 1 y56 1 y15  >= 1; y60 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y15 1 y56 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 087: 1 y15 1 y56 1 ~y60 >= 1
+line 143: red 1 y60 1 ~y50 1 ~y15  >= 1; y60 -> 1
+  ** proofgoals from formula **
+  proofgoal 087: 1 y15 1 y56 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y15 1 ~y50 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 088: 1 ~y15 1 ~y50 1 y60 >= 1
+line 144: red 1 ~y61 1 y56 1 y59  >= 1; y61 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y56 1 y59 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 089: 1 y56 1 y59 1 ~y61 >= 1
+line 145: red 1 y60 1 ~y56 1 ~y58  >= 1; y60 -> 1
+  ** proofgoals from formula **
+  proofgoal 087: 1 y15 1 y56 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y56 1 ~y58 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 090: 1 ~y56 1 ~y58 1 y60 >= 1
+line 146: red 1 ~y61 1 y57 1 y15  >= 1; y61 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y15 1 y57 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 091: 1 y15 1 y57 1 ~y61 >= 1
+line 147: red 1 y61 1 ~y56 1 ~y15  >= 1; y61 -> 1
+  ** proofgoals from formula **
+  proofgoal 089: 1 y56 1 y59 >= 1
+  proofgoal 091: 1 y15 1 y57 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y15 1 ~y56 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 092: 1 ~y15 1 ~y56 1 y61 >= 1
+line 148: red 1 ~y62 1 y57 1 y59  >= 1; y62 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y57 1 y59 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 093: 1 y57 1 y59 1 ~y62 >= 1
+line 149: red 1 y61 1 ~y57 1 ~y58  >= 1; y61 -> 1
+  ** proofgoals from formula **
+  proofgoal 089: 1 y56 1 y59 >= 1
+  proofgoal 091: 1 y15 1 y57 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y57 1 ~y58 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 094: 1 ~y57 1 ~y58 1 y61 >= 1
+line 150: red 1 ~y62 1 y51 1 y15  >= 1; y62 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y15 1 y51 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 095: 1 y15 1 y51 1 ~y62 >= 1
+line 151: red 1 y62 1 ~y57 1 ~y15  >= 1; y62 -> 1
+  ** proofgoals from formula **
+  proofgoal 093: 1 y57 1 y59 >= 1
+  proofgoal 095: 1 y15 1 y51 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y15 1 ~y57 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 096: 1 ~y15 1 ~y57 1 y62 >= 1
+line 152: red 1 ~y49 1 y51 1 y59  >= 1; y49 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y51 1 y59 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 097: 1 ~y49 1 y51 1 y59 >= 1
+line 153: * - Node clauses:
+line 154: red 1 y23 1 ~y25 1 ~y48  >= 1; y23 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y25 1 ~y48 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 098: 1 y23 1 ~y25 1 ~y48 >= 1
+line 155: red 1 ~y63 1 y44 1 y60  >= 1; y63 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y44 1 y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 099: 1 y44 1 y60 1 ~y63 >= 1
+line 156: red 1 y63 1 ~y25 1 ~y60  >= 1; y63 -> 1
+  ** proofgoals from formula **
+  proofgoal 099: 1 y44 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y25 1 ~y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 100: 1 ~y25 1 ~y60 1 y63 >= 1
+line 157: red 1 ~y64 1 y44 1 y61  >= 1; y64 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y44 1 y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 101: 1 y44 1 y61 1 ~y64 >= 1
+line 158: red 1 y63 1 ~y44 1 ~y48  >= 1; y63 -> 1
+  ** proofgoals from formula **
+  proofgoal 099: 1 y44 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y44 1 ~y48 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 102: 1 ~y44 1 ~y48 1 y63 >= 1
+line 159: red 1 ~y64 1 y45 1 y60  >= 1; y64 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y45 1 y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 103: 1 y45 1 y60 1 ~y64 >= 1
+line 160: red 1 y64 1 ~y25 1 ~y61  >= 1; y64 -> 1
+  ** proofgoals from formula **
+  proofgoal 101: 1 y44 1 y61 >= 1
+  proofgoal 103: 1 y45 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y25 1 ~y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 104: 1 ~y25 1 ~y61 1 y64 >= 1
+line 161: red 1 ~y65 1 y44 1 y62  >= 1; y65 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y44 1 y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 105: 1 y44 1 y62 1 ~y65 >= 1
+line 162: red 1 y64 1 ~y44 1 ~y60  >= 1; y64 -> 1
+  ** proofgoals from formula **
+  proofgoal 101: 1 y44 1 y61 >= 1
+  proofgoal 103: 1 y45 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y44 1 ~y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 106: 1 ~y44 1 ~y60 1 y64 >= 1
+line 163: red 1 ~y65 1 y45 1 y61  >= 1; y65 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y45 1 y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 107: 1 y45 1 y61 1 ~y65 >= 1
+line 164: red 1 y64 1 ~y45 1 ~y48  >= 1; y64 -> 1
+  ** proofgoals from formula **
+  proofgoal 101: 1 y44 1 y61 >= 1
+  proofgoal 103: 1 y45 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y45 1 ~y48 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 108: 1 ~y45 1 ~y48 1 y64 >= 1
+line 165: red 1 ~y65 1 y46 1 y60  >= 1; y65 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y46 1 y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 109: 1 y46 1 y60 1 ~y65 >= 1
+line 166: red 1 y65 1 ~y25 1 ~y62  >= 1; y65 -> 1
+  ** proofgoals from formula **
+  proofgoal 105: 1 y44 1 y62 >= 1
+  proofgoal 107: 1 y45 1 y61 >= 1
+  proofgoal 109: 1 y46 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y25 1 ~y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 110: 1 ~y25 1 ~y62 1 y65 >= 1
+line 167: red 1 ~y66 1 y44 1 y49  >= 1; y66 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y44 1 y49 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 111: 1 y44 1 y49 1 ~y66 >= 1
+line 168: red 1 y65 1 ~y44 1 ~y61  >= 1; y65 -> 1
+  ** proofgoals from formula **
+  proofgoal 105: 1 y44 1 y62 >= 1
+  proofgoal 107: 1 y45 1 y61 >= 1
+  proofgoal 109: 1 y46 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y44 1 ~y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 112: 1 ~y44 1 ~y61 1 y65 >= 1
+line 169: red 1 ~y66 1 y45 1 y62  >= 1; y66 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y45 1 y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 113: 1 y45 1 y62 1 ~y66 >= 1
+line 170: red 1 y65 1 ~y45 1 ~y60  >= 1; y65 -> 1
+  ** proofgoals from formula **
+  proofgoal 105: 1 y44 1 y62 >= 1
+  proofgoal 107: 1 y45 1 y61 >= 1
+  proofgoal 109: 1 y46 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y45 1 ~y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 114: 1 ~y45 1 ~y60 1 y65 >= 1
+line 171: red 1 ~y66 1 y46 1 y61  >= 1; y66 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y46 1 y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 115: 1 y46 1 y61 1 ~y66 >= 1
+line 172: red 1 y65 1 ~y46 1 ~y48  >= 1; y65 -> 1
+  ** proofgoals from formula **
+  proofgoal 105: 1 y44 1 y62 >= 1
+  proofgoal 107: 1 y45 1 y61 >= 1
+  proofgoal 109: 1 y46 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y46 1 ~y48 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 116: 1 ~y46 1 ~y48 1 y65 >= 1
+line 173: red 1 ~y66 1 y47 1 y60  >= 1; y66 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y47 1 y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 117: 1 y47 1 y60 1 ~y66 >= 1
+line 174: red 1 y66 1 ~y44 1 ~y62  >= 1; y66 -> 1
+  ** proofgoals from formula **
+  proofgoal 111: 1 y44 1 y49 >= 1
+  proofgoal 117: 1 y47 1 y60 >= 1
+  proofgoal 113: 1 y45 1 y62 >= 1
+  proofgoal 115: 1 y46 1 y61 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y44 1 ~y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 118: 1 ~y44 1 ~y62 1 y66 >= 1
+line 175: red 1 ~y67 1 y45 1 y49  >= 1; y67 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y45 1 y49 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 119: 1 y45 1 y49 1 ~y67 >= 1
+line 176: red 1 y66 1 ~y45 1 ~y61  >= 1; y66 -> 1
+  ** proofgoals from formula **
+  proofgoal 111: 1 y44 1 y49 >= 1
+  proofgoal 117: 1 y47 1 y60 >= 1
+  proofgoal 113: 1 y45 1 y62 >= 1
+  proofgoal 115: 1 y46 1 y61 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y45 1 ~y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 120: 1 ~y45 1 ~y61 1 y66 >= 1
+line 177: red 1 ~y67 1 y46 1 y62  >= 1; y67 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y46 1 y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 121: 1 y46 1 y62 1 ~y67 >= 1
+line 178: red 1 y66 1 ~y46 1 ~y60  >= 1; y66 -> 1
+  ** proofgoals from formula **
+  proofgoal 111: 1 y44 1 y49 >= 1
+  proofgoal 117: 1 y47 1 y60 >= 1
+  proofgoal 113: 1 y45 1 y62 >= 1
+  proofgoal 115: 1 y46 1 y61 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y46 1 ~y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 122: 1 ~y46 1 ~y60 1 y66 >= 1
+line 179: red 1 ~y67 1 y47 1 y61  >= 1; y67 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y47 1 y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 123: 1 y47 1 y61 1 ~y67 >= 1
+line 180: red 1 y66 1 ~y47 1 ~y48  >= 1; y66 -> 1
+  ** proofgoals from formula **
+  proofgoal 111: 1 y44 1 y49 >= 1
+  proofgoal 117: 1 y47 1 y60 >= 1
+  proofgoal 113: 1 y45 1 y62 >= 1
+  proofgoal 115: 1 y46 1 y61 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y47 1 ~y48 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 124: 1 ~y47 1 ~y48 1 y66 >= 1
+line 181: red 1 ~y67 1 y26 1 y60  >= 1; y67 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y26 1 y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 125: 1 y26 1 y60 1 ~y67 >= 1
+line 182: red 1 y67 1 ~y45 1 ~y62  >= 1; y67 -> 1
+  ** proofgoals from formula **
+  proofgoal 119: 1 y45 1 y49 >= 1
+  proofgoal 121: 1 y46 1 y62 >= 1
+  proofgoal 123: 1 y47 1 y61 >= 1
+  proofgoal 125: 1 y26 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y45 1 ~y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 126: 1 ~y45 1 ~y62 1 y67 >= 1
+line 183: red 1 ~y68 1 y46 1 y49  >= 1; y68 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y46 1 y49 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 127: 1 y46 1 y49 1 ~y68 >= 1
+line 184: red 1 y67 1 ~y46 1 ~y61  >= 1; y67 -> 1
+  ** proofgoals from formula **
+  proofgoal 119: 1 y45 1 y49 >= 1
+  proofgoal 121: 1 y46 1 y62 >= 1
+  proofgoal 123: 1 y47 1 y61 >= 1
+  proofgoal 125: 1 y26 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y46 1 ~y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 128: 1 ~y46 1 ~y61 1 y67 >= 1
+line 185: red 1 ~y68 1 y47 1 y62  >= 1; y68 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y47 1 y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 129: 1 y47 1 y62 1 ~y68 >= 1
+line 186: red 1 y67 1 ~y47 1 ~y60  >= 1; y67 -> 1
+  ** proofgoals from formula **
+  proofgoal 119: 1 y45 1 y49 >= 1
+  proofgoal 121: 1 y46 1 y62 >= 1
+  proofgoal 123: 1 y47 1 y61 >= 1
+  proofgoal 125: 1 y26 1 y60 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y47 1 ~y60 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 130: 1 ~y47 1 ~y60 1 y67 >= 1
+line 187: red 1 ~y68 1 y26 1 y61  >= 1; y68 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y26 1 y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 131: 1 y26 1 y61 1 ~y68 >= 1
+line 188: red 1 y68 1 ~y46 1 ~y62  >= 1; y68 -> 1
+  ** proofgoals from formula **
+  proofgoal 127: 1 y46 1 y49 >= 1
+  proofgoal 131: 1 y26 1 y61 >= 1
+  proofgoal 129: 1 y47 1 y62 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y46 1 ~y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 132: 1 ~y46 1 ~y62 1 y68 >= 1
+line 189: red 1 ~y69 1 y47 1 y49  >= 1; y69 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y47 1 y49 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 133: 1 y47 1 y49 1 ~y69 >= 1
+line 190: red 1 y68 1 ~y47 1 ~y61  >= 1; y68 -> 1
+  ** proofgoals from formula **
+  proofgoal 127: 1 y46 1 y49 >= 1
+  proofgoal 131: 1 y26 1 y61 >= 1
+  proofgoal 129: 1 y47 1 y62 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y47 1 ~y61 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 134: 1 ~y47 1 ~y61 1 y68 >= 1
+line 191: red 1 ~y69 1 y26 1 y62  >= 1; y69 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y26 1 y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 135: 1 y26 1 y62 1 ~y69 >= 1
+line 192: red 1 y69 1 ~y47 1 ~y62  >= 1; y69 -> 1
+  ** proofgoals from formula **
+  proofgoal 133: 1 y47 1 y49 >= 1
+  proofgoal 135: 1 y26 1 y62 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y47 1 ~y62 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 136: 1 ~y47 1 ~y62 1 y69 >= 1
+line 193: red 1 ~y24 1 y26 1 y49  >= 1; y24 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y26 1 y49 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 137: 1 ~y24 1 y26 1 y49 >= 1
+line 194: * -------------------------------------------
+line 195: * New node:
+line 196: * - First variable:
+line 197: red 1 y70  >= 1; y70 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 138: 1 y70 >= 1
+line 198: * - Last variable:
+line 199: red 1 ~y71  >= 1; y71 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 139: 1 ~y71 >= 1
+line 200: * -------------------------------------------
+line 201: * New node:
+line 202: * - First variable:
+line 203: red 1 y72  >= 1; y72 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 140: 1 y72 >= 1
+line 204: * - Last variable:
+line 205: red 1 ~y73  >= 1; y73 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 141: 1 ~y73 >= 1
+line 206: * -------------------------------------------
+line 207: * New node:
+line 208: * - First variable:
+line 209: red 1 y74  >= 1; y74 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 142: 1 y74 >= 1
+line 210: * - Last variable:
+line 211: red 1 ~y75  >= 1; y75 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 143: 1 ~y75 >= 1
+line 212: * -------------------------------------------
+line 213: * New node:
+line 214: * - First variable:
+line 215: red 1 y76  >= 1; y76 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 144: 1 y76 >= 1
+line 216: * - Last variable:
+line 217: red 1 ~y77  >= 1; y77 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 145: 1 ~y77 >= 1
+line 218: * -------------------------------------------
+line 219: * New node:
+line 220: * - First variable:
+line 221: red 1 y78  >= 1; y78 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 146: 1 y78 >= 1
+line 222: * - Last variable:
+line 223: red 1 ~y79  >= 1; y79 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 147: 1 ~y79 >= 1
+line 224: * - Node clauses:
+line 225: red 1 y74 1 ~y76 1 ~y78  >= 1; y74 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y76 1 ~y78 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 148: 1 y74 1 ~y76 1 ~y78 >= 1
+line 226: red 1 ~y80 1 y16 1 y17  >= 1; y80 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y16 1 y17 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 149: 1 y16 1 y17 1 ~y80 >= 1
+line 227: red 1 y80 1 ~y76 1 ~y17  >= 1; y80 -> 1
+  ** proofgoals from formula **
+  proofgoal 149: 1 y16 1 y17 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y17 1 ~y76 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 150: 1 ~y17 1 ~y76 1 y80 >= 1
+line 228: red 1 ~y81 1 y16 1 y79  >= 1; y81 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y16 1 y79 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 151: 1 y16 1 y79 1 ~y81 >= 1
+line 229: red 1 y80 1 ~y16 1 ~y78  >= 1; y80 -> 1
+  ** proofgoals from formula **
+  proofgoal 149: 1 y16 1 y17 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y16 1 ~y78 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 152: 1 ~y16 1 ~y78 1 y80 >= 1
+line 230: red 1 ~y81 1 y77 1 y17  >= 1; y81 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y17 1 y77 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 153: 1 y17 1 y77 1 ~y81 >= 1
+line 231: red 1 y81 1 ~y16 1 ~y17  >= 1; y81 -> 1
+  ** proofgoals from formula **
+  proofgoal 151: 1 y16 1 y79 >= 1
+  proofgoal 153: 1 y17 1 y77 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y16 1 ~y17 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 154: 1 ~y16 1 ~y17 1 y81 >= 1
+line 232: red 1 ~y75 1 y77 1 y79  >= 1; y75 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y77 1 y79 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 155: 1 ~y75 1 y77 1 y79 >= 1
+line 233: * -------------------------------------------
+line 234: * New node:
+line 235: * - First variable:
+line 236: red 1 y82  >= 1; y82 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 156: 1 y82 >= 1
+line 237: * - Last variable:
+line 238: red 1 ~y83  >= 1; y83 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 157: 1 ~y83 >= 1
+line 239: * - Node clauses:
+line 240: red 1 y72 1 ~y74 1 ~y82  >= 1; y72 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y74 1 ~y82 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 158: 1 y72 1 ~y74 1 ~y82 >= 1
+line 241: red 1 ~y84 1 y80 1 y18  >= 1; y84 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y18 1 y80 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 159: 1 y18 1 y80 1 ~y84 >= 1
+line 242: red 1 y84 1 ~y74 1 ~y18  >= 1; y84 -> 1
+  ** proofgoals from formula **
+  proofgoal 159: 1 y18 1 y80 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y18 1 ~y74 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 160: 1 ~y18 1 ~y74 1 y84 >= 1
+line 243: red 1 ~y85 1 y80 1 y83  >= 1; y85 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y80 1 y83 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 161: 1 y80 1 y83 1 ~y85 >= 1
+line 244: red 1 y84 1 ~y80 1 ~y82  >= 1; y84 -> 1
+  ** proofgoals from formula **
+  proofgoal 159: 1 y18 1 y80 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y80 1 ~y82 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 162: 1 ~y80 1 ~y82 1 y84 >= 1
+line 245: red 1 ~y85 1 y81 1 y18  >= 1; y85 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y18 1 y81 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 163: 1 y18 1 y81 1 ~y85 >= 1
+line 246: red 1 y85 1 ~y80 1 ~y18  >= 1; y85 -> 1
+  ** proofgoals from formula **
+  proofgoal 161: 1 y80 1 y83 >= 1
+  proofgoal 163: 1 y18 1 y81 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y18 1 ~y80 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 164: 1 ~y18 1 ~y80 1 y85 >= 1
+line 247: red 1 ~y86 1 y81 1 y83  >= 1; y86 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y81 1 y83 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 165: 1 y81 1 y83 1 ~y86 >= 1
+line 248: red 1 y85 1 ~y81 1 ~y82  >= 1; y85 -> 1
+  ** proofgoals from formula **
+  proofgoal 161: 1 y80 1 y83 >= 1
+  proofgoal 163: 1 y18 1 y81 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y81 1 ~y82 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 166: 1 ~y81 1 ~y82 1 y85 >= 1
+line 249: red 1 ~y86 1 y75 1 y18  >= 1; y86 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y18 1 y75 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 167: 1 y18 1 y75 1 ~y86 >= 1
+line 250: red 1 y86 1 ~y81 1 ~y18  >= 1; y86 -> 1
+  ** proofgoals from formula **
+  proofgoal 165: 1 y81 1 y83 >= 1
+  proofgoal 167: 1 y18 1 y75 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y18 1 ~y81 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 168: 1 ~y18 1 ~y81 1 y86 >= 1
+line 251: red 1 ~y73 1 y75 1 y83  >= 1; y73 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y75 1 y83 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 169: 1 ~y73 1 y75 1 y83 >= 1
+line 252: * -------------------------------------------
+line 253: * New node:
+line 254: * - First variable:
+line 255: red 1 y87  >= 1; y87 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 170: 1 y87 >= 1
+line 256: * - Last variable:
+line 257: red 1 ~y88  >= 1; y88 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 171: 1 ~y88 >= 1
+line 258: * -------------------------------------------
+line 259: * New node:
+line 260: * - First variable:
+line 261: red 1 y89  >= 1; y89 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 172: 1 y89 >= 1
+line 262: * - Last variable:
+line 263: red 1 ~y90  >= 1; y90 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 173: 1 ~y90 >= 1
+line 264: * -------------------------------------------
+line 265: * New node:
+line 266: * - First variable:
+line 267: red 1 y91  >= 1; y91 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 174: 1 y91 >= 1
+line 268: * - Last variable:
+line 269: red 1 ~y92  >= 1; y92 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 175: 1 ~y92 >= 1
+line 270: * - Node clauses:
+line 271: red 1 y87 1 ~y89 1 ~y91  >= 1; y87 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y89 1 ~y91 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 176: 1 y87 1 ~y89 1 ~y91 >= 1
+line 272: red 1 ~y93 1 y19 1 y20  >= 1; y93 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y19 1 y20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 177: 1 y19 1 y20 1 ~y93 >= 1
+line 273: red 1 y93 1 ~y89 1 ~y20  >= 1; y93 -> 1
+  ** proofgoals from formula **
+  proofgoal 177: 1 y19 1 y20 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y20 1 ~y89 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 178: 1 ~y20 1 ~y89 1 y93 >= 1
+line 274: red 1 ~y94 1 y19 1 y92  >= 1; y94 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y19 1 y92 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 179: 1 y19 1 y92 1 ~y94 >= 1
+line 275: red 1 y93 1 ~y19 1 ~y91  >= 1; y93 -> 1
+  ** proofgoals from formula **
+  proofgoal 177: 1 y19 1 y20 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y19 1 ~y91 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 180: 1 ~y19 1 ~y91 1 y93 >= 1
+line 276: red 1 ~y94 1 y90 1 y20  >= 1; y94 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y20 1 y90 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 181: 1 y20 1 y90 1 ~y94 >= 1
+line 277: red 1 y94 1 ~y19 1 ~y20  >= 1; y94 -> 1
+  ** proofgoals from formula **
+  proofgoal 179: 1 y19 1 y92 >= 1
+  proofgoal 181: 1 y20 1 y90 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y19 1 ~y20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 182: 1 ~y19 1 ~y20 1 y94 >= 1
+line 278: red 1 ~y88 1 y90 1 y92  >= 1; y88 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y90 1 y92 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 183: 1 ~y88 1 y90 1 y92 >= 1
+line 279: * - Node clauses:
+line 280: red 1 y70 1 ~y72 1 ~y87  >= 1; y70 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y72 1 ~y87 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 184: 1 y70 1 ~y72 1 ~y87 >= 1
+line 281: red 1 ~y95 1 y84 1 y93  >= 1; y95 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y84 1 y93 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 185: 1 y84 1 y93 1 ~y95 >= 1
+line 282: red 1 y95 1 ~y72 1 ~y93  >= 1; y95 -> 1
+  ** proofgoals from formula **
+  proofgoal 185: 1 y84 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y72 1 ~y93 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 186: 1 ~y72 1 ~y93 1 y95 >= 1
+line 283: red 1 ~y96 1 y84 1 y94  >= 1; y96 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y84 1 y94 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 187: 1 y84 1 y94 1 ~y96 >= 1
+line 284: red 1 y95 1 ~y84 1 ~y87  >= 1; y95 -> 1
+  ** proofgoals from formula **
+  proofgoal 185: 1 y84 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y84 1 ~y87 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 188: 1 ~y84 1 ~y87 1 y95 >= 1
+line 285: red 1 ~y96 1 y85 1 y93  >= 1; y96 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y85 1 y93 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 189: 1 y85 1 y93 1 ~y96 >= 1
+line 286: red 1 y96 1 ~y72 1 ~y94  >= 1; y96 -> 1
+  ** proofgoals from formula **
+  proofgoal 187: 1 y84 1 y94 >= 1
+  proofgoal 189: 1 y85 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y72 1 ~y94 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 190: 1 ~y72 1 ~y94 1 y96 >= 1
+line 287: red 1 ~y97 1 y84 1 y88  >= 1; y97 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y84 1 y88 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 191: 1 y84 1 y88 1 ~y97 >= 1
+line 288: red 1 y96 1 ~y84 1 ~y93  >= 1; y96 -> 1
+  ** proofgoals from formula **
+  proofgoal 187: 1 y84 1 y94 >= 1
+  proofgoal 189: 1 y85 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y84 1 ~y93 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 192: 1 ~y84 1 ~y93 1 y96 >= 1
+line 289: red 1 ~y97 1 y85 1 y94  >= 1; y97 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y85 1 y94 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 193: 1 y85 1 y94 1 ~y97 >= 1
+line 290: red 1 y96 1 ~y85 1 ~y87  >= 1; y96 -> 1
+  ** proofgoals from formula **
+  proofgoal 187: 1 y84 1 y94 >= 1
+  proofgoal 189: 1 y85 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y85 1 ~y87 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 194: 1 ~y85 1 ~y87 1 y96 >= 1
+line 291: red 1 ~y97 1 y86 1 y93  >= 1; y97 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y86 1 y93 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 195: 1 y86 1 y93 1 ~y97 >= 1
+line 292: red 1 y97 1 ~y84 1 ~y94  >= 1; y97 -> 1
+  ** proofgoals from formula **
+  proofgoal 191: 1 y84 1 y88 >= 1
+  proofgoal 193: 1 y85 1 y94 >= 1
+  proofgoal 195: 1 y86 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y84 1 ~y94 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 196: 1 ~y84 1 ~y94 1 y97 >= 1
+line 293: red 1 ~y98 1 y85 1 y88  >= 1; y98 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y85 1 y88 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 197: 1 y85 1 y88 1 ~y98 >= 1
+line 294: red 1 y97 1 ~y85 1 ~y93  >= 1; y97 -> 1
+  ** proofgoals from formula **
+  proofgoal 191: 1 y84 1 y88 >= 1
+  proofgoal 193: 1 y85 1 y94 >= 1
+  proofgoal 195: 1 y86 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y85 1 ~y93 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 198: 1 ~y85 1 ~y93 1 y97 >= 1
+line 295: red 1 ~y98 1 y86 1 y94  >= 1; y98 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y86 1 y94 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 199: 1 y86 1 y94 1 ~y98 >= 1
+line 296: red 1 y97 1 ~y86 1 ~y87  >= 1; y97 -> 1
+  ** proofgoals from formula **
+  proofgoal 191: 1 y84 1 y88 >= 1
+  proofgoal 193: 1 y85 1 y94 >= 1
+  proofgoal 195: 1 y86 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y86 1 ~y87 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 200: 1 ~y86 1 ~y87 1 y97 >= 1
+line 297: red 1 ~y98 1 y73 1 y93  >= 1; y98 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y73 1 y93 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 201: 1 y73 1 y93 1 ~y98 >= 1
+line 298: red 1 y98 1 ~y85 1 ~y94  >= 1; y98 -> 1
+  ** proofgoals from formula **
+  proofgoal 197: 1 y85 1 y88 >= 1
+  proofgoal 199: 1 y86 1 y94 >= 1
+  proofgoal 201: 1 y73 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y85 1 ~y94 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 202: 1 ~y85 1 ~y94 1 y98 >= 1
+line 299: red 1 ~y99 1 y86 1 y88  >= 1; y99 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y86 1 y88 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 203: 1 y86 1 y88 1 ~y99 >= 1
+line 300: red 1 y98 1 ~y86 1 ~y93  >= 1; y98 -> 1
+  ** proofgoals from formula **
+  proofgoal 197: 1 y85 1 y88 >= 1
+  proofgoal 199: 1 y86 1 y94 >= 1
+  proofgoal 201: 1 y73 1 y93 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y86 1 ~y93 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 204: 1 ~y86 1 ~y93 1 y98 >= 1
+line 301: red 1 ~y99 1 y73 1 y94  >= 1; y99 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y73 1 y94 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 205: 1 y73 1 y94 1 ~y99 >= 1
+line 302: red 1 y99 1 ~y86 1 ~y94  >= 1; y99 -> 1
+  ** proofgoals from formula **
+  proofgoal 203: 1 y86 1 y88 >= 1
+  proofgoal 205: 1 y73 1 y94 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y86 1 ~y94 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 206: 1 ~y86 1 ~y94 1 y99 >= 1
+line 303: red 1 ~y71 1 y73 1 y88  >= 1; y71 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y73 1 y88 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 207: 1 ~y71 1 y73 1 y88 >= 1
+line 304: * - Node clauses:
+line 305: red 1 y21 1 ~y23 1 ~y70  >= 1; y21 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y23 1 ~y70 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 208: 1 y21 1 ~y23 1 ~y70 >= 1
+line 306: red 1 ~y100 1 y63 1 y95  >= 1; y100 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y63 1 y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 209: 1 y63 1 y95 1 ~y100 >= 1
+line 307: red 1 y100 1 ~y23 1 ~y95  >= 1; y100 -> 1
+  ** proofgoals from formula **
+  proofgoal 209: 1 y63 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y23 1 ~y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 210: 1 ~y23 1 ~y95 1 y100 >= 1
+line 308: red 1 ~y101 1 y63 1 y96  >= 1; y101 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y63 1 y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 211: 1 y63 1 y96 1 ~y101 >= 1
+line 309: red 1 y100 1 ~y63 1 ~y70  >= 1; y100 -> 1
+  ** proofgoals from formula **
+  proofgoal 209: 1 y63 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y63 1 ~y70 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 212: 1 ~y63 1 ~y70 1 y100 >= 1
+line 310: red 1 ~y101 1 y64 1 y95  >= 1; y101 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y64 1 y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 213: 1 y64 1 y95 1 ~y101 >= 1
+line 311: red 1 y101 1 ~y23 1 ~y96  >= 1; y101 -> 1
+  ** proofgoals from formula **
+  proofgoal 211: 1 y63 1 y96 >= 1
+  proofgoal 213: 1 y64 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y23 1 ~y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 214: 1 ~y23 1 ~y96 1 y101 >= 1
+line 312: red 1 ~y102 1 y63 1 y97  >= 1; y102 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y63 1 y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 215: 1 y63 1 y97 1 ~y102 >= 1
+line 313: red 1 y101 1 ~y63 1 ~y95  >= 1; y101 -> 1
+  ** proofgoals from formula **
+  proofgoal 211: 1 y63 1 y96 >= 1
+  proofgoal 213: 1 y64 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y63 1 ~y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 216: 1 ~y63 1 ~y95 1 y101 >= 1
+line 314: red 1 ~y102 1 y64 1 y96  >= 1; y102 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y64 1 y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 217: 1 y64 1 y96 1 ~y102 >= 1
+line 315: red 1 y101 1 ~y64 1 ~y70  >= 1; y101 -> 1
+  ** proofgoals from formula **
+  proofgoal 211: 1 y63 1 y96 >= 1
+  proofgoal 213: 1 y64 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y64 1 ~y70 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 218: 1 ~y64 1 ~y70 1 y101 >= 1
+line 316: red 1 ~y102 1 y65 1 y95  >= 1; y102 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y65 1 y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 219: 1 y65 1 y95 1 ~y102 >= 1
+line 317: red 1 y102 1 ~y23 1 ~y97  >= 1; y102 -> 1
+  ** proofgoals from formula **
+  proofgoal 215: 1 y63 1 y97 >= 1
+  proofgoal 217: 1 y64 1 y96 >= 1
+  proofgoal 219: 1 y65 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y23 1 ~y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 220: 1 ~y23 1 ~y97 1 y102 >= 1
+line 318: red 1 ~y103 1 y63 1 y98  >= 1; y103 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y63 1 y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 221: 1 y63 1 y98 1 ~y103 >= 1
+line 319: red 1 y102 1 ~y63 1 ~y96  >= 1; y102 -> 1
+  ** proofgoals from formula **
+  proofgoal 215: 1 y63 1 y97 >= 1
+  proofgoal 217: 1 y64 1 y96 >= 1
+  proofgoal 219: 1 y65 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y63 1 ~y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 222: 1 ~y63 1 ~y96 1 y102 >= 1
+line 320: red 1 ~y103 1 y64 1 y97  >= 1; y103 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y64 1 y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 223: 1 y64 1 y97 1 ~y103 >= 1
+line 321: red 1 y102 1 ~y64 1 ~y95  >= 1; y102 -> 1
+  ** proofgoals from formula **
+  proofgoal 215: 1 y63 1 y97 >= 1
+  proofgoal 217: 1 y64 1 y96 >= 1
+  proofgoal 219: 1 y65 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y64 1 ~y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 224: 1 ~y64 1 ~y95 1 y102 >= 1
+line 322: red 1 ~y103 1 y65 1 y96  >= 1; y103 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y65 1 y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 225: 1 y65 1 y96 1 ~y103 >= 1
+line 323: red 1 y102 1 ~y65 1 ~y70  >= 1; y102 -> 1
+  ** proofgoals from formula **
+  proofgoal 215: 1 y63 1 y97 >= 1
+  proofgoal 217: 1 y64 1 y96 >= 1
+  proofgoal 219: 1 y65 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y65 1 ~y70 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 226: 1 ~y65 1 ~y70 1 y102 >= 1
+line 324: red 1 ~y103 1 y66 1 y95  >= 1; y103 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y66 1 y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 227: 1 y66 1 y95 1 ~y103 >= 1
+line 325: red 1 y103 1 ~y23 1 ~y98  >= 1; y103 -> 1
+  ** proofgoals from formula **
+  proofgoal 221: 1 y63 1 y98 >= 1
+  proofgoal 223: 1 y64 1 y97 >= 1
+  proofgoal 227: 1 y66 1 y95 >= 1
+  proofgoal 225: 1 y65 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y23 1 ~y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 228: 1 ~y23 1 ~y98 1 y103 >= 1
+line 326: red 1 ~y104 1 y63 1 y99  >= 1; y104 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y63 1 y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 229: 1 y63 1 y99 1 ~y104 >= 1
+line 327: red 1 y103 1 ~y63 1 ~y97  >= 1; y103 -> 1
+  ** proofgoals from formula **
+  proofgoal 221: 1 y63 1 y98 >= 1
+  proofgoal 223: 1 y64 1 y97 >= 1
+  proofgoal 227: 1 y66 1 y95 >= 1
+  proofgoal 225: 1 y65 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y63 1 ~y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 230: 1 ~y63 1 ~y97 1 y103 >= 1
+line 328: red 1 ~y104 1 y64 1 y98  >= 1; y104 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y64 1 y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 231: 1 y64 1 y98 1 ~y104 >= 1
+line 329: red 1 y103 1 ~y64 1 ~y96  >= 1; y103 -> 1
+  ** proofgoals from formula **
+  proofgoal 221: 1 y63 1 y98 >= 1
+  proofgoal 223: 1 y64 1 y97 >= 1
+  proofgoal 227: 1 y66 1 y95 >= 1
+  proofgoal 225: 1 y65 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y64 1 ~y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 232: 1 ~y64 1 ~y96 1 y103 >= 1
+line 330: red 1 ~y104 1 y65 1 y97  >= 1; y104 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y65 1 y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 233: 1 y65 1 y97 1 ~y104 >= 1
+line 331: red 1 y103 1 ~y65 1 ~y95  >= 1; y103 -> 1
+  ** proofgoals from formula **
+  proofgoal 221: 1 y63 1 y98 >= 1
+  proofgoal 223: 1 y64 1 y97 >= 1
+  proofgoal 227: 1 y66 1 y95 >= 1
+  proofgoal 225: 1 y65 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y65 1 ~y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 234: 1 ~y65 1 ~y95 1 y103 >= 1
+line 332: red 1 ~y104 1 y66 1 y96  >= 1; y104 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y66 1 y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 235: 1 y66 1 y96 1 ~y104 >= 1
+line 333: red 1 y103 1 ~y66 1 ~y70  >= 1; y103 -> 1
+  ** proofgoals from formula **
+  proofgoal 221: 1 y63 1 y98 >= 1
+  proofgoal 223: 1 y64 1 y97 >= 1
+  proofgoal 227: 1 y66 1 y95 >= 1
+  proofgoal 225: 1 y65 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y66 1 ~y70 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 236: 1 ~y66 1 ~y70 1 y103 >= 1
+line 334: red 1 ~y104 1 y67 1 y95  >= 1; y104 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y67 1 y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 237: 1 y67 1 y95 1 ~y104 >= 1
+line 335: red 1 y104 1 ~y23 1 ~y99  >= 1; y104 -> 1
+  ** proofgoals from formula **
+  proofgoal 229: 1 y63 1 y99 >= 1
+  proofgoal 231: 1 y64 1 y98 >= 1
+  proofgoal 235: 1 y66 1 y96 >= 1
+  proofgoal 233: 1 y65 1 y97 >= 1
+  proofgoal 237: 1 y67 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y23 1 ~y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 238: 1 ~y23 1 ~y99 1 y104 >= 1
+line 336: red 1 ~y105 1 y63 1 y71  >= 1; y105 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y63 1 y71 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 239: 1 y63 1 y71 1 ~y105 >= 1
+line 337: red 1 y104 1 ~y63 1 ~y98  >= 1; y104 -> 1
+  ** proofgoals from formula **
+  proofgoal 229: 1 y63 1 y99 >= 1
+  proofgoal 231: 1 y64 1 y98 >= 1
+  proofgoal 235: 1 y66 1 y96 >= 1
+  proofgoal 233: 1 y65 1 y97 >= 1
+  proofgoal 237: 1 y67 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y63 1 ~y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 240: 1 ~y63 1 ~y98 1 y104 >= 1
+line 338: red 1 ~y105 1 y64 1 y99  >= 1; y105 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y64 1 y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 241: 1 y64 1 y99 1 ~y105 >= 1
+line 339: red 1 y104 1 ~y64 1 ~y97  >= 1; y104 -> 1
+  ** proofgoals from formula **
+  proofgoal 229: 1 y63 1 y99 >= 1
+  proofgoal 231: 1 y64 1 y98 >= 1
+  proofgoal 235: 1 y66 1 y96 >= 1
+  proofgoal 233: 1 y65 1 y97 >= 1
+  proofgoal 237: 1 y67 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y64 1 ~y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 242: 1 ~y64 1 ~y97 1 y104 >= 1
+line 340: red 1 ~y105 1 y65 1 y98  >= 1; y105 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y65 1 y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 243: 1 y65 1 y98 1 ~y105 >= 1
+line 341: red 1 y104 1 ~y65 1 ~y96  >= 1; y104 -> 1
+  ** proofgoals from formula **
+  proofgoal 229: 1 y63 1 y99 >= 1
+  proofgoal 231: 1 y64 1 y98 >= 1
+  proofgoal 235: 1 y66 1 y96 >= 1
+  proofgoal 233: 1 y65 1 y97 >= 1
+  proofgoal 237: 1 y67 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y65 1 ~y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 244: 1 ~y65 1 ~y96 1 y104 >= 1
+line 342: red 1 ~y105 1 y66 1 y97  >= 1; y105 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y66 1 y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 245: 1 y66 1 y97 1 ~y105 >= 1
+line 343: red 1 y104 1 ~y66 1 ~y95  >= 1; y104 -> 1
+  ** proofgoals from formula **
+  proofgoal 229: 1 y63 1 y99 >= 1
+  proofgoal 231: 1 y64 1 y98 >= 1
+  proofgoal 235: 1 y66 1 y96 >= 1
+  proofgoal 233: 1 y65 1 y97 >= 1
+  proofgoal 237: 1 y67 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y66 1 ~y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 246: 1 ~y66 1 ~y95 1 y104 >= 1
+line 344: red 1 ~y105 1 y67 1 y96  >= 1; y105 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y67 1 y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 247: 1 y67 1 y96 1 ~y105 >= 1
+line 345: red 1 y104 1 ~y67 1 ~y70  >= 1; y104 -> 1
+  ** proofgoals from formula **
+  proofgoal 229: 1 y63 1 y99 >= 1
+  proofgoal 231: 1 y64 1 y98 >= 1
+  proofgoal 235: 1 y66 1 y96 >= 1
+  proofgoal 233: 1 y65 1 y97 >= 1
+  proofgoal 237: 1 y67 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y67 1 ~y70 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 248: 1 ~y67 1 ~y70 1 y104 >= 1
+line 346: red 1 ~y105 1 y68 1 y95  >= 1; y105 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y68 1 y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 249: 1 y68 1 y95 1 ~y105 >= 1
+line 347: red 1 y105 1 ~y63 1 ~y99  >= 1; y105 -> 1
+  ** proofgoals from formula **
+  proofgoal 239: 1 y63 1 y71 >= 1
+  proofgoal 241: 1 y64 1 y99 >= 1
+  proofgoal 249: 1 y68 1 y95 >= 1
+  proofgoal 243: 1 y65 1 y98 >= 1
+  proofgoal 245: 1 y66 1 y97 >= 1
+  proofgoal 247: 1 y67 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y63 1 ~y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 250: 1 ~y63 1 ~y99 1 y105 >= 1
+line 348: red 1 ~y106 1 y64 1 y71  >= 1; y106 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y64 1 y71 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 251: 1 y64 1 y71 1 ~y106 >= 1
+line 349: red 1 y105 1 ~y64 1 ~y98  >= 1; y105 -> 1
+  ** proofgoals from formula **
+  proofgoal 239: 1 y63 1 y71 >= 1
+  proofgoal 241: 1 y64 1 y99 >= 1
+  proofgoal 249: 1 y68 1 y95 >= 1
+  proofgoal 243: 1 y65 1 y98 >= 1
+  proofgoal 245: 1 y66 1 y97 >= 1
+  proofgoal 247: 1 y67 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y64 1 ~y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 252: 1 ~y64 1 ~y98 1 y105 >= 1
+line 350: red 1 ~y106 1 y65 1 y99  >= 1; y106 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y65 1 y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 253: 1 y65 1 y99 1 ~y106 >= 1
+line 351: red 1 y105 1 ~y65 1 ~y97  >= 1; y105 -> 1
+  ** proofgoals from formula **
+  proofgoal 239: 1 y63 1 y71 >= 1
+  proofgoal 241: 1 y64 1 y99 >= 1
+  proofgoal 249: 1 y68 1 y95 >= 1
+  proofgoal 243: 1 y65 1 y98 >= 1
+  proofgoal 245: 1 y66 1 y97 >= 1
+  proofgoal 247: 1 y67 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y65 1 ~y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 254: 1 ~y65 1 ~y97 1 y105 >= 1
+line 352: red 1 ~y106 1 y66 1 y98  >= 1; y106 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y66 1 y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 255: 1 y66 1 y98 1 ~y106 >= 1
+line 353: red 1 y105 1 ~y66 1 ~y96  >= 1; y105 -> 1
+  ** proofgoals from formula **
+  proofgoal 239: 1 y63 1 y71 >= 1
+  proofgoal 241: 1 y64 1 y99 >= 1
+  proofgoal 249: 1 y68 1 y95 >= 1
+  proofgoal 243: 1 y65 1 y98 >= 1
+  proofgoal 245: 1 y66 1 y97 >= 1
+  proofgoal 247: 1 y67 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y66 1 ~y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 256: 1 ~y66 1 ~y96 1 y105 >= 1
+line 354: red 1 ~y106 1 y67 1 y97  >= 1; y106 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y67 1 y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 257: 1 y67 1 y97 1 ~y106 >= 1
+line 355: red 1 y105 1 ~y67 1 ~y95  >= 1; y105 -> 1
+  ** proofgoals from formula **
+  proofgoal 239: 1 y63 1 y71 >= 1
+  proofgoal 241: 1 y64 1 y99 >= 1
+  proofgoal 249: 1 y68 1 y95 >= 1
+  proofgoal 243: 1 y65 1 y98 >= 1
+  proofgoal 245: 1 y66 1 y97 >= 1
+  proofgoal 247: 1 y67 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y67 1 ~y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 258: 1 ~y67 1 ~y95 1 y105 >= 1
+line 356: red 1 ~y106 1 y68 1 y96  >= 1; y106 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y68 1 y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 259: 1 y68 1 y96 1 ~y106 >= 1
+line 357: red 1 y105 1 ~y68 1 ~y70  >= 1; y105 -> 1
+  ** proofgoals from formula **
+  proofgoal 239: 1 y63 1 y71 >= 1
+  proofgoal 241: 1 y64 1 y99 >= 1
+  proofgoal 249: 1 y68 1 y95 >= 1
+  proofgoal 243: 1 y65 1 y98 >= 1
+  proofgoal 245: 1 y66 1 y97 >= 1
+  proofgoal 247: 1 y67 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y68 1 ~y70 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 260: 1 ~y68 1 ~y70 1 y105 >= 1
+line 358: red 1 ~y106 1 y69 1 y95  >= 1; y106 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y69 1 y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 261: 1 y69 1 y95 1 ~y106 >= 1
+line 359: red 1 y106 1 ~y64 1 ~y99  >= 1; y106 -> 1
+  ** proofgoals from formula **
+  proofgoal 251: 1 y64 1 y71 >= 1
+  proofgoal 253: 1 y65 1 y99 >= 1
+  proofgoal 255: 1 y66 1 y98 >= 1
+  proofgoal 259: 1 y68 1 y96 >= 1
+  proofgoal 257: 1 y67 1 y97 >= 1
+  proofgoal 261: 1 y69 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y64 1 ~y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 262: 1 ~y64 1 ~y99 1 y106 >= 1
+line 360: red 1 ~y107 1 y65 1 y71  >= 1; y107 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y65 1 y71 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 263: 1 y65 1 y71 1 ~y107 >= 1
+line 361: red 1 y106 1 ~y65 1 ~y98  >= 1; y106 -> 1
+  ** proofgoals from formula **
+  proofgoal 251: 1 y64 1 y71 >= 1
+  proofgoal 253: 1 y65 1 y99 >= 1
+  proofgoal 255: 1 y66 1 y98 >= 1
+  proofgoal 259: 1 y68 1 y96 >= 1
+  proofgoal 257: 1 y67 1 y97 >= 1
+  proofgoal 261: 1 y69 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y65 1 ~y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 264: 1 ~y65 1 ~y98 1 y106 >= 1
+line 362: red 1 ~y107 1 y66 1 y99  >= 1; y107 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y66 1 y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 265: 1 y66 1 y99 1 ~y107 >= 1
+line 363: red 1 y106 1 ~y66 1 ~y97  >= 1; y106 -> 1
+  ** proofgoals from formula **
+  proofgoal 251: 1 y64 1 y71 >= 1
+  proofgoal 253: 1 y65 1 y99 >= 1
+  proofgoal 255: 1 y66 1 y98 >= 1
+  proofgoal 259: 1 y68 1 y96 >= 1
+  proofgoal 257: 1 y67 1 y97 >= 1
+  proofgoal 261: 1 y69 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y66 1 ~y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 266: 1 ~y66 1 ~y97 1 y106 >= 1
+line 364: red 1 ~y107 1 y67 1 y98  >= 1; y107 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y67 1 y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 267: 1 y67 1 y98 1 ~y107 >= 1
+line 365: red 1 y106 1 ~y67 1 ~y96  >= 1; y106 -> 1
+  ** proofgoals from formula **
+  proofgoal 251: 1 y64 1 y71 >= 1
+  proofgoal 253: 1 y65 1 y99 >= 1
+  proofgoal 255: 1 y66 1 y98 >= 1
+  proofgoal 259: 1 y68 1 y96 >= 1
+  proofgoal 257: 1 y67 1 y97 >= 1
+  proofgoal 261: 1 y69 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y67 1 ~y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 268: 1 ~y67 1 ~y96 1 y106 >= 1
+line 366: red 1 ~y107 1 y68 1 y97  >= 1; y107 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y68 1 y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 269: 1 y68 1 y97 1 ~y107 >= 1
+line 367: red 1 y106 1 ~y68 1 ~y95  >= 1; y106 -> 1
+  ** proofgoals from formula **
+  proofgoal 251: 1 y64 1 y71 >= 1
+  proofgoal 253: 1 y65 1 y99 >= 1
+  proofgoal 255: 1 y66 1 y98 >= 1
+  proofgoal 259: 1 y68 1 y96 >= 1
+  proofgoal 257: 1 y67 1 y97 >= 1
+  proofgoal 261: 1 y69 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y68 1 ~y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 270: 1 ~y68 1 ~y95 1 y106 >= 1
+line 368: red 1 ~y107 1 y69 1 y96  >= 1; y107 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y69 1 y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 271: 1 y69 1 y96 1 ~y107 >= 1
+line 369: red 1 y106 1 ~y69 1 ~y70  >= 1; y106 -> 1
+  ** proofgoals from formula **
+  proofgoal 251: 1 y64 1 y71 >= 1
+  proofgoal 253: 1 y65 1 y99 >= 1
+  proofgoal 255: 1 y66 1 y98 >= 1
+  proofgoal 259: 1 y68 1 y96 >= 1
+  proofgoal 257: 1 y67 1 y97 >= 1
+  proofgoal 261: 1 y69 1 y95 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y69 1 ~y70 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 272: 1 ~y69 1 ~y70 1 y106 >= 1
+line 370: red 1 ~y107 1 y24 1 y95  >= 1; y107 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y24 1 y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 273: 1 y24 1 y95 1 ~y107 >= 1
+line 371: red 1 y107 1 ~y65 1 ~y99  >= 1; y107 -> 1
+  ** proofgoals from formula **
+  proofgoal 263: 1 y65 1 y71 >= 1
+  proofgoal 269: 1 y68 1 y97 >= 1
+  proofgoal 273: 1 y24 1 y95 >= 1
+  proofgoal 265: 1 y66 1 y99 >= 1
+  proofgoal 267: 1 y67 1 y98 >= 1
+  proofgoal 271: 1 y69 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y65 1 ~y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 274: 1 ~y65 1 ~y99 1 y107 >= 1
+line 372: red 1 ~y108 1 y66 1 y71  >= 1; y108 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y66 1 y71 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 275: 1 y66 1 y71 1 ~y108 >= 1
+line 373: red 1 y107 1 ~y66 1 ~y98  >= 1; y107 -> 1
+  ** proofgoals from formula **
+  proofgoal 263: 1 y65 1 y71 >= 1
+  proofgoal 269: 1 y68 1 y97 >= 1
+  proofgoal 273: 1 y24 1 y95 >= 1
+  proofgoal 265: 1 y66 1 y99 >= 1
+  proofgoal 267: 1 y67 1 y98 >= 1
+  proofgoal 271: 1 y69 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y66 1 ~y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 276: 1 ~y66 1 ~y98 1 y107 >= 1
+line 374: red 1 ~y108 1 y67 1 y99  >= 1; y108 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y67 1 y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 277: 1 y67 1 y99 1 ~y108 >= 1
+line 375: red 1 y107 1 ~y67 1 ~y97  >= 1; y107 -> 1
+  ** proofgoals from formula **
+  proofgoal 263: 1 y65 1 y71 >= 1
+  proofgoal 269: 1 y68 1 y97 >= 1
+  proofgoal 273: 1 y24 1 y95 >= 1
+  proofgoal 265: 1 y66 1 y99 >= 1
+  proofgoal 267: 1 y67 1 y98 >= 1
+  proofgoal 271: 1 y69 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y67 1 ~y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 278: 1 ~y67 1 ~y97 1 y107 >= 1
+line 376: red 1 ~y108 1 y68 1 y98  >= 1; y108 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y68 1 y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 279: 1 y68 1 y98 1 ~y108 >= 1
+line 377: red 1 y107 1 ~y68 1 ~y96  >= 1; y107 -> 1
+  ** proofgoals from formula **
+  proofgoal 263: 1 y65 1 y71 >= 1
+  proofgoal 269: 1 y68 1 y97 >= 1
+  proofgoal 273: 1 y24 1 y95 >= 1
+  proofgoal 265: 1 y66 1 y99 >= 1
+  proofgoal 267: 1 y67 1 y98 >= 1
+  proofgoal 271: 1 y69 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y68 1 ~y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 280: 1 ~y68 1 ~y96 1 y107 >= 1
+line 378: red 1 ~y108 1 y69 1 y97  >= 1; y108 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y69 1 y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 281: 1 y69 1 y97 1 ~y108 >= 1
+line 379: red 1 y107 1 ~y69 1 ~y95  >= 1; y107 -> 1
+  ** proofgoals from formula **
+  proofgoal 263: 1 y65 1 y71 >= 1
+  proofgoal 269: 1 y68 1 y97 >= 1
+  proofgoal 273: 1 y24 1 y95 >= 1
+  proofgoal 265: 1 y66 1 y99 >= 1
+  proofgoal 267: 1 y67 1 y98 >= 1
+  proofgoal 271: 1 y69 1 y96 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y69 1 ~y95 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 282: 1 ~y69 1 ~y95 1 y107 >= 1
+line 380: red 1 ~y108 1 y24 1 y96  >= 1; y108 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y24 1 y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 283: 1 y24 1 y96 1 ~y108 >= 1
+line 381: red 1 y108 1 ~y66 1 ~y99  >= 1; y108 -> 1
+  ** proofgoals from formula **
+  proofgoal 275: 1 y66 1 y71 >= 1
+  proofgoal 277: 1 y67 1 y99 >= 1
+  proofgoal 283: 1 y24 1 y96 >= 1
+  proofgoal 279: 1 y68 1 y98 >= 1
+  proofgoal 281: 1 y69 1 y97 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y66 1 ~y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 284: 1 ~y66 1 ~y99 1 y108 >= 1
+line 382: red 1 ~y109 1 y67 1 y71  >= 1; y109 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y67 1 y71 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 285: 1 y67 1 y71 1 ~y109 >= 1
+line 383: red 1 y108 1 ~y67 1 ~y98  >= 1; y108 -> 1
+  ** proofgoals from formula **
+  proofgoal 275: 1 y66 1 y71 >= 1
+  proofgoal 277: 1 y67 1 y99 >= 1
+  proofgoal 283: 1 y24 1 y96 >= 1
+  proofgoal 279: 1 y68 1 y98 >= 1
+  proofgoal 281: 1 y69 1 y97 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y67 1 ~y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 286: 1 ~y67 1 ~y98 1 y108 >= 1
+line 384: red 1 ~y109 1 y68 1 y99  >= 1; y109 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y68 1 y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 287: 1 y68 1 y99 1 ~y109 >= 1
+line 385: red 1 y108 1 ~y68 1 ~y97  >= 1; y108 -> 1
+  ** proofgoals from formula **
+  proofgoal 275: 1 y66 1 y71 >= 1
+  proofgoal 277: 1 y67 1 y99 >= 1
+  proofgoal 283: 1 y24 1 y96 >= 1
+  proofgoal 279: 1 y68 1 y98 >= 1
+  proofgoal 281: 1 y69 1 y97 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y68 1 ~y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 288: 1 ~y68 1 ~y97 1 y108 >= 1
+line 386: red 1 ~y109 1 y69 1 y98  >= 1; y109 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y69 1 y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 289: 1 y69 1 y98 1 ~y109 >= 1
+line 387: red 1 y108 1 ~y69 1 ~y96  >= 1; y108 -> 1
+  ** proofgoals from formula **
+  proofgoal 275: 1 y66 1 y71 >= 1
+  proofgoal 277: 1 y67 1 y99 >= 1
+  proofgoal 283: 1 y24 1 y96 >= 1
+  proofgoal 279: 1 y68 1 y98 >= 1
+  proofgoal 281: 1 y69 1 y97 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y69 1 ~y96 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 290: 1 ~y69 1 ~y96 1 y108 >= 1
+line 388: red 1 ~y109 1 y24 1 y97  >= 1; y109 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y24 1 y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 291: 1 y24 1 y97 1 ~y109 >= 1
+line 389: red 1 y109 1 ~y67 1 ~y99  >= 1; y109 -> 1
+  ** proofgoals from formula **
+  proofgoal 285: 1 y67 1 y71 >= 1
+  proofgoal 291: 1 y24 1 y97 >= 1
+  proofgoal 287: 1 y68 1 y99 >= 1
+  proofgoal 289: 1 y69 1 y98 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y67 1 ~y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 292: 1 ~y67 1 ~y99 1 y109 >= 1
+line 390: red 1 ~y110 1 y68 1 y71  >= 1; y110 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y68 1 y71 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 293: 1 y68 1 y71 1 ~y110 >= 1
+line 391: red 1 y109 1 ~y68 1 ~y98  >= 1; y109 -> 1
+  ** proofgoals from formula **
+  proofgoal 285: 1 y67 1 y71 >= 1
+  proofgoal 291: 1 y24 1 y97 >= 1
+  proofgoal 287: 1 y68 1 y99 >= 1
+  proofgoal 289: 1 y69 1 y98 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y68 1 ~y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 294: 1 ~y68 1 ~y98 1 y109 >= 1
+line 392: red 1 ~y110 1 y69 1 y99  >= 1; y110 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y69 1 y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 295: 1 y69 1 y99 1 ~y110 >= 1
+line 393: red 1 y109 1 ~y69 1 ~y97  >= 1; y109 -> 1
+  ** proofgoals from formula **
+  proofgoal 285: 1 y67 1 y71 >= 1
+  proofgoal 291: 1 y24 1 y97 >= 1
+  proofgoal 287: 1 y68 1 y99 >= 1
+  proofgoal 289: 1 y69 1 y98 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y69 1 ~y97 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 296: 1 ~y69 1 ~y97 1 y109 >= 1
+line 394: red 1 ~y110 1 y24 1 y98  >= 1; y110 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y24 1 y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 297: 1 y24 1 y98 1 ~y110 >= 1
+line 395: red 1 y110 1 ~y68 1 ~y99  >= 1; y110 -> 1
+  ** proofgoals from formula **
+  proofgoal 293: 1 y68 1 y71 >= 1
+  proofgoal 297: 1 y24 1 y98 >= 1
+  proofgoal 295: 1 y69 1 y99 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y68 1 ~y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 298: 1 ~y68 1 ~y99 1 y110 >= 1
+line 396: red 1 ~y111 1 y69 1 y71  >= 1; y111 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y69 1 y71 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 299: 1 y69 1 y71 1 ~y111 >= 1
+line 397: red 1 y110 1 ~y69 1 ~y98  >= 1; y110 -> 1
+  ** proofgoals from formula **
+  proofgoal 293: 1 y68 1 y71 >= 1
+  proofgoal 297: 1 y24 1 y98 >= 1
+  proofgoal 295: 1 y69 1 y99 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y69 1 ~y98 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved constraint to be added by RUP check.
+  ConstraintId 300: 1 ~y69 1 ~y98 1 y110 >= 1
+line 398: red 1 ~y111 1 y24 1 y99  >= 1; y111 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y24 1 y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 301: 1 y24 1 y99 1 ~y111 >= 1
+line 399: red 1 y111 1 ~y69 1 ~y99  >= 1; y111 -> 1
+  ** proofgoals from formula **
+  proofgoal 299: 1 y69 1 y71 >= 1
+  proofgoal 301: 1 y24 1 y99 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~y69 1 ~y99 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 302: 1 ~y69 1 ~y99 1 y111 >= 1
+line 400: red 1 ~y22 1 y24 1 y71  >= 1; y22 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 y24 1 y71 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 303: 1 ~y22 1 y24 1 y71 >= 1
+line 401: * ==============================================================
+line 402: * Constraining through linking variables:
+line 403: u 1 ~y101  >= 1;
+Verification failed.
+Failed in proof file line 403.
+Hint: Failed to show '1 ~y101 >= 1' by reverse unit propagation.

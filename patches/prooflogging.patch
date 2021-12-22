@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-22 16:28:24.866069880 +0100
-+++ src/core/Main.C	2021-12-22 16:22:13.914088549 +0100
+--- src_tmp/core/Main.C	2021-12-22 19:18:12.077360718 +0100
++++ src/core/Main.C	2021-12-22 16:46:12.272354140 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -358,8 +358,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-22 16:28:19.082064576 +0100
-@@ -0,0 +1,176 @@
++++ src/core/Prooflogger.C	2021-12-22 19:18:08.557349289 +0100
+@@ -0,0 +1,178 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -367,7 +367,6 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +
 +
 +void Prooflogger::write_proof_header(int nbclause) {
-+    formula_length = nbclause;
 +    proof_file << "pseudo-Boolean proof version 1.0\n";
 +    proof_file << "f " << nbclause << "\n";
 +}
@@ -435,7 +434,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 +
 +const char* Prooflogger::literal_symbol(Lit lit) {
-+    if(var(lit) + 1 > formula_length) return "y";
++    std::cout << var(lit) +1 << "\n";
++    if(var(lit) + 1 > formula_length + n_variables) return "y";
 +    else return "x";
 +}
 +
@@ -513,6 +513,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +// OPB writing methods
 +
 +void Prooflogger::write_OPB_header(int nbvar, int nbclause) {
++    formula_length = nbclause;
++    n_variables = nbvar;
 +    OPB_file << "* #variable= " << nbvar+nbclause << " #constraint= " << nbclause << "\n";
 +    OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
 +}
@@ -521,7 +523,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    if(num > 0) {
 +        OPB_file << "min: ";
 +        for(int i = start_var+1; i < start_var+num+1; i++) {
-+            OPB_file << "1 ~x" << i << " ";
++            OPB_file << "1 x" << i << " ";
 +        } 
 +        OPB_file << ";\n";
 +    }
@@ -538,8 +540,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-12-21 20:51:52.364116089 +0100
-@@ -0,0 +1,65 @@
++++ src/core/Prooflogger.h	2021-12-22 19:17:30.389225314 +0100
+@@ -0,0 +1,66 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -562,9 +564,10 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +class Prooflogger {
 +public:
 +
-+    // Formula number of clauses
++    // Formula number of clauses and number of variables
 +    //
 +    int formula_length = 0;
++    int n_variables = 0;
 +
 +    // Constraint counter
 +    //
@@ -607,7 +610,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-22 16:28:24.866069880 +0100
+--- src_tmp/core/Solver.C	2021-12-22 19:18:12.077360718 +0100
 +++ src/core/Solver.C	2021-12-22 16:00:12.341568535 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -684,7 +687,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-22 16:28:24.866069880 +0100
+--- src_tmp/core/Solver.h	2021-12-22 19:18:12.077360718 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
