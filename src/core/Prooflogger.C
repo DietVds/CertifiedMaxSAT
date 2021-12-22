@@ -55,7 +55,7 @@ void Prooflogger::write_order(vec<Lit>& linkingVar) {
 
     // Load
     proof_file << "load_order exp2 ";
-    for(int i = 0; i < linkingVar.size(); i++) {
+    for(int i = linkingVar.size()-1; i >= 0; i--) {
         proof_file << "y" << var(linkingVar[i])+1 << " ";
     }
     proof_file << "\n";
@@ -71,9 +71,8 @@ void Prooflogger::derived_empty_clause() {
     write_contradiction();
 }
 
-const char* Prooflogger::literal_symbol(Lit lit) {
-    std::cout << var(lit) +1 << "\n";
-    if(var(lit) + 1 > formula_length + n_variables) return "y";
+const char* Prooflogger::literal_symbol(int var) {
+    if(var + 1 > formula_length + n_variables) return "y";
     else return "x";
 }
 
@@ -81,13 +80,15 @@ void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
     const char* symbol;
     proof_file << "red ";
     for (int i = 0; i < definition.size(); i++) {
-        symbol = literal_symbol(definition[i]);
+        symbol = literal_symbol(var(definition[i]));
         if (sign(definition[i]) == 1)
             proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
         else
             proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
     }
     proof_file << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
+    constraint_counter++;
+    proof_file << "p " << constraint_counter-1 << " " << constraint_counter << " +\n";
     constraint_counter++;
 }
 
@@ -112,11 +113,13 @@ void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {
 }
 
 void Prooflogger::write_bound_update(vec<lbool>& model) {
+    const char* symbol;
     proof_file << "o ";
 
     for(int i = 0; i < model.size(); i++) {
-        if(model[i] == l_True) proof_file << "x" << i+1 << " ";
-        else if(model[i] == l_False) proof_file << "~x" << i+1 << " ";
+        symbol = literal_symbol(i);
+        if(model[i] == l_True) proof_file << symbol << i+1 << " ";
+        else if(model[i] == l_False) proof_file << "~" << symbol << i+1 << " ";
     }
     proof_file << "\n";
 
@@ -128,7 +131,7 @@ void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     const char* symbol;
     proof_file << "u ";
     for (int i = 0; i < clause.size(); i++) {
-        symbol = literal_symbol(clause[i]);
+        symbol = literal_symbol(var(clause[i]));
         if (sign(clause[i]) == 1)
             proof_file << "1 ~" << symbol << var(clause[i]) + 1 << " ";
         else

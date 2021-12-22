@@ -481,6 +481,7 @@ int main(int argc, char** argv)
           PL.write_learnt_clause(lits);
 	      S.addClause(lits);
 	    }
+        PL.write_comment("==============================================================");
         answer = answerNew;
     } else { // lcnt > 1 
         PL.write_comment("==============================================================");
@@ -493,7 +494,8 @@ int main(int argc, char** argv)
 	      lits.push(~linkingVar[i]);
           PL.write_learnt_clause(lits);
 	      S.addClause(lits);
-	}
+	    }
+        PL.write_comment("==============================================================");
 
 	answer = answerNew;
       }

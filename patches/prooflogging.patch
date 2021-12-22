@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-22 19:18:12.077360718 +0100
-+++ src/core/Main.C	2021-12-22 16:46:12.272354140 +0100
+--- src_tmp/core/Main.C	2021-12-22 21:07:53.734629071 +0100
++++ src/core/Main.C	2021-12-22 20:00:49.259670683 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -290,7 +290,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -407,21 +462,39 @@
+@@ -407,21 +462,41 @@
        lcnt++;
        int answerNew = 0;
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
@@ -308,6 +308,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 -	  lits.clear();
 -	  lits.push(~linkingVar[i]);
 -	  S.addClause(lits);
+-	}
 +	    if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
 +      if (lcnt == 1) { // first model: generate cardinality constraints
 +        PL.write_comment("==============================================================");
@@ -327,6 +328,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +          PL.write_learnt_clause(lits);
 +	      S.addClause(lits);
 +	    }
++        PL.write_comment("==============================================================");
 +        answer = answerNew;
 +    } else { // lcnt > 1 
 +        PL.write_comment("==============================================================");
@@ -339,12 +341,13 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +	      lits.push(~linkingVar[i]);
 +          PL.write_learnt_clause(lits);
 +	      S.addClause(lits);
- 	}
++	    }
++        PL.write_comment("==============================================================");
 +
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -439,8 +512,10 @@
+@@ -439,8 +514,10 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -358,8 +361,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-22 19:18:08.557349289 +0100
-@@ -0,0 +1,178 @@
++++ src/core/Prooflogger.C	2021-12-22 21:07:49.074579655 +0100
+@@ -0,0 +1,181 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -417,7 +420,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +
 +    // Load
 +    proof_file << "load_order exp2 ";
-+    for(int i = 0; i < linkingVar.size(); i++) {
++    for(int i = linkingVar.size()-1; i >= 0; i--) {
 +        proof_file << "y" << var(linkingVar[i])+1 << " ";
 +    }
 +    proof_file << "\n";
@@ -433,9 +436,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    write_contradiction();
 +}
 +
-+const char* Prooflogger::literal_symbol(Lit lit) {
-+    std::cout << var(lit) +1 << "\n";
-+    if(var(lit) + 1 > formula_length + n_variables) return "y";
++const char* Prooflogger::literal_symbol(int var) {
++    if(var + 1 > formula_length + n_variables) return "y";
 +    else return "x";
 +}
 +
@@ -443,13 +445,15 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    const char* symbol;
 +    proof_file << "red ";
 +    for (int i = 0; i < definition.size(); i++) {
-+        symbol = literal_symbol(definition[i]);
++        symbol = literal_symbol(var(definition[i]));
 +        if (sign(definition[i]) == 1)
 +            proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
 +        else
 +            proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
 +    }
 +    proof_file << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
++    constraint_counter++;
++    proof_file << "p " << constraint_counter-1 << " " << constraint_counter << " +\n";
 +    constraint_counter++;
 +}
 +
@@ -474,11 +478,13 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 +
 +void Prooflogger::write_bound_update(vec<lbool>& model) {
++    const char* symbol;
 +    proof_file << "o ";
 +
 +    for(int i = 0; i < model.size(); i++) {
-+        if(model[i] == l_True) proof_file << "x" << i+1 << " ";
-+        else if(model[i] == l_False) proof_file << "~x" << i+1 << " ";
++        symbol = literal_symbol(i);
++        if(model[i] == l_True) proof_file << symbol << i+1 << " ";
++        else if(model[i] == l_False) proof_file << "~" << symbol << i+1 << " ";
 +    }
 +    proof_file << "\n";
 +
@@ -490,7 +496,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    const char* symbol;
 +    proof_file << "u ";
 +    for (int i = 0; i < clause.size(); i++) {
-+        symbol = literal_symbol(clause[i]);
++        symbol = literal_symbol(var(clause[i]));
 +        if (sign(clause[i]) == 1)
 +            proof_file << "1 ~" << symbol << var(clause[i]) + 1 << " ";
 +        else
@@ -540,7 +546,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-12-22 19:17:30.389225314 +0100
++++ src/core/Prooflogger.h	2021-12-22 19:29:10.815492661 +0100
 @@ -0,0 +1,66 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
@@ -584,7 +590,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_order                (vec<Lit>& linkingVarint);
 +    void write_comment              (const char* comment);
 +    void derived_empty_clause       ();
-+    const char* literal_symbol      (Lit lit); 
++    const char* literal_symbol      (int var); 
 +    void write_learnt_clause        (vec<Lit>& clause);
 +    void write_sub_red              (vec<Lit>& definition, bool ass);
 +    void write_dom                  (vec<Lit>& linkingVar, int start, int stop); 
@@ -610,7 +616,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-22 19:18:12.077360718 +0100
+--- src_tmp/core/Solver.C	2021-12-22 21:07:53.734629071 +0100
 +++ src/core/Solver.C	2021-12-22 16:00:12.341568535 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -687,7 +693,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-22 19:18:12.077360718 +0100
+--- src_tmp/core/Solver.h	2021-12-22 21:07:53.734629071 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h

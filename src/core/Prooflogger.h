@@ -40,7 +40,7 @@ public:
     void write_order                (vec<Lit>& linkingVarint);
     void write_comment              (const char* comment);
     void derived_empty_clause       ();
-    const char* literal_symbol      (Lit lit); 
+    const char* literal_symbol      (int var); 
     void write_learnt_clause        (vec<Lit>& clause);
     void write_sub_red              (vec<Lit>& definition, bool ass);
     void write_dom                  (vec<Lit>& linkingVar, int start, int stop); 
