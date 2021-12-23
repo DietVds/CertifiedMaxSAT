@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-23 21:04:01.378032716 +0100
-+++ src/core/Main.C	2021-12-23 21:03:58.446028786 +0100
+--- src_tmp/core/Main.C	2021-12-23 20:29:05.959604438 +0100
++++ src/core/Main.C	2021-12-23 20:18:17.009421085 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -126,7 +126,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("\n");
  }
  
-@@ -249,9 +264,11 @@
+@@ -249,52 +264,70 @@
          return NULL;
  }
  
@@ -139,7 +139,12 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -261,42 +278,56 @@
++  PL.write_comment("-------------------------------------------");
++  PL.write_comment("New node:");
++
+   vec<Lit> linkingAlpha;
+   vec<Lit> linkingBeta;
+ 
    Var varZero = S.newVar();
    Var varLast = S.newVar();
  
@@ -209,11 +214,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +	    }
        }
      }
-+    PL.write_comment("-------------------------------------------");
    }
-   linkingAlpha.clear();
-   linkingBeta.clear();
-@@ -304,10 +335,10 @@
+@@ -304,10 +337,10 @@
  
  int main(int argc, char** argv)
  {
@@ -226,7 +228,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      int         i, j;
      const char* value;
      for (i = j = 0; i < argc; i++){
-@@ -347,6 +378,12 @@
+@@ -347,6 +380,12 @@
              printUsage(argv);
              exit(0);
  
@@ -239,7 +241,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -357,7 +394,7 @@
+@@ -357,7 +396,7 @@
      argc = j;
  
  
@@ -248,7 +250,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #if defined(__linux__)
      fpu_control_t oldcw, newcw;
      _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
-@@ -376,6 +413,12 @@
+@@ -376,6 +415,12 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
@@ -261,7 +263,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,8 +426,18 @@
+@@ -383,8 +428,18 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
@@ -281,7 +283,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
      double parse_time = cpuTime() - cpu_time;
-@@ -393,6 +446,8 @@
+@@ -393,6 +448,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
@@ -290,7 +292,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -407,21 +462,41 @@
+@@ -407,21 +464,41 @@
        lcnt++;
        int answerNew = 0;
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
@@ -347,7 +349,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -439,8 +514,10 @@
+@@ -439,8 +516,10 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -361,8 +363,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-23 21:02:23.745918382 +0100
-@@ -0,0 +1,193 @@
++++ src/core/Prooflogger.C	2021-12-23 20:28:43.123533005 +0100
+@@ -0,0 +1,204 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -442,22 +444,15 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 +
 +void Prooflogger::store(Lit literal) {
-+    unit_store[var(literal)] = sign(literal);
++    store.push(sign(literal)? var(literal):-var(literal));
 +}
 +
 +void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass, int summation) {
-+
-+    // First verify if clause should be written at all
-+    for (int i = 0; i < definition.size(); i++) {
-+        // If the sign is the same as the one in the store then the clause is trivially true
-+        if(unit_store.find(var(definition[i])) != unit_store.end() && unit_store[var(definition[i])] == sign(definition[i])) return;
-+    }
-+
 +    const char* symbol;
 +    proof_file << "red ";
 +    for (int i = 0; i < definition.size(); i++) {
-+        // If the literal is now found in the store then it was there but the sign was different, hence it shouldn't be written 
-+        if(unit_store.find(var(definition[i])) == unit_store.end()) {
++        if(store.find(-var(definition[i]))) continue;
++        else if(!store.find(var(definition[i]))) {
 +            symbol = literal_symbol(var(definition[i]));
 +            if (sign(definition[i]) == 1)
 +                proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
@@ -466,7 +461,25 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        }
 +    }
 +    proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << ass << "\n";
-+    constraint_counter++;
++    int constraint_id = ++constraint_counter;
++    //if(c1_id == 0 && c2_id == 0) {
++    //    proof_file << "p " << constraint_counter << " " << constraint_counter << " + 2 d\n";
++    //    proof_file << "p " << constraint_counter << " " << constraint_counter << " + 2 d\n";
++    //    c1_id = ++constraint_counter;
++    //    c2_id = ++constraint_counter;
++    //}
++    //if(summation == 0) {
++    //    proof_file << "p " << c1_id << " " << constraint_id << " +\n";
++    //    proof_file << "p " << c2_id << " " << constraint_id << " +\n";
++    //    c1_id = ++constraint_counter;
++    //    c2_id = ++constraint_counter;
++    //} else if(summation == 1) {
++    //    proof_file << "p " << c1_id << " " << constraint_id << " +\n";
++    //    c1_id = ++constraint_counter;
++    //} else if(summation == 2) {
++    //    proof_file << "p " << c2_id << " " << constraint_id << " +\n";
++    //    c2_id = ++constraint_counter;
++    //}
 +}
 +
 +void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {
@@ -558,8 +571,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-12-23 20:54:33.376925368 +0100
-@@ -0,0 +1,72 @@
++++ src/core/Prooflogger.h	2021-12-23 20:28:57.219577032 +0100
+@@ -0,0 +1,70 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -567,7 +580,6 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#include <fstream>
 +#include <iostream>
 +#include <sstream>
-+#include <map>
 +
 +#include "Vec.h"
 +#include "Heap.h"
@@ -594,7 +606,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +
 +    // Unit clause store
 +    // 
-+    std::map<int, bool> unit_store;
++    vec<int> store;
 +
 +    // Proof file
 +    std::ofstream proof_file;
@@ -615,7 +627,6 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_constraint           (vec<Lit>& clause);
 +    void write_contradiction        ();
 +    void write_delete               (int number);
-+    void store                      (Lit literal);
 +
 +    // OPB file
 +    std::ofstream OPB_file;
@@ -634,7 +645,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-23 21:04:01.378032716 +0100
+--- src_tmp/core/Solver.C	2021-12-23 20:29:05.959604438 +0100
 +++ src/core/Solver.C	2021-12-22 16:00:12.341568535 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -711,7 +722,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-23 21:04:01.378032716 +0100
+--- src_tmp/core/Solver.h	2021-12-23 20:29:05.959604438 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h

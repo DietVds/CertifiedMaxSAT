@@ -76,20 +76,32 @@ const char* Prooflogger::literal_symbol(int var) {
     else return "x";
 }
 
-void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
+void Prooflogger::store(Lit literal) {
+    unit_store[var(literal)] = sign(literal);
+}
+
+void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass, int summation) {
+
+    // First verify if clause should be written at all
+    for (int i = 0; i < definition.size(); i++) {
+        // If the sign is the same as the one in the store then the clause is trivially true
+        if(unit_store.find(var(definition[i])) != unit_store.end() && unit_store[var(definition[i])] == sign(definition[i])) return;
+    }
+
     const char* symbol;
     proof_file << "red ";
     for (int i = 0; i < definition.size(); i++) {
-        symbol = literal_symbol(var(definition[i]));
-        if (sign(definition[i]) == 1)
-            proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
-        else
-            proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
+        // If the literal is now found in the store then it was there but the sign was different, hence it shouldn't be written 
+        if(unit_store.find(var(definition[i])) == unit_store.end()) {
+            symbol = literal_symbol(var(definition[i]));
+            if (sign(definition[i]) == 1)
+                proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
+            else
+                proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
+        }
     }
     proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << ass << "\n";
     constraint_counter++;
-    //proof_file << "p " << constraint_counter-1 << " " << constraint_counter << " +\n";
-    //constraint_counter++;
 }
 
 void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {

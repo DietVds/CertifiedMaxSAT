@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <map>
 
 #include "Vec.h"
 #include "Heap.h"
@@ -29,6 +30,10 @@ public:
     //
     int constraint_counter = 0;
 
+    // Unit clause store
+    // 
+    std::map<int, bool> unit_store;
+
     // Proof file
     std::ofstream proof_file;
     const char *proof_file_name = "maxsat_proof.proof";
@@ -42,12 +47,13 @@ public:
     void derived_empty_clause       ();
     const char* literal_symbol      (int var); 
     void write_learnt_clause        (vec<Lit>& clause);
-    void write_sub_red              (vec<Lit>& definition, bool ass);
+    void write_sub_red              (vec<Lit>& definition, bool ass, int summation);
     void write_dom                  (vec<Lit>& linkingVar, int start, int stop); 
     void write_bound_update         (vec<lbool>& model); 
     void write_constraint           (vec<Lit>& clause);
     void write_contradiction        ();
     void write_delete               (int number);
+    void store                      (Lit literal);
 
     // OPB file
     std::ofstream OPB_file;
