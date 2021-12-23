@@ -314,15 +314,15 @@ void genCardinals(int from, int to,
 	    int beta = sigma - alpha;
 	    if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
 	      lits.clear();
-	      lits.push(linkingVar[sigma]);
 	      lits.push(~linkingAlpha[alpha]);
 	      lits.push(~linkingBeta[beta]);
+	      lits.push(linkingVar[sigma]);
           PL.write_sub_red(lits, true);
 	      S.addClause(lits);
 	      lits.clear();
-	      lits.push(~linkingVar[sigma+1]);
 	      lits.push(linkingAlpha[alpha+1]);
 	      lits.push(linkingBeta[beta+1]);
+	      lits.push(~linkingVar[sigma+1]);
           PL.write_sub_red(lits, false);
 	      S.addClause(lits);
 	    }

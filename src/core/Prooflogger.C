@@ -86,10 +86,10 @@ void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
         else
             proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
     }
-    proof_file << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
+    proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << ass << "\n";
     constraint_counter++;
-    proof_file << "p " << constraint_counter-1 << " " << constraint_counter << " +\n";
-    constraint_counter++;
+    //proof_file << "p " << constraint_counter-1 << " " << constraint_counter << " +\n";
+    //constraint_counter++;
 }
 
 void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {

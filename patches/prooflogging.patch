@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-22 21:07:53.734629071 +0100
-+++ src/core/Main.C	2021-12-22 20:00:49.259670683 +0100
+--- src_tmp/core/Main.C	2021-12-23 10:25:29.581419922 +0100
++++ src/core/Main.C	2021-12-23 10:24:41.440209164 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -198,15 +198,15 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +	    int beta = sigma - alpha;
 +	    if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
 +	      lits.clear();
-+	      lits.push(linkingVar[sigma]);
 +	      lits.push(~linkingAlpha[alpha]);
 +	      lits.push(~linkingBeta[beta]);
++	      lits.push(linkingVar[sigma]);
 +          PL.write_sub_red(lits, true);
 +	      S.addClause(lits);
 +	      lits.clear();
-+	      lits.push(~linkingVar[sigma+1]);
 +	      lits.push(linkingAlpha[alpha+1]);
 +	      lits.push(linkingBeta[beta+1]);
++	      lits.push(~linkingVar[sigma+1]);
 +          PL.write_sub_red(lits, false);
 +	      S.addClause(lits);
 +	    }
@@ -361,7 +361,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-22 21:07:49.074579655 +0100
++++ src/core/Prooflogger.C	2021-12-23 10:25:20.889923504 +0100
 @@ -0,0 +1,181 @@
 +#include "Prooflogger.h"
 +
@@ -451,10 +451,10 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        else
 +            proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
 +    }
-+    proof_file << " >= 1; y" << var(definition[0])+1 << " -> " << ass << "\n";
++    proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << ass << "\n";
 +    constraint_counter++;
-+    proof_file << "p " << constraint_counter-1 << " " << constraint_counter << " +\n";
-+    constraint_counter++;
++    //proof_file << "p " << constraint_counter-1 << " " << constraint_counter << " +\n";
++    //constraint_counter++;
 +}
 +
 +void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {
@@ -616,7 +616,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-22 21:07:53.734629071 +0100
+--- src_tmp/core/Solver.C	2021-12-23 10:25:29.581419922 +0100
 +++ src/core/Solver.C	2021-12-22 16:00:12.341568535 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -693,7 +693,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-22 21:07:53.734629071 +0100
+--- src_tmp/core/Solver.h	2021-12-23 10:25:29.581419922 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
