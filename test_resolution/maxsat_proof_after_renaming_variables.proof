@@ -1,0 +1,99 @@
+pseudo-Boolean proof version 1.0
+f 4
+* ==============================================================
+* First model found:
+o ~x1 x2 ~x3 x4 ~x5 x6 ~x7 
+* ==============================================================
+* Cardinality encoding:
+* -------------------------------------------
+* New node:
+* - First variable:
+red 1 y8  >= 1; y8 -> 1
+* - Last variable:
+red 1 ~y9  >= 1; y9 -> 0
+* -------------------------------------------
+* New node:
+* - First variable:
+red 1 y10  >= 1; y10 -> 1
+* - Last variable:
+red 1 ~y11  >= 1; y11 -> 0
+* -------------------------------------------
+* New node:
+* - First variable:
+red 1 y12  >= 1; y12 -> 1
+* - Last variable:
+red 1 ~y13  >= 1; y13 -> 0
+* - Node clauses:
+red 1 x4 1 x5 1 ~v1_x4_x5  >= 1; v1_x4_x5 -> 0
+red  1 ~x5 1 v1_x4_x5  >= 1; v1_x4_x5 -> 1
+red 1 x4  1 ~v2__x4_x5  >= 1; v2__x4_x5 -> 0
+red 1 ~x4  1 v1_x4_x5  >= 1; v1_x4_x5 -> 1
+red  1 x5 1 ~v2__x4_x5  >= 1; v2__x4_x5 -> 0
+red 1 ~x4 1 ~x5 1 v2__x4_x5  >= 1; v2__x4_x5 -> 1
+
+* -------------------------------------------
+* New node:
+* - First variable:
+red 1 y16  >= 1; y16 -> 1
+* - Last variable:
+red 1 ~y17  >= 1; y17 -> 0
+* -------------------------------------------
+* New node:
+* - First variable:
+red 1 y18  >= 1; y18 -> 1
+* - Last variable:
+red 1 ~y19  >= 1; y19 -> 0
+* - Node clauses:
+red 1 v1_x4_x5 1 x6 1 ~v1_x4_x6  >= 1; v1_x4_x6 -> 0
+red  1 ~x6 1 v1_x4_x6  >= 1; v1_x4_x6 -> 1
+red 1 v1_x4_x5  1 ~v2__x4_x6  >= 1; v2__x4_x6 -> 0
+red 1 ~v1_x4_x5  1 v1_x4_x6  >= 1; v1_x4_x6 -> 1
+red 1 v2__x4_x5 1 x6 1 ~v2__x4_x6  >= 1; v2__x4_x6 -> 0
+red 1 ~v1_x4_x5 1 ~x6 1 v2__x4_x6  >= 1; v2__x4_x6 -> 1
+red 1 v2__x4_x5  1 ~v3__x4_x6  >= 1; v3__x4_x6 -> 0
+red 1 ~v2__x4_x5  1 v2__x4_x6  >= 1; v2__x4_x6 -> 1
+red  1 x6 1 ~v3__x4_x6  >= 1; v3__x4_x6 -> 0
+red 1 ~v2__x4_x5 1 ~x6 1 v3__x4_x6  >= 1; v3__x4_x6 -> 1
+* -------------------------------------------
+* New node:
+* - First variable:
+red 1 y23  >= 1; y23 -> 1
+* - Last variable:
+red 1 ~y24  >= 1; y24 -> 0
+* -------------------------------------------
+* New node:
+* - First variable:
+red 1 y25  >= 1; y25 -> 1
+* - Last variable:
+red 1 ~y26  >= 1; y26 -> 0
+* - Node clauses:
+red 1 v1_x4_x6 1 x7 1 ~v1_x4_x7  >= 1; v1_x4_x7 -> 0
+red  1 ~x7 1 v1_x4_x7  >= 1; v1_x4_x7 -> 1
+red 1 v1_x4_x6  1 ~v2__x4_x7  >= 1; v2__x4_x7 -> 0
+red 1 ~v1_x4_x6  1 v1_x4_x7  >= 1; v1_x4_x7 -> 1
+red 1 v2__x4_x6 1 x7 1 ~v2__x4_x7  >= 1; v2__x4_x7 -> 0
+red 1 ~v1_x4_x6 1 ~x7 1 v2__x4_x7  >= 1; v2__x4_x7 -> 1
+red 1 v2__x4_x6  1 ~v3__x4_x7  >= 1; v3__x4_x7 -> 0
+red 1 ~v2__x4_x6  1 v2__x4_x7  >= 1; v2__x4_x7 -> 1
+red 1 v3__x4_x6 1 x7 1 ~v3__x4_x7  >= 1; v3__x4_x7 -> 0
+red 1 ~v2__x4_x6 1 ~x7 1 v3__x4_x7  >= 1; v3__x4_x7 -> 1
+red 1 v3__x4_x6  1 ~v4__x4_x7  >= 1; v4__x4_x7 -> 0
+red 1 ~v3__x4_x6  1 v3__x4_x7  >= 1; v3__x4_x7 -> 1
+red  1 x7 1 ~v4__x4_x7  >= 1; v4__x4_x7 -> 0
+red 1 ~v3__x4_x6 1 ~x7 1 v4__x4_x7  >= 1; v4__x4_x7 -> 1
+* ==============================================================
+* Constraining through linking variables:
+u 1 ~v2__x4_x7  >= 1;
+u 1 ~v3__x4_x7  >= 1;
+u 1 ~v4__x4_x7  >= 1;
+* ==============================================================
+u 1 v1_x4_x6 1 x4  >= 1;
+* ==============================================================
+* New model found:
+o ~x1 ~x2 ~x3 ~x4 x5 ~x6 ~x7 y8 ~y9 y10 ~y11 y12 ~y13 v1_x4_x5 ~v2__x4_x5 y16 ~y17 y18 ~y19 v1_x4_x6 ~v2__x4_x6 ~v3__x4_x6 y23 ~y24 y25 ~y26 v1_x4_x7 ~v2__x4_x7 ~v3__x4_x7 ~v4__x4_x7 
+* ==============================================================
+* Constraining through linking variables:
+u 1 ~v1_x4_x7  >= 1;
+* ==============================================================
+u >= 1;
+c 62
