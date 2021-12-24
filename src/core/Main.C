@@ -380,6 +380,9 @@ int main(int argc, char** argv)
         } else if ((value = hasPrefix(argv[i], "-opb-file="))) {
             PL.set_OPB_name(value);
 
+        }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
+            PL.meaningful_names = true;
+
         }else if (strncmp(argv[i], "-", 1) == 0){
             reportf("ERROR! unknown flag %s\n", argv[i]);
             exit(0);
@@ -408,9 +411,6 @@ int main(int argc, char** argv)
     gzFile in = (argc == 1) ? gzdopen(0, "rb") : gzopen(argv[1], "rb");
     if (in == NULL)
         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
-
-    // Open proof file
-    PL.open_proof();
 
     // Open OPB file
     PL.open_OPB();
@@ -443,7 +443,7 @@ int main(int argc, char** argv)
         reportf("Solved by unit propagation\n");
         if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
         PL.derived_empty_clause();
-        PL.close_proof();
+        PL.write_proof();
         printf("UNSATISFIABLE\n");
         exit(20);
     }
@@ -512,10 +512,9 @@ int main(int argc, char** argv)
             fprintf(res, " 0\n");
         } else
             fprintf(res, "UNSAT\n");
-        PL.write_comment("==============================================================\n");
-        PL.close_proof();
         fclose(res);
     }
+    PL.write_proof();
 
 #ifdef NDEBUG
     exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')

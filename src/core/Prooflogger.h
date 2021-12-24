@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <string>
+#include <regex>
 
 #include "Vec.h"
 #include "Heap.h"
@@ -34,15 +36,17 @@ public:
     // 
     std::map<int, int> simplified_constraint_store;
 
-    // Simplified variable name store
-    std::map<int, const char*> simplified_variable_names;
+    // Meaningful variable names
+    bool meaningful_names = false;
+    std::map<int, int> meaningful_name_LB;
+    std::map<int, int> meaningful_name_UB;
+    std::map<int, int> meaningful_name_n;
 
     // Proof file
-    std::ofstream proof_file;
-    const char *proof_file_name = "maxsat_proof.proof";
-    void open_proof                 ()                 {proof_file.open(proof_file_name);};
-    void close_proof                ()                 {proof_file.close();};
+    std::stringstream proof;
+    const char *proof_file_name = "maxsat_proof.pbp";
     void set_proof_name             (const char* name) {proof_file_name = name;};
+    void write_proof                ();
 
     void write_proof_header         (int nbclause);
     void write_order                (vec<Lit>& linkingVarint);

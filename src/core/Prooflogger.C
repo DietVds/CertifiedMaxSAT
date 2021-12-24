@@ -5,68 +5,16 @@
 
 
 void Prooflogger::write_proof_header(int nbclause) {
-    proof_file << "pseudo-Boolean proof version 1.0\n";
-    proof_file << "f " << nbclause << "\n";
-}
-
-void Prooflogger::write_order(vec<Lit>& linkingVar) {
-    proof_file << "pre_order exp2\n";
-
-    // Auxiliairy variables
-    proof_file << "     vars\n";
-    proof_file << "         left ";
-    for(int i = 0; i < linkingVar.size(); i++) {
-        proof_file << "u" << i + 1 << " ";
-    }
-    proof_file << "\n         right ";
-    for(int i = 0; i < linkingVar.size(); i++) {
-        proof_file << "v" << i + 1 << " ";
-    }
-    proof_file << "\n         aux";
-    proof_file << "\n     end\n";
-
-    // Constraint
-    proof_file << "     def\n       ";
-    int current_weight = 1;
-    for(int i = linkingVar.size(); i > 0; i--) {
-        proof_file << "-" << current_weight << " u" << i << " ";
-        proof_file << current_weight << " v" << i << " ";
-        current_weight = current_weight * 2;
-    }
-    proof_file << " >= 0;\n";
-    proof_file << "     end\n\n";
-
-    // Transitivity proof
-    proof_file << "     transitivity\n";
-    proof_file << "         vars\n";
-    proof_file << "             fresh_right ";
-    for(int i = 0; i < linkingVar.size(); i++) {
-        proof_file << "w" << i + 1 << " ";
-    }
-    proof_file << "\n         end\n";
-    proof_file << "         proof\n";
-    proof_file << "             proofgoal #1\n";
-    proof_file << "                 p 1 2 + 3 +\n";
-    proof_file << "                 c -1\n";
-    proof_file << "             qed\n";
-    proof_file << "         qed\n";
-    proof_file << "     end\n";
-    proof_file << "end\n";
-
-    // Load
-    proof_file << "load_order exp2 ";
-    for(int i = linkingVar.size()-1; i >= 0; i--) {
-        proof_file << "y" << var(linkingVar[i])+1 << " ";
-    }
-    proof_file << "\n";
+    proof << "pseudo-Boolean proof version 1.0\n";
+    proof << "f " << nbclause << "\n";
 }
 
 void Prooflogger::write_comment(const char* comment) {
-    proof_file << "* " << comment << "\n";
+    proof<< "* " << comment << "\n";
 }
 
 void Prooflogger::derived_empty_clause() {
-    proof_file << "u >= 1;\n";
+    proof<< "u >= 1;\n";
     constraint_counter++;
     write_contradiction();
 }
@@ -77,52 +25,76 @@ const char* Prooflogger::literal_symbol(int var) {
 }
 
 void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
+    int first = var(definition[0]);
+    int second = var(definition[1]); 
+    int third = var(definition[definition.size()-1]);
 
-    // Verify if new variable name simplification is required
-    //if(simplified_variable_names.find(definition[[definition.size()-1]]) != simplified_variable_names.end())
-    const char* symbol;
-    proof_file << "red ";
+    // If variable does not already have a meaningful name
+    if(meaningful_name_LB.find(third) == meaningful_name_LB.end()) {
+
+        // First two are x's
+        if(first+1 <= formula_length + n_variables && second <= formula_length + n_variables) {
+            meaningful_name_LB[third] = first+1;
+            meaningful_name_UB[third] = second+1;
+            meaningful_name_n[third] = 1;
+        }
+
+        // First is an x
+        else if(first+1 <= formula_length + n_variables) {
+            meaningful_name_LB[third] = first+1;
+            meaningful_name_n[third] = 2;
+        }
+
+        // First has a simplified name
+        else if(meaningful_name_UB.find(first) != meaningful_name_UB.end()) {
+
+            // Second is an x
+            if(second+1 <= formula_length + n_variables) {
+                meaningful_name_LB[third] = meaningful_name_LB[first];
+                meaningful_name_UB[third] = second+1;
+                meaningful_name_n[third] = meaningful_name_n[first];
+
+            // Second is a y
+            } else {
+                meaningful_name_LB[third] = meaningful_name_LB[first];
+                meaningful_name_UB[third] = meaningful_name_UB[first]+1;
+                meaningful_name_n[third] = meaningful_name_n[first]+1;
+            }
+        }
+
+    // Still need upper bound
+    } else if(meaningful_name_UB.find(third) == meaningful_name_UB.end()) {
+        meaningful_name_UB[third] = second+1;
+    }
+
+    // Write sub red line
+    std::string variable;
+    proof<< "red ";
     for (int i = 0; i < definition.size(); i++) {
-        symbol = literal_symbol(var(definition[i]));
+
+        // Define variable name
+        variable = literal_symbol(var(definition[i])) + std::to_string(var(definition[i])+1);
+
+        // Write variable
         if (sign(definition[i]) == 1)
-            proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
+            proof<< "1 ~" << variable << " ";
         else
-            proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
+            proof<< "1 " << variable << " ";
     }
-    proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << std::to_string(sign(definition[definition.size()-1]) == 0) << "\n";
-    constraint_counter++;
-}
-
-void Prooflogger::write_dom(vec<Lit>& linkingVar, int start, int stop) {
-    proof_file << "dom ";
-
-    // Constraint
-    for(int i = start; i < stop; i++) {
-        proof_file << "1 ~y" << var(linkingVar[i]) + 1 << " ";
-    }
-    proof_file << ">= " << stop - start << "; ";
-
-    // Witness
-    for(int i = start; i < stop; i++) {
-        proof_file << "y" << var(linkingVar[i]) + 1 << " -> 0 ";
-
-    }
-    proof_file << "\n";
-
-    // TODO: subproof 
+    proof<< " >= 1; " << variable << " -> " << std::to_string(sign(definition[definition.size()-1]) == 0) << "\n";
     constraint_counter++;
 }
 
 void Prooflogger::write_bound_update(vec<lbool>& model) {
     const char* symbol;
-    proof_file << "o ";
+    proof<< "o ";
 
     for(int i = 0; i < model.size(); i++) {
         symbol = literal_symbol(i);
-        if(model[i] == l_True) proof_file << symbol << i+1 << " ";
-        else if(model[i] == l_False) proof_file << "~" << symbol << i+1 << " ";
+        if(model[i] == l_True) proof << symbol << i+1 << " ";
+        else if(model[i] == l_False) proof << "~" << symbol << i+1 << " ";
     }
-    proof_file << "\n";
+    proof << "\n";
 
     // Veripb automatically adds an improvement constraint so counter needs to be incremented
     constraint_counter++;
@@ -130,25 +102,59 @@ void Prooflogger::write_bound_update(vec<lbool>& model) {
 
 void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     const char* symbol;
-    proof_file << "u ";
+    proof << "u ";
     for (int i = 0; i < clause.size(); i++) {
         symbol = literal_symbol(var(clause[i]));
         if (sign(clause[i]) == 1)
-            proof_file << "1 ~" << symbol << var(clause[i]) + 1 << " ";
+            proof << "1 ~" << symbol << var(clause[i]) + 1 << " ";
         else
-            proof_file << "1 " << symbol << var(clause[i]) + 1 << " ";
+            proof << "1 " << symbol << var(clause[i]) + 1 << " ";
     }
-    proof_file << " >= 1;\n";
+    proof << " >= 1;\n";
     constraint_counter++;
 }
 
 void Prooflogger::write_contradiction() {
-    proof_file << "c " << constraint_counter << "\n";
+    proof << "c " << constraint_counter << "\n";
 }
 
 void Prooflogger::write_delete(int number) {
-    proof_file << "d " << number << "\n";
+    proof << "d " << number << "\n";
     constraint_counter--;
+}
+
+void Prooflogger::write_proof() {
+
+    if(meaningful_names) {
+
+        // Loop over all variables that have a meaningful name
+        std::string proof_string;
+        std::string simplified_name;
+        std::string to_replace;
+        int lb,ub,n;
+        for(std::map<int,int>::iterator it = meaningful_name_LB.begin(); it != meaningful_name_LB.end(); it++) {
+            proof_string = proof.str();
+
+            lb = meaningful_name_LB[it->first];
+            ub = meaningful_name_UB[it->first];
+            n = meaningful_name_n[it->first];
+            simplified_name = "v" + std::to_string(n) + "_x" + std::to_string(lb) + "_x" + std::to_string(ub); 
+            to_replace = "y" + std::to_string(it->first+1); 
+
+            // Replace them with their meaningful name
+            proof_string = std::regex_replace(proof_string, std::regex(to_replace), simplified_name);
+
+            // Save as proof
+            proof.str(proof_string);
+        }
+    }
+
+    // Write proof to proof file
+    std::ofstream proof_file(proof_file_name);
+    proof_file << proof.rdbuf();
+
+    // Close
+    proof_file.close();
 }
 
 //=================================================================================================

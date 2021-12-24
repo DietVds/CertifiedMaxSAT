@@ -44,15 +44,6 @@ red 1 y18  >= 1; y18 -> 1
 * - Last variable:
 red 1 ~y19  >= 1; y19 -> 0
 * - Node clauses:
-red 1 v1_x4_x5 1 x6 1 ~v1_x4_x6  >= 1; v1_x4_x6 -> 0
-red  1 ~x6 1 v1_x4_x6  >= 1; v1_x4_x6 -> 1
-red 1 v1_x4_x5  1 ~v2__x4_x6  >= 1; v2__x4_x6 -> 0
-red 1 ~v1_x4_x5  1 v1_x4_x6  >= 1; v1_x4_x6 -> 1
-red 1 v2__x4_x5 1 x6 1 ~v2__x4_x6  >= 1; v2__x4_x6 -> 0
-red 1 ~v1_x4_x5 1 ~x6 1 v2__x4_x6  >= 1; v2__x4_x6 -> 1
-red 1 v2__x4_x5  1 ~v3__x4_x6  >= 1; v3__x4_x6 -> 0
-red 1 ~v2__x4_x5  1 v2__x4_x6  >= 1; v2__x4_x6 -> 1
-red  1 x6 1 ~v3__x4_x6  >= 1; v3__x4_x6 -> 0
 red 1 ~v2__x4_x5 1 ~x6 1 v3__x4_x6  >= 1; v3__x4_x6 -> 1
 * -------------------------------------------
 * New node:
