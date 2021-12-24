@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-23 21:04:01.378032716 +0100
-+++ src/core/Main.C	2021-12-23 21:03:58.446028786 +0100
+--- src_tmp/core/Main.C	2021-12-24 10:41:49.839192063 +0100
++++ src/core/Main.C	2021-12-24 10:29:26.542721678 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -139,21 +139,17 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -261,42 +278,56 @@
+@@ -261,42 +278,52 @@
    Var varZero = S.newVar();
    Var varLast = S.newVar();
  
 +  // First
    lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-+  //PL.write_comment("- First variable:");
-+  //PL.write_sub_red(lits, true, 0);
-+  PL.store(Lit(varZero));
++  PL.write_sub_red(lits, true);
 +
 +  // Last
    lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-+  //PL.write_comment("- Last variable:");
-+  //PL.write_sub_red(lits, false, 0);
-+  PL.store(~Lit(varLast));
++  PL.write_sub_red(lits, false);
 +
  
    if (inputSize > 2) {
@@ -198,13 +194,13 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +	      lits.push(~linkingAlpha[alpha]);
 +	      lits.push(~linkingBeta[beta]);
 +	      lits.push(linkingVar[sigma]);
-+          PL.write_sub_red(lits, true, 1);
++          PL.write_sub_red(lits, true);
 +	      S.addClause(lits);
 +	      lits.clear();
 +	      lits.push(linkingAlpha[alpha+1]);
 +	      lits.push(linkingBeta[beta+1]);
 +	      lits.push(~linkingVar[sigma+1]);
-+          PL.write_sub_red(lits, false, 2);
++          PL.write_sub_red(lits, false);
 +	      S.addClause(lits);
 +	    }
        }
@@ -213,7 +209,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    }
    linkingAlpha.clear();
    linkingBeta.clear();
-@@ -304,10 +335,10 @@
+@@ -304,10 +331,10 @@
  
  int main(int argc, char** argv)
  {
@@ -226,7 +222,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      int         i, j;
      const char* value;
      for (i = j = 0; i < argc; i++){
-@@ -347,6 +378,12 @@
+@@ -347,6 +374,12 @@
              printUsage(argv);
              exit(0);
  
@@ -239,7 +235,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -357,7 +394,7 @@
+@@ -357,7 +390,7 @@
      argc = j;
  
  
@@ -248,7 +244,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #if defined(__linux__)
      fpu_control_t oldcw, newcw;
      _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
-@@ -376,6 +413,12 @@
+@@ -376,6 +409,12 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
@@ -261,7 +257,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,8 +426,18 @@
+@@ -383,8 +422,18 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
@@ -281,7 +277,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
      double parse_time = cpuTime() - cpu_time;
-@@ -393,6 +446,8 @@
+@@ -393,6 +442,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
@@ -290,7 +286,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -407,21 +462,41 @@
+@@ -407,21 +458,41 @@
        lcnt++;
        int answerNew = 0;
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
@@ -347,7 +343,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -439,8 +514,10 @@
+@@ -439,8 +510,10 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -361,8 +357,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-23 21:02:23.745918382 +0100
-@@ -0,0 +1,193 @@
++++ src/core/Prooflogger.C	2021-12-24 10:41:44.811158005 +0100
+@@ -0,0 +1,182 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -441,31 +437,20 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    else return "x";
 +}
 +
-+void Prooflogger::store(Lit literal) {
-+    unit_store[var(literal)] = sign(literal);
-+}
++void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
 +
-+void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass, int summation) {
-+
-+    // First verify if clause should be written at all
-+    for (int i = 0; i < definition.size(); i++) {
-+        // If the sign is the same as the one in the store then the clause is trivially true
-+        if(unit_store.find(var(definition[i])) != unit_store.end() && unit_store[var(definition[i])] == sign(definition[i])) return;
-+    }
-+
++    // Verify if new variable name simplification is required
++    //if(simplified_variable_names.find(definition[[definition.size()-1]]) != simplified_variable_names.end())
 +    const char* symbol;
 +    proof_file << "red ";
 +    for (int i = 0; i < definition.size(); i++) {
-+        // If the literal is now found in the store then it was there but the sign was different, hence it shouldn't be written 
-+        if(unit_store.find(var(definition[i])) == unit_store.end()) {
-+            symbol = literal_symbol(var(definition[i]));
-+            if (sign(definition[i]) == 1)
-+                proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
-+            else
-+                proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
-+        }
++        symbol = literal_symbol(var(definition[i]));
++        if (sign(definition[i]) == 1)
++            proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
++        else
++            proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
 +    }
-+    proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << ass << "\n";
++    proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << std::to_string(sign(definition[definition.size()-1]) == 0) << "\n";
 +    constraint_counter++;
 +}
 +
@@ -558,8 +543,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-12-23 20:54:33.376925368 +0100
-@@ -0,0 +1,72 @@
++++ src/core/Prooflogger.h	2021-12-24 10:21:05.073232042 +0100
+@@ -0,0 +1,75 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -592,9 +577,12 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    //
 +    int constraint_counter = 0;
 +
-+    // Unit clause store
++    // Simplified constraint store
 +    // 
-+    std::map<int, bool> unit_store;
++    std::map<int, int> simplified_constraint_store;
++
++    // Simplified variable name store
++    std::map<int, const char*> simplified_variable_names;
 +
 +    // Proof file
 +    std::ofstream proof_file;
@@ -609,7 +597,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void derived_empty_clause       ();
 +    const char* literal_symbol      (int var); 
 +    void write_learnt_clause        (vec<Lit>& clause);
-+    void write_sub_red              (vec<Lit>& definition, bool ass, int summation);
++    void write_sub_red              (vec<Lit>& definition, bool ass);
 +    void write_dom                  (vec<Lit>& linkingVar, int start, int stop); 
 +    void write_bound_update         (vec<lbool>& model); 
 +    void write_constraint           (vec<Lit>& clause);
@@ -634,7 +622,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-23 21:04:01.378032716 +0100
+--- src_tmp/core/Solver.C	2021-12-24 10:41:49.839192063 +0100
 +++ src/core/Solver.C	2021-12-22 16:00:12.341568535 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -711,7 +699,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-23 21:04:01.378032716 +0100
+--- src_tmp/core/Solver.h	2021-12-24 10:41:49.839192063 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h

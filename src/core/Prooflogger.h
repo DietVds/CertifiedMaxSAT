@@ -30,9 +30,12 @@ public:
     //
     int constraint_counter = 0;
 
-    // Unit clause store
+    // Simplified constraint store
     // 
-    std::map<int, bool> unit_store;
+    std::map<int, int> simplified_constraint_store;
+
+    // Simplified variable name store
+    std::map<int, const char*> simplified_variable_names;
 
     // Proof file
     std::ofstream proof_file;
@@ -47,7 +50,7 @@ public:
     void derived_empty_clause       ();
     const char* literal_symbol      (int var); 
     void write_learnt_clause        (vec<Lit>& clause);
-    void write_sub_red              (vec<Lit>& definition, bool ass, int summation);
+    void write_sub_red              (vec<Lit>& definition, bool ass);
     void write_dom                  (vec<Lit>& linkingVar, int start, int stop); 
     void write_bound_update         (vec<lbool>& model); 
     void write_constraint           (vec<Lit>& clause);

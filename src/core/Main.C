@@ -280,15 +280,11 @@ void genCardinals(int from, int to,
 
   // First
   lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-  //PL.write_comment("- First variable:");
-  //PL.write_sub_red(lits, true, 0);
-  PL.store(Lit(varZero));
+  PL.write_sub_red(lits, true);
 
   // Last
   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-  //PL.write_comment("- Last variable:");
-  //PL.write_sub_red(lits, false, 0);
-  PL.store(~Lit(varLast));
+  PL.write_sub_red(lits, false);
 
 
   if (inputSize > 2) {
@@ -316,13 +312,13 @@ void genCardinals(int from, int to,
 	      lits.push(~linkingAlpha[alpha]);
 	      lits.push(~linkingBeta[beta]);
 	      lits.push(linkingVar[sigma]);
-          PL.write_sub_red(lits, true, 1);
+          PL.write_sub_red(lits, true);
 	      S.addClause(lits);
 	      lits.clear();
 	      lits.push(linkingAlpha[alpha+1]);
 	      lits.push(linkingBeta[beta+1]);
 	      lits.push(~linkingVar[sigma+1]);
-          PL.write_sub_red(lits, false, 2);
+          PL.write_sub_red(lits, false);
 	      S.addClause(lits);
 	    }
       }

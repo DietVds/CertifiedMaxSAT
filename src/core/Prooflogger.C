@@ -76,31 +76,20 @@ const char* Prooflogger::literal_symbol(int var) {
     else return "x";
 }
 
-void Prooflogger::store(Lit literal) {
-    unit_store[var(literal)] = sign(literal);
-}
+void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
 
-void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass, int summation) {
-
-    // First verify if clause should be written at all
-    for (int i = 0; i < definition.size(); i++) {
-        // If the sign is the same as the one in the store then the clause is trivially true
-        if(unit_store.find(var(definition[i])) != unit_store.end() && unit_store[var(definition[i])] == sign(definition[i])) return;
-    }
-
+    // Verify if new variable name simplification is required
+    //if(simplified_variable_names.find(definition[[definition.size()-1]]) != simplified_variable_names.end())
     const char* symbol;
     proof_file << "red ";
     for (int i = 0; i < definition.size(); i++) {
-        // If the literal is now found in the store then it was there but the sign was different, hence it shouldn't be written 
-        if(unit_store.find(var(definition[i])) == unit_store.end()) {
-            symbol = literal_symbol(var(definition[i]));
-            if (sign(definition[i]) == 1)
-                proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
-            else
-                proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
-        }
+        symbol = literal_symbol(var(definition[i]));
+        if (sign(definition[i]) == 1)
+            proof_file << "1 ~" << symbol << var(definition[i]) + 1 << " ";
+        else
+            proof_file << "1 " << symbol << var(definition[i]) + 1 << " ";
     }
-    proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << ass << "\n";
+    proof_file << " >= 1; y" << var(definition[definition.size()-1])+1 << " -> " << std::to_string(sign(definition[definition.size()-1]) == 0) << "\n";
     constraint_counter++;
 }
 
