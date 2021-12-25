@@ -383,6 +383,9 @@ int main(int argc, char** argv)
         }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
             PL.meaningful_names = true;
 
+        }else if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "-simplify") == 0 || strcmp(argv[i], "--simplify") == 0){
+            PL.simplify = true;
+
         }else if (strncmp(argv[i], "-", 1) == 0){
             reportf("ERROR! unknown flag %s\n", argv[i]);
             exit(0);

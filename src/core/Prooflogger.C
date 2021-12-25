@@ -25,61 +25,83 @@ const char* Prooflogger::literal_symbol(int var) {
 }
 
 void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
-    int first = var(definition[0]);
-    int second = var(definition[1]); 
-    int third = var(definition[definition.size()-1]);
 
-    // If variable does not already have a meaningful name
-    if(meaningful_name_LB.find(third) == meaningful_name_LB.end()) {
-
-        // First two are x's
-        if(first+1 <= formula_length + n_variables && second <= formula_length + n_variables) {
-            meaningful_name_LB[third] = first+1;
-            meaningful_name_UB[third] = second+1;
-            meaningful_name_n[third] = 1;
-        }
-
-        // First is an x
-        else if(first+1 <= formula_length + n_variables) {
-            meaningful_name_LB[third] = first+1;
-            meaningful_name_n[third] = 2;
-        }
-
-        // First has a simplified name
-        else if(meaningful_name_UB.find(first) != meaningful_name_UB.end()) {
-
-            // Second is an x
-            if(second+1 <= formula_length + n_variables) {
-                meaningful_name_LB[third] = meaningful_name_LB[first];
-                meaningful_name_UB[third] = second+1;
-                meaningful_name_n[third] = meaningful_name_n[first];
-
-            // Second is a y
-            } else {
-                meaningful_name_LB[third] = meaningful_name_LB[first];
-                meaningful_name_UB[third] = meaningful_name_UB[first]+1;
-                meaningful_name_n[third] = meaningful_name_n[first]+1;
+    // If unit clause, store
+    if(simplify) {
+        if(definition.size() == 1) {
+            unit_store[var(definition[0])] = sign(definition[0]);
+            return;
+        } else {
+            // First verify if clause should be written at all
+            for (int i = 0; i < definition.size(); i++) {
+                // If the sign is the same as the one in the store then the clause is trivially true
+                if(unit_store.find(var(definition[i])) != unit_store.end() && unit_store[var(definition[i])] == sign(definition[i])) return;
             }
         }
+    }
 
-    // Still need upper bound
-    } else if(meaningful_name_UB.find(third) == meaningful_name_UB.end()) {
-        meaningful_name_UB[third] = second+1;
+    // Keep track of meaningful names
+    if(meaningful_names) {
+        int first = var(definition[0]);
+        int second = var(definition[1]); 
+        int third = var(definition[definition.size()-1]);
+
+        // If variable does not already have a meaningful name
+        if(meaningful_name_LB.find(third) == meaningful_name_LB.end()) {
+
+            // First two are x's
+            if(first+1 <= formula_length + n_variables && second <= formula_length + n_variables) {
+                meaningful_name_LB[third] = first+1;
+                meaningful_name_UB[third] = second+1;
+                meaningful_name_n[third] = 1;
+            }
+
+            // First is an x
+            else if(first+1 <= formula_length + n_variables) {
+                meaningful_name_LB[third] = first+1;
+                meaningful_name_n[third] = 2;
+            }
+
+            // First has a simplified name
+            else if(meaningful_name_UB.find(first) != meaningful_name_UB.end()) {
+
+                // Second is an x
+                if(second+1 <= formula_length + n_variables) {
+                    meaningful_name_LB[third] = meaningful_name_LB[first];
+                    meaningful_name_UB[third] = second+1;
+                    meaningful_name_n[third] = meaningful_name_n[first];
+
+                // Second is a y
+                } else {
+                    meaningful_name_LB[third] = meaningful_name_LB[first];
+                    meaningful_name_UB[third] = meaningful_name_UB[first]+1;
+                    meaningful_name_n[third] = meaningful_name_n[first]+1;
+                }
+            }
+
+        // Still need upper bound
+        } else if(meaningful_name_UB.find(third) == meaningful_name_UB.end()) {
+            meaningful_name_UB[third] = second+1;
+        }
     }
 
     // Write sub red line
     std::string variable;
     proof<< "red ";
     for (int i = 0; i < definition.size(); i++) {
+        
+        // If the literal is now found in the store then it was there but the sign was different, hence it shouldn't be written 
+        if(!simplify || unit_store.find(var(definition[i])) == unit_store.end()) {
 
-        // Define variable name
-        variable = literal_symbol(var(definition[i])) + std::to_string(var(definition[i])+1);
+            // Define variable name
+            variable = literal_symbol(var(definition[i])) + std::to_string(var(definition[i])+1);
 
-        // Write variable
-        if (sign(definition[i]) == 1)
-            proof<< "1 ~" << variable << " ";
-        else
-            proof<< "1 " << variable << " ";
+            // Write variable
+            if (sign(definition[i]) == 1)
+                proof<< "1 ~" << variable << " ";
+            else
+                proof<< "1 " << variable << " ";
+        }
     }
     proof<< " >= 1; " << variable << " -> " << std::to_string(sign(definition[definition.size()-1]) == 0) << "\n";
     constraint_counter++;

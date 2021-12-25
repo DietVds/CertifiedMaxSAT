@@ -34,7 +34,8 @@ public:
 
     // Simplified constraint store
     // 
-    std::map<int, int> simplified_constraint_store;
+    bool simplify = false;
+    std::map<int, int> unit_store;
 
     // Meaningful variable names
     bool meaningful_names = false;
