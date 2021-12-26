@@ -1,0 +1,167 @@
+
+=== begin trace ===
+line 002: f 4
+  ConstraintId 001: 1 x1 1 ~x2 1 x4 >= 1
+  ConstraintId 002: 1 x1 1 x2 1 x5 >= 1
+  ConstraintId 003: 1 ~x1 1 x6 >= 1
+  ConstraintId 004: 1 ~x3 1 x7 >= 1
+line 003: * ==============================================================
+line 004: * First model found:
+line 005: o ~x1 x2 ~x3 x4 ~x5 ~x6 ~x7
+  ConstraintId 005: 1 ~x4 1 ~x5 1 ~x6 1 ~x7 >= 4
+line 006: * ==============================================================
+line 007: * Cardinality encoding:
+line 008: red 1 v0_x4_x7  >= 1; v0_x4_x7 -> 1
+  ConstraintId 006: 1 v0_x4_x7 >= 1
+line 009: red 1 ~v5_x4_x7  >= 1; v5_x4_x7 -> 0
+  ConstraintId 007: 1 ~v5_x4_x7 >= 1
+line 010: red 1 v0_x4_x6  >= 1; v0_x4_x6 -> 1
+  ConstraintId 008: 1 v0_x4_x6 >= 1
+line 011: red 1 ~v4_x4_x6  >= 1; v4_x4_x6 -> 0
+  ConstraintId 009: 1 ~v4_x4_x6 >= 1
+line 012: red 1 v0_x4_x5  >= 1; v0_x4_x5 -> 1
+  ConstraintId 010: 1 v0_x4_x5 >= 1
+line 013: red 1 ~v3_x4_x5  >= 1; v3_x4_x5 -> 0
+  ConstraintId 011: 1 ~v3_x4_x5 >= 1
+line 014: red 1 y14  >= 1; y14 -> 1
+  ConstraintId 012: 1 y14 >= 1
+line 015: red 1 ~y15  >= 1; y15 -> 0
+  ConstraintId 013: 1 ~y15 >= 1
+line 016: red 1 y16  >= 1; y16 -> 1
+  ConstraintId 014: 1 y16 >= 1
+line 017: red 1 ~y17  >= 1; y17 -> 0
+  ConstraintId 015: 1 ~y17 >= 1
+line 018: * - Node clauses:
+line 019: red 1 ~y14 1 ~y16 1 v0_x4_x5  >= 1; v0_x4_x5 -> 1
+  ConstraintId 016: 1 v0_x4_x5 1 ~y14 1 ~y16 >= 1
+line 020: red 1 x4 1 x5 1 ~v1_x4_x5  >= 1; v1_x4_x5 -> 0
+  ConstraintId 017: 1 ~v1_x4_x5 1 x4 1 x5 >= 1
+line 021: red 1 ~y14 1 ~x5 1 v1_x4_x5  >= 1; v1_x4_x5 -> 1
+  ConstraintId 018: 1 v1_x4_x5 1 ~x5 1 ~y14 >= 1
+line 022: red 1 x4 1 y17 1 ~v2_x4_x5  >= 1; v2_x4_x5 -> 0
+  ConstraintId 019: 1 ~v2_x4_x5 1 x4 1 y17 >= 1
+line 023: red 1 ~x4 1 ~y16 1 v1_x4_x5  >= 1; v1_x4_x5 -> 1
+  ConstraintId 020: 1 v1_x4_x5 1 ~x4 1 ~y16 >= 1
+line 024: red 1 y15 1 x5 1 ~v2_x4_x5  >= 1; v2_x4_x5 -> 0
+  ConstraintId 021: 1 ~v2_x4_x5 1 x5 1 y15 >= 1
+line 025: red 1 ~x4 1 ~x5 1 v2_x4_x5  >= 1; v2_x4_x5 -> 1
+  ConstraintId 022: 1 v2_x4_x5 1 ~x4 1 ~x5 >= 1
+line 026: red 1 y15 1 y17 1 ~v3_x4_x5  >= 1; v3_x4_x5 -> 0
+  ConstraintId 023: 1 ~v3_x4_x5 1 y15 1 y17 >= 1
+line 027: * -------------------------------------------
+line 028: red 1 y20  >= 1; y20 -> 1
+  ConstraintId 024: 1 y20 >= 1
+line 029: red 1 ~y21  >= 1; y21 -> 0
+  ConstraintId 025: 1 ~y21 >= 1
+line 030: * - Node clauses:
+line 031: red 1 ~v0_x4_x5 1 ~y20 1 v0_x4_x6  >= 1; v0_x4_x6 -> 1
+  ConstraintId 026: 1 ~v0_x4_x5 1 v0_x4_x6 1 ~y20 >= 1
+line 032: red 1 v1_x4_x5 1 x6 1 ~v1_x4_x6  >= 1; v1_x4_x6 -> 0
+  ConstraintId 027: 1 v1_x4_x5 1 ~v1_x4_x6 1 x6 >= 1
+line 033: red 1 ~v0_x4_x5 1 ~x6 1 v1_x4_x6  >= 1; v1_x4_x6 -> 1
+  ConstraintId 028: 1 ~v0_x4_x5 1 v1_x4_x6 1 ~x6 >= 1
+line 034: red 1 v1_x4_x5 1 y21 1 ~v2_x4_x6  >= 1; v2_x4_x6 -> 0
+  ConstraintId 029: 1 v1_x4_x5 1 ~v2_x4_x6 1 y21 >= 1
+line 035: red 1 ~v1_x4_x5 1 ~y20 1 v1_x4_x6  >= 1; v1_x4_x6 -> 1
+  ConstraintId 030: 1 ~v1_x4_x5 1 v1_x4_x6 1 ~y20 >= 1
+line 036: red 1 v2_x4_x5 1 x6 1 ~v2_x4_x6  >= 1; v2_x4_x6 -> 0
+  ConstraintId 031: 1 v2_x4_x5 1 ~v2_x4_x6 1 x6 >= 1
+line 037: red 1 ~v1_x4_x5 1 ~x6 1 v2_x4_x6  >= 1; v2_x4_x6 -> 1
+  ConstraintId 032: 1 ~v1_x4_x5 1 v2_x4_x6 1 ~x6 >= 1
+line 038: red 1 v2_x4_x5 1 y21 1 ~v3_x4_x6  >= 1; v3_x4_x6 -> 0
+  ConstraintId 033: 1 v2_x4_x5 1 ~v3_x4_x6 1 y21 >= 1
+line 039: red 1 ~v2_x4_x5 1 ~y20 1 v2_x4_x6  >= 1; v2_x4_x6 -> 1
+  ConstraintId 034: 1 ~v2_x4_x5 1 v2_x4_x6 1 ~y20 >= 1
+line 040: red 1 v3_x4_x5 1 x6 1 ~v3_x4_x6  >= 1; v3_x4_x6 -> 0
+  ConstraintId 035: 1 v3_x4_x5 1 ~v3_x4_x6 1 x6 >= 1
+line 041: red 1 ~v2_x4_x5 1 ~x6 1 v3_x4_x6  >= 1; v3_x4_x6 -> 1
+  ConstraintId 036: 1 ~v2_x4_x5 1 v3_x4_x6 1 ~x6 >= 1
+line 042: red 1 v3_x4_x5 1 y21 1 ~v4_x4_x6  >= 1; v4_x4_x6 -> 0
+  ConstraintId 037: 1 v3_x4_x5 1 ~v4_x4_x6 1 y21 >= 1
+line 043: * -------------------------------------------
+line 044: red 1 y25  >= 1; y25 -> 1
+  ConstraintId 038: 1 y25 >= 1
+line 045: red 1 ~y26  >= 1; y26 -> 0
+  ConstraintId 039: 1 ~y26 >= 1
+line 046: * - Node clauses:
+line 047: red 1 ~v0_x4_x6 1 ~y25 1 v0_x4_x7  >= 1; v0_x4_x7 -> 1
+  ConstraintId 040: 1 ~v0_x4_x6 1 v0_x4_x7 1 ~y25 >= 1
+line 048: red 1 v1_x4_x6 1 x7 1 ~v1_x4_x7  >= 1; v1_x4_x7 -> 0
+  ConstraintId 041: 1 v1_x4_x6 1 ~v1_x4_x7 1 x7 >= 1
+line 049: red 1 ~v0_x4_x6 1 ~x7 1 v1_x4_x7  >= 1; v1_x4_x7 -> 1
+  ConstraintId 042: 1 ~v0_x4_x6 1 v1_x4_x7 1 ~x7 >= 1
+line 050: red 1 v1_x4_x6 1 y26 1 ~v2_x4_x7  >= 1; v2_x4_x7 -> 0
+  ConstraintId 043: 1 v1_x4_x6 1 ~v2_x4_x7 1 y26 >= 1
+line 051: red 1 ~v1_x4_x6 1 ~y25 1 v1_x4_x7  >= 1; v1_x4_x7 -> 1
+  ConstraintId 044: 1 ~v1_x4_x6 1 v1_x4_x7 1 ~y25 >= 1
+line 052: red 1 v2_x4_x6 1 x7 1 ~v2_x4_x7  >= 1; v2_x4_x7 -> 0
+  ConstraintId 045: 1 v2_x4_x6 1 ~v2_x4_x7 1 x7 >= 1
+line 053: red 1 ~v1_x4_x6 1 ~x7 1 v2_x4_x7  >= 1; v2_x4_x7 -> 1
+  ConstraintId 046: 1 ~v1_x4_x6 1 v2_x4_x7 1 ~x7 >= 1
+line 054: red 1 v2_x4_x6 1 y26 1 ~v3_x4_x7  >= 1; v3_x4_x7 -> 0
+  ConstraintId 047: 1 v2_x4_x6 1 ~v3_x4_x7 1 y26 >= 1
+line 055: red 1 ~v2_x4_x6 1 ~y25 1 v2_x4_x7  >= 1; v2_x4_x7 -> 1
+  ConstraintId 048: 1 ~v2_x4_x6 1 v2_x4_x7 1 ~y25 >= 1
+line 056: red 1 v3_x4_x6 1 x7 1 ~v3_x4_x7  >= 1; v3_x4_x7 -> 0
+  ConstraintId 049: 1 v3_x4_x6 1 ~v3_x4_x7 1 x7 >= 1
+line 057: red 1 ~v2_x4_x6 1 ~x7 1 v3_x4_x7  >= 1; v3_x4_x7 -> 1
+  ConstraintId 050: 1 ~v2_x4_x6 1 v3_x4_x7 1 ~x7 >= 1
+line 058: red 1 v3_x4_x6 1 y26 1 ~v4_x4_x7  >= 1; v4_x4_x7 -> 0
+  ConstraintId 051: 1 v3_x4_x6 1 ~v4_x4_x7 1 y26 >= 1
+line 059: red 1 ~v3_x4_x6 1 ~y25 1 v3_x4_x7  >= 1; v3_x4_x7 -> 1
+  ConstraintId 052: 1 ~v3_x4_x6 1 v3_x4_x7 1 ~y25 >= 1
+line 060: red 1 v4_x4_x6 1 x7 1 ~v4_x4_x7  >= 1; v4_x4_x7 -> 0
+  ConstraintId 053: 1 v4_x4_x6 1 ~v4_x4_x7 1 x7 >= 1
+line 061: red 1 ~v3_x4_x6 1 ~x7 1 v4_x4_x7  >= 1; v4_x4_x7 -> 1
+  ConstraintId 054: 1 ~v3_x4_x6 1 v4_x4_x7 1 ~x7 >= 1
+line 062: red 1 v4_x4_x6 1 y26 1 ~v5_x4_x7  >= 1; v5_x4_x7 -> 0
+  ConstraintId 055: 1 v4_x4_x6 1 ~v5_x4_x7 1 y26 >= 1
+line 063: * -------------------------------------------
+line 064: * ==============================================================
+line 065: * Tree derivation:
+line 066: p 19 21 +
+  ConstraintId 056: 2 ~v2_x4_x5 1 x4 1 x5 1 y15 1 y17 >= 2
+line 067: p 28 1 * 17 +
+  ConstraintId 057: 1 ~v0_x4_x5 1 ~v1_x4_x5 1 v1_x4_x6 1 x4 1 x5 1 ~x6 >= 2
+line 068: p 31 1 * 17 +
+  ConstraintId 058: 1 ~v1_x4_x5 1 v2_x4_x5 1 ~v2_x4_x6 1 x4 1 x5 1 x6 >= 2
+line 069: p 34 2 * 22 +
+  ConstraintId 059: 1 ~v2_x4_x5 2 v2_x4_x6 1 ~x4 1 ~x5 2 ~y20 >= 2
+line 070: p 32 35 +
+  ConstraintId 060: 1 ~v1_x4_x5 1 v2_x4_x6 1 v3_x4_x5 1 ~v3_x4_x6 >= 1
+line 071: p 38 2 * 22 +
+  ConstraintId 061: 1 v2_x4_x5 1 ~x4 1 ~x5 2 y25 >= 3
+line 072: p 41 1 * 24 +
+  ConstraintId 062: 1 v1_x4_x6 1 ~v1_x4_x7 1 x7 1 y20 >= 2
+line 073: p 39 42 +
+  ConstraintId 063: 1 ~v0_x4_x6 1 v1_x4_x7 1 ~x7 1 ~y26 >= 2
+line 074: p 45 1 * 24 +
+  ConstraintId 064: 1 v2_x4_x6 1 ~v2_x4_x7 1 x7 1 y20 >= 2
+line 075: p 50 1 * 29 +
+  ConstraintId 065: 1 v1_x4_x5 2 ~v2_x4_x6 1 v3_x4_x7 1 ~x7 1 y21 >= 2
+line 076: p 53 1 * 29 +
+  ConstraintId 066: 1 v1_x4_x5 1 ~v2_x4_x6 1 v4_x4_x6 1 ~v4_x4_x7 1 x7 1 y21 >= 2
+line 077: p 56 3 * 36 +
+  ConstraintId 067: 7 ~v2_x4_x5 1 v3_x4_x6 3 x4 3 x5 1 ~x6 3 y15 3 y17 >= 7
+line 078: p 54 57 +
+  ConstraintId 068: 1 ~v0_x4_x5 1 ~v1_x4_x5 1 v1_x4_x6 1 ~v3_x4_x6 1 v4_x4_x7 1 x4 1 x5 1 ~x6 1 ~x7 >= 3
+line 079: p 60 3 * 36 +
+  ConstraintId 069: 3 ~v1_x4_x5 1 ~v2_x4_x5 3 v2_x4_x6 3 v3_x4_x5 2 ~v3_x4_x6 1 ~x6 >= 3
+line 080: p 63 3 * 43 +
+  ConstraintId 070: 3 ~v0_x4_x6 1 v1_x4_x6 3 v1_x4_x7 1 ~v2_x4_x7 3 ~x7 2 ~y26 >= 6
+line 081: p 61 64 +
+  ConstraintId 071: 1 v2_x4_x5 1 v2_x4_x6 1 ~v2_x4_x7 1 ~x4 1 ~x5 1 x7 1 y20 2 y25 >= 5
+line 082: p 67 3 * 43 +
+  ConstraintId 072: 1 v1_x4_x6 21 ~v2_x4_x5 1 ~v2_x4_x7 3 v3_x4_x6 9 x4 9 x5 3 ~x6 9 y15 9 y17 1 y26 >= 22
+line 083: p 70 1 * 46 +
+  ConstraintId 073: 3 ~v0_x4_x6 3 v1_x4_x7 4 ~x7 2 ~y26 >= 5
+line 084: p 68 71 +
+  ConstraintId 074: 1 ~v0_x4_x5 1 ~v1_x4_x5 1 v1_x4_x6 1 v2_x4_x5 1 v2_x4_x6 1 ~v2_x4_x7 1 ~v3_x4_x6 1 v4_x4_x7 1 ~x6 1 y20 2 y25 >= 5
+line 085: p 74 1 * 46 +
+  ConstraintId 075: 1 ~v0_x4_x5 1 ~v1_x4_x5 1 v2_x4_x5 1 v2_x4_x6 1 ~v3_x4_x6 1 v4_x4_x7 1 ~x6 1 ~x7 1 y20 2 y25 >= 4
+line 086: * ==============================================================
+line 087: * Constraining through linking variables:
+line 088: p 51 0 d 5 +
+Verification failed.
+Failed in proof file line 88.
+Hint: Division by non positive number.

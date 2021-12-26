@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-26 11:54:08.746767537 +0100
-+++ src/core/Main.C	2021-12-26 11:47:37.421733897 +0100
+--- src_tmp/core/Main.C	2021-12-26 16:37:42.713783955 +0100
++++ src/core/Main.C	2021-12-26 16:01:35.188338285 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -303,7 +303,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -407,21 +473,41 @@
+@@ -407,21 +473,40 @@
        lcnt++;
        int answerNew = 0;
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
@@ -330,15 +330,14 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +        PL.write_comment("==============================================================");
 +        PL.write_comment("Cardinality encoding:"); 
 +	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
-+        //PL.write_comment("==============================================================");
-+        //PL.write_comment("Linking variables order:"); 
-+        //PL.write_order(linkingVar);
++        PL.write_comment("==============================================================");
++        PL.write_comment("Tree derivation:"); 
 +        PL.write_comment("==============================================================");
 +        PL.write_comment("Constraining through linking variables:"); 
 +	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 +	      lits.clear();
 +	      lits.push(~linkingVar[i]);
-+          PL.write_learnt_clause(lits);
++          PL.write_linkingVar_clause(lits);
 +	      S.addClause(lits);
 +	    }
 +        PL.write_comment("==============================================================");
@@ -352,7 +351,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +	    for (int i = answerNew; i < answer; i++) {
 +	      lits.clear();
 +	      lits.push(~linkingVar[i]);
-+          PL.write_learnt_clause(lits);
++          PL.write_linkingVar_clause(lits);
 +	      S.addClause(lits);
 +	    }
 +        PL.write_comment("==============================================================");
@@ -360,7 +359,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -439,10 +525,11 @@
+@@ -439,10 +524,11 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -375,10 +374,13 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-26 11:54:03.058751739 +0100
++++ src/core/Prooflogger.C	2021-12-26 16:37:40.441775869 +0100
 @@ -0,0 +1,285 @@
 +#include "Prooflogger.h"
 +
++
++Single::Single(int constraint_id) : constraint_id(constraint_id){};
++Operation::Operation(Expression* a, Expression* b, const char* operant) : a(a), b(b), operant(operant){};
 +//=================================================================================================
 +// Proof file
 +
@@ -482,6 +484,15 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    constraint_counter++;
 +}
 +
++void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
++    int variable = var(clause[0]);
++    int constraint_id = constraint_store[variable];
++    int coeff = coeff_store.find(constraint_id) != coeff_store.end() ? coeff_store[constraint_id] : 1;
++    proof << "p " << constraint_id << " " << coeff - 1 << " d " << last_bound_constraint_id << " +\n";
++    constraint_counter++;
++    write_learnt_clause(clause);
++}
++
 +void Prooflogger::write_bound_update(vec<lbool>& model) {
 +    proof<< "o ";
 +    for(int i = 0; i < model.size(); i++) write_literal_assignment(model[i], i);
@@ -516,30 +527,23 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        int total_coeff = 0;
 +
 +        // Write first two manually
-+        proof << "p " << constraint_ids[0] << " " << constraint_ids[1] << " + ";
++        Expression* expression = new Operation(new Single(constraint_ids[0]), new Single(constraint_ids[1]), "+");
 +        total_coeff += coeff_store.find(constraint_ids[0]) != coeff_store.end() ? coeff_store[constraint_ids[0]] : 1; 
 +        total_coeff += coeff_store.find(constraint_ids[1]) != coeff_store.end() ? coeff_store[constraint_ids[1]] : 1; 
 +
 +        // Loop for others
 +        for(int i = 2; i < constraint_ids.size(); i++) {
-+            proof << constraint_ids[i] << " + ";
++            expression = new Operation(expression, new Single(constraint_ids[i]), "+");
 +            total_coeff += coeff_store.find(constraint_ids[i]) != coeff_store.end() ? coeff_store[constraint_ids[i]] : 1;
 +        }
-+        proof << "\n";
-+        constraint_counter++;
++        tree_derivation.push(expression);
++        tree_constraint_counter++;
 +
 +        // Store resulting constraint id
-+        constraint_store[third] = constraint_counter;
++        constraint_store[third] = -tree_constraint_counter;
 +
 +        // Store sum of coeffs 
-+        coeff_store[constraint_counter] = total_coeff;
-+
-+        // If inputsize is total size --> reached bottom of the tree
-+        // SO: divide by max coeff - 1 and add last upper bound constraint
-+        if(to - from + 1 == formula_length) {
-+            proof << "p " << constraint_counter << " " << total_coeff-1 << " d " << last_bound_constraint_id << " +\n";
-+            constraint_counter++;
-+        }
++        coeff_store[-tree_constraint_counter] = total_coeff;
 +    }
 +}
 +
@@ -592,43 +596,38 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        int first = var(definition[0]);
 +        int second = var(definition[1]);
 +        int third = var(definition[2]);
++        bool resolved_one = false;
 +
 +        // If first needs to be resolved
 +        if(first > formula_length + n_variables && constraint_store.find(first) != constraint_store.end()) {
++            resolved_one = true;
 +            int first_constraint_id = constraint_store[first];
 +            int first_coeff = coeff_store.find(first_constraint_id) != coeff_store.end()? coeff_store[first_constraint_id] : 1;
 +
-+            proof << "p ";
-+            proof << constraint_counter; 
-+            proof << " ";
-+            proof << first_coeff;
-+            proof << " * ";
-+            proof << first_constraint_id;
-+            proof << " +\n";
-+            constraint_counter++;
-+            coeff_store[constraint_counter] = first_coeff;
++            tree_derivation.push(new Operation(new Operation(new Single(constraint_counter), new Single(first_coeff), "*"),
++                                                new Single(first_constraint_id),
++                                                "+"));
++            tree_constraint_counter++;
++            coeff_store[tree_constraint_counter] = first_coeff;
 +        }
 +
 +        // If second needs to be resolved
 +        if(second > formula_length + n_variables && constraint_store.find(second) != constraint_store.end()) {
++            resolved_one = true;
 +            int second_constraint_id = constraint_store[second];
 +            int second_coeff = coeff_store.find(second_constraint_id) != coeff_store.end()? coeff_store[second_constraint_id] : 1;
 +            int third_coeff = coeff_store.find(constraint_counter) != coeff_store.end()? coeff_store[constraint_counter] : 1;
 +
-+            proof << "p ";
-+            proof << constraint_counter; 
-+            proof << " ";
-+            proof << second_coeff;
-+            proof << " * ";
-+            proof << second_constraint_id;
-+            proof << " ";
-+            proof << third_coeff;
-+            proof << " * ";
-+            proof << " +\n";
-+            constraint_counter++;
-+            coeff_store[constraint_counter] = third_coeff* second_coeff;
++            tree_derivation.push(new Operation(new Operation(new Single(constraint_counter), new Single(second_coeff), "*"),
++                                                new Operation(new Single(second_constraint_id), new Single(third_coeff), "*"),
++                                                "+"));
++            tree_constraint_counter++;
++            coeff_store[tree_constraint_counter] = third_coeff * second_coeff;
 +        }
-+        constraint_store[third] = constraint_counter;
++
++        // If no resolving had to be done
++        if(resolved_one) constraint_store[third] -tree_constraint_counter;
++        else constraint_store[third] = constraint_counter;
 +    }
 +    return constraint_counter;
 +}
@@ -664,8 +663,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-12-26 11:40:05.844783113 +0100
-@@ -0,0 +1,86 @@
++++ src/core/Prooflogger.h	2021-12-26 16:37:36.617762264 +0100
+@@ -0,0 +1,127 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -682,6 +681,40 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#include "Alg.h"
 +
 +#include "SolverTypes.h"
++
++//=================================================================================================
++// Prooflogger -- polish notation class:
++
++class Expression {
++public:
++};
++
++class Single : public Expression {
++public:
++    Single(int constraint_id);
++
++    // Constraint id
++    //
++    int constraint_id;
++};
++
++class Operation : public Expression {
++public:
++    Operation(Expression* a, Expression* b, const char* operant);
++
++    // Operands
++    //
++    Expression* a;
++    Expression* b;
++
++    // Operant
++    //
++    std::string operant;
++
++    // Apply
++    //
++    std::string apply();
++};
 +
 +
 +//=================================================================================================
@@ -700,6 +733,11 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    //
 +    int constraint_counter = 0;
 +    int last_bound_constraint_id;
++
++    // Tree derivation
++    //
++    int tree_constraint_counter = 0;
++    vec<Expression*> tree_derivation;
 +
 +    // Simplified constraint store
 +    // 
@@ -722,6 +760,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    const char *proof_file_name = "maxsat_proof.pbp";
 +    void set_proof_name             (const char* name) {proof_file_name = name;};
 +    void write_proof_file           ();
++    void write_tree_derivation      () {};
 +    void write_proof_header         (int nbclause);
 +    void write_comment              (const char* comment);
 +    void write_contradiction        ();
@@ -732,6 +771,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_witness              (Lit literal);
 +    void write_clause               (vec<Lit>& clause);
 +    void write_learnt_clause        (vec<Lit>& clause);
++    void write_linkingVar_clause    (vec<Lit>& clause);
 +    void write_bound_update         (vec<lbool>& model); 
 +    void write_unit_sub_red         (vec<Lit>& definition);
 +    void write_C2_sum               (vec<int>& constraint_ids, int third, int from, int to);
@@ -754,7 +794,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-26 11:54:08.746767537 +0100
+--- src_tmp/core/Solver.C	2021-12-26 16:37:42.713783955 +0100
 +++ src/core/Solver.C	2021-12-25 15:10:22.095546210 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -831,7 +871,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-26 11:54:08.746767537 +0100
+--- src_tmp/core/Solver.h	2021-12-26 16:37:42.713783955 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h

@@ -1,6 +1,12 @@
 #include "Prooflogger.h"
 
 //=================================================================================================
+// Expression initialisers:
+
+Single::Single(int constraint_id) : constraint_id(constraint_id){};
+Operation::Operation(Expression* a, Expression* b, const char* operant) : a(a), b(b), operant(operant){};
+
+//=================================================================================================
 // Proof file
 
 void Prooflogger::write_proof_file() {
@@ -36,6 +42,11 @@ void Prooflogger::write_proof_file() {
 
     // Close
     proof_file.close();
+}
+
+void Prooflogger::write_tree_derivation() {
+    // Loop over tree_derivation expressions
+    // tree_derivation.apply();
 }
 
 void Prooflogger::write_proof_header(int nbclause) {
@@ -103,6 +114,15 @@ void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     constraint_counter++;
 }
 
+void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
+    int variable = var(clause[0]);
+    int constraint_id = constraint_store[variable];
+    int coeff = coeff_store.find(constraint_id) != coeff_store.end() ? coeff_store[constraint_id] : 1;
+    proof << "p " << constraint_id << " " << coeff - 1 << " d " << last_bound_constraint_id << " +\n";
+    constraint_counter++;
+    write_learnt_clause(clause);
+}
+
 void Prooflogger::write_bound_update(vec<lbool>& model) {
     proof<< "o ";
     for(int i = 0; i < model.size(); i++) write_literal_assignment(model[i], i);
@@ -137,30 +157,23 @@ void Prooflogger::write_C2_sum(vec<int>& constraint_ids, int third, int from, in
         int total_coeff = 0;
 
         // Write first two manually
-        proof << "p " << constraint_ids[0] << " " << constraint_ids[1] << " + ";
+        Expression* expression = new Operation(new Single(constraint_ids[0]), new Single(constraint_ids[1]), "+");
         total_coeff += coeff_store.find(constraint_ids[0]) != coeff_store.end() ? coeff_store[constraint_ids[0]] : 1; 
         total_coeff += coeff_store.find(constraint_ids[1]) != coeff_store.end() ? coeff_store[constraint_ids[1]] : 1; 
 
         // Loop for others
         for(int i = 2; i < constraint_ids.size(); i++) {
-            proof << constraint_ids[i] << " + ";
+            expression = new Operation(expression, new Single(constraint_ids[i]), "+");
             total_coeff += coeff_store.find(constraint_ids[i]) != coeff_store.end() ? coeff_store[constraint_ids[i]] : 1;
         }
-        proof << "\n";
-        constraint_counter++;
+        tree_derivation.push(expression);
+        tree_constraint_counter++;
 
         // Store resulting constraint id
-        constraint_store[third] = constraint_counter;
+        constraint_store[third] = -tree_constraint_counter;
 
         // Store sum of coeffs 
-        coeff_store[constraint_counter] = total_coeff;
-
-        // If inputsize is total size --> reached bottom of the tree
-        // SO: divide by max coeff - 1 and add last upper bound constraint
-        if(to - from + 1 == formula_length) {
-            proof << "p " << constraint_counter << " " << total_coeff-1 << " d " << last_bound_constraint_id << " +\n";
-            constraint_counter++;
-        }
+        coeff_store[-tree_constraint_counter] = total_coeff;
     }
 }
 
@@ -213,43 +226,38 @@ int Prooflogger::write_C_sub_red(vec<Lit>& definition, int sigma, int from, int 
         int first = var(definition[0]);
         int second = var(definition[1]);
         int third = var(definition[2]);
+        bool resolved_one = false;
 
         // If first needs to be resolved
         if(first > formula_length + n_variables && constraint_store.find(first) != constraint_store.end()) {
+            resolved_one = true;
             int first_constraint_id = constraint_store[first];
             int first_coeff = coeff_store.find(first_constraint_id) != coeff_store.end()? coeff_store[first_constraint_id] : 1;
 
-            proof << "p ";
-            proof << constraint_counter; 
-            proof << " ";
-            proof << first_coeff;
-            proof << " * ";
-            proof << first_constraint_id;
-            proof << " +\n";
-            constraint_counter++;
-            coeff_store[constraint_counter] = first_coeff;
+            tree_derivation.push(new Operation(new Operation(new Single(constraint_counter), new Single(first_coeff), "*"),
+                                                new Single(first_constraint_id),
+                                                "+"));
+            tree_constraint_counter++;
+            coeff_store[tree_constraint_counter] = first_coeff;
         }
 
         // If second needs to be resolved
         if(second > formula_length + n_variables && constraint_store.find(second) != constraint_store.end()) {
+            resolved_one = true;
             int second_constraint_id = constraint_store[second];
             int second_coeff = coeff_store.find(second_constraint_id) != coeff_store.end()? coeff_store[second_constraint_id] : 1;
             int third_coeff = coeff_store.find(constraint_counter) != coeff_store.end()? coeff_store[constraint_counter] : 1;
 
-            proof << "p ";
-            proof << constraint_counter; 
-            proof << " ";
-            proof << second_coeff;
-            proof << " * ";
-            proof << second_constraint_id;
-            proof << " ";
-            proof << third_coeff;
-            proof << " * ";
-            proof << " +\n";
-            constraint_counter++;
-            coeff_store[constraint_counter] = third_coeff* second_coeff;
+            tree_derivation.push(new Operation(new Operation(new Single(constraint_counter), new Single(second_coeff), "*"),
+                                                new Operation(new Single(second_constraint_id), new Single(third_coeff), "*"),
+                                                "+"));
+            tree_constraint_counter++;
+            coeff_store[tree_constraint_counter] = third_coeff * second_coeff;
         }
-        constraint_store[third] = constraint_counter;
+
+        // If no resolving had to be done
+        if(resolved_one) constraint_store[third] -tree_constraint_counter;
+        else constraint_store[third] = constraint_counter;
     }
     return constraint_counter;
 }

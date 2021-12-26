@@ -481,15 +481,15 @@ int main(int argc, char** argv)
         PL.write_comment("==============================================================");
         PL.write_comment("Cardinality encoding:"); 
 	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
-        //PL.write_comment("==============================================================");
-        //PL.write_comment("Linking variables order:"); 
-        //PL.write_order(linkingVar);
+        PL.write_comment("==============================================================");
+        PL.write_comment("Tree derivation:"); 
+        PL.write_tree_derivation();
         PL.write_comment("==============================================================");
         PL.write_comment("Constraining through linking variables:"); 
 	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
-          PL.write_learnt_clause(lits);
+          PL.write_linkingVar_clause(lits);
 	      S.addClause(lits);
 	    }
         PL.write_comment("==============================================================");
@@ -503,7 +503,7 @@ int main(int argc, char** argv)
 	    for (int i = answerNew; i < answer; i++) {
 	      lits.clear();
 	      lits.push(~linkingVar[i]);
-          PL.write_learnt_clause(lits);
+          PL.write_linkingVar_clause(lits);
 	      S.addClause(lits);
 	    }
         PL.write_comment("==============================================================");

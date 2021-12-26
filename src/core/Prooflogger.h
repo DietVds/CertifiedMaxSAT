@@ -15,6 +15,40 @@
 
 #include "SolverTypes.h"
 
+//=================================================================================================
+// Prooflogger -- polish notation class:
+
+class Expression {
+public:
+};
+
+class Single : public Expression {
+public:
+    Single(int constraint_id);
+
+    // Constraint id
+    //
+    int constraint_id;
+};
+
+class Operation : public Expression {
+public:
+    Operation(Expression* a, Expression* b, const char* operant);
+
+    // Operands
+    //
+    Expression* a;
+    Expression* b;
+
+    // Operant
+    //
+    std::string operant;
+
+    // Apply
+    //
+    std::string apply();
+};
+
 
 //=================================================================================================
 // Prooflogger -- the main class:
@@ -32,6 +66,11 @@ public:
     //
     int constraint_counter = 0;
     int last_bound_constraint_id;
+
+    // Tree derivation
+    //
+    int tree_constraint_counter = 0;
+    vec<Expression*> tree_derivation;
 
     // Simplified constraint store
     // 
@@ -54,6 +93,7 @@ public:
     const char *proof_file_name = "maxsat_proof.pbp";
     void set_proof_name             (const char* name) {proof_file_name = name;};
     void write_proof_file           ();
+    void write_tree_derivation      ();
     void write_proof_header         (int nbclause);
     void write_comment              (const char* comment);
     void write_contradiction        ();
@@ -64,6 +104,7 @@ public:
     void write_witness              (Lit literal);
     void write_clause               (vec<Lit>& clause);
     void write_learnt_clause        (vec<Lit>& clause);
+    void write_linkingVar_clause    (vec<Lit>& clause);
     void write_bound_update         (vec<lbool>& model); 
     void write_unit_sub_red         (vec<Lit>& definition);
     void write_C2_sum               (vec<int>& constraint_ids, int third, int from, int to);
