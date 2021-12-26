@@ -47,6 +47,23 @@ void Prooflogger::write_proof_file() {
 void Prooflogger::write_tree_derivation() {
     // Loop over tree_derivation expressions
     // tree_derivation.apply();
+    int constraint_counter_at_start_of_derivations = constraint_counter;
+    for(int i = 0; i < tree_derivation.size(); i++){
+        proof << "p " << tree_derivation[i]->apply(constraint_counter_at_start_of_derivations ) << "\n";
+        constraint_counter++;
+    }
+
+    std::map<int, int>::iterator it = constraint_store.begin();
+
+    while(it != constraint_store.end()){
+        int var = it->first;
+        int constraint_id = it->second;
+
+        if(constraint_id < 0){
+            constraint_store[var] = abs(constraint_id) + constraint_counter_at_start_of_derivations;
+        }
+        it++;
+    }
 }
 
 void Prooflogger::write_proof_header(int nbclause) {
@@ -290,4 +307,18 @@ void Prooflogger::write_OPB_constraint(vec<Lit>& constraint, int weight) {
             constraints << "1 x" << var(constraint[i]) + 1 << " ";
     }
     constraints << " >= " << weight << " ;\n";
+}
+
+
+
+std::string Operation::apply(int constraint_id_at_start_of_printing) {
+    //Operation(Expression* a, Expression* b, const char* operant)
+    return a->apply(constraint_id_at_start_of_printing) + " " 
+                + b->apply(constraint_id_at_start_of_printing) 
+                + " " + this->operant ;
+}
+
+std::string Single::apply(int constraint_id_at_start_of_printing){
+    std::cout << this->constraint_id << "\n";
+    return std::to_string(this->constraint_id < 0 ? abs(this->constraint_id) +  constraint_id_at_start_of_printing : this->constraint_id);
 }

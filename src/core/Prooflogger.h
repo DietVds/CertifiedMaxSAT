@@ -20,6 +20,7 @@
 
 class Expression {
 public:
+    virtual std::string apply(int constraint_id_at_start_of_printing){};
 };
 
 class Single : public Expression {
@@ -29,6 +30,8 @@ public:
     // Constraint id
     //
     int constraint_id;
+
+    std::string apply(int constraint_id_at_start_of_printing) override;
 };
 
 class Operation : public Expression {
@@ -46,7 +49,7 @@ public:
 
     // Apply
     //
-    std::string apply();
+    std::string apply(int constraint_id_at_start_of_printing) override;
 };
 
 
