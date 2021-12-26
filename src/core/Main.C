@@ -280,11 +280,11 @@ void genCardinals(int from, int to,
 
   // First
   lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-  PL.write_sub_red(lits, true);
+  PL.write_unit_sub_red(lits);
 
   // Last
   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-  PL.write_sub_red(lits, false);
+  PL.write_unit_sub_red(lits);
 
 
   if (inputSize > 2) {
@@ -300,28 +300,39 @@ void genCardinals(int from, int to,
     linkingVar.push(Lit(from));
     linkingVar.push(Lit(varLast));
   } else { // inputSize >= 2
+
+    // Keeping track of constraint ids when sigma == 2 
+    vec<int> constraint_ids; 
+    int constraint_id;
+    int third_var;
+
     PL.write_comment("- Node clauses:");
     linkingVar.push(Lit(varZero));
     for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
     linkingVar.push(Lit(varLast));
+
     for (int sigma = 0; sigma <= inputSize; sigma++) {
-      for (int alpha = 0; alpha < linkingAlpha.size()-1; alpha++) {
-	    int beta = sigma - alpha;
-	    if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
-	      lits.clear();
-	      lits.push(~linkingAlpha[alpha]);
-	      lits.push(~linkingBeta[beta]);
-	      lits.push(linkingVar[sigma]);
-          PL.write_sub_red(lits, true);
-	      S.addClause(lits);
-	      lits.clear();
-	      lits.push(linkingAlpha[alpha+1]);
-	      lits.push(linkingBeta[beta+1]);
-	      lits.push(~linkingVar[sigma+1]);
-          PL.write_sub_red(lits, false);
-	      S.addClause(lits);
-	    }
-      }
+        for (int alpha = 0; alpha < linkingAlpha.size()-1; alpha++) {
+	        int beta = sigma - alpha;
+	        if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
+	            lits.clear();
+	            lits.push(~linkingAlpha[alpha]);
+	            lits.push(~linkingBeta[beta]);
+	            lits.push(linkingVar[sigma]);
+                PL.write_C_sub_red(lits, sigma, from, to);
+	            S.addClause(lits);
+	            lits.clear();
+	            lits.push(linkingAlpha[alpha+1]);
+	            lits.push(linkingBeta[beta+1]);
+	            lits.push(~linkingVar[sigma+1]);
+                constraint_id = PL.write_C_sub_red(lits, sigma+1, from, to);
+                constraint_ids.push(constraint_id);
+                third_var = var(lits[2]);
+	            S.addClause(lits);
+	        }
+        }
+        PL.write_C2_v1_sum(constraint_ids, third_var);
+        constraint_ids.clear();
     }
     PL.write_comment("-------------------------------------------");
   }
@@ -445,8 +456,8 @@ int main(int argc, char** argv)
     if (!S.simplify()){
         reportf("Solved by unit propagation\n");
         if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
-        PL.derived_empty_clause();
-        PL.write_proof();
+        PL.write_empty_clause();
+        PL.write_proof_file();
         printf("UNSATISFIABLE\n");
         exit(20);
     }
@@ -517,7 +528,7 @@ int main(int argc, char** argv)
             fprintf(res, "UNSAT\n");
         fclose(res);
     }
-    PL.write_proof();
+    PL.write_proof_file();
 
 #ifdef NDEBUG
     exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')

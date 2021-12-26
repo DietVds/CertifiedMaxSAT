@@ -13,7 +13,7 @@ void Prooflogger::write_comment(const char* comment) {
     proof<< "* " << comment << "\n";
 }
 
-void Prooflogger::derived_empty_clause() {
+void Prooflogger::write_empty_clause() {
     proof<< "u >= 1;\n";
     constraint_counter++;
     write_contradiction();
@@ -24,23 +24,55 @@ const char* Prooflogger::literal_symbol(int var) {
     else return "x";
 }
 
-void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
-
-    // If unit clause, store
+void Prooflogger::write_unit_sub_red(vec<Lit>& definition) {
     if(simplify) {
-        if(definition.size() == 1) {
-            unit_store[var(definition[0])] = sign(definition[0]);
-            return;
-        } else {
-            // First verify if clause should be written at all
-            for (int i = 0; i < definition.size(); i++) {
-                // If the sign is the same as the one in the store then the clause is trivially true
-                if(unit_store.find(var(definition[i])) != unit_store.end() && unit_store[var(definition[i])] == sign(definition[i])) return;
-            }
+        unit_store[var(definition[0])] = sign(definition[0]);
+        return;
+    } else {
+        std::string variable;
+        proof<< "red ";
+
+        // Write variable
+        if (sign(definition[0]) == 1)
+            proof << "1 ~y" << var(definition[0])+1 << " ";
+        else
+            proof << "1 y" << var(definition[0])+1 << " ";
+    }
+    proof<< " >= 1; y" << var(definition[0])+1 << " -> " << std::to_string(sign(definition[0]) == 0) << "\n";
+    constraint_counter++;
+}
+
+void Prooflogger::write_C2_v1_sum(vec<int>& constraint_ids, int key) {
+    int total_coeff = 0;
+    if(constraint_ids.size() > 1) {
+        proof << "p " << constraint_ids[0] << " " << constraint_ids[1] << " + ";
+        total_coeff += coeff_store.find(constraint_ids[0]) != coeff_store.end() ? coeff_store[constraint_ids[0]] : 1; 
+        total_coeff += coeff_store.find(constraint_ids[1]) != coeff_store.end() ? coeff_store[constraint_ids[1]] : 1; 
+        for(int i = 2; i < constraint_ids.size(); i++) {
+            proof << constraint_ids[i] << " + ";
+            total_coeff += coeff_store.find(constraint_ids[i]) != coeff_store.end() ? coeff_store[constraint_ids[i]] : 1;
+        }
+        proof << "\n";
+        constraint_counter++;
+
+        // Store constraint id
+        constraint_store[key] = constraint_counter;
+
+        // Store sum of coeffs 
+        coeff_store[key] = total_coeff;
+    }
+}
+
+int Prooflogger::write_C_sub_red(vec<Lit>& definition, int sigma, int from, int to) {
+
+    if(simplify) {
+        // First verify if clause should be written at all
+        for (int i = 0; i < definition.size(); i++) {
+            // If the sign is the same as the one in the store then the clause is trivially true
+            if(unit_store.find(var(definition[i])) != unit_store.end() && unit_store[var(definition[i])] == sign(definition[i])) return -1;
         }
     }
 
-    // Keep track of meaningful names
     if(meaningful_names) {
         int first = var(definition[0]);
         int second = var(definition[1]); 
@@ -48,40 +80,9 @@ void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
 
         // If variable does not already have a meaningful name
         if(meaningful_name_LB.find(third) == meaningful_name_LB.end()) {
-
-            // First two are x's
-            if(first+1 <= formula_length + n_variables && second <= formula_length + n_variables) {
-                meaningful_name_LB[third] = first+1;
-                meaningful_name_UB[third] = second+1;
-                meaningful_name_n[third] = 1;
-            }
-
-            // First is an x
-            else if(first+1 <= formula_length + n_variables) {
-                meaningful_name_LB[third] = first+1;
-                meaningful_name_n[third] = 2;
-            }
-
-            // First has a simplified name
-            else if(meaningful_name_UB.find(first) != meaningful_name_UB.end()) {
-
-                // Second is an x
-                if(second+1 <= formula_length + n_variables) {
-                    meaningful_name_LB[third] = meaningful_name_LB[first];
-                    meaningful_name_UB[third] = second+1;
-                    meaningful_name_n[third] = meaningful_name_n[first];
-
-                // Second is a y
-                } else {
-                    meaningful_name_LB[third] = meaningful_name_LB[first];
-                    meaningful_name_UB[third] = meaningful_name_UB[first]+1;
-                    meaningful_name_n[third] = meaningful_name_n[first]+1;
-                }
-            }
-
-        // Still need upper bound
-        } else if(meaningful_name_UB.find(third) == meaningful_name_UB.end()) {
-            meaningful_name_UB[third] = second+1;
+            meaningful_name_LB[third] = from+1;
+            meaningful_name_UB[third] = to+1;
+            meaningful_name_n[third] = sigma;
         }
     }
 
@@ -90,7 +91,7 @@ void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
     proof<< "red ";
     for (int i = 0; i < definition.size(); i++) {
         
-        // If the literal is now found in the store then it was there but the sign was different, hence it shouldn't be written 
+        // If the literal is now found in the store then its sign was different, hence it shouldn't be written 
         if(!simplify || unit_store.find(var(definition[i])) == unit_store.end()) {
 
             // Define variable name
@@ -104,7 +105,53 @@ void Prooflogger::write_sub_red(vec<Lit>& definition, bool ass) {
         }
     }
     proof<< " >= 1; " << variable << " -> " << std::to_string(sign(definition[definition.size()-1]) == 0) << "\n";
+    proof << "* " << std::to_string(constraint_counter+1) << "\n";
     constraint_counter++;
+
+    // For C2's write resolving
+    if(sign(definition[2]) == 1 && sigma > 0) {
+        int first = var(definition[0]);
+        int second = var(definition[1]);
+        int third = var(definition[2]);
+
+        // If first needs to be resolved
+        if(first > formula_length + n_variables && constraint_store.find(first) != constraint_store.end()) {
+            int constraint_id = constraint_store[first];
+            int coeff = coeff_store.find(constraint_id) != coeff_store.end()? coeff_store[constraint_id] : 1;
+
+            proof << "p ";
+            proof << constraint_counter; 
+            proof << " ";
+            proof << coeff;
+            proof << " * ";
+            proof << constraint_id;
+            proof << " +\n";
+            constraint_counter++;
+            coeff_store[constraint_counter] = coeff;
+        }
+
+        // If second needs to be resolved
+        if(second > formula_length + n_variables && constraint_store.find(second) != constraint_store.end()) {
+            int constraint_id = constraint_store[second];
+            int coeff_second = coeff_store.find(constraint_id) != coeff_store.end()? coeff_store[constraint_id] : 1;
+            int coeff_third = coeff_store.find(constraint_counter) != coeff_store.end()? coeff_store[constraint_counter] : 1;
+
+            proof << "p ";
+            proof << constraint_counter; 
+            proof << " ";
+            proof << coeff_second;
+            proof << " * ";
+            proof << constraint_id;
+            proof << " ";
+            proof << coeff_third;
+            proof << " * ";
+            proof << " +\n";
+            constraint_counter++;
+            coeff_store[constraint_counter] = coeff_third * coeff_second;
+        }
+        constraint_store[third] = constraint_counter;
+    }
+    return constraint_counter;
 }
 
 void Prooflogger::write_bound_update(vec<lbool>& model) {
@@ -140,12 +187,7 @@ void Prooflogger::write_contradiction() {
     proof << "c " << constraint_counter << "\n";
 }
 
-void Prooflogger::write_delete(int number) {
-    proof << "d " << number << "\n";
-    constraint_counter--;
-}
-
-void Prooflogger::write_proof() {
+void Prooflogger::write_proof_file() {
 
     if(meaningful_names) {
 
