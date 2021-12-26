@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-26 20:06:51.200749500 +0100
-+++ src/core/Main.C	2021-12-26 16:43:32.985062100 +0100
+--- src_tmp/core/Main.C	2021-12-26 22:37:11.821281700 +0100
++++ src/core/Main.C	2021-12-26 20:53:55.911863900 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -375,8 +375,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-26 20:06:43.760093500 +0100
-@@ -0,0 +1,324 @@
++++ src/core/Prooflogger.C	2021-12-26 22:36:49.777586700 +0100
+@@ -0,0 +1,331 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -440,6 +440,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +
 +        if(constraint_id < 0){
 +            constraint_store[var] = abs(constraint_id) + constraint_counter_at_start_of_derivations;
++            coeff_store[constraint_store[var]] = coeff_store[constraint_id]; 
 +        }
 +        it++;
 +    }
@@ -514,6 +515,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    int variable = var(clause[0]);
 +    int constraint_id = constraint_store[variable];
 +    int coeff = coeff_store.find(constraint_id) != coeff_store.end() ? coeff_store[constraint_id] : 1;
++    proof << "* constraint_id " << std::to_string(constraint_id) << " \tcoeff: " << std::to_string(coeff) << "\n";
++    // TODO: check if this is correct or if we could do this better.
 +    proof << "p " << constraint_id << " " << coeff - 1 << " d " << last_bound_constraint_id << " +\n";
 +    constraint_counter++;
 +    write_learnt_clause(clause);
@@ -617,16 +620,15 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    proof << "\n";
 +    constraint_counter++;
 +
++    bool resolved_one = false;
 +    // Only resolve C2's and don't resolve v0_xFROM_xTO because they can be unit propagated
 +    if(sign(definition[2]) == 1 && sigma > 0) {
 +        int first = var(definition[0]);
 +        int second = var(definition[1]);
 +        int third = var(definition[2]);
-+        bool resolved_one = false;
 +
 +        // If first needs to be resolved
 +        if(first > formula_length + n_variables && constraint_store.find(first) != constraint_store.end()) {
-+            resolved_one = true;
 +            int first_constraint_id = constraint_store[first];
 +            int first_coeff = coeff_store.find(first_constraint_id) != coeff_store.end()? coeff_store[first_constraint_id] : 1;
 +
@@ -634,28 +636,34 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +                                                new Single(first_constraint_id),
 +                                                "+"));
 +            tree_constraint_counter++;
-+            coeff_store[tree_constraint_counter] = first_coeff;
++            coeff_store[-tree_constraint_counter] = first_coeff;
++            resolved_one = true;
 +        }
 +
 +        // If second needs to be resolved
 +        if(second > formula_length + n_variables && constraint_store.find(second) != constraint_store.end()) {
-+            resolved_one = true;
++            int third_constraint_id = resolved_one ? -tree_constraint_counter : constraint_counter;
++            
 +            int second_constraint_id = constraint_store[second];
 +            int second_coeff = coeff_store.find(second_constraint_id) != coeff_store.end()? coeff_store[second_constraint_id] : 1;
-+            int third_coeff = coeff_store.find(constraint_counter) != coeff_store.end()? coeff_store[constraint_counter] : 1;
++            int third_coeff = coeff_store.find(third_constraint_id) != coeff_store.end()? coeff_store[third_constraint_id] : 1;
 +
-+            tree_derivation.push(new Operation(new Operation(new Single(constraint_counter), new Single(second_coeff), "*"),
++
++            tree_derivation.push(new Operation(new Operation(new Single(third_constraint_id ), new Single(second_coeff), "*"),
 +                                                new Operation(new Single(second_constraint_id), new Single(third_coeff), "*"),
 +                                                "+"));
 +            tree_constraint_counter++;
-+            coeff_store[tree_constraint_counter] = third_coeff * second_coeff;
++            coeff_store[-tree_constraint_counter] = third_coeff * second_coeff;
++            resolved_one = true;
 +        }
 +
 +        // If no resolving had to be done
-+        if(resolved_one) constraint_store[third] -tree_constraint_counter;
++        if(resolved_one) constraint_store[third] = -tree_constraint_counter;
 +        else constraint_store[third] = constraint_counter;
 +    }
-+    return constraint_counter;
++    
++    if(resolved_one) return -tree_constraint_counter;
++    else return constraint_counter;
 +}
 +
 +//=================================================================================================
@@ -698,7 +706,6 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 +
 +std::string Single::apply(int constraint_id_at_start_of_printing){
-+    std::cout << this->constraint_id << "\n";
 +    return std::to_string(this->constraint_id < 0 ? abs(this->constraint_id) +  constraint_id_at_start_of_printing : this->constraint_id);
 +}
 \ No newline at end of file
@@ -838,7 +845,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-26 20:06:51.201071700 +0100
+--- src_tmp/core/Solver.C	2021-12-26 22:37:11.821614000 +0100
 +++ src/core/Solver.C	2021-12-26 11:37:17.936500100 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -915,7 +922,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-26 20:06:51.200156800 +0100
+--- src_tmp/core/Solver.h	2021-12-26 22:37:11.820745600 +0100
 +++ src/core/Solver.h	2021-12-22 10:25:15.730665200 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
