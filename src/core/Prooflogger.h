@@ -43,24 +43,27 @@ public:
     std::map<int, int> meaningful_name_UB;
     std::map<int, int> meaningful_name_n;
 
+    // Constraint and coeff store
+    //
+    std::map<int, int> constraint_store;
+    std::map<int, int> coeff_store;
+
     // Proof file
     std::stringstream proof;
     const char *proof_file_name = "maxsat_proof.pbp";
     void set_proof_name             (const char* name) {proof_file_name = name;};
-    void write_proof                ();
+    void write_proof_file           ();
 
     void write_proof_header         (int nbclause);
-    void write_order                (vec<Lit>& linkingVarint);
     void write_comment              (const char* comment);
-    void derived_empty_clause       ();
+    void write_empty_clause         ();
     const char* literal_symbol      (int var); 
     void write_learnt_clause        (vec<Lit>& clause);
-    void write_sub_red              (vec<Lit>& definition, bool ass);
-    void write_dom                  (vec<Lit>& linkingVar, int start, int stop); 
+    void write_C2_v1_sum            (vec<int>& constraint_ids, int key);
+    int write_C_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
+    void write_unit_sub_red         (vec<Lit>& definition);
     void write_bound_update         (vec<lbool>& model); 
-    void write_constraint           (vec<Lit>& clause);
     void write_contradiction        ();
-    void write_delete               (int number);
     void store                      (Lit literal);
 
     // OPB file

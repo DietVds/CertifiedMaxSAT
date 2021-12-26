@@ -565,7 +565,7 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
             // CONFLICT
             conflicts++; conflictC++;
             if (decisionLevel() == 0) {
-                PL->derived_empty_clause();
+                PL->write_empty_clause();
                 return l_False;
             }
 
@@ -604,7 +604,7 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
 
             // Simplify the set of problem clauses:
             if (decisionLevel() == 0 && !simplify()) {
-                PL->derived_empty_clause();
+                PL->write_empty_clause();
                 return l_False;
             }
 
@@ -668,7 +668,7 @@ bool Solver::solve(const vec<Lit>& assumps)
     conflict.clear();
 
     if (!ok) {
-        PL->derived_empty_clause();
+        PL->write_empty_clause();
         return false;
     }
 
