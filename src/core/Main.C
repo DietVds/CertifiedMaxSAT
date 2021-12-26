@@ -301,7 +301,7 @@ void genCardinals(int from, int to,
     linkingVar.push(Lit(varLast));
   } else { // inputSize >= 2
 
-    // Keeping track of constraint ids when sigma == 2 
+    // Keeping track of constraint ids for C2's
     vec<int> constraint_ids; 
     int constraint_id;
     int third_var;
@@ -331,7 +331,8 @@ void genCardinals(int from, int to,
 	            S.addClause(lits);
 	        }
         }
-        PL.write_C2_v1_sum(constraint_ids, third_var);
+        // Write sum of all C2's for certain vX_xFROM_xTO
+        PL.write_C2_sum(constraint_ids, third_var, from, to);
         constraint_ids.clear();
     }
     PL.write_comment("-------------------------------------------");
