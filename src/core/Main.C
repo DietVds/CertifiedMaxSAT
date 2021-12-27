@@ -332,7 +332,7 @@ void genCardinals(int from, int to,
 	        }
         }
         // Write sum of all C2's for certain vX_xFROM_xTO
-        PL.write_C2_sum(constraint_ids, third_var, from, to);
+        PL.write_C2_sum(constraint_ids, third_var, sigma+1, from, to);
         constraint_ids.clear();
     }
     PL.write_comment("-------------------------------------------");
@@ -479,11 +479,11 @@ int main(int argc, char** argv)
         PL.write_comment("First model found:"); 
         PL.write_bound_update(S.model);
         PL.write_comment("==============================================================");
-        PL.write_comment("Cardinality encoding:"); 
+        PL.write_comment("Tree cardinality encoding:"); 
 	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
         PL.write_comment("==============================================================");
-        PL.write_comment("Tree derivation:"); 
-        PL.write_tree_derivation();
+        PL.write_comment("Cardinality derivation:"); 
+        PL.write_cardinality_derivation();
         PL.write_comment("==============================================================");
         PL.write_comment("Constraining through linking variables:"); 
 	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
