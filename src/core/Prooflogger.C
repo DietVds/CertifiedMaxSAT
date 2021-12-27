@@ -1,10 +1,22 @@
 #include "Prooflogger.h"
 
 //=================================================================================================
-// Expression initialisers:
+// Prooflogger -- polish notation class:
 
+// Initialisers
 Single::Single(int constraint_id) : constraint_id(constraint_id){};
 Operation::Operation(Expression* a, Expression* b, const char* operant) : a(a), b(b), operant(operant){};
+
+std::string Operation::apply(int constraint_id_at_start_of_printing) {
+    //Operation(Expression* a, Expression* b, const char* operant)
+    return a->apply(constraint_id_at_start_of_printing) + " " 
+                + b->apply(constraint_id_at_start_of_printing) 
+                + " " + this->operant ;
+}
+
+std::string Single::apply(int constraint_id_at_start_of_printing){
+    return std::to_string(this->constraint_id < 0 ? abs(this->constraint_id) +  constraint_id_at_start_of_printing : this->constraint_id);
+}
 
 //=================================================================================================
 // Proof file
@@ -110,7 +122,7 @@ void Prooflogger::write_literal_assignment(lbool assignment, int var) {
     std::string sign = assignment == l_False ? "~" : "";
 
     // Variable symbol
-    std::string symbol = "x";
+    std::string symbol = is_aux_var(var)? "y" : "x"; 
     symbol += std::to_string(var+1);
 
     // Write
@@ -318,14 +330,3 @@ void Prooflogger::write_OPB_constraint(vec<Lit>& constraint, int weight) {
 }
 
 
-
-std::string Operation::apply(int constraint_id_at_start_of_printing) {
-    //Operation(Expression* a, Expression* b, const char* operant)
-    return a->apply(constraint_id_at_start_of_printing) + " " 
-                + b->apply(constraint_id_at_start_of_printing) 
-                + " " + this->operant ;
-}
-
-std::string Single::apply(int constraint_id_at_start_of_printing){
-    return std::to_string(this->constraint_id < 0 ? abs(this->constraint_id) +  constraint_id_at_start_of_printing : this->constraint_id);
-}

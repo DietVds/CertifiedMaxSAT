@@ -428,7 +428,7 @@ int main(int argc, char** argv)
         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
 
     // Open OPB file
-    PL.open_OPB();
+    PL.open_OPB_file();
 
     reportf("============================[ Problem Statistics ]=============================\n");
     reportf("|                                                                             |\n");
@@ -445,8 +445,8 @@ int main(int argc, char** argv)
     // Close input file
     gzclose(in);
 
-    // Close written OPB file
-    PL.close_OPB();
+    // Write OPB constraints
+    PL.write_OPB_file();
 
     // Open output file
     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;

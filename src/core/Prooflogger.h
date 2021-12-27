@@ -117,8 +117,8 @@ public:
     std::ofstream OPB_file;
     std::stringstream constraints;
     const char *OPB_file_name = "maxsat_problem.opb";
-    void open_OPB                 ()                   {OPB_file.open(OPB_file_name);};
-    void close_OPB                ()                   {OPB_file << constraints.rdbuf(); OPB_file.close();};
+    void open_OPB_file            ()                   {OPB_file.open(OPB_file_name);};
+    void write_OPB_file           ()                   {OPB_file << constraints.rdbuf(); OPB_file.close();};
     void set_OPB_name             (const char* name)   {OPB_file_name = name;};
 
     void write_OPB_header         (int nbvar, int nbclause);
