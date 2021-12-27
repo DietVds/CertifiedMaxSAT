@@ -6,7 +6,7 @@ Underneath you can find our contact information:
 | Name | Student id | Email address |
 | :--- | :--- |:--- |
 | Wolf De Wulf | 0546395 | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) |
-| Dieter Vandesande | 00000 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
+| Dieter Vandesande | 0565683 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
 
 ## Building the solver
 
