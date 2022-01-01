@@ -21,6 +21,7 @@
 class ReversePolishNotation {
 public:
     virtual std::string apply(int constraint_id_at_start_of_printing){};
+    int minx;
 };
 
 class Operand : public ReversePolishNotation {
@@ -90,6 +91,7 @@ public:
     //
     std::map<int, int> constraint_store;
     std::map<int, int> coeff_store;
+    std::map<int, int> minx_coeff_store;
 
     // Proof file
     std::stringstream proof;
