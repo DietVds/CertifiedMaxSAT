@@ -303,6 +303,7 @@ int Prooflogger::write_C_sub_red(vec<Lit>& definition, int sigma, int from, int 
         if(resolved_one) constraint_store[third] = -cardinality_constraint_counter;
         else {
             constraint_store[third] = constraint_counter;
+            minx_coeff_store[-cardinality_constraint_counter] = std::min(minx_coeff_store.find(second_constraint_id) != minx_coeff_store.end()? minx_coeff_store[second_constraint_id] : 1, third_coeff * second_coeff);
         }
     }
     if(resolved_one) return -cardinality_constraint_counter;
