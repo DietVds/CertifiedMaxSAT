@@ -1,4 +1,4 @@
-# A proof-logged MaxSAT solver
+# A certified MaxSAT solver
 
 This project was made in the context of the Discrete Modelling, Optimization and Search (DMOS) course, given by Prof. Dr. Bart Bogaerts at the [VUB](https://www.vub.be/).
 
@@ -10,7 +10,7 @@ Underneath you can find our contact information:
 
 ## Building the solver
 
-Run the `build.sh` script to extract the minisat and qmaxsat archives, combine them, apply the patches to them and build the final solver:
+Run the `build.sh` script to extract the MiniSat and QMaxSAT archives, combine them, apply the patches to them and build the final solver:
 
 ```console
 ./scripts/build.sh
@@ -26,7 +26,7 @@ Run the `build_src.sh` script to extract the veripb archive and build/install th
 
 ## Building the source code
 
-Run the `build_src.sh` script to extract the minisat and qmaxsat archives, combine them and apply the patches to them:
+Run the `build_src.sh` script to extract the MiniSat and QMaxSAT archives, combine them and apply the patches to them:
 
 ```console
 ./scripts/build_src.sh PATH_TO_SRC
@@ -41,3 +41,7 @@ Run the `build_patch.sh` script to create a patch file that compares the current
 ```
 
 ## Usage
+
+```console
+./qmaxsat --help
+```
