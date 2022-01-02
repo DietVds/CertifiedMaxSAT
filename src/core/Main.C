@@ -246,11 +246,13 @@ void printUsage(char** argv)
 {
     reportf("USAGE: %s [options] <input-file> <result-output-file>\n\n  where input may be either in plain or gzipped DIMACS.\n\n", argv[0]);
     reportf("OPTIONS:\n\n");
-    reportf("  -polarity-mode = {true,false,rnd}\n");
-    reportf("  -decay         = <num> [ 0 - 1 ]\n");
-    reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
-    reportf("  -verbosity     = {0,1,2}\n");
-    reportf("  -proof-file    = /path/to/proof_file.proof (default: maxsat_proof.proof)");
+    reportf("  -polarity-mode       = {true,false,rnd}\n");
+    reportf("  -decay               = <num> [ 0 - 1 ]\n");
+    reportf("  -rnd-freq            = <num> [ 0 - 1 ]\n");
+    reportf("  -verbosity           = {0,1,2}\n");
+    reportf("  -proof-file          = /path/to/proof_file.proof (default: maxsat_proof.pbp)\n");
+    reportf("  -meaningful_names    = whether or not to assign meaningful names to the auxiliairy variables\n");
+    reportf("  -simplify            = whether or not to write the useless unit clauses and literals to the proof file\n");
     reportf("\n");
 }
 

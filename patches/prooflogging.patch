@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-01-02 16:09:04.695005015 +0100
-+++ src/core/Main.C	2021-12-27 23:51:07.425452375 +0100
+--- src_tmp/core/Main.C	2022-01-02 16:28:13.547412812 +0100
++++ src/core/Main.C	2022-01-02 16:28:04.555377260 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -118,15 +118,25 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
  
  //=================================================================================================
-@@ -236,6 +250,7 @@
-     reportf("  -decay         = <num> [ 0 - 1 ]\n");
-     reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
-     reportf("  -verbosity     = {0,1,2}\n");
-+    reportf("  -proof-file    = /path/to/proof_file.proof (default: maxsat_proof.proof)");
+@@ -232,10 +246,13 @@
+ {
+     reportf("USAGE: %s [options] <input-file> <result-output-file>\n\n  where input may be either in plain or gzipped DIMACS.\n\n", argv[0]);
+     reportf("OPTIONS:\n\n");
+-    reportf("  -polarity-mode = {true,false,rnd}\n");
+-    reportf("  -decay         = <num> [ 0 - 1 ]\n");
+-    reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
+-    reportf("  -verbosity     = {0,1,2}\n");
++    reportf("  -polarity-mode       = {true,false,rnd}\n");
++    reportf("  -decay               = <num> [ 0 - 1 ]\n");
++    reportf("  -rnd-freq            = <num> [ 0 - 1 ]\n");
++    reportf("  -verbosity           = {0,1,2}\n");
++    reportf("  -proof-file          = /path/to/proof_file.proof (default: maxsat_proof.pbp)\n");
++    reportf("  -meaningful_names    = whether or not to assign meaningful names to the auxiliairy variables\n");
++    reportf("  -simplify            = whether or not to write the useless unit clauses and literals to the proof file\n");
      reportf("\n");
  }
  
-@@ -249,9 +264,11 @@
+@@ -249,9 +266,11 @@
          return NULL;
  }
  
@@ -139,7 +149,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -261,42 +278,64 @@
+@@ -261,42 +280,64 @@
    Var varZero = S.newVar();
    Var varLast = S.newVar();
  
@@ -223,7 +233,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    }
    linkingAlpha.clear();
    linkingBeta.clear();
-@@ -304,10 +343,10 @@
+@@ -304,10 +345,10 @@
  
  int main(int argc, char** argv)
  {
@@ -236,7 +246,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      int         i, j;
      const char* value;
      for (i = j = 0; i < argc; i++){
-@@ -347,6 +386,18 @@
+@@ -347,6 +388,18 @@
              printUsage(argv);
              exit(0);
  
@@ -255,7 +265,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -357,7 +408,7 @@
+@@ -357,7 +410,7 @@
      argc = j;
  
  
@@ -264,7 +274,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #if defined(__linux__)
      fpu_control_t oldcw, newcw;
      _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
-@@ -376,6 +427,9 @@
+@@ -376,6 +429,9 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
@@ -274,7 +284,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,8 +437,18 @@
+@@ -383,8 +439,18 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
@@ -294,7 +304,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
      double parse_time = cpuTime() - cpu_time;
-@@ -393,6 +457,8 @@
+@@ -393,6 +459,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
@@ -303,7 +313,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -407,21 +473,41 @@
+@@ -407,21 +475,41 @@
        lcnt++;
        int answerNew = 0;
        for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
@@ -360,7 +370,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  	answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
-@@ -439,10 +525,11 @@
+@@ -439,10 +527,11 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -375,7 +385,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-01-02 16:09:02.618995308 +0100
++++ src/core/Prooflogger.C	2022-01-02 16:09:48.687211253 +0100
 @@ -0,0 +1,343 @@
 +#include "Prooflogger.h"
 +
@@ -442,7 +452,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        // Write RPN
 +        proof << "p " << cardinality_derivation[i]->apply(constraint_counter_at_start_of_derivations ) << "\n";
 +
-+        // Tree recursively free the objects
++        // Tree recursively free the RPN objects
 +        delete_RPN_tree(cardinality_derivation[i]);
 +
 +        constraint_counter++;
@@ -858,7 +868,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-01-02 16:09:04.695005015 +0100
+--- src_tmp/core/Solver.C	2022-01-02 16:28:13.547412812 +0100
 +++ src/core/Solver.C	2021-12-25 15:10:22.095546210 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -935,7 +945,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-01-02 16:09:04.695005015 +0100
+--- src_tmp/core/Solver.h	2022-01-02 16:28:13.547412812 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
