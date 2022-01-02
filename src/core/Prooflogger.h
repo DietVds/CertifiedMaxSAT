@@ -21,7 +21,6 @@
 class ReversePolishNotation {
 public:
     virtual std::string apply(int constraint_id_at_start_of_printing){};
-    int minx;
 };
 
 class Operand : public ReversePolishNotation {
@@ -33,6 +32,7 @@ public:
     int value;
 
     std::string apply(int constraint_id_at_start_of_printing) override;
+
 };
 
 class Operation : public ReversePolishNotation {
@@ -91,7 +91,6 @@ public:
     //
     std::map<int, int> constraint_store;
     std::map<int, int> coeff_store;
-    std::map<int, int> minx_coeff_store;
 
     // Proof file
     std::stringstream proof;
@@ -114,6 +113,7 @@ public:
     void write_unit_sub_red             (vec<Lit>& definition);
     void write_C2_sum                   (vec<int>& constraint_ids, int third, int sigma, int from, int to);
     int write_C_sub_red                 (vec<Lit>& definition, int sigma, int from, int to);
+    void delete_RPN_tree                (ReversePolishNotation* node); 
 
     // OPB file
     std::ofstream OPB_file;

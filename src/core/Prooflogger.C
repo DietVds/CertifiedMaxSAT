@@ -10,8 +10,8 @@ Operation::Operation(ReversePolishNotation* a, ReversePolishNotation* b, const c
 std::string Operation::apply(int constraint_id_at_start_of_printing) {
     //Operation(ReversePolishNotation* a, ReversePolishNotation* b, const char* operant)
     return a->apply(constraint_id_at_start_of_printing) + " " 
-                + b->apply(constraint_id_at_start_of_printing) 
-                + " " + this->operant ;
+                                   + b->apply(constraint_id_at_start_of_printing) 
+                                   + " " + this->operant ;
 }
 
 std::string Operand::apply(int constraint_id_at_start_of_printing){
@@ -59,8 +59,13 @@ void Prooflogger::write_proof_file() {
 void Prooflogger::write_cardinality_derivation() {
     int constraint_counter_at_start_of_derivations = constraint_counter;
     for(int i = 0; i < cardinality_derivation.size(); i++){
+
+        // Write RPN
         proof << "p " << cardinality_derivation[i]->apply(constraint_counter_at_start_of_derivations ) << "\n";
-        proof << "* ^ should have as minimal x weight: " << cardinality_derivation[i]->minx << "\n"; 
+
+        // Tree recursively free the RPN objects
+        delete_RPN_tree(cardinality_derivation[i]);
+
         constraint_counter++;
     }
 
@@ -73,10 +78,17 @@ void Prooflogger::write_cardinality_derivation() {
         if(constraint_id < 0){
             constraint_store[var] = abs(constraint_id) + constraint_counter_at_start_of_derivations;
             coeff_store[constraint_store[var]] = coeff_store[constraint_id]; 
-            minx_coeff_store[constraint_store[var]] = minx_coeff_store[constraint_id]; 
         }
         it++;
     }
+}
+
+void Prooflogger::delete_RPN_tree(ReversePolishNotation* node) {
+    if(dynamic_cast<Operation*>(node) != nullptr) {
+        delete_RPN_tree(dynamic_cast<Operation*>(node)->a);
+        delete_RPN_tree(dynamic_cast<Operation*>(node)->b);
+    } 
+    delete(node);
 }
 
 void Prooflogger::write_proof_header(int nbclause) {
@@ -193,16 +205,12 @@ void Prooflogger::write_C2_sum(vec<int>& constraint_ids, int third, int sigma, i
         ReversePolishNotation* sum = new Operation(new Operand(constraint_ids[0]), new Operand(constraint_ids[1]), "+");
         total_coeff += coeff_store.find(constraint_ids[0]) != coeff_store.end() ? coeff_store[constraint_ids[0]] : 1; 
         total_coeff += coeff_store.find(constraint_ids[1]) != coeff_store.end() ? coeff_store[constraint_ids[1]] : 1; 
-        total_minx_coeff += minx_coeff_store.find(constraint_ids[0]) != minx_coeff_store.end() ? minx_coeff_store[constraint_ids[0]] : 1;
-        total_minx_coeff += minx_coeff_store.find(constraint_ids[1]) != minx_coeff_store.end() ? minx_coeff_store[constraint_ids[1]] : 1;
 
         // Loop for others
         for(int i = 2; i < constraint_ids.size(); i++) {
             sum = new Operation(sum, new Operand(constraint_ids[i]), "+");
             total_coeff += coeff_store.find(constraint_ids[i]) != coeff_store.end() ? coeff_store[constraint_ids[i]] : 1;
-            total_minx_coeff += minx_coeff_store.find(constraint_ids[i]) != minx_coeff_store.end() ? minx_coeff_store[constraint_ids[i]] : 1;
         }
-        sum->minx = total_minx_coeff;
         cardinality_derivation.push(sum);
         cardinality_constraint_counter++;
 
@@ -211,7 +219,6 @@ void Prooflogger::write_C2_sum(vec<int>& constraint_ids, int third, int sigma, i
 
         // Store sum of coeffs 
         coeff_store[-cardinality_constraint_counter] = total_coeff;
-        minx_coeff_store[-cardinality_constraint_counter] = total_minx_coeff;
     }
 }
 
@@ -271,12 +278,10 @@ int Prooflogger::write_C_sub_red(vec<Lit>& definition, int sigma, int from, int 
             ReversePolishNotation* resolving = new Operation(new Operation(new Operand(constraint_counter), new Operand(first_coeff), "*"),
                                                             new Operand(first_constraint_id),
                                                             "+");
-            resolving->minx = std::min(minx_coeff_store.find(first_constraint_id) != minx_coeff_store.end()? minx_coeff_store[first_constraint_id] : 1, first_coeff);
             cardinality_derivation.push(resolving);
 
             cardinality_constraint_counter++;
             coeff_store[-cardinality_constraint_counter] = first_coeff;
-            minx_coeff_store[-cardinality_constraint_counter] = std::min(minx_coeff_store.find(first_constraint_id) != minx_coeff_store.end()? minx_coeff_store[first_constraint_id] : 1, first_coeff);
             resolved_one = true;
         }
 
@@ -290,21 +295,16 @@ int Prooflogger::write_C_sub_red(vec<Lit>& definition, int sigma, int from, int 
             ReversePolishNotation* resolving = new Operation(new Operation(new Operand(third_constraint_id ), new Operand(second_coeff), "*"),
                                                             new Operation(new Operand(second_constraint_id), new Operand(third_coeff), "*"),
                                                             "+");
-            resolving->minx = std::min(minx_coeff_store.find(second_constraint_id) != minx_coeff_store.end()? minx_coeff_store[second_constraint_id] : 1, third_coeff * second_coeff);
             cardinality_derivation.push(resolving);
 
             cardinality_constraint_counter++;
             coeff_store[-cardinality_constraint_counter] = third_coeff * second_coeff;
-            minx_coeff_store[-cardinality_constraint_counter] = std::min(minx_coeff_store.find(second_constraint_id) != minx_coeff_store.end()? minx_coeff_store[second_constraint_id] : 1, third_coeff * second_coeff);
             resolved_one = true;
         }
 
         // Check if no resolving had to be done
         if(resolved_one) constraint_store[third] = -cardinality_constraint_counter;
-        else {
-            constraint_store[third] = constraint_counter;
-            minx_coeff_store[-cardinality_constraint_counter] = std::min(minx_coeff_store.find(second_constraint_id) != minx_coeff_store.end()? minx_coeff_store[second_constraint_id] : 1, third_coeff * second_coeff);
-        }
+        else constraint_store[third] = constraint_counter;
     }
     if(resolved_one) return -cardinality_constraint_counter;
     else return constraint_counter;

@@ -1,5 +1,5 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2021-12-29 15:45:43.791180956 +0100
+--- src_tmp/core/Main.C	2022-01-02 16:09:04.695005015 +0100
 +++ src/core/Main.C	2021-12-27 23:51:07.425452375 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
@@ -375,8 +375,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2021-12-29 15:45:40.015199440 +0100
-@@ -0,0 +1,340 @@
++++ src/core/Prooflogger.C	2022-01-02 16:09:02.618995308 +0100
+@@ -0,0 +1,343 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -389,8 +389,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +std::string Operation::apply(int constraint_id_at_start_of_printing) {
 +    //Operation(ReversePolishNotation* a, ReversePolishNotation* b, const char* operant)
 +    return a->apply(constraint_id_at_start_of_printing) + " " 
-+                + b->apply(constraint_id_at_start_of_printing) 
-+                + " " + this->operant ;
++                                   + b->apply(constraint_id_at_start_of_printing) 
++                                   + " " + this->operant ;
 +}
 +
 +std::string Operand::apply(int constraint_id_at_start_of_printing){
@@ -438,8 +438,13 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +void Prooflogger::write_cardinality_derivation() {
 +    int constraint_counter_at_start_of_derivations = constraint_counter;
 +    for(int i = 0; i < cardinality_derivation.size(); i++){
++
++        // Write RPN
 +        proof << "p " << cardinality_derivation[i]->apply(constraint_counter_at_start_of_derivations ) << "\n";
-+        proof << "* ^ should have as minimal x weight: " << cardinality_derivation[i]->minx << "\n"; 
++
++        // Tree recursively free the objects
++        delete_RPN_tree(cardinality_derivation[i]);
++
 +        constraint_counter++;
 +    }
 +
@@ -452,10 +457,17 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        if(constraint_id < 0){
 +            constraint_store[var] = abs(constraint_id) + constraint_counter_at_start_of_derivations;
 +            coeff_store[constraint_store[var]] = coeff_store[constraint_id]; 
-+            minx_coeff_store[constraint_store[var]] = minx_coeff_store[constraint_id]; 
 +        }
 +        it++;
 +    }
++}
++
++void Prooflogger::delete_RPN_tree(ReversePolishNotation* node) {
++    if(dynamic_cast<Operation*>(node) != nullptr) {
++        delete_RPN_tree(dynamic_cast<Operation*>(node)->a);
++        delete_RPN_tree(dynamic_cast<Operation*>(node)->b);
++    } 
++    delete(node);
 +}
 +
 +void Prooflogger::write_proof_header(int nbclause) {
@@ -572,16 +584,12 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        ReversePolishNotation* sum = new Operation(new Operand(constraint_ids[0]), new Operand(constraint_ids[1]), "+");
 +        total_coeff += coeff_store.find(constraint_ids[0]) != coeff_store.end() ? coeff_store[constraint_ids[0]] : 1; 
 +        total_coeff += coeff_store.find(constraint_ids[1]) != coeff_store.end() ? coeff_store[constraint_ids[1]] : 1; 
-+        total_minx_coeff += minx_coeff_store.find(constraint_ids[0]) != minx_coeff_store.end() ? minx_coeff_store[constraint_ids[0]] : 1;
-+        total_minx_coeff += minx_coeff_store.find(constraint_ids[1]) != minx_coeff_store.end() ? minx_coeff_store[constraint_ids[1]] : 1;
 +
 +        // Loop for others
 +        for(int i = 2; i < constraint_ids.size(); i++) {
 +            sum = new Operation(sum, new Operand(constraint_ids[i]), "+");
 +            total_coeff += coeff_store.find(constraint_ids[i]) != coeff_store.end() ? coeff_store[constraint_ids[i]] : 1;
-+            total_minx_coeff += minx_coeff_store.find(constraint_ids[i]) != minx_coeff_store.end() ? minx_coeff_store[constraint_ids[i]] : 1;
 +        }
-+        sum->minx = total_minx_coeff;
 +        cardinality_derivation.push(sum);
 +        cardinality_constraint_counter++;
 +
@@ -590,7 +598,6 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +
 +        // Store sum of coeffs 
 +        coeff_store[-cardinality_constraint_counter] = total_coeff;
-+        minx_coeff_store[-cardinality_constraint_counter] = total_minx_coeff;
 +    }
 +}
 +
@@ -650,12 +657,10 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +            ReversePolishNotation* resolving = new Operation(new Operation(new Operand(constraint_counter), new Operand(first_coeff), "*"),
 +                                                            new Operand(first_constraint_id),
 +                                                            "+");
-+            resolving->minx = std::min(minx_coeff_store.find(first_constraint_id) != minx_coeff_store.end()? minx_coeff_store[first_constraint_id] : 1, first_coeff);
 +            cardinality_derivation.push(resolving);
 +
 +            cardinality_constraint_counter++;
 +            coeff_store[-cardinality_constraint_counter] = first_coeff;
-+            minx_coeff_store[-cardinality_constraint_counter] = std::min(minx_coeff_store.find(first_constraint_id) != minx_coeff_store.end()? minx_coeff_store[first_constraint_id] : 1, first_coeff);
 +            resolved_one = true;
 +        }
 +
@@ -669,12 +674,10 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +            ReversePolishNotation* resolving = new Operation(new Operation(new Operand(third_constraint_id ), new Operand(second_coeff), "*"),
 +                                                            new Operation(new Operand(second_constraint_id), new Operand(third_coeff), "*"),
 +                                                            "+");
-+            resolving->minx = std::min(minx_coeff_store.find(second_constraint_id) != minx_coeff_store.end()? minx_coeff_store[second_constraint_id] : 1, third_coeff * second_coeff);
 +            cardinality_derivation.push(resolving);
 +
 +            cardinality_constraint_counter++;
 +            coeff_store[-cardinality_constraint_counter] = third_coeff * second_coeff;
-+            minx_coeff_store[-cardinality_constraint_counter] = std::min(minx_coeff_store.find(second_constraint_id) != minx_coeff_store.end()? minx_coeff_store[second_constraint_id] : 1, third_coeff * second_coeff);
 +            resolved_one = true;
 +        }
 +
@@ -719,7 +722,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2021-12-29 15:39:28.542470226 +0100
++++ src/core/Prooflogger.h	2022-01-02 16:05:42.982076185 +0100
 @@ -0,0 +1,132 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
@@ -744,7 +747,6 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +class ReversePolishNotation {
 +public:
 +    virtual std::string apply(int constraint_id_at_start_of_printing){};
-+    int minx;
 +};
 +
 +class Operand : public ReversePolishNotation {
@@ -756,6 +758,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    int value;
 +
 +    std::string apply(int constraint_id_at_start_of_printing) override;
++
 +};
 +
 +class Operation : public ReversePolishNotation {
@@ -814,7 +817,6 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    //
 +    std::map<int, int> constraint_store;
 +    std::map<int, int> coeff_store;
-+    std::map<int, int> minx_coeff_store;
 +
 +    // Proof file
 +    std::stringstream proof;
@@ -837,6 +839,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_unit_sub_red             (vec<Lit>& definition);
 +    void write_C2_sum                   (vec<int>& constraint_ids, int third, int sigma, int from, int to);
 +    int write_C_sub_red                 (vec<Lit>& definition, int sigma, int from, int to);
++    void delete_RPN_tree                (ReversePolishNotation* node); 
 +
 +    // OPB file
 +    std::ofstream OPB_file;
@@ -855,7 +858,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2021-12-29 15:45:43.791180956 +0100
+--- src_tmp/core/Solver.C	2022-01-02 16:09:04.695005015 +0100
 +++ src/core/Solver.C	2021-12-25 15:10:22.095546210 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -932,7 +935,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2021-12-29 15:45:43.791180956 +0100
+--- src_tmp/core/Solver.h	2022-01-02 16:09:04.695005015 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h

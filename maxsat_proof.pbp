@@ -5,811 +5,591 @@ f 12
 o ~x1 ~x2 ~x3 x4 x5 x6 ~x7 x8 ~x9 x10 ~x11 x12 x13 ~x14 ~x15 ~x16 ~x17 ~x18 x19 ~x20 
 * ==============================================================
 * Tree cardinality encoding:
-red 1 v0_x9_x20  >= 1; v0_x9_x20 -> 1
-red 1 ~v13_x9_x20  >= 1; v13_x9_x20 -> 0
-red 1 v0_x9_x15  >= 1; v0_x9_x15 -> 1
-red 1 ~v8_x9_x15  >= 1; v8_x9_x15 -> 0
-red 1 v0_x9_x12  >= 1; v0_x9_x12 -> 1
-red 1 ~v5_x9_x12  >= 1; v5_x9_x12 -> 0
-red 1 v0_x9_x11  >= 1; v0_x9_x11 -> 1
-red 1 ~v4_x9_x11  >= 1; v4_x9_x11 -> 0
-red 1 v0_x9_x10  >= 1; v0_x9_x10 -> 1
-red 1 ~v3_x9_x10  >= 1; v3_x9_x10 -> 0
+red 1 y21  >= 1; y21 -> 1
+red 1 ~y22  >= 1; y22 -> 0
+red 1 y23  >= 1; y23 -> 1
+red 1 ~y24  >= 1; y24 -> 0
+red 1 y25  >= 1; y25 -> 1
+red 1 ~y26  >= 1; y26 -> 0
+red 1 y27  >= 1; y27 -> 1
+red 1 ~y28  >= 1; y28 -> 0
+red 1 y29  >= 1; y29 -> 1
+red 1 ~y30  >= 1; y30 -> 0
 red 1 y31  >= 1; y31 -> 1
 red 1 ~y32  >= 1; y32 -> 0
 red 1 y33  >= 1; y33 -> 1
 red 1 ~y34  >= 1; y34 -> 0
 * - Node clauses:
-red 1 ~y31 1 ~y33 1 v0_x9_x10  >= 1; v0_x9_x10 -> 1
-red 1 x9 1 x10 1 ~v1_x9_x10  >= 1; v1_x9_x10 -> 0
-red 1 ~y31 1 ~x10 1 v1_x9_x10  >= 1; v1_x9_x10 -> 1
-red 1 x9 1 y34 1 ~v2_x9_x10  >= 1; v2_x9_x10 -> 0
-red 1 ~x9 1 ~y33 1 v1_x9_x10  >= 1; v1_x9_x10 -> 1
-red 1 y32 1 x10 1 ~v2_x9_x10  >= 1; v2_x9_x10 -> 0
-red 1 ~x9 1 ~x10 1 v2_x9_x10  >= 1; v2_x9_x10 -> 1
-red 1 y32 1 y34 1 ~v3_x9_x10  >= 1; v3_x9_x10 -> 0
+red 1 ~y31 1 ~y33 1 y29  >= 1; y29 -> 1
+red 1 x9 1 x10 1 ~y35  >= 1; y35 -> 0
+red 1 ~y31 1 ~x10 1 y35  >= 1; y35 -> 1
+red 1 x9 1 y34 1 ~y36  >= 1; y36 -> 0
+red 1 ~x9 1 ~y33 1 y35  >= 1; y35 -> 1
+red 1 y32 1 x10 1 ~y36  >= 1; y36 -> 0
+red 1 ~x9 1 ~x10 1 y36  >= 1; y36 -> 1
+red 1 y32 1 y34 1 ~y30  >= 1; y30 -> 0
 * -------------------------------------------
 red 1 y37  >= 1; y37 -> 1
 red 1 ~y38  >= 1; y38 -> 0
 * - Node clauses:
-red 1 ~v0_x9_x10 1 ~y37 1 v0_x9_x11  >= 1; v0_x9_x11 -> 1
-red 1 v1_x9_x10 1 x11 1 ~v1_x9_x11  >= 1; v1_x9_x11 -> 0
-red 1 ~v0_x9_x10 1 ~x11 1 v1_x9_x11  >= 1; v1_x9_x11 -> 1
-red 1 v1_x9_x10 1 y38 1 ~v2_x9_x11  >= 1; v2_x9_x11 -> 0
-red 1 ~v1_x9_x10 1 ~y37 1 v1_x9_x11  >= 1; v1_x9_x11 -> 1
-red 1 v2_x9_x10 1 x11 1 ~v2_x9_x11  >= 1; v2_x9_x11 -> 0
-red 1 ~v1_x9_x10 1 ~x11 1 v2_x9_x11  >= 1; v2_x9_x11 -> 1
-red 1 v2_x9_x10 1 y38 1 ~v3_x9_x11  >= 1; v3_x9_x11 -> 0
-red 1 ~v2_x9_x10 1 ~y37 1 v2_x9_x11  >= 1; v2_x9_x11 -> 1
-red 1 v3_x9_x10 1 x11 1 ~v3_x9_x11  >= 1; v3_x9_x11 -> 0
-red 1 ~v2_x9_x10 1 ~x11 1 v3_x9_x11  >= 1; v3_x9_x11 -> 1
-red 1 v3_x9_x10 1 y38 1 ~v4_x9_x11  >= 1; v4_x9_x11 -> 0
+red 1 ~y29 1 ~y37 1 y27  >= 1; y27 -> 1
+red 1 y35 1 x11 1 ~y39  >= 1; y39 -> 0
+red 1 ~y29 1 ~x11 1 y39  >= 1; y39 -> 1
+red 1 y35 1 y38 1 ~y40  >= 1; y40 -> 0
+red 1 ~y35 1 ~y37 1 y39  >= 1; y39 -> 1
+red 1 y36 1 x11 1 ~y40  >= 1; y40 -> 0
+red 1 ~y35 1 ~x11 1 y40  >= 1; y40 -> 1
+red 1 y36 1 y38 1 ~y41  >= 1; y41 -> 0
+red 1 ~y36 1 ~y37 1 y40  >= 1; y40 -> 1
+red 1 y30 1 x11 1 ~y41  >= 1; y41 -> 0
+red 1 ~y36 1 ~x11 1 y41  >= 1; y41 -> 1
+red 1 y30 1 y38 1 ~y28  >= 1; y28 -> 0
 * -------------------------------------------
 red 1 y42  >= 1; y42 -> 1
 red 1 ~y43  >= 1; y43 -> 0
 * - Node clauses:
-red 1 ~v0_x9_x11 1 ~y42 1 v0_x9_x12  >= 1; v0_x9_x12 -> 1
-red 1 v1_x9_x11 1 x12 1 ~v1_x9_x12  >= 1; v1_x9_x12 -> 0
-red 1 ~v0_x9_x11 1 ~x12 1 v1_x9_x12  >= 1; v1_x9_x12 -> 1
-red 1 v1_x9_x11 1 y43 1 ~v2_x9_x12  >= 1; v2_x9_x12 -> 0
-red 1 ~v1_x9_x11 1 ~y42 1 v1_x9_x12  >= 1; v1_x9_x12 -> 1
-red 1 v2_x9_x11 1 x12 1 ~v2_x9_x12  >= 1; v2_x9_x12 -> 0
-red 1 ~v1_x9_x11 1 ~x12 1 v2_x9_x12  >= 1; v2_x9_x12 -> 1
-red 1 v2_x9_x11 1 y43 1 ~v3_x9_x12  >= 1; v3_x9_x12 -> 0
-red 1 ~v2_x9_x11 1 ~y42 1 v2_x9_x12  >= 1; v2_x9_x12 -> 1
-red 1 v3_x9_x11 1 x12 1 ~v3_x9_x12  >= 1; v3_x9_x12 -> 0
-red 1 ~v2_x9_x11 1 ~x12 1 v3_x9_x12  >= 1; v3_x9_x12 -> 1
-red 1 v3_x9_x11 1 y43 1 ~v4_x9_x12  >= 1; v4_x9_x12 -> 0
-red 1 ~v3_x9_x11 1 ~y42 1 v3_x9_x12  >= 1; v3_x9_x12 -> 1
-red 1 v4_x9_x11 1 x12 1 ~v4_x9_x12  >= 1; v4_x9_x12 -> 0
-red 1 ~v3_x9_x11 1 ~x12 1 v4_x9_x12  >= 1; v4_x9_x12 -> 1
-red 1 v4_x9_x11 1 y43 1 ~v5_x9_x12  >= 1; v5_x9_x12 -> 0
+red 1 ~y27 1 ~y42 1 y25  >= 1; y25 -> 1
+red 1 y39 1 x12 1 ~y44  >= 1; y44 -> 0
+red 1 ~y27 1 ~x12 1 y44  >= 1; y44 -> 1
+red 1 y39 1 y43 1 ~y45  >= 1; y45 -> 0
+red 1 ~y39 1 ~y42 1 y44  >= 1; y44 -> 1
+red 1 y40 1 x12 1 ~y45  >= 1; y45 -> 0
+red 1 ~y39 1 ~x12 1 y45  >= 1; y45 -> 1
+red 1 y40 1 y43 1 ~y46  >= 1; y46 -> 0
+red 1 ~y40 1 ~y42 1 y45  >= 1; y45 -> 1
+red 1 y41 1 x12 1 ~y46  >= 1; y46 -> 0
+red 1 ~y40 1 ~x12 1 y46  >= 1; y46 -> 1
+red 1 y41 1 y43 1 ~y47  >= 1; y47 -> 0
+red 1 ~y41 1 ~y42 1 y46  >= 1; y46 -> 1
+red 1 y28 1 x12 1 ~y47  >= 1; y47 -> 0
+red 1 ~y41 1 ~x12 1 y47  >= 1; y47 -> 1
+red 1 y28 1 y43 1 ~y26  >= 1; y26 -> 0
 * -------------------------------------------
-red 1 v0_x13_x15  >= 1; v0_x13_x15 -> 1
-red 1 ~v4_x13_x15  >= 1; v4_x13_x15 -> 0
-red 1 v0_x13_x14  >= 1; v0_x13_x14 -> 1
-red 1 ~v3_x13_x14  >= 1; v3_x13_x14 -> 0
+red 1 y48  >= 1; y48 -> 1
+red 1 ~y49  >= 1; y49 -> 0
+red 1 y50  >= 1; y50 -> 1
+red 1 ~y51  >= 1; y51 -> 0
 red 1 y52  >= 1; y52 -> 1
 red 1 ~y53  >= 1; y53 -> 0
 red 1 y54  >= 1; y54 -> 1
 red 1 ~y55  >= 1; y55 -> 0
 * - Node clauses:
-red 1 ~y52 1 ~y54 1 v0_x13_x14  >= 1; v0_x13_x14 -> 1
-red 1 x13 1 x14 1 ~v1_x13_x14  >= 1; v1_x13_x14 -> 0
-red 1 ~y52 1 ~x14 1 v1_x13_x14  >= 1; v1_x13_x14 -> 1
-red 1 x13 1 y55 1 ~v2_x13_x14  >= 1; v2_x13_x14 -> 0
-red 1 ~x13 1 ~y54 1 v1_x13_x14  >= 1; v1_x13_x14 -> 1
-red 1 y53 1 x14 1 ~v2_x13_x14  >= 1; v2_x13_x14 -> 0
-red 1 ~x13 1 ~x14 1 v2_x13_x14  >= 1; v2_x13_x14 -> 1
-red 1 y53 1 y55 1 ~v3_x13_x14  >= 1; v3_x13_x14 -> 0
+red 1 ~y52 1 ~y54 1 y50  >= 1; y50 -> 1
+red 1 x13 1 x14 1 ~y56  >= 1; y56 -> 0
+red 1 ~y52 1 ~x14 1 y56  >= 1; y56 -> 1
+red 1 x13 1 y55 1 ~y57  >= 1; y57 -> 0
+red 1 ~x13 1 ~y54 1 y56  >= 1; y56 -> 1
+red 1 y53 1 x14 1 ~y57  >= 1; y57 -> 0
+red 1 ~x13 1 ~x14 1 y57  >= 1; y57 -> 1
+red 1 y53 1 y55 1 ~y51  >= 1; y51 -> 0
 * -------------------------------------------
 red 1 y58  >= 1; y58 -> 1
 red 1 ~y59  >= 1; y59 -> 0
 * - Node clauses:
-red 1 ~v0_x13_x14 1 ~y58 1 v0_x13_x15  >= 1; v0_x13_x15 -> 1
-red 1 v1_x13_x14 1 x15 1 ~v1_x13_x15  >= 1; v1_x13_x15 -> 0
-red 1 ~v0_x13_x14 1 ~x15 1 v1_x13_x15  >= 1; v1_x13_x15 -> 1
-red 1 v1_x13_x14 1 y59 1 ~v2_x13_x15  >= 1; v2_x13_x15 -> 0
-red 1 ~v1_x13_x14 1 ~y58 1 v1_x13_x15  >= 1; v1_x13_x15 -> 1
-red 1 v2_x13_x14 1 x15 1 ~v2_x13_x15  >= 1; v2_x13_x15 -> 0
-red 1 ~v1_x13_x14 1 ~x15 1 v2_x13_x15  >= 1; v2_x13_x15 -> 1
-red 1 v2_x13_x14 1 y59 1 ~v3_x13_x15  >= 1; v3_x13_x15 -> 0
-red 1 ~v2_x13_x14 1 ~y58 1 v2_x13_x15  >= 1; v2_x13_x15 -> 1
-red 1 v3_x13_x14 1 x15 1 ~v3_x13_x15  >= 1; v3_x13_x15 -> 0
-red 1 ~v2_x13_x14 1 ~x15 1 v3_x13_x15  >= 1; v3_x13_x15 -> 1
-red 1 v3_x13_x14 1 y59 1 ~v4_x13_x15  >= 1; v4_x13_x15 -> 0
+red 1 ~y50 1 ~y58 1 y48  >= 1; y48 -> 1
+red 1 y56 1 x15 1 ~y60  >= 1; y60 -> 0
+red 1 ~y50 1 ~x15 1 y60  >= 1; y60 -> 1
+red 1 y56 1 y59 1 ~y61  >= 1; y61 -> 0
+red 1 ~y56 1 ~y58 1 y60  >= 1; y60 -> 1
+red 1 y57 1 x15 1 ~y61  >= 1; y61 -> 0
+red 1 ~y56 1 ~x15 1 y61  >= 1; y61 -> 1
+red 1 y57 1 y59 1 ~y62  >= 1; y62 -> 0
+red 1 ~y57 1 ~y58 1 y61  >= 1; y61 -> 1
+red 1 y51 1 x15 1 ~y62  >= 1; y62 -> 0
+red 1 ~y57 1 ~x15 1 y62  >= 1; y62 -> 1
+red 1 y51 1 y59 1 ~y49  >= 1; y49 -> 0
 * -------------------------------------------
 * - Node clauses:
-red 1 ~v0_x9_x12 1 ~v0_x13_x15 1 v0_x9_x15  >= 1; v0_x9_x15 -> 1
-red 1 v1_x9_x12 1 v1_x13_x15 1 ~v1_x9_x15  >= 1; v1_x9_x15 -> 0
-red 1 ~v0_x9_x12 1 ~v1_x13_x15 1 v1_x9_x15  >= 1; v1_x9_x15 -> 1
-red 1 v1_x9_x12 1 v2_x13_x15 1 ~v2_x9_x15  >= 1; v2_x9_x15 -> 0
-red 1 ~v1_x9_x12 1 ~v0_x13_x15 1 v1_x9_x15  >= 1; v1_x9_x15 -> 1
-red 1 v2_x9_x12 1 v1_x13_x15 1 ~v2_x9_x15  >= 1; v2_x9_x15 -> 0
-red 1 ~v0_x9_x12 1 ~v2_x13_x15 1 v2_x9_x15  >= 1; v2_x9_x15 -> 1
-red 1 v1_x9_x12 1 v3_x13_x15 1 ~v3_x9_x15  >= 1; v3_x9_x15 -> 0
-red 1 ~v1_x9_x12 1 ~v1_x13_x15 1 v2_x9_x15  >= 1; v2_x9_x15 -> 1
-red 1 v2_x9_x12 1 v2_x13_x15 1 ~v3_x9_x15  >= 1; v3_x9_x15 -> 0
-red 1 ~v2_x9_x12 1 ~v0_x13_x15 1 v2_x9_x15  >= 1; v2_x9_x15 -> 1
-red 1 v3_x9_x12 1 v1_x13_x15 1 ~v3_x9_x15  >= 1; v3_x9_x15 -> 0
-red 1 ~v0_x9_x12 1 ~v3_x13_x15 1 v3_x9_x15  >= 1; v3_x9_x15 -> 1
-red 1 v1_x9_x12 1 v4_x13_x15 1 ~v4_x9_x15  >= 1; v4_x9_x15 -> 0
-red 1 ~v1_x9_x12 1 ~v2_x13_x15 1 v3_x9_x15  >= 1; v3_x9_x15 -> 1
-red 1 v2_x9_x12 1 v3_x13_x15 1 ~v4_x9_x15  >= 1; v4_x9_x15 -> 0
-red 1 ~v2_x9_x12 1 ~v1_x13_x15 1 v3_x9_x15  >= 1; v3_x9_x15 -> 1
-red 1 v3_x9_x12 1 v2_x13_x15 1 ~v4_x9_x15  >= 1; v4_x9_x15 -> 0
-red 1 ~v3_x9_x12 1 ~v0_x13_x15 1 v3_x9_x15  >= 1; v3_x9_x15 -> 1
-red 1 v4_x9_x12 1 v1_x13_x15 1 ~v4_x9_x15  >= 1; v4_x9_x15 -> 0
-red 1 ~v1_x9_x12 1 ~v3_x13_x15 1 v4_x9_x15  >= 1; v4_x9_x15 -> 1
-red 1 v2_x9_x12 1 v4_x13_x15 1 ~v5_x9_x15  >= 1; v5_x9_x15 -> 0
-red 1 ~v2_x9_x12 1 ~v2_x13_x15 1 v4_x9_x15  >= 1; v4_x9_x15 -> 1
-red 1 v3_x9_x12 1 v3_x13_x15 1 ~v5_x9_x15  >= 1; v5_x9_x15 -> 0
-red 1 ~v3_x9_x12 1 ~v1_x13_x15 1 v4_x9_x15  >= 1; v4_x9_x15 -> 1
-red 1 v4_x9_x12 1 v2_x13_x15 1 ~v5_x9_x15  >= 1; v5_x9_x15 -> 0
-red 1 ~v4_x9_x12 1 ~v0_x13_x15 1 v4_x9_x15  >= 1; v4_x9_x15 -> 1
-red 1 v5_x9_x12 1 v1_x13_x15 1 ~v5_x9_x15  >= 1; v5_x9_x15 -> 0
-red 1 ~v2_x9_x12 1 ~v3_x13_x15 1 v5_x9_x15  >= 1; v5_x9_x15 -> 1
-red 1 v3_x9_x12 1 v4_x13_x15 1 ~v6_x9_x15  >= 1; v6_x9_x15 -> 0
-red 1 ~v3_x9_x12 1 ~v2_x13_x15 1 v5_x9_x15  >= 1; v5_x9_x15 -> 1
-red 1 v4_x9_x12 1 v3_x13_x15 1 ~v6_x9_x15  >= 1; v6_x9_x15 -> 0
-red 1 ~v4_x9_x12 1 ~v1_x13_x15 1 v5_x9_x15  >= 1; v5_x9_x15 -> 1
-red 1 v5_x9_x12 1 v2_x13_x15 1 ~v6_x9_x15  >= 1; v6_x9_x15 -> 0
-red 1 ~v3_x9_x12 1 ~v3_x13_x15 1 v6_x9_x15  >= 1; v6_x9_x15 -> 1
-red 1 v4_x9_x12 1 v4_x13_x15 1 ~v7_x9_x15  >= 1; v7_x9_x15 -> 0
-red 1 ~v4_x9_x12 1 ~v2_x13_x15 1 v6_x9_x15  >= 1; v6_x9_x15 -> 1
-red 1 v5_x9_x12 1 v3_x13_x15 1 ~v7_x9_x15  >= 1; v7_x9_x15 -> 0
-red 1 ~v4_x9_x12 1 ~v3_x13_x15 1 v7_x9_x15  >= 1; v7_x9_x15 -> 1
-red 1 v5_x9_x12 1 v4_x13_x15 1 ~v8_x9_x15  >= 1; v8_x9_x15 -> 0
+red 1 ~y25 1 ~y48 1 y23  >= 1; y23 -> 1
+red 1 y44 1 y60 1 ~y63  >= 1; y63 -> 0
+red 1 ~y25 1 ~y60 1 y63  >= 1; y63 -> 1
+red 1 y44 1 y61 1 ~y64  >= 1; y64 -> 0
+red 1 ~y44 1 ~y48 1 y63  >= 1; y63 -> 1
+red 1 y45 1 y60 1 ~y64  >= 1; y64 -> 0
+red 1 ~y25 1 ~y61 1 y64  >= 1; y64 -> 1
+red 1 y44 1 y62 1 ~y65  >= 1; y65 -> 0
+red 1 ~y44 1 ~y60 1 y64  >= 1; y64 -> 1
+red 1 y45 1 y61 1 ~y65  >= 1; y65 -> 0
+red 1 ~y45 1 ~y48 1 y64  >= 1; y64 -> 1
+red 1 y46 1 y60 1 ~y65  >= 1; y65 -> 0
+red 1 ~y25 1 ~y62 1 y65  >= 1; y65 -> 1
+red 1 y44 1 y49 1 ~y66  >= 1; y66 -> 0
+red 1 ~y44 1 ~y61 1 y65  >= 1; y65 -> 1
+red 1 y45 1 y62 1 ~y66  >= 1; y66 -> 0
+red 1 ~y45 1 ~y60 1 y65  >= 1; y65 -> 1
+red 1 y46 1 y61 1 ~y66  >= 1; y66 -> 0
+red 1 ~y46 1 ~y48 1 y65  >= 1; y65 -> 1
+red 1 y47 1 y60 1 ~y66  >= 1; y66 -> 0
+red 1 ~y44 1 ~y62 1 y66  >= 1; y66 -> 1
+red 1 y45 1 y49 1 ~y67  >= 1; y67 -> 0
+red 1 ~y45 1 ~y61 1 y66  >= 1; y66 -> 1
+red 1 y46 1 y62 1 ~y67  >= 1; y67 -> 0
+red 1 ~y46 1 ~y60 1 y66  >= 1; y66 -> 1
+red 1 y47 1 y61 1 ~y67  >= 1; y67 -> 0
+red 1 ~y47 1 ~y48 1 y66  >= 1; y66 -> 1
+red 1 y26 1 y60 1 ~y67  >= 1; y67 -> 0
+red 1 ~y45 1 ~y62 1 y67  >= 1; y67 -> 1
+red 1 y46 1 y49 1 ~y68  >= 1; y68 -> 0
+red 1 ~y46 1 ~y61 1 y67  >= 1; y67 -> 1
+red 1 y47 1 y62 1 ~y68  >= 1; y68 -> 0
+red 1 ~y47 1 ~y60 1 y67  >= 1; y67 -> 1
+red 1 y26 1 y61 1 ~y68  >= 1; y68 -> 0
+red 1 ~y46 1 ~y62 1 y68  >= 1; y68 -> 1
+red 1 y47 1 y49 1 ~y69  >= 1; y69 -> 0
+red 1 ~y47 1 ~y61 1 y68  >= 1; y68 -> 1
+red 1 y26 1 y62 1 ~y69  >= 1; y69 -> 0
+red 1 ~y47 1 ~y62 1 y69  >= 1; y69 -> 1
+red 1 y26 1 y49 1 ~y24  >= 1; y24 -> 0
 * -------------------------------------------
-red 1 v0_x16_x20  >= 1; v0_x16_x20 -> 1
-red 1 ~v6_x16_x20  >= 1; v6_x16_x20 -> 0
-red 1 v0_x16_x18  >= 1; v0_x16_x18 -> 1
-red 1 ~v4_x16_x18  >= 1; v4_x16_x18 -> 0
-red 1 v0_x16_x17  >= 1; v0_x16_x17 -> 1
-red 1 ~v3_x16_x17  >= 1; v3_x16_x17 -> 0
+red 1 y70  >= 1; y70 -> 1
+red 1 ~y71  >= 1; y71 -> 0
+red 1 y72  >= 1; y72 -> 1
+red 1 ~y73  >= 1; y73 -> 0
+red 1 y74  >= 1; y74 -> 1
+red 1 ~y75  >= 1; y75 -> 0
 red 1 y76  >= 1; y76 -> 1
 red 1 ~y77  >= 1; y77 -> 0
 red 1 y78  >= 1; y78 -> 1
 red 1 ~y79  >= 1; y79 -> 0
 * - Node clauses:
-red 1 ~y76 1 ~y78 1 v0_x16_x17  >= 1; v0_x16_x17 -> 1
-red 1 x16 1 x17 1 ~v1_x16_x17  >= 1; v1_x16_x17 -> 0
-red 1 ~y76 1 ~x17 1 v1_x16_x17  >= 1; v1_x16_x17 -> 1
-red 1 x16 1 y79 1 ~v2_x16_x17  >= 1; v2_x16_x17 -> 0
-red 1 ~x16 1 ~y78 1 v1_x16_x17  >= 1; v1_x16_x17 -> 1
-red 1 y77 1 x17 1 ~v2_x16_x17  >= 1; v2_x16_x17 -> 0
-red 1 ~x16 1 ~x17 1 v2_x16_x17  >= 1; v2_x16_x17 -> 1
-red 1 y77 1 y79 1 ~v3_x16_x17  >= 1; v3_x16_x17 -> 0
+red 1 ~y76 1 ~y78 1 y74  >= 1; y74 -> 1
+red 1 x16 1 x17 1 ~y80  >= 1; y80 -> 0
+red 1 ~y76 1 ~x17 1 y80  >= 1; y80 -> 1
+red 1 x16 1 y79 1 ~y81  >= 1; y81 -> 0
+red 1 ~x16 1 ~y78 1 y80  >= 1; y80 -> 1
+red 1 y77 1 x17 1 ~y81  >= 1; y81 -> 0
+red 1 ~x16 1 ~x17 1 y81  >= 1; y81 -> 1
+red 1 y77 1 y79 1 ~y75  >= 1; y75 -> 0
 * -------------------------------------------
 red 1 y82  >= 1; y82 -> 1
 red 1 ~y83  >= 1; y83 -> 0
 * - Node clauses:
-red 1 ~v0_x16_x17 1 ~y82 1 v0_x16_x18  >= 1; v0_x16_x18 -> 1
-red 1 v1_x16_x17 1 x18 1 ~v1_x16_x18  >= 1; v1_x16_x18 -> 0
-red 1 ~v0_x16_x17 1 ~x18 1 v1_x16_x18  >= 1; v1_x16_x18 -> 1
-red 1 v1_x16_x17 1 y83 1 ~v2_x16_x18  >= 1; v2_x16_x18 -> 0
-red 1 ~v1_x16_x17 1 ~y82 1 v1_x16_x18  >= 1; v1_x16_x18 -> 1
-red 1 v2_x16_x17 1 x18 1 ~v2_x16_x18  >= 1; v2_x16_x18 -> 0
-red 1 ~v1_x16_x17 1 ~x18 1 v2_x16_x18  >= 1; v2_x16_x18 -> 1
-red 1 v2_x16_x17 1 y83 1 ~v3_x16_x18  >= 1; v3_x16_x18 -> 0
-red 1 ~v2_x16_x17 1 ~y82 1 v2_x16_x18  >= 1; v2_x16_x18 -> 1
-red 1 v3_x16_x17 1 x18 1 ~v3_x16_x18  >= 1; v3_x16_x18 -> 0
-red 1 ~v2_x16_x17 1 ~x18 1 v3_x16_x18  >= 1; v3_x16_x18 -> 1
-red 1 v3_x16_x17 1 y83 1 ~v4_x16_x18  >= 1; v4_x16_x18 -> 0
+red 1 ~y74 1 ~y82 1 y72  >= 1; y72 -> 1
+red 1 y80 1 x18 1 ~y84  >= 1; y84 -> 0
+red 1 ~y74 1 ~x18 1 y84  >= 1; y84 -> 1
+red 1 y80 1 y83 1 ~y85  >= 1; y85 -> 0
+red 1 ~y80 1 ~y82 1 y84  >= 1; y84 -> 1
+red 1 y81 1 x18 1 ~y85  >= 1; y85 -> 0
+red 1 ~y80 1 ~x18 1 y85  >= 1; y85 -> 1
+red 1 y81 1 y83 1 ~y86  >= 1; y86 -> 0
+red 1 ~y81 1 ~y82 1 y85  >= 1; y85 -> 1
+red 1 y75 1 x18 1 ~y86  >= 1; y86 -> 0
+red 1 ~y81 1 ~x18 1 y86  >= 1; y86 -> 1
+red 1 y75 1 y83 1 ~y73  >= 1; y73 -> 0
 * -------------------------------------------
-red 1 v0_x19_x20  >= 1; v0_x19_x20 -> 1
-red 1 ~v3_x19_x20  >= 1; v3_x19_x20 -> 0
+red 1 y87  >= 1; y87 -> 1
+red 1 ~y88  >= 1; y88 -> 0
 red 1 y89  >= 1; y89 -> 1
 red 1 ~y90  >= 1; y90 -> 0
 red 1 y91  >= 1; y91 -> 1
 red 1 ~y92  >= 1; y92 -> 0
 * - Node clauses:
-red 1 ~y89 1 ~y91 1 v0_x19_x20  >= 1; v0_x19_x20 -> 1
-red 1 x19 1 x20 1 ~v1_x19_x20  >= 1; v1_x19_x20 -> 0
-red 1 ~y89 1 ~x20 1 v1_x19_x20  >= 1; v1_x19_x20 -> 1
-red 1 x19 1 y92 1 ~v2_x19_x20  >= 1; v2_x19_x20 -> 0
-red 1 ~x19 1 ~y91 1 v1_x19_x20  >= 1; v1_x19_x20 -> 1
-red 1 y90 1 x20 1 ~v2_x19_x20  >= 1; v2_x19_x20 -> 0
-red 1 ~x19 1 ~x20 1 v2_x19_x20  >= 1; v2_x19_x20 -> 1
-red 1 y90 1 y92 1 ~v3_x19_x20  >= 1; v3_x19_x20 -> 0
+red 1 ~y89 1 ~y91 1 y87  >= 1; y87 -> 1
+red 1 x19 1 x20 1 ~y93  >= 1; y93 -> 0
+red 1 ~y89 1 ~x20 1 y93  >= 1; y93 -> 1
+red 1 x19 1 y92 1 ~y94  >= 1; y94 -> 0
+red 1 ~x19 1 ~y91 1 y93  >= 1; y93 -> 1
+red 1 y90 1 x20 1 ~y94  >= 1; y94 -> 0
+red 1 ~x19 1 ~x20 1 y94  >= 1; y94 -> 1
+red 1 y90 1 y92 1 ~y88  >= 1; y88 -> 0
 * -------------------------------------------
 * - Node clauses:
-red 1 ~v0_x16_x18 1 ~v0_x19_x20 1 v0_x16_x20  >= 1; v0_x16_x20 -> 1
-red 1 v1_x16_x18 1 v1_x19_x20 1 ~v1_x16_x20  >= 1; v1_x16_x20 -> 0
-red 1 ~v0_x16_x18 1 ~v1_x19_x20 1 v1_x16_x20  >= 1; v1_x16_x20 -> 1
-red 1 v1_x16_x18 1 v2_x19_x20 1 ~v2_x16_x20  >= 1; v2_x16_x20 -> 0
-red 1 ~v1_x16_x18 1 ~v0_x19_x20 1 v1_x16_x20  >= 1; v1_x16_x20 -> 1
-red 1 v2_x16_x18 1 v1_x19_x20 1 ~v2_x16_x20  >= 1; v2_x16_x20 -> 0
-red 1 ~v0_x16_x18 1 ~v2_x19_x20 1 v2_x16_x20  >= 1; v2_x16_x20 -> 1
-red 1 v1_x16_x18 1 v3_x19_x20 1 ~v3_x16_x20  >= 1; v3_x16_x20 -> 0
-red 1 ~v1_x16_x18 1 ~v1_x19_x20 1 v2_x16_x20  >= 1; v2_x16_x20 -> 1
-red 1 v2_x16_x18 1 v2_x19_x20 1 ~v3_x16_x20  >= 1; v3_x16_x20 -> 0
-red 1 ~v2_x16_x18 1 ~v0_x19_x20 1 v2_x16_x20  >= 1; v2_x16_x20 -> 1
-red 1 v3_x16_x18 1 v1_x19_x20 1 ~v3_x16_x20  >= 1; v3_x16_x20 -> 0
-red 1 ~v1_x16_x18 1 ~v2_x19_x20 1 v3_x16_x20  >= 1; v3_x16_x20 -> 1
-red 1 v2_x16_x18 1 v3_x19_x20 1 ~v4_x16_x20  >= 1; v4_x16_x20 -> 0
-red 1 ~v2_x16_x18 1 ~v1_x19_x20 1 v3_x16_x20  >= 1; v3_x16_x20 -> 1
-red 1 v3_x16_x18 1 v2_x19_x20 1 ~v4_x16_x20  >= 1; v4_x16_x20 -> 0
-red 1 ~v3_x16_x18 1 ~v0_x19_x20 1 v3_x16_x20  >= 1; v3_x16_x20 -> 1
-red 1 v4_x16_x18 1 v1_x19_x20 1 ~v4_x16_x20  >= 1; v4_x16_x20 -> 0
-red 1 ~v2_x16_x18 1 ~v2_x19_x20 1 v4_x16_x20  >= 1; v4_x16_x20 -> 1
-red 1 v3_x16_x18 1 v3_x19_x20 1 ~v5_x16_x20  >= 1; v5_x16_x20 -> 0
-red 1 ~v3_x16_x18 1 ~v1_x19_x20 1 v4_x16_x20  >= 1; v4_x16_x20 -> 1
-red 1 v4_x16_x18 1 v2_x19_x20 1 ~v5_x16_x20  >= 1; v5_x16_x20 -> 0
-red 1 ~v3_x16_x18 1 ~v2_x19_x20 1 v5_x16_x20  >= 1; v5_x16_x20 -> 1
-red 1 v4_x16_x18 1 v3_x19_x20 1 ~v6_x16_x20  >= 1; v6_x16_x20 -> 0
+red 1 ~y72 1 ~y87 1 y70  >= 1; y70 -> 1
+red 1 y84 1 y93 1 ~y95  >= 1; y95 -> 0
+red 1 ~y72 1 ~y93 1 y95  >= 1; y95 -> 1
+red 1 y84 1 y94 1 ~y96  >= 1; y96 -> 0
+red 1 ~y84 1 ~y87 1 y95  >= 1; y95 -> 1
+red 1 y85 1 y93 1 ~y96  >= 1; y96 -> 0
+red 1 ~y72 1 ~y94 1 y96  >= 1; y96 -> 1
+red 1 y84 1 y88 1 ~y97  >= 1; y97 -> 0
+red 1 ~y84 1 ~y93 1 y96  >= 1; y96 -> 1
+red 1 y85 1 y94 1 ~y97  >= 1; y97 -> 0
+red 1 ~y85 1 ~y87 1 y96  >= 1; y96 -> 1
+red 1 y86 1 y93 1 ~y97  >= 1; y97 -> 0
+red 1 ~y84 1 ~y94 1 y97  >= 1; y97 -> 1
+red 1 y85 1 y88 1 ~y98  >= 1; y98 -> 0
+red 1 ~y85 1 ~y93 1 y97  >= 1; y97 -> 1
+red 1 y86 1 y94 1 ~y98  >= 1; y98 -> 0
+red 1 ~y86 1 ~y87 1 y97  >= 1; y97 -> 1
+red 1 y73 1 y93 1 ~y98  >= 1; y98 -> 0
+red 1 ~y85 1 ~y94 1 y98  >= 1; y98 -> 1
+red 1 y86 1 y88 1 ~y99  >= 1; y99 -> 0
+red 1 ~y86 1 ~y93 1 y98  >= 1; y98 -> 1
+red 1 y73 1 y94 1 ~y99  >= 1; y99 -> 0
+red 1 ~y86 1 ~y94 1 y99  >= 1; y99 -> 1
+red 1 y73 1 y88 1 ~y71  >= 1; y71 -> 0
 * -------------------------------------------
 * - Node clauses:
-red 1 ~v0_x9_x15 1 ~v0_x16_x20 1 v0_x9_x20  >= 1; v0_x9_x20 -> 1
-red 1 v1_x9_x15 1 v1_x16_x20 1 ~v1_x9_x20  >= 1; v1_x9_x20 -> 0
-red 1 ~v0_x9_x15 1 ~v1_x16_x20 1 v1_x9_x20  >= 1; v1_x9_x20 -> 1
-red 1 v1_x9_x15 1 v2_x16_x20 1 ~v2_x9_x20  >= 1; v2_x9_x20 -> 0
-red 1 ~v1_x9_x15 1 ~v0_x16_x20 1 v1_x9_x20  >= 1; v1_x9_x20 -> 1
-red 1 v2_x9_x15 1 v1_x16_x20 1 ~v2_x9_x20  >= 1; v2_x9_x20 -> 0
-red 1 ~v0_x9_x15 1 ~v2_x16_x20 1 v2_x9_x20  >= 1; v2_x9_x20 -> 1
-red 1 v1_x9_x15 1 v3_x16_x20 1 ~v3_x9_x20  >= 1; v3_x9_x20 -> 0
-red 1 ~v1_x9_x15 1 ~v1_x16_x20 1 v2_x9_x20  >= 1; v2_x9_x20 -> 1
-red 1 v2_x9_x15 1 v2_x16_x20 1 ~v3_x9_x20  >= 1; v3_x9_x20 -> 0
-red 1 ~v2_x9_x15 1 ~v0_x16_x20 1 v2_x9_x20  >= 1; v2_x9_x20 -> 1
-red 1 v3_x9_x15 1 v1_x16_x20 1 ~v3_x9_x20  >= 1; v3_x9_x20 -> 0
-red 1 ~v0_x9_x15 1 ~v3_x16_x20 1 v3_x9_x20  >= 1; v3_x9_x20 -> 1
-red 1 v1_x9_x15 1 v4_x16_x20 1 ~v4_x9_x20  >= 1; v4_x9_x20 -> 0
-red 1 ~v1_x9_x15 1 ~v2_x16_x20 1 v3_x9_x20  >= 1; v3_x9_x20 -> 1
-red 1 v2_x9_x15 1 v3_x16_x20 1 ~v4_x9_x20  >= 1; v4_x9_x20 -> 0
-red 1 ~v2_x9_x15 1 ~v1_x16_x20 1 v3_x9_x20  >= 1; v3_x9_x20 -> 1
-red 1 v3_x9_x15 1 v2_x16_x20 1 ~v4_x9_x20  >= 1; v4_x9_x20 -> 0
-red 1 ~v3_x9_x15 1 ~v0_x16_x20 1 v3_x9_x20  >= 1; v3_x9_x20 -> 1
-red 1 v4_x9_x15 1 v1_x16_x20 1 ~v4_x9_x20  >= 1; v4_x9_x20 -> 0
-red 1 ~v0_x9_x15 1 ~v4_x16_x20 1 v4_x9_x20  >= 1; v4_x9_x20 -> 1
-red 1 v1_x9_x15 1 v5_x16_x20 1 ~v5_x9_x20  >= 1; v5_x9_x20 -> 0
-red 1 ~v1_x9_x15 1 ~v3_x16_x20 1 v4_x9_x20  >= 1; v4_x9_x20 -> 1
-red 1 v2_x9_x15 1 v4_x16_x20 1 ~v5_x9_x20  >= 1; v5_x9_x20 -> 0
-red 1 ~v2_x9_x15 1 ~v2_x16_x20 1 v4_x9_x20  >= 1; v4_x9_x20 -> 1
-red 1 v3_x9_x15 1 v3_x16_x20 1 ~v5_x9_x20  >= 1; v5_x9_x20 -> 0
-red 1 ~v3_x9_x15 1 ~v1_x16_x20 1 v4_x9_x20  >= 1; v4_x9_x20 -> 1
-red 1 v4_x9_x15 1 v2_x16_x20 1 ~v5_x9_x20  >= 1; v5_x9_x20 -> 0
-red 1 ~v4_x9_x15 1 ~v0_x16_x20 1 v4_x9_x20  >= 1; v4_x9_x20 -> 1
-red 1 v5_x9_x15 1 v1_x16_x20 1 ~v5_x9_x20  >= 1; v5_x9_x20 -> 0
-red 1 ~v0_x9_x15 1 ~v5_x16_x20 1 v5_x9_x20  >= 1; v5_x9_x20 -> 1
-red 1 v1_x9_x15 1 v6_x16_x20 1 ~v6_x9_x20  >= 1; v6_x9_x20 -> 0
-red 1 ~v1_x9_x15 1 ~v4_x16_x20 1 v5_x9_x20  >= 1; v5_x9_x20 -> 1
-red 1 v2_x9_x15 1 v5_x16_x20 1 ~v6_x9_x20  >= 1; v6_x9_x20 -> 0
-red 1 ~v2_x9_x15 1 ~v3_x16_x20 1 v5_x9_x20  >= 1; v5_x9_x20 -> 1
-red 1 v3_x9_x15 1 v4_x16_x20 1 ~v6_x9_x20  >= 1; v6_x9_x20 -> 0
-red 1 ~v3_x9_x15 1 ~v2_x16_x20 1 v5_x9_x20  >= 1; v5_x9_x20 -> 1
-red 1 v4_x9_x15 1 v3_x16_x20 1 ~v6_x9_x20  >= 1; v6_x9_x20 -> 0
-red 1 ~v4_x9_x15 1 ~v1_x16_x20 1 v5_x9_x20  >= 1; v5_x9_x20 -> 1
-red 1 v5_x9_x15 1 v2_x16_x20 1 ~v6_x9_x20  >= 1; v6_x9_x20 -> 0
-red 1 ~v5_x9_x15 1 ~v0_x16_x20 1 v5_x9_x20  >= 1; v5_x9_x20 -> 1
-red 1 v6_x9_x15 1 v1_x16_x20 1 ~v6_x9_x20  >= 1; v6_x9_x20 -> 0
-red 1 ~v1_x9_x15 1 ~v5_x16_x20 1 v6_x9_x20  >= 1; v6_x9_x20 -> 1
-red 1 v2_x9_x15 1 v6_x16_x20 1 ~v7_x9_x20  >= 1; v7_x9_x20 -> 0
-red 1 ~v2_x9_x15 1 ~v4_x16_x20 1 v6_x9_x20  >= 1; v6_x9_x20 -> 1
-red 1 v3_x9_x15 1 v5_x16_x20 1 ~v7_x9_x20  >= 1; v7_x9_x20 -> 0
-red 1 ~v3_x9_x15 1 ~v3_x16_x20 1 v6_x9_x20  >= 1; v6_x9_x20 -> 1
-red 1 v4_x9_x15 1 v4_x16_x20 1 ~v7_x9_x20  >= 1; v7_x9_x20 -> 0
-red 1 ~v4_x9_x15 1 ~v2_x16_x20 1 v6_x9_x20  >= 1; v6_x9_x20 -> 1
-red 1 v5_x9_x15 1 v3_x16_x20 1 ~v7_x9_x20  >= 1; v7_x9_x20 -> 0
-red 1 ~v5_x9_x15 1 ~v1_x16_x20 1 v6_x9_x20  >= 1; v6_x9_x20 -> 1
-red 1 v6_x9_x15 1 v2_x16_x20 1 ~v7_x9_x20  >= 1; v7_x9_x20 -> 0
-red 1 ~v6_x9_x15 1 ~v0_x16_x20 1 v6_x9_x20  >= 1; v6_x9_x20 -> 1
-red 1 v7_x9_x15 1 v1_x16_x20 1 ~v7_x9_x20  >= 1; v7_x9_x20 -> 0
-red 1 ~v2_x9_x15 1 ~v5_x16_x20 1 v7_x9_x20  >= 1; v7_x9_x20 -> 1
-red 1 v3_x9_x15 1 v6_x16_x20 1 ~v8_x9_x20  >= 1; v8_x9_x20 -> 0
-red 1 ~v3_x9_x15 1 ~v4_x16_x20 1 v7_x9_x20  >= 1; v7_x9_x20 -> 1
-red 1 v4_x9_x15 1 v5_x16_x20 1 ~v8_x9_x20  >= 1; v8_x9_x20 -> 0
-red 1 ~v4_x9_x15 1 ~v3_x16_x20 1 v7_x9_x20  >= 1; v7_x9_x20 -> 1
-red 1 v5_x9_x15 1 v4_x16_x20 1 ~v8_x9_x20  >= 1; v8_x9_x20 -> 0
-red 1 ~v5_x9_x15 1 ~v2_x16_x20 1 v7_x9_x20  >= 1; v7_x9_x20 -> 1
-red 1 v6_x9_x15 1 v3_x16_x20 1 ~v8_x9_x20  >= 1; v8_x9_x20 -> 0
-red 1 ~v6_x9_x15 1 ~v1_x16_x20 1 v7_x9_x20  >= 1; v7_x9_x20 -> 1
-red 1 v7_x9_x15 1 v2_x16_x20 1 ~v8_x9_x20  >= 1; v8_x9_x20 -> 0
-red 1 ~v7_x9_x15 1 ~v0_x16_x20 1 v7_x9_x20  >= 1; v7_x9_x20 -> 1
-red 1 v8_x9_x15 1 v1_x16_x20 1 ~v8_x9_x20  >= 1; v8_x9_x20 -> 0
-red 1 ~v3_x9_x15 1 ~v5_x16_x20 1 v8_x9_x20  >= 1; v8_x9_x20 -> 1
-red 1 v4_x9_x15 1 v6_x16_x20 1 ~v9_x9_x20  >= 1; v9_x9_x20 -> 0
-red 1 ~v4_x9_x15 1 ~v4_x16_x20 1 v8_x9_x20  >= 1; v8_x9_x20 -> 1
-red 1 v5_x9_x15 1 v5_x16_x20 1 ~v9_x9_x20  >= 1; v9_x9_x20 -> 0
-red 1 ~v5_x9_x15 1 ~v3_x16_x20 1 v8_x9_x20  >= 1; v8_x9_x20 -> 1
-red 1 v6_x9_x15 1 v4_x16_x20 1 ~v9_x9_x20  >= 1; v9_x9_x20 -> 0
-red 1 ~v6_x9_x15 1 ~v2_x16_x20 1 v8_x9_x20  >= 1; v8_x9_x20 -> 1
-red 1 v7_x9_x15 1 v3_x16_x20 1 ~v9_x9_x20  >= 1; v9_x9_x20 -> 0
-red 1 ~v7_x9_x15 1 ~v1_x16_x20 1 v8_x9_x20  >= 1; v8_x9_x20 -> 1
-red 1 v8_x9_x15 1 v2_x16_x20 1 ~v9_x9_x20  >= 1; v9_x9_x20 -> 0
-red 1 ~v4_x9_x15 1 ~v5_x16_x20 1 v9_x9_x20  >= 1; v9_x9_x20 -> 1
-red 1 v5_x9_x15 1 v6_x16_x20 1 ~v10_x9_x20  >= 1; v10_x9_x20 -> 0
-red 1 ~v5_x9_x15 1 ~v4_x16_x20 1 v9_x9_x20  >= 1; v9_x9_x20 -> 1
-red 1 v6_x9_x15 1 v5_x16_x20 1 ~v10_x9_x20  >= 1; v10_x9_x20 -> 0
-red 1 ~v6_x9_x15 1 ~v3_x16_x20 1 v9_x9_x20  >= 1; v9_x9_x20 -> 1
-red 1 v7_x9_x15 1 v4_x16_x20 1 ~v10_x9_x20  >= 1; v10_x9_x20 -> 0
-red 1 ~v7_x9_x15 1 ~v2_x16_x20 1 v9_x9_x20  >= 1; v9_x9_x20 -> 1
-red 1 v8_x9_x15 1 v3_x16_x20 1 ~v10_x9_x20  >= 1; v10_x9_x20 -> 0
-red 1 ~v5_x9_x15 1 ~v5_x16_x20 1 v10_x9_x20  >= 1; v10_x9_x20 -> 1
-red 1 v6_x9_x15 1 v6_x16_x20 1 ~v11_x9_x20  >= 1; v11_x9_x20 -> 0
-red 1 ~v6_x9_x15 1 ~v4_x16_x20 1 v10_x9_x20  >= 1; v10_x9_x20 -> 1
-red 1 v7_x9_x15 1 v5_x16_x20 1 ~v11_x9_x20  >= 1; v11_x9_x20 -> 0
-red 1 ~v7_x9_x15 1 ~v3_x16_x20 1 v10_x9_x20  >= 1; v10_x9_x20 -> 1
-red 1 v8_x9_x15 1 v4_x16_x20 1 ~v11_x9_x20  >= 1; v11_x9_x20 -> 0
-red 1 ~v6_x9_x15 1 ~v5_x16_x20 1 v11_x9_x20  >= 1; v11_x9_x20 -> 1
-red 1 v7_x9_x15 1 v6_x16_x20 1 ~v12_x9_x20  >= 1; v12_x9_x20 -> 0
-red 1 ~v7_x9_x15 1 ~v4_x16_x20 1 v11_x9_x20  >= 1; v11_x9_x20 -> 1
-red 1 v8_x9_x15 1 v5_x16_x20 1 ~v12_x9_x20  >= 1; v12_x9_x20 -> 0
-red 1 ~v7_x9_x15 1 ~v5_x16_x20 1 v12_x9_x20  >= 1; v12_x9_x20 -> 1
-red 1 v8_x9_x15 1 v6_x16_x20 1 ~v13_x9_x20  >= 1; v13_x9_x20 -> 0
+red 1 ~y23 1 ~y70 1 y21  >= 1; y21 -> 1
+red 1 y63 1 y95 1 ~y100  >= 1; y100 -> 0
+red 1 ~y23 1 ~y95 1 y100  >= 1; y100 -> 1
+red 1 y63 1 y96 1 ~y101  >= 1; y101 -> 0
+red 1 ~y63 1 ~y70 1 y100  >= 1; y100 -> 1
+red 1 y64 1 y95 1 ~y101  >= 1; y101 -> 0
+red 1 ~y23 1 ~y96 1 y101  >= 1; y101 -> 1
+red 1 y63 1 y97 1 ~y102  >= 1; y102 -> 0
+red 1 ~y63 1 ~y95 1 y101  >= 1; y101 -> 1
+red 1 y64 1 y96 1 ~y102  >= 1; y102 -> 0
+red 1 ~y64 1 ~y70 1 y101  >= 1; y101 -> 1
+red 1 y65 1 y95 1 ~y102  >= 1; y102 -> 0
+red 1 ~y23 1 ~y97 1 y102  >= 1; y102 -> 1
+red 1 y63 1 y98 1 ~y103  >= 1; y103 -> 0
+red 1 ~y63 1 ~y96 1 y102  >= 1; y102 -> 1
+red 1 y64 1 y97 1 ~y103  >= 1; y103 -> 0
+red 1 ~y64 1 ~y95 1 y102  >= 1; y102 -> 1
+red 1 y65 1 y96 1 ~y103  >= 1; y103 -> 0
+red 1 ~y65 1 ~y70 1 y102  >= 1; y102 -> 1
+red 1 y66 1 y95 1 ~y103  >= 1; y103 -> 0
+red 1 ~y23 1 ~y98 1 y103  >= 1; y103 -> 1
+red 1 y63 1 y99 1 ~y104  >= 1; y104 -> 0
+red 1 ~y63 1 ~y97 1 y103  >= 1; y103 -> 1
+red 1 y64 1 y98 1 ~y104  >= 1; y104 -> 0
+red 1 ~y64 1 ~y96 1 y103  >= 1; y103 -> 1
+red 1 y65 1 y97 1 ~y104  >= 1; y104 -> 0
+red 1 ~y65 1 ~y95 1 y103  >= 1; y103 -> 1
+red 1 y66 1 y96 1 ~y104  >= 1; y104 -> 0
+red 1 ~y66 1 ~y70 1 y103  >= 1; y103 -> 1
+red 1 y67 1 y95 1 ~y104  >= 1; y104 -> 0
+red 1 ~y23 1 ~y99 1 y104  >= 1; y104 -> 1
+red 1 y63 1 y71 1 ~y105  >= 1; y105 -> 0
+red 1 ~y63 1 ~y98 1 y104  >= 1; y104 -> 1
+red 1 y64 1 y99 1 ~y105  >= 1; y105 -> 0
+red 1 ~y64 1 ~y97 1 y104  >= 1; y104 -> 1
+red 1 y65 1 y98 1 ~y105  >= 1; y105 -> 0
+red 1 ~y65 1 ~y96 1 y104  >= 1; y104 -> 1
+red 1 y66 1 y97 1 ~y105  >= 1; y105 -> 0
+red 1 ~y66 1 ~y95 1 y104  >= 1; y104 -> 1
+red 1 y67 1 y96 1 ~y105  >= 1; y105 -> 0
+red 1 ~y67 1 ~y70 1 y104  >= 1; y104 -> 1
+red 1 y68 1 y95 1 ~y105  >= 1; y105 -> 0
+red 1 ~y63 1 ~y99 1 y105  >= 1; y105 -> 1
+red 1 y64 1 y71 1 ~y106  >= 1; y106 -> 0
+red 1 ~y64 1 ~y98 1 y105  >= 1; y105 -> 1
+red 1 y65 1 y99 1 ~y106  >= 1; y106 -> 0
+red 1 ~y65 1 ~y97 1 y105  >= 1; y105 -> 1
+red 1 y66 1 y98 1 ~y106  >= 1; y106 -> 0
+red 1 ~y66 1 ~y96 1 y105  >= 1; y105 -> 1
+red 1 y67 1 y97 1 ~y106  >= 1; y106 -> 0
+red 1 ~y67 1 ~y95 1 y105  >= 1; y105 -> 1
+red 1 y68 1 y96 1 ~y106  >= 1; y106 -> 0
+red 1 ~y68 1 ~y70 1 y105  >= 1; y105 -> 1
+red 1 y69 1 y95 1 ~y106  >= 1; y106 -> 0
+red 1 ~y64 1 ~y99 1 y106  >= 1; y106 -> 1
+red 1 y65 1 y71 1 ~y107  >= 1; y107 -> 0
+red 1 ~y65 1 ~y98 1 y106  >= 1; y106 -> 1
+red 1 y66 1 y99 1 ~y107  >= 1; y107 -> 0
+red 1 ~y66 1 ~y97 1 y106  >= 1; y106 -> 1
+red 1 y67 1 y98 1 ~y107  >= 1; y107 -> 0
+red 1 ~y67 1 ~y96 1 y106  >= 1; y106 -> 1
+red 1 y68 1 y97 1 ~y107  >= 1; y107 -> 0
+red 1 ~y68 1 ~y95 1 y106  >= 1; y106 -> 1
+red 1 y69 1 y96 1 ~y107  >= 1; y107 -> 0
+red 1 ~y69 1 ~y70 1 y106  >= 1; y106 -> 1
+red 1 y24 1 y95 1 ~y107  >= 1; y107 -> 0
+red 1 ~y65 1 ~y99 1 y107  >= 1; y107 -> 1
+red 1 y66 1 y71 1 ~y108  >= 1; y108 -> 0
+red 1 ~y66 1 ~y98 1 y107  >= 1; y107 -> 1
+red 1 y67 1 y99 1 ~y108  >= 1; y108 -> 0
+red 1 ~y67 1 ~y97 1 y107  >= 1; y107 -> 1
+red 1 y68 1 y98 1 ~y108  >= 1; y108 -> 0
+red 1 ~y68 1 ~y96 1 y107  >= 1; y107 -> 1
+red 1 y69 1 y97 1 ~y108  >= 1; y108 -> 0
+red 1 ~y69 1 ~y95 1 y107  >= 1; y107 -> 1
+red 1 y24 1 y96 1 ~y108  >= 1; y108 -> 0
+red 1 ~y66 1 ~y99 1 y108  >= 1; y108 -> 1
+red 1 y67 1 y71 1 ~y109  >= 1; y109 -> 0
+red 1 ~y67 1 ~y98 1 y108  >= 1; y108 -> 1
+red 1 y68 1 y99 1 ~y109  >= 1; y109 -> 0
+red 1 ~y68 1 ~y97 1 y108  >= 1; y108 -> 1
+red 1 y69 1 y98 1 ~y109  >= 1; y109 -> 0
+red 1 ~y69 1 ~y96 1 y108  >= 1; y108 -> 1
+red 1 y24 1 y97 1 ~y109  >= 1; y109 -> 0
+red 1 ~y67 1 ~y99 1 y109  >= 1; y109 -> 1
+red 1 y68 1 y71 1 ~y110  >= 1; y110 -> 0
+red 1 ~y68 1 ~y98 1 y109  >= 1; y109 -> 1
+red 1 y69 1 y99 1 ~y110  >= 1; y110 -> 0
+red 1 ~y69 1 ~y97 1 y109  >= 1; y109 -> 1
+red 1 y24 1 y98 1 ~y110  >= 1; y110 -> 0
+red 1 ~y68 1 ~y99 1 y110  >= 1; y110 -> 1
+red 1 y69 1 y71 1 ~y111  >= 1; y111 -> 0
+red 1 ~y69 1 ~y98 1 y110  >= 1; y110 -> 1
+red 1 y24 1 y99 1 ~y111  >= 1; y111 -> 0
+red 1 ~y69 1 ~y99 1 y111  >= 1; y111 -> 1
+red 1 y24 1 y71 1 ~y22  >= 1; y22 -> 0
 * -------------------------------------------
 * ==============================================================
 * Cardinality derivation:
 p 31 33 +
-* ^ should have as minimal x weight: 2
 p 39 1 * 29 +
-* ^ should have as minimal x weight: 1
 p 41 1 * 29 +
-* ^ should have as minimal x weight: 1
 p 43 2 * 304 +
-* ^ should have as minimal x weight: 2
 p 306 307 +
-* ^ should have as minimal x weight: 3
 p 45 2 * 304 +
-* ^ should have as minimal x weight: 2
 p 47 1 * 35 +
-* ^ should have as minimal x weight: 1
 p 309 310 +
-* ^ should have as minimal x weight: 3
 p 49 1 * 35 +
-* ^ should have as minimal x weight: 1
 p 53 1 * 305 +
-* ^ should have as minimal x weight: 1
 p 55 1 * 305 +
-* ^ should have as minimal x weight: 1
 p 57 3 * 308 +
-* ^ should have as minimal x weight: 3
 p 314 315 +
-* ^ should have as minimal x weight: 4
 p 59 3 * 308 +
-* ^ should have as minimal x weight: 3
 p 61 3 * 311 +
-* ^ should have as minimal x weight: 3
 p 317 318 +
-* ^ should have as minimal x weight: 6
 p 63 3 * 311 +
-* ^ should have as minimal x weight: 3
 p 65 1 * 312 +
-* ^ should have as minimal x weight: 1
 p 320 321 +
-* ^ should have as minimal x weight: 4
 p 67 1 * 312 +
-* ^ should have as minimal x weight: 1
 p 79 81 +
-* ^ should have as minimal x weight: 2
 p 87 1 * 77 +
-* ^ should have as minimal x weight: 1
 p 89 1 * 77 +
-* ^ should have as minimal x weight: 1
 p 91 2 * 324 +
-* ^ should have as minimal x weight: 2
 p 326 327 +
-* ^ should have as minimal x weight: 3
 p 93 2 * 324 +
-* ^ should have as minimal x weight: 2
 p 95 1 * 83 +
-* ^ should have as minimal x weight: 1
 p 329 330 +
-* ^ should have as minimal x weight: 3
 p 97 1 * 83 +
-* ^ should have as minimal x weight: 1
 p 99 1 * 313 +
-* ^ should have as minimal x weight: 1
 p 333 1 * 325 1 * +
-* ^ should have as minimal x weight: 1
 p 101 1 * 313 +
-* ^ should have as minimal x weight: 1
 p 335 3 * 328 1 * +
-* ^ should have as minimal x weight: 3
 p 103 4 * 316 +
-* ^ should have as minimal x weight: 4
 p 337 1 * 325 4 * +
-* ^ should have as minimal x weight: 1
 p 336 338 +
-* ^ should have as minimal x weight: 4
 p 105 1 * 313 +
-* ^ should have as minimal x weight: 1
 p 340 3 * 331 1 * +
-* ^ should have as minimal x weight: 3
 p 107 4 * 316 +
-* ^ should have as minimal x weight: 4
 p 342 3 * 328 4 * +
-* ^ should have as minimal x weight: 3
 p 109 6 * 319 +
-* ^ should have as minimal x weight: 6
 p 344 1 * 325 6 * +
-* ^ should have as minimal x weight: 1
 p 341 343 + 345 +
-* ^ should have as minimal x weight: 7
 p 111 1 * 313 +
-* ^ should have as minimal x weight: 1
 p 347 1 * 332 1 * +
-* ^ should have as minimal x weight: 1
 p 113 4 * 316 +
-* ^ should have as minimal x weight: 4
 p 349 3 * 331 4 * +
-* ^ should have as minimal x weight: 3
 p 115 6 * 319 +
-* ^ should have as minimal x weight: 6
 p 351 3 * 328 6 * +
-* ^ should have as minimal x weight: 3
 p 117 4 * 322 +
-* ^ should have as minimal x weight: 4
 p 353 1 * 325 4 * +
-* ^ should have as minimal x weight: 1
 p 348 350 + 352 + 354 +
-* ^ should have as minimal x weight: 8
 p 119 4 * 316 +
-* ^ should have as minimal x weight: 4
 p 356 1 * 332 4 * +
-* ^ should have as minimal x weight: 1
 p 121 6 * 319 +
-* ^ should have as minimal x weight: 6
 p 358 3 * 331 6 * +
-* ^ should have as minimal x weight: 3
 p 123 4 * 322 +
-* ^ should have as minimal x weight: 4
 p 360 3 * 328 4 * +
-* ^ should have as minimal x weight: 3
 p 125 1 * 323 +
-* ^ should have as minimal x weight: 1
 p 362 1 * 325 1 * +
-* ^ should have as minimal x weight: 1
 p 357 359 + 361 + 363 +
-* ^ should have as minimal x weight: 8
 p 127 6 * 319 +
-* ^ should have as minimal x weight: 6
 p 365 1 * 332 6 * +
-* ^ should have as minimal x weight: 1
 p 129 4 * 322 +
-* ^ should have as minimal x weight: 4
 p 367 3 * 331 4 * +
-* ^ should have as minimal x weight: 3
 p 131 1 * 323 +
-* ^ should have as minimal x weight: 1
 p 369 3 * 328 1 * +
-* ^ should have as minimal x weight: 3
 p 366 368 + 370 +
-* ^ should have as minimal x weight: 7
 p 133 4 * 322 +
-* ^ should have as minimal x weight: 4
 p 372 1 * 332 4 * +
-* ^ should have as minimal x weight: 1
 p 135 1 * 323 +
-* ^ should have as minimal x weight: 1
 p 374 3 * 331 1 * +
-* ^ should have as minimal x weight: 3
 p 373 375 +
-* ^ should have as minimal x weight: 4
 p 137 1 * 323 +
-* ^ should have as minimal x weight: 1
 p 377 1 * 332 1 * +
-* ^ should have as minimal x weight: 1
 p 151 153 +
-* ^ should have as minimal x weight: 2
 p 159 1 * 149 +
-* ^ should have as minimal x weight: 1
 p 161 1 * 149 +
-* ^ should have as minimal x weight: 1
 p 163 2 * 379 +
-* ^ should have as minimal x weight: 2
 p 381 382 +
-* ^ should have as minimal x weight: 3
 p 165 2 * 379 +
-* ^ should have as minimal x weight: 2
 p 167 1 * 155 +
-* ^ should have as minimal x weight: 1
 p 384 385 +
-* ^ should have as minimal x weight: 3
 p 169 1 * 155 +
-* ^ should have as minimal x weight: 1
 p 179 181 +
-* ^ should have as minimal x weight: 2
 p 185 1 * 380 +
-* ^ should have as minimal x weight: 1
 p 389 1 * 177 1 * +
-* ^ should have as minimal x weight: 1
 p 187 1 * 380 +
-* ^ should have as minimal x weight: 1
 p 391 2 * 388 1 * +
-* ^ should have as minimal x weight: 2
 p 189 3 * 383 +
-* ^ should have as minimal x weight: 3
 p 393 1 * 177 3 * +
-* ^ should have as minimal x weight: 1
 p 392 394 +
-* ^ should have as minimal x weight: 3
 p 191 1 * 380 +
-* ^ should have as minimal x weight: 1
 p 396 1 * 183 1 * +
-* ^ should have as minimal x weight: 1
 p 193 3 * 383 +
-* ^ should have as minimal x weight: 3
 p 398 2 * 388 3 * +
-* ^ should have as minimal x weight: 2
 p 195 3 * 386 +
-* ^ should have as minimal x weight: 3
 p 400 1 * 177 3 * +
-* ^ should have as minimal x weight: 1
 p 397 399 + 401 +
-* ^ should have as minimal x weight: 4
 p 197 3 * 383 +
-* ^ should have as minimal x weight: 3
 p 403 1 * 183 3 * +
-* ^ should have as minimal x weight: 1
 p 199 3 * 386 +
-* ^ should have as minimal x weight: 3
 p 405 2 * 388 3 * +
-* ^ should have as minimal x weight: 2
 p 201 1 * 387 +
-* ^ should have as minimal x weight: 1
 p 407 1 * 177 1 * +
-* ^ should have as minimal x weight: 1
 p 404 406 + 408 +
-* ^ should have as minimal x weight: 4
 p 203 3 * 386 +
-* ^ should have as minimal x weight: 3
 p 410 1 * 183 3 * +
-* ^ should have as minimal x weight: 1
 p 205 1 * 387 +
-* ^ should have as minimal x weight: 1
 p 412 2 * 388 1 * +
-* ^ should have as minimal x weight: 2
 p 411 413 +
-* ^ should have as minimal x weight: 3
 p 207 1 * 387 +
-* ^ should have as minimal x weight: 1
 p 415 1 * 183 1 * +
-* ^ should have as minimal x weight: 1
 p 209 1 * 334 +
-* ^ should have as minimal x weight: 1
 p 417 1 * 390 1 * +
-* ^ should have as minimal x weight: 1
 p 211 1 * 334 +
-* ^ should have as minimal x weight: 1
 p 419 5 * 395 1 * +
-* ^ should have as minimal x weight: 3
 p 213 7 * 339 +
-* ^ should have as minimal x weight: 4
 p 421 1 * 390 7 * +
-* ^ should have as minimal x weight: 1
 p 420 422 +
-* ^ should have as minimal x weight: 4
 p 215 1 * 334 +
-* ^ should have as minimal x weight: 1
 p 424 10 * 402 1 * +
-* ^ should have as minimal x weight: 4
 p 217 7 * 339 +
-* ^ should have as minimal x weight: 4
 p 426 5 * 395 7 * +
-* ^ should have as minimal x weight: 3
 p 219 21 * 346 +
-* ^ should have as minimal x weight: 7
 p 428 1 * 390 21 * +
-* ^ should have as minimal x weight: 1
 p 425 427 + 429 +
-* ^ should have as minimal x weight: 8
 p 221 1 * 334 +
-* ^ should have as minimal x weight: 1
 p 431 10 * 409 1 * +
-* ^ should have as minimal x weight: 4
 p 223 7 * 339 +
-* ^ should have as minimal x weight: 4
 p 433 10 * 402 7 * +
-* ^ should have as minimal x weight: 4
 p 225 21 * 346 +
-* ^ should have as minimal x weight: 7
 p 435 5 * 395 21 * +
-* ^ should have as minimal x weight: 3
 p 227 35 * 355 +
-* ^ should have as minimal x weight: 8
 p 437 1 * 390 35 * +
-* ^ should have as minimal x weight: 1
 p 432 434 + 436 + 438 +
-* ^ should have as minimal x weight: 12
 p 229 1 * 334 +
-* ^ should have as minimal x weight: 1
 p 440 5 * 414 1 * +
-* ^ should have as minimal x weight: 3
 p 231 7 * 339 +
-* ^ should have as minimal x weight: 4
 p 442 10 * 409 7 * +
-* ^ should have as minimal x weight: 4
 p 233 21 * 346 +
-* ^ should have as minimal x weight: 7
 p 444 10 * 402 21 * +
-* ^ should have as minimal x weight: 4
 p 235 35 * 355 +
-* ^ should have as minimal x weight: 8
 p 446 5 * 395 35 * +
-* ^ should have as minimal x weight: 3
 p 237 35 * 364 +
-* ^ should have as minimal x weight: 8
 p 448 1 * 390 35 * +
-* ^ should have as minimal x weight: 1
 p 441 443 + 445 + 447 + 449 +
-* ^ should have as minimal x weight: 15
 p 239 1 * 334 +
-* ^ should have as minimal x weight: 1
 p 451 1 * 416 1 * +
-* ^ should have as minimal x weight: 1
 p 241 7 * 339 +
-* ^ should have as minimal x weight: 4
 p 453 5 * 414 7 * +
-* ^ should have as minimal x weight: 3
 p 243 21 * 346 +
-* ^ should have as minimal x weight: 7
 p 455 10 * 409 21 * +
-* ^ should have as minimal x weight: 4
 p 245 35 * 355 +
-* ^ should have as minimal x weight: 8
 p 457 10 * 402 35 * +
-* ^ should have as minimal x weight: 4
 p 247 35 * 364 +
-* ^ should have as minimal x weight: 8
 p 459 5 * 395 35 * +
-* ^ should have as minimal x weight: 3
 p 249 21 * 371 +
-* ^ should have as minimal x weight: 7
 p 461 1 * 390 21 * +
-* ^ should have as minimal x weight: 1
 p 452 454 + 456 + 458 + 460 + 462 +
-* ^ should have as minimal x weight: 16
 p 251 7 * 339 +
-* ^ should have as minimal x weight: 4
 p 464 1 * 416 7 * +
-* ^ should have as minimal x weight: 1
 p 253 21 * 346 +
-* ^ should have as minimal x weight: 7
 p 466 5 * 414 21 * +
-* ^ should have as minimal x weight: 3
 p 255 35 * 355 +
-* ^ should have as minimal x weight: 8
 p 468 10 * 409 35 * +
-* ^ should have as minimal x weight: 4
 p 257 35 * 364 +
-* ^ should have as minimal x weight: 8
 p 470 10 * 402 35 * +
-* ^ should have as minimal x weight: 4
 p 259 21 * 371 +
-* ^ should have as minimal x weight: 7
 p 472 5 * 395 21 * +
-* ^ should have as minimal x weight: 3
 p 261 7 * 376 +
-* ^ should have as minimal x weight: 4
 p 474 1 * 390 7 * +
-* ^ should have as minimal x weight: 1
 p 465 467 + 469 + 471 + 473 + 475 +
-* ^ should have as minimal x weight: 16
 p 263 21 * 346 +
-* ^ should have as minimal x weight: 7
 p 477 1 * 416 21 * +
-* ^ should have as minimal x weight: 1
 p 265 35 * 355 +
-* ^ should have as minimal x weight: 8
 p 479 5 * 414 35 * +
-* ^ should have as minimal x weight: 3
 p 267 35 * 364 +
-* ^ should have as minimal x weight: 8
 p 481 10 * 409 35 * +
-* ^ should have as minimal x weight: 4
 p 269 21 * 371 +
-* ^ should have as minimal x weight: 7
 p 483 10 * 402 21 * +
-* ^ should have as minimal x weight: 4
 p 271 7 * 376 +
-* ^ should have as minimal x weight: 4
 p 485 5 * 395 7 * +
-* ^ should have as minimal x weight: 3
 p 273 1 * 378 +
-* ^ should have as minimal x weight: 1
 p 487 1 * 390 1 * +
-* ^ should have as minimal x weight: 1
 p 478 480 + 482 + 484 + 486 + 488 +
-* ^ should have as minimal x weight: 16
 p 275 35 * 355 +
-* ^ should have as minimal x weight: 8
 p 490 1 * 416 35 * +
-* ^ should have as minimal x weight: 1
 p 277 35 * 364 +
-* ^ should have as minimal x weight: 8
 p 492 5 * 414 35 * +
-* ^ should have as minimal x weight: 3
 p 279 21 * 371 +
-* ^ should have as minimal x weight: 7
 p 494 10 * 409 21 * +
-* ^ should have as minimal x weight: 4
 p 281 7 * 376 +
-* ^ should have as minimal x weight: 4
 p 496 10 * 402 7 * +
-* ^ should have as minimal x weight: 4
 p 283 1 * 378 +
-* ^ should have as minimal x weight: 1
 p 498 5 * 395 1 * +
-* ^ should have as minimal x weight: 3
 p 491 493 + 495 + 497 + 499 +
-* ^ should have as minimal x weight: 15
 p 285 35 * 364 +
-* ^ should have as minimal x weight: 8
 p 501 1 * 416 35 * +
-* ^ should have as minimal x weight: 1
 p 287 21 * 371 +
-* ^ should have as minimal x weight: 7
 p 503 5 * 414 21 * +
-* ^ should have as minimal x weight: 3
 p 289 7 * 376 +
-* ^ should have as minimal x weight: 4
 p 505 10 * 409 7 * +
-* ^ should have as minimal x weight: 4
 p 291 1 * 378 +
-* ^ should have as minimal x weight: 1
 p 507 10 * 402 1 * +
-* ^ should have as minimal x weight: 4
 p 502 504 + 506 + 508 +
-* ^ should have as minimal x weight: 12
 p 293 21 * 371 +
-* ^ should have as minimal x weight: 7
 p 510 1 * 416 21 * +
-* ^ should have as minimal x weight: 1
 p 295 7 * 376 +
-* ^ should have as minimal x weight: 4
 p 512 5 * 414 7 * +
-* ^ should have as minimal x weight: 3
 p 297 1 * 378 +
-* ^ should have as minimal x weight: 1
 p 514 10 * 409 1 * +
-* ^ should have as minimal x weight: 4
 p 511 513 + 515 +
-* ^ should have as minimal x weight: 8
 p 299 7 * 376 +
-* ^ should have as minimal x weight: 4
 p 517 1 * 416 7 * +
-* ^ should have as minimal x weight: 1
 p 301 1 * 378 +
-* ^ should have as minimal x weight: 1
 p 519 5 * 414 1 * +
-* ^ should have as minimal x weight: 3
 p 518 520 +
-* ^ should have as minimal x weight: 4
 p 303 1 * 378 +
-* ^ should have as minimal x weight: 1
 p 522 1 * 416 1 * +
-* ^ should have as minimal x weight: 1
 * ==============================================================
 * Constraining through linking variables:
 * constraint_id 439 	coeff: 220
 p 439 219 d 13 +
-u 1 ~v4_x9_x20  >= 1;
+u 1 ~y103  >= 1;
 * constraint_id 450 	coeff: 495
 p 450 494 d 13 +
-u 1 ~v5_x9_x20  >= 1;
+u 1 ~y104  >= 1;
 * constraint_id 463 	coeff: 792
 p 463 791 d 13 +
-u 1 ~v6_x9_x20  >= 1;
+u 1 ~y105  >= 1;
 * constraint_id 476 	coeff: 924
 p 476 923 d 13 +
-u 1 ~v7_x9_x20  >= 1;
+u 1 ~y106  >= 1;
 * constraint_id 489 	coeff: 792
 p 489 791 d 13 +
-u 1 ~v8_x9_x20  >= 1;
+u 1 ~y107  >= 1;
 * constraint_id 500 	coeff: 495
 p 500 494 d 13 +
-u 1 ~v9_x9_x20  >= 1;
+u 1 ~y108  >= 1;
 * constraint_id 509 	coeff: 220
 p 509 219 d 13 +
-u 1 ~v10_x9_x20  >= 1;
+u 1 ~y109  >= 1;
 * constraint_id 516 	coeff: 66
 p 516 65 d 13 +
-u 1 ~v11_x9_x20  >= 1;
+u 1 ~y110  >= 1;
 * constraint_id 521 	coeff: 12
 p 521 11 d 13 +
-u 1 ~v12_x9_x20  >= 1;
+u 1 ~y111  >= 1;
 * ==============================================================
-u 1 v1_x9_x12  >= 1;
+u 1 y44  >= 1;
 * ==============================================================
 * New model found:
-o x1 ~x2 ~x3 x4 x5 x6 ~x7 x8 ~x9 x10 ~x11 x12 ~x13 ~x14 ~x15 ~x16 ~x17 ~x18 x19 ~x20 v0_x9_x20 ~v13_x9_x20 v0_x9_x15 ~v8_x9_x15 v0_x9_x12 ~v5_x9_x12 v0_x9_x11 ~v4_x9_x11 v0_x9_x10 ~v3_x9_x10 y31 ~y32 y33 ~y34 v1_x9_x10 ~v2_x9_x10 y37 ~y38 v1_x9_x11 ~v2_x9_x11 ~v3_x9_x11 y42 ~y43 v1_x9_x12 v2_x9_x12 ~v3_x9_x12 ~v4_x9_x12 v0_x13_x15 ~v4_x13_x15 v0_x13_x14 ~v3_x13_x14 y52 ~y53 y54 ~y55 ~v1_x13_x14 ~v2_x13_x14 y58 ~y59 ~v1_x13_x15 ~v2_x13_x15 ~v3_x13_x15 v1_x9_x15 v2_x9_x15 ~v3_x9_x15 ~v4_x9_x15 ~v5_x9_x15 ~v6_x9_x15 ~v7_x9_x15 v0_x16_x20 ~v6_x16_x20 v0_x16_x18 ~v4_x16_x18 v0_x16_x17 ~v3_x16_x17 y76 ~y77 y78 ~y79 ~v1_x16_x17 ~v2_x16_x17 y82 ~y83 ~v1_x16_x18 ~v2_x16_x18 ~v3_x16_x18 v0_x19_x20 ~v3_x19_x20 y89 ~y90 y91 ~y92 v1_x19_x20 ~v2_x19_x20 v1_x16_x20 ~v2_x16_x20 ~v3_x16_x20 ~v4_x16_x20 ~v5_x16_x20 v1_x9_x20 v2_x9_x20 v3_x9_x20 ~v4_x9_x20 ~v5_x9_x20 ~v6_x9_x20 ~v7_x9_x20 ~v8_x9_x20 ~v9_x9_x20 ~v10_x9_x20 ~v11_x9_x20 ~v12_x9_x20 
+o x1 ~x2 ~x3 x4 x5 x6 ~x7 x8 ~x9 x10 ~x11 x12 ~x13 ~x14 ~x15 ~x16 ~x17 ~x18 x19 ~x20 y21 ~y22 y23 ~y24 y25 ~y26 y27 ~y28 y29 ~y30 y31 ~y32 y33 ~y34 y35 ~y36 y37 ~y38 y39 ~y40 ~y41 y42 ~y43 y44 y45 ~y46 ~y47 y48 ~y49 y50 ~y51 y52 ~y53 y54 ~y55 ~y56 ~y57 y58 ~y59 ~y60 ~y61 ~y62 y63 y64 ~y65 ~y66 ~y67 ~y68 ~y69 y70 ~y71 y72 ~y73 y74 ~y75 y76 ~y77 y78 ~y79 ~y80 ~y81 y82 ~y83 ~y84 ~y85 ~y86 y87 ~y88 y89 ~y90 y91 ~y92 y93 ~y94 y95 ~y96 ~y97 ~y98 ~y99 y100 y101 y102 ~y103 ~y104 ~y105 ~y106 ~y107 ~y108 ~y109 ~y110 ~y111 
 * ==============================================================
 * Constraining through linking variables:
 * constraint_id 430 	coeff: 66
 p 430 65 d 543 +
-u 1 ~v3_x9_x20  >= 1;
+u 1 ~y102  >= 1;
 * ==============================================================
-u 1 v1_x16_x20  >= 1;
-u 1 v1_x19_x20 1 ~x5  >= 1;
-u 1 v1_x9_x10 1 x2  >= 1;
+u 1 y95  >= 1;
+u 1 y93 1 ~x5  >= 1;
+u 1 y35 1 x2  >= 1;
 * ==============================================================
 * New model found:
-o ~x1 ~x2 x3 x4 x5 ~x6 x7 ~x8 x9 ~x10 ~x11 ~x12 ~x13 ~x14 ~x15 ~x16 ~x17 ~x18 ~x19 x20 v0_x9_x20 ~v13_x9_x20 v0_x9_x15 ~v8_x9_x15 v0_x9_x12 ~v5_x9_x12 v0_x9_x11 ~v4_x9_x11 v0_x9_x10 ~v3_x9_x10 y31 ~y32 y33 ~y34 v1_x9_x10 ~v2_x9_x10 y37 ~y38 v1_x9_x11 ~v2_x9_x11 ~v3_x9_x11 y42 ~y43 v1_x9_x12 ~v2_x9_x12 ~v3_x9_x12 ~v4_x9_x12 v0_x13_x15 ~v4_x13_x15 v0_x13_x14 ~v3_x13_x14 y52 ~y53 y54 ~y55 ~v1_x13_x14 ~v2_x13_x14 y58 ~y59 ~v1_x13_x15 ~v2_x13_x15 ~v3_x13_x15 v1_x9_x15 ~v2_x9_x15 ~v3_x9_x15 ~v4_x9_x15 ~v5_x9_x15 ~v6_x9_x15 ~v7_x9_x15 v0_x16_x20 ~v6_x16_x20 v0_x16_x18 ~v4_x16_x18 v0_x16_x17 ~v3_x16_x17 y76 ~y77 y78 ~y79 ~v1_x16_x17 ~v2_x16_x17 y82 ~y83 ~v1_x16_x18 ~v2_x16_x18 ~v3_x16_x18 v0_x19_x20 ~v3_x19_x20 y89 ~y90 y91 ~y92 v1_x19_x20 ~v2_x19_x20 v1_x16_x20 ~v2_x16_x20 ~v3_x16_x20 ~v4_x16_x20 ~v5_x16_x20 v1_x9_x20 v2_x9_x20 ~v3_x9_x20 ~v4_x9_x20 ~v5_x9_x20 ~v6_x9_x20 ~v7_x9_x20 ~v8_x9_x20 ~v9_x9_x20 ~v10_x9_x20 ~v11_x9_x20 ~v12_x9_x20 
+o ~x1 ~x2 x3 x4 x5 ~x6 x7 ~x8 x9 ~x10 ~x11 ~x12 ~x13 ~x14 ~x15 ~x16 ~x17 ~x18 ~x19 x20 y21 ~y22 y23 ~y24 y25 ~y26 y27 ~y28 y29 ~y30 y31 ~y32 y33 ~y34 y35 ~y36 y37 ~y38 y39 ~y40 ~y41 y42 ~y43 y44 ~y45 ~y46 ~y47 y48 ~y49 y50 ~y51 y52 ~y53 y54 ~y55 ~y56 ~y57 y58 ~y59 ~y60 ~y61 ~y62 y63 ~y64 ~y65 ~y66 ~y67 ~y68 ~y69 y70 ~y71 y72 ~y73 y74 ~y75 y76 ~y77 y78 ~y79 ~y80 ~y81 y82 ~y83 ~y84 ~y85 ~y86 y87 ~y88 y89 ~y90 y91 ~y92 y93 ~y94 y95 ~y96 ~y97 ~y98 ~y99 y100 y101 ~y102 ~y103 ~y104 ~y105 ~y106 ~y107 ~y108 ~y109 ~y110 ~y111 
 * ==============================================================
 * Constraining through linking variables:
 * constraint_id 423 	coeff: 12
 p 423 11 d 549 +
-u 1 ~v2_x9_x20  >= 1;
+u 1 ~y101  >= 1;
 * ==============================================================
 u >= 1;
 c 552
