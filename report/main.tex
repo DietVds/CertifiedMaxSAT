@@ -64,21 +64,6 @@
 \pgfplotsset{width=8cm,compat=1.9}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-%\documentclass[10pt]{article}
-%\usepackage[utf8]{gfsdidot}
-%\usepackage{apacite} 
-%\bibliographystyle{apacite}
-%\usepackage{graphicx}
-%\usepackage{url}
-%\usepackage{geometry}
-%\geometry{
-% a4paper,
-% total={170mm,257mm},
-% left=20mm,
-% top=20mm,
-% }
-
 \title{Verifiable MaxSAT solutions}
 \author{Dieter Vandesande \and Wolf De Wulf}
 \date{\today}
@@ -89,22 +74,39 @@
 \section{Introduction}
 \label{sec:intro}
 % TODO: add reference for proof logging in sat quite established.
-This paper is part of the first project of the course Discrete Modeling, Optimisation and Search taught at the VUB. The assignment consists out of creating a ProofLogged MaxSAT-solver. In SAT, proof logging is already well established. When a SAT-solver returns a model, and thus says the theory is satisfiable, checking if the returned model is indeed a model of the theory can be seen as proving satisfiability. However, when a SAT-solver returns unsatisfiable, this response can either come from the theory being unsatisfiable or from the solver having a bug. In the SAT-competition of 2013, a SAT-solver named BreakIDGlucose returned unsatisfiable on some hard instances. Unfortunately, this response was due to a bug. After having resolved the bug, these instances were not solvable anymore by BreakIDGlucose. Therefore, proof logging for SAT-solvers is mandatory in the latest SAT-sompetitions \autocite{satcomp2018}. A proof, also called a certificate, is written by a solver and should be written efficiently, as it should not influence the performance of the SAT-solver. Moreover, it should be verifiable in an efficiently manner. VeriPB \autocite{veripb} is such a proof verifier. It expresses the problems as pseudo-Boolean (PB) problems and combines Reverse Unit Propagation (RUP) and Cutting Planes proof system rules. \newline \par
+This paper is part of the first project of the course Discrete Modeling, Optimisation and Search taught at the VUB. The assignment consists out of creating a ProofLogged MaxSAT-solver. In SAT, proof
+logging is already well established. When a SAT-solver returns a model, and thus says the theory is satisfiable, checking if the returned model is indeed a model of the theory can be seen as proving
+satisfiability. However, when a SAT-solver returns unsatisfiable, this response can either come from the theory being unsatisfiable or from the solver having a bug. In the SAT-competition of 2013, a
+SAT-solver named BreakIDGlucose returned unsatisfiable on some hard instances. Unfortunately, this response was due to a bug. After having resolved the bug, these instances were not solvable anymore
+by BreakIDGlucose. Therefore, proof logging for SAT-solvers is mandatory in the latest SAT-sompetitions \autocite{satcomp2018}. A proof, also called a certificate, is written by a solver and should
+be written efficiently, as it should not influence the performance of the SAT-solver. Moreover, it should be verifiable in an efficiently manner. VeriPB \autocite{veripb} is such a proof verifier. It
+expresses the problems as pseudo-Boolean (PB) problems and combines Reverse Unit Propagation (RUP) and Cutting Planes proof system rules. \newline \par
 %TODO: add reference to BnB solvers. Might also be handbook of satisfiability.
 % TODO: add reference to core-guided, iterative and MHS solvers.
-MaxSAT \autocite{li2009maxsat, biere2009handbook} is the problem for which it is tried to make as much as possible (soft) clauses satisfied. When it is possible to also have hard clauses, which have to be satisfied in all possible models, it is said to be a partial MaxSAT-problem. When the clauses are weighted and the problem is to find the assignment that maximizes the sum of the weights of the satisfied soft clauses, it is said to be a weighted MaxSAT-problem. There are multiple approaches to solve a MaxSAT-instance.  While core-guided MaxSAT-solvers and MaxSAT-solvers starts with unsatisfiable cores and try to manipulate these cores until a satisfiable subset of the clauses is found, iterative \autocite{qmaxsat} and Branch and Bound (BnB) \autocite{maxcdcl, ahmaxsat} solvers start by finding a model and keep on trying to find a better model until no better model can be found. Except the branch and bound (BnB) solvers, most of the MaxSAT-solvers translate the MaxSAT-instance into a SAT-instance and repeatedly call a SAT-solver as an oracle. \newline \par
- 
- 
+MaxSAT \autocite{li2009maxsat, biere2009handbook} is the problem for which it is tried to make as much as possible (soft) clauses satisfied. When it is possible to also have hard clauses, which have
+to be satisfied in all possible models, it is said to be a partial MaxSAT-problem. When the clauses are weighted and the problem is to find the assignment that maximizes the sum of the weights of the
+satisfied soft clauses, it is said to be a weighted MaxSAT-problem. There are multiple approaches to solve a MaxSAT-instance.  While core-guided MaxSAT-solvers and MaxSAT-solvers starts with
+unsatisfiable cores and try to manipulate these cores until a satisfiable subset of the clauses is found, iterative \autocite{qmaxsat} and Branch and Bound (BnB) \autocite{maxcdcl, ahmaxsat} solvers
+start by finding a model and keep on trying to find a better model until no better model can be found. Except the branch and bound (BnB) solvers, most of the MaxSAT-solvers translate the
+MaxSAT-instance into a SAT-instance and repeatedly call a SAT-solver as an oracle. \newline \par
+
 %TODO: check if totalizer-encoding can work for weighted instances.
 
 %TODO: write about MaxSAT solver with proof logging of paper of Wolf.
 
-As part of the assignment, we received a yet unpublished extension on VeriPB to allow to verify proofs for optimisation problems. Apart from adding some new proof rules, this extension keeps track of an upper bound respectively a lower bound when minimizing respectively maximizing. When having found a better value, it will update the bound and try to find a better solution by adding a constraint that the value to optimize will be better than the current best value. If this pose a contradiction, the last found best solution is the actual optimal solution to the problem. For the rest of this paper, when we talk about VeriPB, we mean this extension of VeriPB.\newline \par
+As part of the assignment, we received a yet unpublished extension on VeriPB to allow to verify proofs for optimisation problems. Apart from adding some new proof rules, this extension keeps track of
+an upper bound respectively a lower bound when minimizing respectively maximizing. When having found a better value, it will update the bound and try to find a better solution by adding a constraint
+that the value to optimize will be better than the current best value. If this pose a contradiction, the last found best solution is the actual optimal solution to the problem. For the rest of this
+paper, when we talk about VeriPB, we mean this extension of VeriPB.\newline \par
 
-Since the idea of the VeriPB proof system for optimisation is using the same ideology to optimisation as both the BnB and the iterative MaxSAT solvers (starting with a satisfying model and keep on improving until no better one can be found), we decided to start working on an iterative MaxSAT-solver. We have chosen to use QMaxSAT \autocite{qmaxsat}. QMaxSAT was the best performing MaxSAT-solver in the partial MaxSAT industrial competition of 2010\footnote{http://www.maxsat.udl.cat/10/results/}. QMaxSAT adds a relaxation variable to all soft clauses. When a relaxation variable of a soft clause is falsified, that means that the clause has to be satisfied. Therefore, the optimisation is done by minimising the number of satisfied relaxation variables. QMaxSAT iteratively calls MiniSat \autocite{minisat} with the same theory. Therefore, MiniSat can keep its learned clauses, which improves the performance of later MiniSat-calls. Every call of MiniSat, QMaxSAT constraints the maximum number of relaxation variables to be satisfied. To do so, QMaxSAT uses the Totalizer encoding \autocite{encoding} of the cardinality constraint. \newline \par
+Since the idea of the VeriPB proof system for optimisation is using the same ideology to optimisation as both the BnB and the iterative MaxSAT solvers (starting with a satisfying model and keep on
+improving until no better one can be found), we decided to start working on an iterative MaxSAT-solver. We have chosen to use QMaxSAT \autocite{qmaxsat}. QMaxSAT was the best performing MaxSAT-solver
+in the partial MaxSAT industrial competition of 2010\footnote{http://www.maxsat.udl.cat/10/results/}. QMaxSAT adds a relaxation variable to all soft clauses. When a relaxation variable of a soft
+clause is falsified, that means that the clause has to be satisfied. Therefore, the optimisation is done by minimising the number of satisfied relaxation variables. QMaxSAT iteratively calls MiniSat
+\autocite{minisat} with the same theory. Therefore, MiniSat can keep its learned clauses, which improves the performance of later MiniSat-calls. Every call of MiniSat, QMaxSAT constraints the maximum
+number of relaxation variables to be satisfied. To do so, QMaxSAT uses the Totalizer encoding \autocite{encoding} of the cardinality constraint. \newline \par
 
 The rest of this paper is organised as follows: ...
-
 
 \section{References}
 \printbibliography[heading=none]
