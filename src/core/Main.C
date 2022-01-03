@@ -252,7 +252,6 @@ void printUsage(char** argv)
     reportf("  -verbosity           = {0,1,2}\n");
     reportf("  -proof-file          = /path/to/proof_file.proof (default: maxsat_proof.pbp)\n");
     reportf("  -meaningful_names    = whether or not to assign meaningful names to the auxiliairy variables\n");
-    reportf("  -simplify            = whether or not to write the useless unit clauses and literals to the proof file\n");
     reportf("\n");
 }
 
@@ -265,8 +264,6 @@ const char* hasPrefix(const char* str, const char* prefix)
     else
         return NULL;
 }
-
-
 
 // koshi 10.01.08
 void genCardinals(int from, int to, 
@@ -303,11 +300,6 @@ void genCardinals(int from, int to,
     linkingVar.push(Lit(varLast));
   } else { // inputSize >= 2
 
-    // Keeping track of constraint ids for C2's
-    vec<int> constraint_ids; 
-    int constraint_id;
-    int third_var;
-
     PL.write_comment("- Node clauses:");
     linkingVar.push(Lit(varZero));
     for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
@@ -321,21 +313,16 @@ void genCardinals(int from, int to,
 	            lits.push(~linkingAlpha[alpha]);
 	            lits.push(~linkingBeta[beta]);
 	            lits.push(linkingVar[sigma]);
-                PL.write_C_sub_red(lits, sigma, from, to);
+                PL.write_C1(lits, sigma, from, to);
 	            S.addClause(lits);
 	            lits.clear();
 	            lits.push(linkingAlpha[alpha+1]);
 	            lits.push(linkingBeta[beta+1]);
 	            lits.push(~linkingVar[sigma+1]);
-                constraint_id = PL.write_C_sub_red(lits, sigma+1, from, to);
-                constraint_ids.push(constraint_id);
-                third_var = var(lits[2]);
+                PL.write_C2(lits, sigma+1, from, to);
 	            S.addClause(lits);
 	        }
         }
-        // Write sum of all C2's for certain vX_xFROM_xTO
-        PL.write_C2_sum(constraint_ids, third_var, sigma+1, from, to);
-        constraint_ids.clear();
     }
     PL.write_comment("-------------------------------------------");
   }
@@ -396,9 +383,6 @@ int main(int argc, char** argv)
 
         }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
             PL.meaningful_names = true;
-
-        }else if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "-simplify") == 0 || strcmp(argv[i], "--simplify") == 0){
-            PL.simplify = true;
 
         }else if (strncmp(argv[i], "-", 1) == 0){
             reportf("ERROR! unknown flag %s\n", argv[i]);
@@ -481,11 +465,11 @@ int main(int argc, char** argv)
         PL.write_comment("First model found:"); 
         PL.write_bound_update(S.model);
         PL.write_comment("==============================================================");
-        PL.write_comment("Tree cardinality encoding:"); 
+        PL.write_comment("Cardinality encoding:"); 
 	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
         PL.write_comment("==============================================================");
         PL.write_comment("Cardinality derivation:"); 
-        PL.write_cardinality_derivation();
+        PL.write_tree_derivation();
         PL.write_comment("==============================================================");
         PL.write_comment("Constraining through linking variables:"); 
 	    for (int i = answerNew; i < linkingVar.size()-1; i++) {

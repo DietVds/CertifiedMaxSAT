@@ -1,22 +1,33 @@
 #include "Prooflogger.h"
 
 //=================================================================================================
-// Prooflogger -- reverse polish notation class:
+// Prooflogger -- VeriPB operation classes:
 
 // Initialisers
 Operand::Operand(int value) : value(value){};
-Operation::Operation(ReversePolishNotation* a, ReversePolishNotation* b, const char* operant) : a(a), b(b), operant(operant){};
+RUP::RUP(vec<Lit>& in_clause) {
+    for(int i = 0; i < in_clause.size(); i++) {
+        clause.push(in_clause[i]);
+    }
+};
+CP1::CP1(VeriPBOperation* a, const char* operant) : a(a), operant(operant){};
+CP2::CP2(VeriPBOperation* a, VeriPBOperation* b, const char* operant) : a(a), b(b), operant(operant){};
 
-std::string Operation::apply(int constraint_id_at_start_of_printing) {
-    //Operation(ReversePolishNotation* a, ReversePolishNotation* b, const char* operant)
+std::string CP1::apply(int constraint_id_at_start_of_printing) {
+    return a->apply(constraint_id_at_start_of_printing)  
+                                   + " " + this->operant;
+}
+
+std::string CP2::apply(int constraint_id_at_start_of_printing) {
     return a->apply(constraint_id_at_start_of_printing) + " " 
                                    + b->apply(constraint_id_at_start_of_printing) 
                                    + " " + this->operant ;
 }
 
 std::string Operand::apply(int constraint_id_at_start_of_printing){
-    return std::to_string(this->value < 0 ? abs(this->value) +  constraint_id_at_start_of_printing : this->value);
+    return std::to_string(this->value < 0 ? abs(this->value) + constraint_id_at_start_of_printing : this->value);
 }
+
 
 //=================================================================================================
 // Proof file
@@ -56,37 +67,30 @@ void Prooflogger::write_proof_file() {
     proof_file.close();
 }
 
-void Prooflogger::write_cardinality_derivation() {
+void Prooflogger::write_tree_derivation() {
     int constraint_counter_at_start_of_derivations = constraint_counter;
-    for(int i = 0; i < cardinality_derivation.size(); i++){
+    for(int i = 0; i < tree_derivation.size(); i++){
 
         // Write RPN
-        proof << "p " << cardinality_derivation[i]->apply(constraint_counter_at_start_of_derivations ) << "\n";
+        if(dynamic_cast<RUP*>(tree_derivation[i]) != nullptr) {
+            RUP* learned_clause = dynamic_cast<RUP*>(tree_derivation[i]);
+            write_learnt_clause(learned_clause->clause);
+        } else {
+            proof << "p " << tree_derivation[i]->apply(constraint_counter_at_start_of_derivations ) << "\n";
+            constraint_counter++;
+        }
 
         // Tree recursively free the RPN objects
-        delete_RPN_tree(cardinality_derivation[i]);
-
-        constraint_counter++;
-    }
-
-    std::map<int, int>::iterator it = constraint_store.begin();
-
-    while(it != constraint_store.end()){
-        int var = it->first;
-        int constraint_id = it->second;
-
-        if(constraint_id < 0){
-            constraint_store[var] = abs(constraint_id) + constraint_counter_at_start_of_derivations;
-            coeff_store[constraint_store[var]] = coeff_store[constraint_id]; 
-        }
-        it++;
+        delete_RPN_tree(tree_derivation[i]);
     }
 }
 
-void Prooflogger::delete_RPN_tree(ReversePolishNotation* node) {
-    if(dynamic_cast<Operation*>(node) != nullptr) {
-        delete_RPN_tree(dynamic_cast<Operation*>(node)->a);
-        delete_RPN_tree(dynamic_cast<Operation*>(node)->b);
+void Prooflogger::delete_RPN_tree(VeriPBOperation* node) {
+    if(dynamic_cast<CP1*>(node) != nullptr) {
+        delete_RPN_tree(dynamic_cast<CP1*>(node)->a);
+    } else if(dynamic_cast<CP2*>(node) != nullptr) {
+        delete_RPN_tree(dynamic_cast<CP2*>(node)->a);
+        delete_RPN_tree(dynamic_cast<CP2*>(node)->b);
     } 
     delete(node);
 }
@@ -158,11 +162,8 @@ void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
 
 void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
     int variable = var(clause[0]);
-    int constraint_id = constraint_store[variable];
-    int coeff = coeff_store.find(constraint_id) != coeff_store.end() ? coeff_store[constraint_id] : 1;
-    proof << "* constraint_id " << std::to_string(constraint_id) << " \tcoeff: " << std::to_string(coeff) << "\n";
-    // TODO: check if this is correct or if we could do this better.
-    proof << "p " << constraint_id << " " << std::max(coeff - 1,1) << " d " << last_bound_constraint_id << " +\n";
+    int constraint_id = C2_store[variable];
+    proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n";
     constraint_counter++;
     write_learnt_clause(clause);
 }
@@ -177,69 +178,46 @@ void Prooflogger::write_bound_update(vec<lbool>& model) {
 }
 
 void Prooflogger::write_unit_sub_red(vec<Lit>& definition) {
-    if(simplify) {
-        unit_store[var(definition[0])] = sign(definition[0]);
-        return;
-    } else {
-        proof << "red ";
-        write_clause(definition);
-        proof << " >= 1;";
-        write_witness(definition[0]);
-        proof << "\n";
-        constraint_counter++;
-    }
+    proof << "red ";
+    write_clause(definition);
+    proof << ">= 1;";
+    write_witness(definition[0]);
+    proof << "\n";
+    constraint_counter++;
 }
 
-void Prooflogger::write_C2_sum(vec<int>& constraint_ids, int third, int sigma, int from, int to) {
-    /*
-        This method writes the summation of all the C2 constraints for a certain ~vX_xFROM_xTO
-        --> 'third' is the variable number of vN_xFROM_xTO
-    */
-    if(constraint_ids.size() > 1) {
-
-        // Need to keep track of coeff for vN_xFROM_xTO
-        int total_coeff = 0;
-        int total_minx_coeff = 0;
-
-        // Write first two manually
-        ReversePolishNotation* sum = new Operation(new Operand(constraint_ids[0]), new Operand(constraint_ids[1]), "+");
-        total_coeff += coeff_store.find(constraint_ids[0]) != coeff_store.end() ? coeff_store[constraint_ids[0]] : 1; 
-        total_coeff += coeff_store.find(constraint_ids[1]) != coeff_store.end() ? coeff_store[constraint_ids[1]] : 1; 
-
-        // Loop for others
-        for(int i = 2; i < constraint_ids.size(); i++) {
-            sum = new Operation(sum, new Operand(constraint_ids[i]), "+");
-            total_coeff += coeff_store.find(constraint_ids[i]) != coeff_store.end() ? coeff_store[constraint_ids[i]] : 1;
-        }
-        cardinality_derivation.push(sum);
-        cardinality_constraint_counter++;
-
-        // Store resulting constraint id
-        constraint_store[third] = -cardinality_constraint_counter;
-
-        // Store sum of coeffs 
-        coeff_store[-cardinality_constraint_counter] = total_coeff;
+void Prooflogger::write_C1_sub_red_cardinality(int var, int sigma, int from, int to) {
+    int weight = (to-from+1)-(sigma - 1);
+    proof << "red ";
+    for(int i = from; i < to+1; i++) {
+        write_literal(~Lit(i));
     }
+    proof << weight << " y" << var+1 << " >= " << weight << "; y" << var+1 << " -> " << 1 << "\n";
+    constraint_counter++;
+    C1_store[var] = constraint_counter;
+    C1_weight_store[var] = weight;
 }
 
-int Prooflogger::write_C_sub_red(vec<Lit>& definition, int sigma, int from, int to) {
+void Prooflogger::write_C2_sub_red_cardinality(int var, int sigma, int from, int to) {
+    int weight = sigma;
+    proof << "red ";
+    for(int i = from; i < to+1; i++) {
+        write_literal(Lit(i));
+    }
+    proof << weight << " ~y" << var+1 << " >= " << weight << "; y" << var+1 << " -> " << 0 << "\n";
+    constraint_counter++;
+    C2_store[var] = constraint_counter;
+    C2_weight_store[var] = weight;
+}
+
+void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
     /*
-        This method writes the substitution redundancy line for C1 and C2 constraints
-        --> it keeps track of meaning full names
-        --> if simplify is set to true it automatically skips trivially true constraints and unit variables
-        --> through summing with previous C2's it resolves variables such that veripb gets the actual cardinality constraints
+        This method writes the substitution redundancy line for a C1
+        --> it keeps track of meaningful names
     */
     int first = var(definition[0]);
     int second = var(definition[1]);
     int third = var(definition[2]);
-
-    if(simplify) {
-        // First verify if clause should be written at all
-        for (int i = 0; i < definition.size(); i++) {
-            // If the sign is the same as the one in the store then the clause is trivially true
-            if(unit_store.find(var(definition[i])) != unit_store.end() && unit_store[var(definition[i])] == sign(definition[i])) return -1;
-        }
-    }
 
     if(meaningful_names) {
 
@@ -251,63 +229,89 @@ int Prooflogger::write_C_sub_red(vec<Lit>& definition, int sigma, int from, int 
         }
     }
 
-    // Write sub red line
-    std::string variable;
-    proof<< "red ";
-    for (int i = 0; i < definition.size(); i++) {
-        
-        // If the literal is now found in the store then its sign was different, hence it shouldn't be written 
-        if(!simplify || unit_store.find(var(definition[i])) == unit_store.end()) {
-            write_literal(definition[i]);
-        }
-    }
-    proof << " >= 1;";
-    write_witness(definition[2]);
-    proof << "\n";
-    constraint_counter++;
+    // Verify if PB cardinality definition exists
+    if(C1_store.find(third) == C1_store.end()) {
 
-    // Only resolve C2's and don't resolve v0_xFROM_xTO because they can be unit propagated
+        // Write a substitution redundancy PB cardinality definition
+        write_C1_sub_red_cardinality(third, sigma, from, to);
+    }
+
+    // Write derivation of parts
+    int total_weight = C1_weight_store[third];
     bool resolved_one = false;
-    if(sign(definition[2]) == 1 && sigma > 0) {
-
-        // If first needs to be resolved
-        if(first > formula_length + n_variables && constraint_store.find(first) != constraint_store.end()) {
-            int first_constraint_id = constraint_store[first];
-            int first_coeff = coeff_store.find(first_constraint_id) != coeff_store.end()? coeff_store[first_constraint_id] : 1;
-
-            ReversePolishNotation* resolving = new Operation(new Operation(new Operand(constraint_counter), new Operand(first_coeff), "*"),
-                                                            new Operand(first_constraint_id),
-                                                            "+");
-            cardinality_derivation.push(resolving);
-
-            cardinality_constraint_counter++;
-            coeff_store[-cardinality_constraint_counter] = first_coeff;
-            resolved_one = true;
-        }
-
-        // If second needs to be resolved
-        if(second > formula_length + n_variables && constraint_store.find(second) != constraint_store.end()) {
-            int third_constraint_id = resolved_one ? -cardinality_constraint_counter : constraint_counter;
-            int second_constraint_id = constraint_store[second];
-            int second_coeff = coeff_store.find(second_constraint_id) != coeff_store.end()? coeff_store[second_constraint_id] : 1;
-            int third_coeff = coeff_store.find(third_constraint_id) != coeff_store.end()? coeff_store[third_constraint_id] : 1;
-
-            ReversePolishNotation* resolving = new Operation(new Operation(new Operand(third_constraint_id ), new Operand(second_coeff), "*"),
-                                                            new Operation(new Operand(second_constraint_id), new Operand(third_coeff), "*"),
-                                                            "+");
-            cardinality_derivation.push(resolving);
-
-            cardinality_constraint_counter++;
-            coeff_store[-cardinality_constraint_counter] = third_coeff * second_coeff;
-            resolved_one = true;
-        }
-
-        // Check if no resolving had to be done
-        if(resolved_one) constraint_store[third] = -cardinality_constraint_counter;
-        else constraint_store[third] = constraint_counter;
+    if(C2_store.find(first) != C2_store.end()) {
+        resolved_one = true;
+        tree_derivation.push(new CP2(new Operand(C1_store[third]), new Operand(C2_store[first]), "+"));
+        tree_constraint_counter++;
+        total_weight += C2_weight_store[first];
     }
-    if(resolved_one) return -cardinality_constraint_counter;
-    else return constraint_counter;
+    if(C2_store.find(second) != C2_store.end()) {
+        int to_add_to = resolved_one? -tree_constraint_counter : C1_store[third];
+        resolved_one = true;
+        tree_derivation.push(new CP2(new Operand(to_add_to), new Operand(C2_store[second]), "+"));
+        tree_constraint_counter++;
+        total_weight += C2_weight_store[second];
+    }
+    if(resolved_one) {
+        tree_derivation.push(new CP1(new Operand(-tree_constraint_counter), "s"));
+        tree_constraint_counter++;
+    }
+
+    // Derivation is done so clause can be written as RUP
+    tree_derivation.push(new RUP(definition));
+    tree_constraint_counter++;
+}
+
+void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
+    /*
+        This method writes the substitution redundancy line for a C2
+        --> it keeps track of meaningful names
+    */
+    int first = var(definition[0]);
+    int second = var(definition[1]);
+    int third = var(definition[2]);
+
+    if(meaningful_names) {
+
+        // If variable does not already have a meaningful name
+        if(meaningful_name_LB.find(third) == meaningful_name_LB.end()) {
+            meaningful_name_LB[third] = from+1;
+            meaningful_name_UB[third] = to+1;
+            meaningful_name_n[third] = sigma;
+        }
+    }
+
+    // Verify if PB cardinality definition exists
+    if(C2_store.find(third) == C2_store.end()) {
+
+        // Write a substitution redundancy PB cardinality definition
+        write_C2_sub_red_cardinality(third, sigma, from, to);
+    }
+
+    // Write derivation of parts
+    int total_weight = C2_weight_store[third];
+    bool resolved_one = false;
+    if(C1_store.find(first) != C1_store.end()) {
+        resolved_one = true;
+        tree_derivation.push(new CP2(new Operand(C2_store[third]), new Operand(C1_store[first]), "+"));
+        tree_constraint_counter++;
+        total_weight += C1_weight_store[first];
+    }
+    if(C1_store.find(second) != C1_store.end()) {
+        int to_add_to = resolved_one? -tree_constraint_counter : C2_store[third];
+        resolved_one = true;
+        tree_derivation.push(new CP2(new Operand(to_add_to), new Operand(C1_store[second]), "+"));
+        tree_constraint_counter++;
+        total_weight += C1_weight_store[second];
+    }
+    if(resolved_one) {
+        tree_derivation.push(new CP1(new CP2(new Operand(-tree_constraint_counter), new Operand(2), "d"), "s"));
+        tree_constraint_counter++;
+    }
+
+    // Derivation is done so clause can be written as RUP
+    tree_derivation.push(new RUP(definition));
+    tree_constraint_counter++;
 }
 
 //=================================================================================================

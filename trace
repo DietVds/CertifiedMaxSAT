@@ -1,0 +1,3137 @@
+
+=== begin trace ===
+line 002: f 12
+  ConstraintId 001: 1 x2 1 x6 1 x9 >= 1
+  ConstraintId 002: 1 x2 1 ~x6 1 x10 >= 1
+  ConstraintId 003: 1 x1 1 ~x2 1 x11 >= 1
+  ConstraintId 004: 1 ~x1 1 x12 >= 1
+  ConstraintId 005: 1 ~x6 1 x8 1 x13 >= 1
+  ConstraintId 006: 1 x6 1 ~x8 1 x14 >= 1
+  ConstraintId 007: 1 x2 1 x4 1 x15 >= 1
+  ConstraintId 008: 1 ~x4 1 x5 1 x16 >= 1
+  ConstraintId 009: 1 x5 1 x7 1 x17 >= 1
+  ConstraintId 010: 1 x5 1 ~x7 1 x18 >= 1
+  ConstraintId 011: 1 x3 1 ~x5 1 x19 >= 1
+  ConstraintId 012: 1 ~x3 1 x20 >= 1
+line 003: * ==============================================================
+line 004: * First model found:
+line 005: o ~x1 ~x2 ~x3 x4 x5 x6 ~x7 x8 ~x9 x10 ~x11 x12 x13 ~x14 ~x15 ~x16 ~x17 ~x18 x19 ~x20
+  ConstraintId 013: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 9
+line 006: * ==============================================================
+line 007: * Cardinality encoding:
+line 008: red 1 v0_x9_x20 >= 1; v0_x9_x20 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 014: 1 v0_x9_x20 >= 1
+line 009: red 1 ~v13_x9_x20 >= 1; v13_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 015: 1 ~v13_x9_x20 >= 1
+line 010: red 1 v0_x9_x15 >= 1; v0_x9_x15 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 016: 1 v0_x9_x15 >= 1
+line 011: red 1 ~v8_x9_x15 >= 1; v8_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 017: 1 ~v8_x9_x15 >= 1
+line 012: red 1 v0_x9_x12 >= 1; v0_x9_x12 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 018: 1 v0_x9_x12 >= 1
+line 013: red 1 ~v5_x9_x12 >= 1; v5_x9_x12 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 019: 1 ~v5_x9_x12 >= 1
+line 014: red 1 v0_x9_x11 >= 1; v0_x9_x11 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 020: 1 v0_x9_x11 >= 1
+line 015: red 1 ~v4_x9_x11 >= 1; v4_x9_x11 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 021: 1 ~v4_x9_x11 >= 1
+line 016: red 1 v0_x9_x10 >= 1; v0_x9_x10 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 022: 1 v0_x9_x10 >= 1
+line 017: red 1 ~v3_x9_x10 >= 1; v3_x9_x10 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 023: 1 ~v3_x9_x10 >= 1
+line 018: red 1 y31 >= 1; y31 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 024: 1 y31 >= 1
+line 019: red 1 ~y32 >= 1; y32 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 025: 1 ~y32 >= 1
+line 020: red 1 y33 >= 1; y33 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 026: 1 y33 >= 1
+line 021: red 1 ~y34 >= 1; y34 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 027: 1 ~y34 >= 1
+line 022: * - Node clauses:
+line 023: red 1 ~x9 1 ~x10 3 v0_x9_x10 >= 3; v0_x9_x10 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 028: 3 v0_x9_x10 1 ~x9 1 ~x10 >= 3
+line 024: red 1 x9 1 x10 1 ~v1_x9_x10 >= 1; v1_x9_x10 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 029: 1 ~v1_x9_x10 1 x9 1 x10 >= 1
+line 025: red 1 ~x9 1 ~x10 2 v1_x9_x10 >= 2; v1_x9_x10 -> 1
+  ** proofgoals from formula **
+  proofgoal 029: 1 x9 1 x10 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 030: 2 v1_x9_x10 1 ~x9 1 ~x10 >= 2
+line 026: red 1 x9 1 x10 2 ~v2_x9_x10 >= 2; v2_x9_x10 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 031: 2 ~v2_x9_x10 1 x9 1 x10 >= 2
+line 027: red 1 ~x9 1 ~x10 1 v2_x9_x10 >= 1; v2_x9_x10 -> 1
+  ** proofgoals from formula **
+  proofgoal 031: 1 x9 1 x10 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 032: 1 v2_x9_x10 1 ~x9 1 ~x10 >= 1
+line 028: red 1 x9 1 x10 3 ~v3_x9_x10 >= 3; v3_x9_x10 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 033: 3 ~v3_x9_x10 1 x9 1 x10 >= 3
+line 029: * -------------------------------------------
+line 030: red 1 y37 >= 1; y37 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 034: 1 y37 >= 1
+line 031: red 1 ~y38 >= 1; y38 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 035: 1 ~y38 >= 1
+line 032: * - Node clauses:
+line 033: red 1 ~x9 1 ~x10 1 ~x11 4 v0_x9_x11 >= 4; v0_x9_x11 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 036: 4 v0_x9_x11 1 ~x9 1 ~x10 1 ~x11 >= 4
+line 034: red 1 x9 1 x10 1 x11 1 ~v1_x9_x11 >= 1; v1_x9_x11 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 037: 1 ~v1_x9_x11 1 x9 1 x10 1 x11 >= 1
+line 035: red 1 ~x9 1 ~x10 1 ~x11 3 v1_x9_x11 >= 3; v1_x9_x11 -> 1
+  ** proofgoals from formula **
+  proofgoal 037: 1 x9 1 x10 1 x11 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 038: 3 v1_x9_x11 1 ~x9 1 ~x10 1 ~x11 >= 3
+line 036: red 1 x9 1 x10 1 x11 2 ~v2_x9_x11 >= 2; v2_x9_x11 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 039: 2 ~v2_x9_x11 1 x9 1 x10 1 x11 >= 2
+line 037: red 1 ~x9 1 ~x10 1 ~x11 2 v2_x9_x11 >= 2; v2_x9_x11 -> 1
+  ** proofgoals from formula **
+  proofgoal 039: 1 x9 1 x10 1 x11 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 040: 2 v2_x9_x11 1 ~x9 1 ~x10 1 ~x11 >= 2
+line 038: red 1 x9 1 x10 1 x11 3 ~v3_x9_x11 >= 3; v3_x9_x11 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 041: 3 ~v3_x9_x11 1 x9 1 x10 1 x11 >= 3
+line 039: red 1 ~x9 1 ~x10 1 ~x11 1 v3_x9_x11 >= 1; v3_x9_x11 -> 1
+  ** proofgoals from formula **
+  proofgoal 041: 1 x9 1 x10 1 x11 >= 3
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 042: 1 v3_x9_x11 1 ~x9 1 ~x10 1 ~x11 >= 1
+line 040: red 1 x9 1 x10 1 x11 4 ~v4_x9_x11 >= 4; v4_x9_x11 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 043: 4 ~v4_x9_x11 1 x9 1 x10 1 x11 >= 4
+line 041: * -------------------------------------------
+line 042: red 1 y42 >= 1; y42 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 044: 1 y42 >= 1
+line 043: red 1 ~y43 >= 1; y43 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 045: 1 ~y43 >= 1
+line 044: * - Node clauses:
+line 045: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 5 v0_x9_x12 >= 5; v0_x9_x12 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 046: 5 v0_x9_x12 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 5
+line 046: red 1 x9 1 x10 1 x11 1 x12 1 ~v1_x9_x12 >= 1; v1_x9_x12 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 047: 1 ~v1_x9_x12 1 x9 1 x10 1 x11 1 x12 >= 1
+line 047: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 4 v1_x9_x12 >= 4; v1_x9_x12 -> 1
+  ** proofgoals from formula **
+  proofgoal 047: 1 x9 1 x10 1 x11 1 x12 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 048: 4 v1_x9_x12 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 4
+line 048: red 1 x9 1 x10 1 x11 1 x12 2 ~v2_x9_x12 >= 2; v2_x9_x12 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 049: 2 ~v2_x9_x12 1 x9 1 x10 1 x11 1 x12 >= 2
+line 049: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 3 v2_x9_x12 >= 3; v2_x9_x12 -> 1
+  ** proofgoals from formula **
+  proofgoal 049: 1 x9 1 x10 1 x11 1 x12 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 050: 3 v2_x9_x12 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 3
+line 050: red 1 x9 1 x10 1 x11 1 x12 3 ~v3_x9_x12 >= 3; v3_x9_x12 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 051: 3 ~v3_x9_x12 1 x9 1 x10 1 x11 1 x12 >= 3
+line 051: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 2 v3_x9_x12 >= 2; v3_x9_x12 -> 1
+  ** proofgoals from formula **
+  proofgoal 051: 1 x9 1 x10 1 x11 1 x12 >= 3
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 052: 2 v3_x9_x12 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 2
+line 052: red 1 x9 1 x10 1 x11 1 x12 4 ~v4_x9_x12 >= 4; v4_x9_x12 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 053: 4 ~v4_x9_x12 1 x9 1 x10 1 x11 1 x12 >= 4
+line 053: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 v4_x9_x12 >= 1; v4_x9_x12 -> 1
+  ** proofgoals from formula **
+  proofgoal 053: 1 x9 1 x10 1 x11 1 x12 >= 4
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 054: 1 v4_x9_x12 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 1
+line 054: red 1 x9 1 x10 1 x11 1 x12 5 ~v5_x9_x12 >= 5; v5_x9_x12 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 055: 5 ~v5_x9_x12 1 x9 1 x10 1 x11 1 x12 >= 5
+line 055: * -------------------------------------------
+line 056: red 1 v0_x13_x15 >= 1; v0_x13_x15 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 056: 1 v0_x13_x15 >= 1
+line 057: red 1 ~v4_x13_x15 >= 1; v4_x13_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 057: 1 ~v4_x13_x15 >= 1
+line 058: red 1 v0_x13_x14 >= 1; v0_x13_x14 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 058: 1 v0_x13_x14 >= 1
+line 059: red 1 ~v3_x13_x14 >= 1; v3_x13_x14 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 059: 1 ~v3_x13_x14 >= 1
+line 060: red 1 y52 >= 1; y52 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 060: 1 y52 >= 1
+line 061: red 1 ~y53 >= 1; y53 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 061: 1 ~y53 >= 1
+line 062: red 1 y54 >= 1; y54 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 062: 1 y54 >= 1
+line 063: red 1 ~y55 >= 1; y55 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 063: 1 ~y55 >= 1
+line 064: * - Node clauses:
+line 065: red 1 ~x13 1 ~x14 3 v0_x13_x14 >= 3; v0_x13_x14 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x13 1 ~x14 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 064: 3 v0_x13_x14 1 ~x13 1 ~x14 >= 3
+line 066: red 1 x13 1 x14 1 ~v1_x13_x14 >= 1; v1_x13_x14 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x13 1 x14 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 065: 1 ~v1_x13_x14 1 x13 1 x14 >= 1
+line 067: red 1 ~x13 1 ~x14 2 v1_x13_x14 >= 2; v1_x13_x14 -> 1
+  ** proofgoals from formula **
+  proofgoal 065: 1 x13 1 x14 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x13 1 ~x14 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 066: 2 v1_x13_x14 1 ~x13 1 ~x14 >= 2
+line 068: red 1 x13 1 x14 2 ~v2_x13_x14 >= 2; v2_x13_x14 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x13 1 x14 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 067: 2 ~v2_x13_x14 1 x13 1 x14 >= 2
+line 069: red 1 ~x13 1 ~x14 1 v2_x13_x14 >= 1; v2_x13_x14 -> 1
+  ** proofgoals from formula **
+  proofgoal 067: 1 x13 1 x14 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x13 1 ~x14 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 068: 1 v2_x13_x14 1 ~x13 1 ~x14 >= 1
+line 070: red 1 x13 1 x14 3 ~v3_x13_x14 >= 3; v3_x13_x14 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x13 1 x14 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 069: 3 ~v3_x13_x14 1 x13 1 x14 >= 3
+line 071: * -------------------------------------------
+line 072: red 1 y58 >= 1; y58 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 070: 1 y58 >= 1
+line 073: red 1 ~y59 >= 1; y59 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 071: 1 ~y59 >= 1
+line 074: * - Node clauses:
+line 075: red 1 ~x13 1 ~x14 1 ~x15 4 v0_x13_x15 >= 4; v0_x13_x15 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 072: 4 v0_x13_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 076: red 1 x13 1 x14 1 x15 1 ~v1_x13_x15 >= 1; v1_x13_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 073: 1 ~v1_x13_x15 1 x13 1 x14 1 x15 >= 1
+line 077: red 1 ~x13 1 ~x14 1 ~x15 3 v1_x13_x15 >= 3; v1_x13_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 073: 1 x13 1 x14 1 x15 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 074: 3 v1_x13_x15 1 ~x13 1 ~x14 1 ~x15 >= 3
+line 078: red 1 x13 1 x14 1 x15 2 ~v2_x13_x15 >= 2; v2_x13_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 075: 2 ~v2_x13_x15 1 x13 1 x14 1 x15 >= 2
+line 079: red 1 ~x13 1 ~x14 1 ~x15 2 v2_x13_x15 >= 2; v2_x13_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 075: 1 x13 1 x14 1 x15 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 076: 2 v2_x13_x15 1 ~x13 1 ~x14 1 ~x15 >= 2
+line 080: red 1 x13 1 x14 1 x15 3 ~v3_x13_x15 >= 3; v3_x13_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 077: 3 ~v3_x13_x15 1 x13 1 x14 1 x15 >= 3
+line 081: red 1 ~x13 1 ~x14 1 ~x15 1 v3_x13_x15 >= 1; v3_x13_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 077: 1 x13 1 x14 1 x15 >= 3
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 078: 1 v3_x13_x15 1 ~x13 1 ~x14 1 ~x15 >= 1
+line 082: red 1 x13 1 x14 1 x15 4 ~v4_x13_x15 >= 4; v4_x13_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 079: 4 ~v4_x13_x15 1 x13 1 x14 1 x15 >= 4
+line 083: * -------------------------------------------
+line 084: * - Node clauses:
+line 085: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 8 v0_x9_x15 >= 8; v0_x9_x15 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 080: 8 v0_x9_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 086: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 ~v1_x9_x15 >= 1; v1_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 081: 1 ~v1_x9_x15 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 1
+line 087: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 7 v1_x9_x15 >= 7; v1_x9_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 081: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 082: 7 v1_x9_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 7
+line 088: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 2 ~v2_x9_x15 >= 2; v2_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 083: 2 ~v2_x9_x15 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 2
+line 089: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 6 v2_x9_x15 >= 6; v2_x9_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 083: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 084: 6 v2_x9_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 6
+line 090: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 3 ~v3_x9_x15 >= 3; v3_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 085: 3 ~v3_x9_x15 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 3
+line 091: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 5 v3_x9_x15 >= 5; v3_x9_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 085: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 3
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 086: 5 v3_x9_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 5
+line 092: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 4 ~v4_x9_x15 >= 4; v4_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 087: 4 ~v4_x9_x15 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 4
+line 093: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 4 v4_x9_x15 >= 4; v4_x9_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 087: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 4
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 088: 4 v4_x9_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 094: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 5 ~v5_x9_x15 >= 5; v5_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 089: 5 ~v5_x9_x15 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 5
+line 095: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 3 v5_x9_x15 >= 3; v5_x9_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 089: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 5
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 090: 3 v5_x9_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 3
+line 096: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 6 ~v6_x9_x15 >= 6; v6_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 091: 6 ~v6_x9_x15 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 6
+line 097: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 2 v6_x9_x15 >= 2; v6_x9_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 091: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 6
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 092: 2 v6_x9_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 2
+line 098: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 7 ~v7_x9_x15 >= 7; v7_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 093: 7 ~v7_x9_x15 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 7
+line 099: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 v7_x9_x15 >= 1; v7_x9_x15 -> 1
+  ** proofgoals from formula **
+  proofgoal 093: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 7
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 094: 1 v7_x9_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 1
+line 100: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 8 ~v8_x9_x15 >= 8; v8_x9_x15 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 095: 8 ~v8_x9_x15 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 8
+line 101: * -------------------------------------------
+line 102: red 1 v0_x16_x20 >= 1; v0_x16_x20 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 096: 1 v0_x16_x20 >= 1
+line 103: red 1 ~v6_x16_x20 >= 1; v6_x16_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 097: 1 ~v6_x16_x20 >= 1
+line 104: red 1 v0_x16_x18 >= 1; v0_x16_x18 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 098: 1 v0_x16_x18 >= 1
+line 105: red 1 ~v4_x16_x18 >= 1; v4_x16_x18 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 099: 1 ~v4_x16_x18 >= 1
+line 106: red 1 v0_x16_x17 >= 1; v0_x16_x17 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 100: 1 v0_x16_x17 >= 1
+line 107: red 1 ~v3_x16_x17 >= 1; v3_x16_x17 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 101: 1 ~v3_x16_x17 >= 1
+line 108: red 1 y76 >= 1; y76 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 102: 1 y76 >= 1
+line 109: red 1 ~y77 >= 1; y77 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 103: 1 ~y77 >= 1
+line 110: red 1 y78 >= 1; y78 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 104: 1 y78 >= 1
+line 111: red 1 ~y79 >= 1; y79 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 105: 1 ~y79 >= 1
+line 112: * - Node clauses:
+line 113: red 1 ~x16 1 ~x17 3 v0_x16_x17 >= 3; v0_x16_x17 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 106: 3 v0_x16_x17 1 ~x16 1 ~x17 >= 3
+line 114: red 1 x16 1 x17 1 ~v1_x16_x17 >= 1; v1_x16_x17 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 107: 1 ~v1_x16_x17 1 x16 1 x17 >= 1
+line 115: red 1 ~x16 1 ~x17 2 v1_x16_x17 >= 2; v1_x16_x17 -> 1
+  ** proofgoals from formula **
+  proofgoal 107: 1 x16 1 x17 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 108: 2 v1_x16_x17 1 ~x16 1 ~x17 >= 2
+line 116: red 1 x16 1 x17 2 ~v2_x16_x17 >= 2; v2_x16_x17 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 109: 2 ~v2_x16_x17 1 x16 1 x17 >= 2
+line 117: red 1 ~x16 1 ~x17 1 v2_x16_x17 >= 1; v2_x16_x17 -> 1
+  ** proofgoals from formula **
+  proofgoal 109: 1 x16 1 x17 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 110: 1 v2_x16_x17 1 ~x16 1 ~x17 >= 1
+line 118: red 1 x16 1 x17 3 ~v3_x16_x17 >= 3; v3_x16_x17 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 111: 3 ~v3_x16_x17 1 x16 1 x17 >= 3
+line 119: * -------------------------------------------
+line 120: red 1 y82 >= 1; y82 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 112: 1 y82 >= 1
+line 121: red 1 ~y83 >= 1; y83 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 113: 1 ~y83 >= 1
+line 122: * - Node clauses:
+line 123: red 1 ~x16 1 ~x17 1 ~x18 4 v0_x16_x18 >= 4; v0_x16_x18 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 114: 4 v0_x16_x18 1 ~x16 1 ~x17 1 ~x18 >= 4
+line 124: red 1 x16 1 x17 1 x18 1 ~v1_x16_x18 >= 1; v1_x16_x18 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 115: 1 ~v1_x16_x18 1 x16 1 x17 1 x18 >= 1
+line 125: red 1 ~x16 1 ~x17 1 ~x18 3 v1_x16_x18 >= 3; v1_x16_x18 -> 1
+  ** proofgoals from formula **
+  proofgoal 115: 1 x16 1 x17 1 x18 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 116: 3 v1_x16_x18 1 ~x16 1 ~x17 1 ~x18 >= 3
+line 126: red 1 x16 1 x17 1 x18 2 ~v2_x16_x18 >= 2; v2_x16_x18 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 117: 2 ~v2_x16_x18 1 x16 1 x17 1 x18 >= 2
+line 127: red 1 ~x16 1 ~x17 1 ~x18 2 v2_x16_x18 >= 2; v2_x16_x18 -> 1
+  ** proofgoals from formula **
+  proofgoal 117: 1 x16 1 x17 1 x18 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 118: 2 v2_x16_x18 1 ~x16 1 ~x17 1 ~x18 >= 2
+line 128: red 1 x16 1 x17 1 x18 3 ~v3_x16_x18 >= 3; v3_x16_x18 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 119: 3 ~v3_x16_x18 1 x16 1 x17 1 x18 >= 3
+line 129: red 1 ~x16 1 ~x17 1 ~x18 1 v3_x16_x18 >= 1; v3_x16_x18 -> 1
+  ** proofgoals from formula **
+  proofgoal 119: 1 x16 1 x17 1 x18 >= 3
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 120: 1 v3_x16_x18 1 ~x16 1 ~x17 1 ~x18 >= 1
+line 130: red 1 x16 1 x17 1 x18 4 ~v4_x16_x18 >= 4; v4_x16_x18 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 121: 4 ~v4_x16_x18 1 x16 1 x17 1 x18 >= 4
+line 131: * -------------------------------------------
+line 132: red 1 v0_x19_x20 >= 1; v0_x19_x20 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 122: 1 v0_x19_x20 >= 1
+line 133: red 1 ~v3_x19_x20 >= 1; v3_x19_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 123: 1 ~v3_x19_x20 >= 1
+line 134: red 1 y89 >= 1; y89 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 124: 1 y89 >= 1
+line 135: red 1 ~y90 >= 1; y90 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 125: 1 ~y90 >= 1
+line 136: red 1 y91 >= 1; y91 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 126: 1 y91 >= 1
+line 137: red 1 ~y92 >= 1; y92 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 127: 1 ~y92 >= 1
+line 138: * - Node clauses:
+line 139: red 1 ~x19 1 ~x20 3 v0_x19_x20 >= 3; v0_x19_x20 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 128: 3 v0_x19_x20 1 ~x19 1 ~x20 >= 3
+line 140: red 1 x19 1 x20 1 ~v1_x19_x20 >= 1; v1_x19_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 129: 1 ~v1_x19_x20 1 x19 1 x20 >= 1
+line 141: red 1 ~x19 1 ~x20 2 v1_x19_x20 >= 2; v1_x19_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 129: 1 x19 1 x20 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 130: 2 v1_x19_x20 1 ~x19 1 ~x20 >= 2
+line 142: red 1 x19 1 x20 2 ~v2_x19_x20 >= 2; v2_x19_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 131: 2 ~v2_x19_x20 1 x19 1 x20 >= 2
+line 143: red 1 ~x19 1 ~x20 1 v2_x19_x20 >= 1; v2_x19_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 131: 1 x19 1 x20 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 132: 1 v2_x19_x20 1 ~x19 1 ~x20 >= 1
+line 144: red 1 x19 1 x20 3 ~v3_x19_x20 >= 3; v3_x19_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 133: 3 ~v3_x19_x20 1 x19 1 x20 >= 3
+line 145: * -------------------------------------------
+line 146: * - Node clauses:
+line 147: red 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 6 v0_x16_x20 >= 6; v0_x16_x20 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 134: 6 v0_x16_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 148: red 1 x16 1 x17 1 x18 1 x19 1 x20 1 ~v1_x16_x20 >= 1; v1_x16_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 135: 1 ~v1_x16_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 149: red 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 5 v1_x16_x20 >= 5; v1_x16_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 135: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 136: 5 v1_x16_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 150: red 1 x16 1 x17 1 x18 1 x19 1 x20 2 ~v2_x16_x20 >= 2; v2_x16_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 137: 2 ~v2_x16_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 151: red 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 4 v2_x16_x20 >= 4; v2_x16_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 137: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 138: 4 v2_x16_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 152: red 1 x16 1 x17 1 x18 1 x19 1 x20 3 ~v3_x16_x20 >= 3; v3_x16_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 139: 3 ~v3_x16_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 153: red 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 3 v3_x16_x20 >= 3; v3_x16_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 139: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 140: 3 v3_x16_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 154: red 1 x16 1 x17 1 x18 1 x19 1 x20 4 ~v4_x16_x20 >= 4; v4_x16_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 141: 4 ~v4_x16_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 155: red 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 2 v4_x16_x20 >= 2; v4_x16_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 141: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 142: 2 v4_x16_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 156: red 1 x16 1 x17 1 x18 1 x19 1 x20 5 ~v5_x16_x20 >= 5; v5_x16_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 143: 5 ~v5_x16_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 157: red 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 1 v5_x16_x20 >= 1; v5_x16_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 143: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 144: 1 v5_x16_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 158: red 1 x16 1 x17 1 x18 1 x19 1 x20 6 ~v6_x16_x20 >= 6; v6_x16_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 145: 6 ~v6_x16_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 159: * -------------------------------------------
+line 160: * - Node clauses:
+line 161: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 13 v0_x9_x20 >= 13; v0_x9_x20 -> 1
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 146: 13 v0_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 13
+line 162: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 1 ~v1_x9_x20 >= 1; v1_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 147: 1 ~v1_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 163: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 12 v1_x9_x20 >= 12; v1_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 147: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 148: 12 v1_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 12
+line 164: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 2 ~v2_x9_x20 >= 2; v2_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 149: 2 ~v2_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 165: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 11 v2_x9_x20 >= 11; v2_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 149: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 150: 11 v2_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 11
+line 166: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 3 ~v3_x9_x20 >= 3; v3_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 151: 3 ~v3_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 167: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 10 v3_x9_x20 >= 10; v3_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 151: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 152: 10 v3_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 10
+line 168: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 4 ~v4_x9_x20 >= 4; v4_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 153: 4 ~v4_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 169: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 9 v4_x9_x20 >= 9; v4_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 153: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 154: 9 v4_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 9
+line 170: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 5 ~v5_x9_x20 >= 5; v5_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 155: 5 ~v5_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 171: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 8 v5_x9_x20 >= 8; v5_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 155: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 156: 8 v5_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 8
+line 172: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 6 ~v6_x9_x20 >= 6; v6_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 157: 6 ~v6_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 173: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 7 v6_x9_x20 >= 7; v6_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 157: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 158: 7 v6_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 7
+line 174: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 7 ~v7_x9_x20 >= 7; v7_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 159: 7 ~v7_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 7
+line 175: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 6 v7_x9_x20 >= 6; v7_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 159: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 7
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 160: 6 v7_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 176: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 8 ~v8_x9_x20 >= 8; v8_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 161: 8 ~v8_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 8
+line 177: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 5 v8_x9_x20 >= 5; v8_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 161: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 8
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 162: 5 v8_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 178: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 9 ~v9_x9_x20 >= 9; v9_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 163: 9 ~v9_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 9
+line 179: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 4 v9_x9_x20 >= 4; v9_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 163: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 9
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 164: 4 v9_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 180: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 10 ~v10_x9_x20 >= 10; v10_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 165: 10 ~v10_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 10
+line 181: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 3 v10_x9_x20 >= 3; v10_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 165: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 10
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 166: 3 v10_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 182: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 11 ~v11_x9_x20 >= 11; v11_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 167: 11 ~v11_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 11
+line 183: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 2 v11_x9_x20 >= 2; v11_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 167: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 11
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 168: 2 v11_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 184: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 12 ~v12_x9_x20 >= 12; v12_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 169: 12 ~v12_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 12
+line 185: red 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 1 v12_x9_x20 >= 1; v12_x9_x20 -> 1
+  ** proofgoals from formula **
+  proofgoal 169: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 12
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+  ConstraintId 170: 1 v12_x9_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 186: red 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 13 ~v13_x9_x20 >= 13; v13_x9_x20 -> 0
+  ** proofgoals from formula **
+  ** proofgoal from satisfying added constraint **
+  proofgoal #1: 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 0
+  ** proofgoals from order **
+  ** proofgoals from objective **
+  proofgoal #2: >= 0
+    automatically proved #1, constraint is trivial.
+    automatically proved #2, constraint is trivial.
+  ConstraintId 171: 13 ~v13_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 1 x16 1 x17 1 x18 1 x19 1 x20 >= 13
+line 187: * -------------------------------------------
+line 188: * ==============================================================
+line 189: * Cardinality derivation:
+line 190: u 1 ~y31 1 ~y33 1 v0_x9_x10  >= 1;
+  ConstraintId 172: 1 v0_x9_x10 1 ~y31 1 ~y33 >= 1
+line 191: u 1 x9 1 x10 1 ~v1_x9_x10  >= 1;
+  ConstraintId 173: 1 ~v1_x9_x10 1 x9 1 x10 >= 1
+line 192: u 1 ~y31 1 ~x10 1 v1_x9_x10  >= 1;
+  ConstraintId 174: 1 v1_x9_x10 1 ~x10 1 ~y31 >= 1
+line 193: u 1 x9 1 y34 1 ~v2_x9_x10  >= 1;
+  ConstraintId 175: 1 ~v2_x9_x10 1 x9 1 y34 >= 1
+line 194: u 1 ~x9 1 ~y33 1 v1_x9_x10  >= 1;
+  ConstraintId 176: 1 v1_x9_x10 1 ~x9 1 ~y33 >= 1
+line 195: u 1 y32 1 x10 1 ~v2_x9_x10  >= 1;
+  ConstraintId 177: 1 ~v2_x9_x10 1 x10 1 y32 >= 1
+line 196: u 1 ~x9 1 ~x10 1 v2_x9_x10  >= 1;
+  ConstraintId 178: 1 v2_x9_x10 1 ~x9 1 ~x10 >= 1
+line 197: u 1 y32 1 y34 1 ~v3_x9_x10  >= 1;
+  ConstraintId 179: 1 ~v3_x9_x10 1 y32 1 y34 >= 1
+line 198: u 1 ~v0_x9_x10 1 ~y37 1 v0_x9_x11  >= 1;
+  ConstraintId 180: 1 ~v0_x9_x10 1 v0_x9_x11 1 ~y37 >= 1
+line 199: p 37 30 +
+  ConstraintId 181: 2 v1_x9_x10 1 ~v1_x9_x11 1 x11 >= 1
+line 200: p 181 2 d s
+  ConstraintId 182: 1 v1_x9_x10 1 ~v1_x9_x11 1 x11 >= 1
+line 201: u 1 v1_x9_x10 1 x11 1 ~v1_x9_x11  >= 1;
+  ConstraintId 183: 1 v1_x9_x10 1 ~v1_x9_x11 1 x11 >= 1
+line 202: u 1 ~v0_x9_x10 1 ~x11 1 v1_x9_x11  >= 1;
+  ConstraintId 184: 1 ~v0_x9_x10 1 v1_x9_x11 1 ~x11 >= 1
+line 203: p 39 30 +
+  ConstraintId 185: 2 v1_x9_x10 2 ~v2_x9_x11 1 x11 >= 2
+line 204: p 185 2 d s
+  ConstraintId 186: 1 v1_x9_x10 1 ~v2_x9_x11 1 x11 >= 1
+line 205: u 1 v1_x9_x10 1 y38 1 ~v2_x9_x11  >= 1;
+  ConstraintId 187: 1 v1_x9_x10 1 ~v2_x9_x11 1 y38 >= 1
+line 206: p 38 29 +
+  ConstraintId 188: 1 ~v1_x9_x10 3 v1_x9_x11 1 ~x11 >= 2
+line 207: p 188 s
+  ConstraintId 189: 1 ~v1_x9_x10 2 v1_x9_x11 1 ~x11 >= 2
+line 208: u 1 ~v1_x9_x10 1 ~y37 1 v1_x9_x11  >= 1;
+  ConstraintId 190: 1 ~v1_x9_x10 1 v1_x9_x11 1 ~y37 >= 1
+line 209: p 39 32 +
+  ConstraintId 191: 1 v2_x9_x10 2 ~v2_x9_x11 1 x11 >= 1
+line 210: p 191 2 d s
+  ConstraintId 192: 1 v2_x9_x10 1 ~v2_x9_x11 1 x11 >= 1
+line 211: u 1 v2_x9_x10 1 x11 1 ~v2_x9_x11  >= 1;
+  ConstraintId 193: 1 v2_x9_x10 1 ~v2_x9_x11 1 x11 >= 1
+line 212: p 40 29 +
+  ConstraintId 194: 1 ~v1_x9_x10 2 v2_x9_x11 1 ~x11 >= 1
+line 213: p 194 s
+  ConstraintId 195: 1 ~v1_x9_x10 1 v2_x9_x11 1 ~x11 >= 1
+line 214: u 1 ~v1_x9_x10 1 ~x11 1 v2_x9_x11  >= 1;
+  ConstraintId 196: 1 ~v1_x9_x10 1 v2_x9_x11 1 ~x11 >= 1
+line 215: p 41 32 +
+  ConstraintId 197: 1 v2_x9_x10 3 ~v3_x9_x11 1 x11 >= 2
+line 216: p 197 2 d s
+  ConstraintId 198: 1 v2_x9_x10 1 ~v3_x9_x11 1 x11 >= 1
+line 217: u 1 v2_x9_x10 1 y38 1 ~v3_x9_x11  >= 1;
+  ConstraintId 199: 1 v2_x9_x10 1 ~v3_x9_x11 1 y38 >= 1
+line 218: p 40 31 +
+  ConstraintId 200: 2 ~v2_x9_x10 2 v2_x9_x11 1 ~x11 >= 2
+line 219: p 200 s
+  ConstraintId 201: 2 ~v2_x9_x10 2 v2_x9_x11 1 ~x11 >= 2
+line 220: u 1 ~v2_x9_x10 1 ~y37 1 v2_x9_x11  >= 1;
+  ConstraintId 202: 1 ~v2_x9_x10 1 v2_x9_x11 1 ~y37 >= 1
+line 221: u 1 v3_x9_x10 1 x11 1 ~v3_x9_x11  >= 1;
+  ConstraintId 203: 1 v3_x9_x10 1 ~v3_x9_x11 1 x11 >= 1
+line 222: p 42 31 +
+  ConstraintId 204: 2 ~v2_x9_x10 1 v3_x9_x11 1 ~x11 >= 1
+line 223: p 204 s
+  ConstraintId 205: 1 ~v2_x9_x10 1 v3_x9_x11 1 ~x11 >= 1
+line 224: u 1 ~v2_x9_x10 1 ~x11 1 v3_x9_x11  >= 1;
+  ConstraintId 206: 1 ~v2_x9_x10 1 v3_x9_x11 1 ~x11 >= 1
+line 225: u 1 v3_x9_x10 1 y38 1 ~v4_x9_x11  >= 1;
+  ConstraintId 207: 1 v3_x9_x10 1 ~v4_x9_x11 1 y38 >= 1
+line 226: u 1 ~v0_x9_x11 1 ~y42 1 v0_x9_x12  >= 1;
+  ConstraintId 208: 1 ~v0_x9_x11 1 v0_x9_x12 1 ~y42 >= 1
+line 227: p 47 38 +
+  ConstraintId 209: 3 v1_x9_x11 1 ~v1_x9_x12 1 x12 >= 1
+line 228: p 209 2 d s
+  ConstraintId 210: 1 v1_x9_x11 1 ~v1_x9_x12 1 x12 >= 1
+line 229: u 1 v1_x9_x11 1 x12 1 ~v1_x9_x12  >= 1;
+  ConstraintId 211: 1 v1_x9_x11 1 ~v1_x9_x12 1 x12 >= 1
+line 230: u 1 ~v0_x9_x11 1 ~x12 1 v1_x9_x12  >= 1;
+  ConstraintId 212: 1 ~v0_x9_x11 1 v1_x9_x12 1 ~x12 >= 1
+line 231: p 49 38 +
+  ConstraintId 213: 3 v1_x9_x11 2 ~v2_x9_x12 1 x12 >= 2
+line 232: p 213 2 d s
+  ConstraintId 214: 1 v1_x9_x11 1 ~v2_x9_x12 1 x12 >= 1
+line 233: u 1 v1_x9_x11 1 y43 1 ~v2_x9_x12  >= 1;
+  ConstraintId 215: 1 v1_x9_x11 1 ~v2_x9_x12 1 y43 >= 1
+line 234: p 48 37 +
+  ConstraintId 216: 1 ~v1_x9_x11 4 v1_x9_x12 1 ~x12 >= 2
+line 235: p 216 s
+  ConstraintId 217: 1 ~v1_x9_x11 2 v1_x9_x12 1 ~x12 >= 2
+line 236: u 1 ~v1_x9_x11 1 ~y42 1 v1_x9_x12  >= 1;
+  ConstraintId 218: 1 ~v1_x9_x11 1 v1_x9_x12 1 ~y42 >= 1
+line 237: p 49 40 +
+  ConstraintId 219: 2 v2_x9_x11 2 ~v2_x9_x12 1 x12 >= 1
+line 238: p 219 2 d s
+  ConstraintId 220: 1 v2_x9_x11 1 ~v2_x9_x12 1 x12 >= 1
+line 239: u 1 v2_x9_x11 1 x12 1 ~v2_x9_x12  >= 1;
+  ConstraintId 221: 1 v2_x9_x11 1 ~v2_x9_x12 1 x12 >= 1
+line 240: p 50 37 +
+  ConstraintId 222: 1 ~v1_x9_x11 3 v2_x9_x12 1 ~x12 >= 1
+line 241: p 222 s
+  ConstraintId 223: 1 ~v1_x9_x11 1 v2_x9_x12 1 ~x12 >= 1
+line 242: u 1 ~v1_x9_x11 1 ~x12 1 v2_x9_x12  >= 1;
+  ConstraintId 224: 1 ~v1_x9_x11 1 v2_x9_x12 1 ~x12 >= 1
+line 243: p 51 40 +
+  ConstraintId 225: 2 v2_x9_x11 3 ~v3_x9_x12 1 x12 >= 2
+line 244: p 225 2 d s
+  ConstraintId 226: 1 v2_x9_x11 1 ~v3_x9_x12 1 x12 >= 1
+line 245: u 1 v2_x9_x11 1 y43 1 ~v3_x9_x12  >= 1;
+  ConstraintId 227: 1 v2_x9_x11 1 ~v3_x9_x12 1 y43 >= 1
+line 246: p 50 39 +
+  ConstraintId 228: 2 ~v2_x9_x11 3 v2_x9_x12 1 ~x12 >= 2
+line 247: p 228 s
+  ConstraintId 229: 2 ~v2_x9_x11 2 v2_x9_x12 1 ~x12 >= 2
+line 248: u 1 ~v2_x9_x11 1 ~y42 1 v2_x9_x12  >= 1;
+  ConstraintId 230: 1 ~v2_x9_x11 1 v2_x9_x12 1 ~y42 >= 1
+line 249: p 51 42 +
+  ConstraintId 231: 1 v3_x9_x11 3 ~v3_x9_x12 1 x12 >= 1
+line 250: p 231 2 d s
+  ConstraintId 232: 1 v3_x9_x11 1 ~v3_x9_x12 1 x12 >= 1
+line 251: u 1 v3_x9_x11 1 x12 1 ~v3_x9_x12  >= 1;
+  ConstraintId 233: 1 v3_x9_x11 1 ~v3_x9_x12 1 x12 >= 1
+line 252: p 52 39 +
+  ConstraintId 234: 2 ~v2_x9_x11 2 v3_x9_x12 1 ~x12 >= 1
+line 253: p 234 s
+  ConstraintId 235: 1 ~v2_x9_x11 1 v3_x9_x12 1 ~x12 >= 1
+line 254: u 1 ~v2_x9_x11 1 ~x12 1 v3_x9_x12  >= 1;
+  ConstraintId 236: 1 ~v2_x9_x11 1 v3_x9_x12 1 ~x12 >= 1
+line 255: p 53 42 +
+  ConstraintId 237: 1 v3_x9_x11 4 ~v4_x9_x12 1 x12 >= 2
+line 256: p 237 2 d s
+  ConstraintId 238: 1 v3_x9_x11 1 ~v4_x9_x12 1 x12 >= 1
+line 257: u 1 v3_x9_x11 1 y43 1 ~v4_x9_x12  >= 1;
+  ConstraintId 239: 1 v3_x9_x11 1 ~v4_x9_x12 1 y43 >= 1
+line 258: p 52 41 +
+  ConstraintId 240: 3 ~v3_x9_x11 2 v3_x9_x12 1 ~x12 >= 2
+line 259: p 240 s
+  ConstraintId 241: 2 ~v3_x9_x11 2 v3_x9_x12 1 ~x12 >= 2
+line 260: u 1 ~v3_x9_x11 1 ~y42 1 v3_x9_x12  >= 1;
+  ConstraintId 242: 1 ~v3_x9_x11 1 v3_x9_x12 1 ~y42 >= 1
+line 261: u 1 v4_x9_x11 1 x12 1 ~v4_x9_x12  >= 1;
+  ConstraintId 243: 1 v4_x9_x11 1 ~v4_x9_x12 1 x12 >= 1
+line 262: p 54 41 +
+  ConstraintId 244: 3 ~v3_x9_x11 1 v4_x9_x12 1 ~x12 >= 1
+line 263: p 244 s
+  ConstraintId 245: 1 ~v3_x9_x11 1 v4_x9_x12 1 ~x12 >= 1
+line 264: u 1 ~v3_x9_x11 1 ~x12 1 v4_x9_x12  >= 1;
+  ConstraintId 246: 1 ~v3_x9_x11 1 v4_x9_x12 1 ~x12 >= 1
+line 265: u 1 v4_x9_x11 1 y43 1 ~v5_x9_x12  >= 1;
+  ConstraintId 247: 1 v4_x9_x11 1 ~v5_x9_x12 1 y43 >= 1
+line 266: u 1 ~y52 1 ~y54 1 v0_x13_x14  >= 1;
+  ConstraintId 248: 1 v0_x13_x14 1 ~y52 1 ~y54 >= 1
+line 267: u 1 x13 1 x14 1 ~v1_x13_x14  >= 1;
+  ConstraintId 249: 1 ~v1_x13_x14 1 x13 1 x14 >= 1
+line 268: u 1 ~y52 1 ~x14 1 v1_x13_x14  >= 1;
+  ConstraintId 250: 1 v1_x13_x14 1 ~x14 1 ~y52 >= 1
+line 269: u 1 x13 1 y55 1 ~v2_x13_x14  >= 1;
+  ConstraintId 251: 1 ~v2_x13_x14 1 x13 1 y55 >= 1
+line 270: u 1 ~x13 1 ~y54 1 v1_x13_x14  >= 1;
+  ConstraintId 252: 1 v1_x13_x14 1 ~x13 1 ~y54 >= 1
+line 271: u 1 y53 1 x14 1 ~v2_x13_x14  >= 1;
+  ConstraintId 253: 1 ~v2_x13_x14 1 x14 1 y53 >= 1
+line 272: u 1 ~x13 1 ~x14 1 v2_x13_x14  >= 1;
+  ConstraintId 254: 1 v2_x13_x14 1 ~x13 1 ~x14 >= 1
+line 273: u 1 y53 1 y55 1 ~v3_x13_x14  >= 1;
+  ConstraintId 255: 1 ~v3_x13_x14 1 y53 1 y55 >= 1
+line 274: u 1 ~v0_x13_x14 1 ~y58 1 v0_x13_x15  >= 1;
+  ConstraintId 256: 1 ~v0_x13_x14 1 v0_x13_x15 1 ~y58 >= 1
+line 275: p 73 66 +
+  ConstraintId 257: 2 v1_x13_x14 1 ~v1_x13_x15 1 x15 >= 1
+line 276: p 257 2 d s
+  ConstraintId 258: 1 v1_x13_x14 1 ~v1_x13_x15 1 x15 >= 1
+line 277: u 1 v1_x13_x14 1 x15 1 ~v1_x13_x15  >= 1;
+  ConstraintId 259: 1 v1_x13_x14 1 ~v1_x13_x15 1 x15 >= 1
+line 278: u 1 ~v0_x13_x14 1 ~x15 1 v1_x13_x15  >= 1;
+  ConstraintId 260: 1 ~v0_x13_x14 1 v1_x13_x15 1 ~x15 >= 1
+line 279: p 75 66 +
+  ConstraintId 261: 2 v1_x13_x14 2 ~v2_x13_x15 1 x15 >= 2
+line 280: p 261 2 d s
+  ConstraintId 262: 1 v1_x13_x14 1 ~v2_x13_x15 1 x15 >= 1
+line 281: u 1 v1_x13_x14 1 y59 1 ~v2_x13_x15  >= 1;
+  ConstraintId 263: 1 v1_x13_x14 1 ~v2_x13_x15 1 y59 >= 1
+line 282: p 74 65 +
+  ConstraintId 264: 1 ~v1_x13_x14 3 v1_x13_x15 1 ~x15 >= 2
+line 283: p 264 s
+  ConstraintId 265: 1 ~v1_x13_x14 2 v1_x13_x15 1 ~x15 >= 2
+line 284: u 1 ~v1_x13_x14 1 ~y58 1 v1_x13_x15  >= 1;
+  ConstraintId 266: 1 ~v1_x13_x14 1 v1_x13_x15 1 ~y58 >= 1
+line 285: p 75 68 +
+  ConstraintId 267: 1 v2_x13_x14 2 ~v2_x13_x15 1 x15 >= 1
+line 286: p 267 2 d s
+  ConstraintId 268: 1 v2_x13_x14 1 ~v2_x13_x15 1 x15 >= 1
+line 287: u 1 v2_x13_x14 1 x15 1 ~v2_x13_x15  >= 1;
+  ConstraintId 269: 1 v2_x13_x14 1 ~v2_x13_x15 1 x15 >= 1
+line 288: p 76 65 +
+  ConstraintId 270: 1 ~v1_x13_x14 2 v2_x13_x15 1 ~x15 >= 1
+line 289: p 270 s
+  ConstraintId 271: 1 ~v1_x13_x14 1 v2_x13_x15 1 ~x15 >= 1
+line 290: u 1 ~v1_x13_x14 1 ~x15 1 v2_x13_x15  >= 1;
+  ConstraintId 272: 1 ~v1_x13_x14 1 v2_x13_x15 1 ~x15 >= 1
+line 291: p 77 68 +
+  ConstraintId 273: 1 v2_x13_x14 3 ~v3_x13_x15 1 x15 >= 2
+line 292: p 273 2 d s
+  ConstraintId 274: 1 v2_x13_x14 1 ~v3_x13_x15 1 x15 >= 1
+line 293: u 1 v2_x13_x14 1 y59 1 ~v3_x13_x15  >= 1;
+  ConstraintId 275: 1 v2_x13_x14 1 ~v3_x13_x15 1 y59 >= 1
+line 294: p 76 67 +
+  ConstraintId 276: 2 ~v2_x13_x14 2 v2_x13_x15 1 ~x15 >= 2
+line 295: p 276 s
+  ConstraintId 277: 2 ~v2_x13_x14 2 v2_x13_x15 1 ~x15 >= 2
+line 296: u 1 ~v2_x13_x14 1 ~y58 1 v2_x13_x15  >= 1;
+  ConstraintId 278: 1 ~v2_x13_x14 1 v2_x13_x15 1 ~y58 >= 1
+line 297: u 1 v3_x13_x14 1 x15 1 ~v3_x13_x15  >= 1;
+  ConstraintId 279: 1 v3_x13_x14 1 ~v3_x13_x15 1 x15 >= 1
+line 298: p 78 67 +
+  ConstraintId 280: 2 ~v2_x13_x14 1 v3_x13_x15 1 ~x15 >= 1
+line 299: p 280 s
+  ConstraintId 281: 1 ~v2_x13_x14 1 v3_x13_x15 1 ~x15 >= 1
+line 300: u 1 ~v2_x13_x14 1 ~x15 1 v3_x13_x15  >= 1;
+  ConstraintId 282: 1 ~v2_x13_x14 1 v3_x13_x15 1 ~x15 >= 1
+line 301: u 1 v3_x13_x14 1 y59 1 ~v4_x13_x15  >= 1;
+  ConstraintId 283: 1 v3_x13_x14 1 ~v4_x13_x15 1 y59 >= 1
+line 302: u 1 ~v0_x9_x12 1 ~v0_x13_x15 1 v0_x9_x15  >= 1;
+  ConstraintId 284: 1 ~v0_x9_x12 1 v0_x9_x15 1 ~v0_x13_x15 >= 1
+line 303: p 81 48 +
+  ConstraintId 285: 4 v1_x9_x12 1 ~v1_x9_x15 1 x13 1 x14 1 x15 >= 1
+line 304: p 285 74 +
+  ConstraintId 286: 4 v1_x9_x12 1 ~v1_x9_x15 3 v1_x13_x15 >= 1
+line 305: p 286 2 d s
+  ConstraintId 287: 1 v1_x9_x12 1 ~v1_x9_x15 1 v1_x13_x15 >= 1
+line 306: u 1 v1_x9_x12 1 v1_x13_x15 1 ~v1_x9_x15  >= 1;
+  ConstraintId 288: 1 v1_x9_x12 1 ~v1_x9_x15 1 v1_x13_x15 >= 1
+line 307: p 82 73 +
+  ConstraintId 289: 7 v1_x9_x15 1 ~v1_x13_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 5
+line 308: p 289 s
+  ConstraintId 290: 5 v1_x9_x15 1 ~v1_x13_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 5
+line 309: u 1 ~v0_x9_x12 1 ~v1_x13_x15 1 v1_x9_x15  >= 1;
+  ConstraintId 291: 1 ~v0_x9_x12 1 v1_x9_x15 1 ~v1_x13_x15 >= 1
+line 310: p 83 48 +
+  ConstraintId 292: 4 v1_x9_x12 2 ~v2_x9_x15 1 x13 1 x14 1 x15 >= 2
+line 311: p 292 76 +
+  ConstraintId 293: 4 v1_x9_x12 2 ~v2_x9_x15 2 v2_x13_x15 >= 1
+line 312: p 293 2 d s
+  ConstraintId 294: 1 v1_x9_x12 1 ~v2_x9_x15 1 v2_x13_x15 >= 1
+line 313: u 1 v1_x9_x12 1 v2_x13_x15 1 ~v2_x9_x15  >= 1;
+  ConstraintId 295: 1 v1_x9_x12 1 ~v2_x9_x15 1 v2_x13_x15 >= 1
+line 314: p 82 47 +
+  ConstraintId 296: 1 ~v1_x9_x12 7 v1_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 315: p 296 s
+  ConstraintId 297: 1 ~v1_x9_x12 4 v1_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 316: u 1 ~v1_x9_x12 1 ~v0_x13_x15 1 v1_x9_x15  >= 1;
+  ConstraintId 298: 1 ~v0_x13_x15 1 ~v1_x9_x12 1 v1_x9_x15 >= 1
+line 317: p 83 50 +
+  ConstraintId 299: 3 v2_x9_x12 2 ~v2_x9_x15 1 x13 1 x14 1 x15 >= 1
+line 318: p 299 74 +
+  ConstraintId 300: 3 v1_x13_x15 3 v2_x9_x12 2 ~v2_x9_x15 >= 1
+line 319: p 300 2 d s
+  ConstraintId 301: 1 v1_x13_x15 1 v2_x9_x12 1 ~v2_x9_x15 >= 1
+line 320: u 1 v2_x9_x12 1 v1_x13_x15 1 ~v2_x9_x15  >= 1;
+  ConstraintId 302: 1 v1_x13_x15 1 v2_x9_x12 1 ~v2_x9_x15 >= 1
+line 321: p 84 75 +
+  ConstraintId 303: 6 v2_x9_x15 2 ~v2_x13_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 5
+line 322: p 303 s
+  ConstraintId 304: 5 v2_x9_x15 2 ~v2_x13_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 5
+line 323: u 1 ~v0_x9_x12 1 ~v2_x13_x15 1 v2_x9_x15  >= 1;
+  ConstraintId 305: 1 ~v0_x9_x12 1 v2_x9_x15 1 ~v2_x13_x15 >= 1
+line 324: p 85 48 +
+  ConstraintId 306: 4 v1_x9_x12 3 ~v3_x9_x15 1 x13 1 x14 1 x15 >= 3
+line 325: p 306 78 +
+  ConstraintId 307: 4 v1_x9_x12 3 ~v3_x9_x15 1 v3_x13_x15 >= 1
+line 326: p 307 2 d s
+  ConstraintId 308: 1 v1_x9_x12 1 ~v3_x9_x15 1 v3_x13_x15 >= 1
+line 327: u 1 v1_x9_x12 1 v3_x13_x15 1 ~v3_x9_x15  >= 1;
+  ConstraintId 309: 1 v1_x9_x12 1 ~v3_x9_x15 1 v3_x13_x15 >= 1
+line 328: p 84 47 +
+  ConstraintId 310: 1 ~v1_x9_x12 6 v2_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 3
+line 329: p 310 73 +
+  ConstraintId 311: 1 ~v1_x9_x12 1 ~v1_x13_x15 6 v2_x9_x15 >= 1
+line 330: p 311 s
+  ConstraintId 312: 1 ~v1_x9_x12 1 ~v1_x13_x15 1 v2_x9_x15 >= 1
+line 331: u 1 ~v1_x9_x12 1 ~v1_x13_x15 1 v2_x9_x15  >= 1;
+  ConstraintId 313: 1 ~v1_x9_x12 1 ~v1_x13_x15 1 v2_x9_x15 >= 1
+line 332: p 85 50 +
+  ConstraintId 314: 3 v2_x9_x12 3 ~v3_x9_x15 1 x13 1 x14 1 x15 >= 2
+line 333: p 314 76 +
+  ConstraintId 315: 3 v2_x9_x12 2 v2_x13_x15 3 ~v3_x9_x15 >= 1
+line 334: p 315 2 d s
+  ConstraintId 316: 1 v2_x9_x12 1 v2_x13_x15 1 ~v3_x9_x15 >= 1
+line 335: u 1 v2_x9_x12 1 v2_x13_x15 1 ~v3_x9_x15  >= 1;
+  ConstraintId 317: 1 v2_x9_x12 1 v2_x13_x15 1 ~v3_x9_x15 >= 1
+line 336: p 84 49 +
+  ConstraintId 318: 2 ~v2_x9_x12 6 v2_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 337: p 318 s
+  ConstraintId 319: 2 ~v2_x9_x12 4 v2_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 338: u 1 ~v2_x9_x12 1 ~v0_x13_x15 1 v2_x9_x15  >= 1;
+  ConstraintId 320: 1 ~v0_x13_x15 1 ~v2_x9_x12 1 v2_x9_x15 >= 1
+line 339: p 85 52 +
+  ConstraintId 321: 2 v3_x9_x12 3 ~v3_x9_x15 1 x13 1 x14 1 x15 >= 1
+line 340: p 321 74 +
+  ConstraintId 322: 3 v1_x13_x15 2 v3_x9_x12 3 ~v3_x9_x15 >= 1
+line 341: p 322 2 d s
+  ConstraintId 323: 1 v1_x13_x15 1 v3_x9_x12 1 ~v3_x9_x15 >= 1
+line 342: u 1 v3_x9_x12 1 v1_x13_x15 1 ~v3_x9_x15  >= 1;
+  ConstraintId 324: 1 v1_x13_x15 1 v3_x9_x12 1 ~v3_x9_x15 >= 1
+line 343: p 86 77 +
+  ConstraintId 325: 5 v3_x9_x15 3 ~v3_x13_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 5
+line 344: p 325 s
+  ConstraintId 326: 5 v3_x9_x15 3 ~v3_x13_x15 1 ~x9 1 ~x10 1 ~x11 1 ~x12 >= 5
+line 345: u 1 ~v0_x9_x12 1 ~v3_x13_x15 1 v3_x9_x15  >= 1;
+  ConstraintId 327: 1 ~v0_x9_x12 1 v3_x9_x15 1 ~v3_x13_x15 >= 1
+line 346: p 87 48 +
+  ConstraintId 328: 4 v1_x9_x12 4 ~v4_x9_x15 1 x13 1 x14 1 x15 >= 4
+line 347: p 328 2 d s
+  ConstraintId 329: 2 v1_x9_x12 2 ~v4_x9_x15 1 x13 1 x14 1 x15 >= 2
+line 348: u 1 v1_x9_x12 1 v4_x13_x15 1 ~v4_x9_x15  >= 1;
+  ConstraintId 330: 1 v1_x9_x12 1 ~v4_x9_x15 1 v4_x13_x15 >= 1
+line 349: p 86 47 +
+  ConstraintId 331: 1 ~v1_x9_x12 5 v3_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 2
+line 350: p 331 75 +
+  ConstraintId 332: 1 ~v1_x9_x12 2 ~v2_x13_x15 5 v3_x9_x15 >= 1
+line 351: p 332 s
+  ConstraintId 333: 1 ~v1_x9_x12 1 ~v2_x13_x15 1 v3_x9_x15 >= 1
+line 352: u 1 ~v1_x9_x12 1 ~v2_x13_x15 1 v3_x9_x15  >= 1;
+  ConstraintId 334: 1 ~v1_x9_x12 1 ~v2_x13_x15 1 v3_x9_x15 >= 1
+line 353: p 87 50 +
+  ConstraintId 335: 3 v2_x9_x12 4 ~v4_x9_x15 1 x13 1 x14 1 x15 >= 3
+line 354: p 335 78 +
+  ConstraintId 336: 3 v2_x9_x12 1 v3_x13_x15 4 ~v4_x9_x15 >= 1
+line 355: p 336 2 d s
+  ConstraintId 337: 1 v2_x9_x12 1 v3_x13_x15 1 ~v4_x9_x15 >= 1
+line 356: u 1 v2_x9_x12 1 v3_x13_x15 1 ~v4_x9_x15  >= 1;
+  ConstraintId 338: 1 v2_x9_x12 1 v3_x13_x15 1 ~v4_x9_x15 >= 1
+line 357: p 86 49 +
+  ConstraintId 339: 2 ~v2_x9_x12 5 v3_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 3
+line 358: p 339 73 +
+  ConstraintId 340: 1 ~v1_x13_x15 2 ~v2_x9_x12 5 v3_x9_x15 >= 1
+line 359: p 340 s
+  ConstraintId 341: 1 ~v1_x13_x15 1 ~v2_x9_x12 1 v3_x9_x15 >= 1
+line 360: u 1 ~v2_x9_x12 1 ~v1_x13_x15 1 v3_x9_x15  >= 1;
+  ConstraintId 342: 1 ~v1_x13_x15 1 ~v2_x9_x12 1 v3_x9_x15 >= 1
+line 361: p 87 52 +
+  ConstraintId 343: 2 v3_x9_x12 4 ~v4_x9_x15 1 x13 1 x14 1 x15 >= 2
+line 362: p 343 76 +
+  ConstraintId 344: 2 v2_x13_x15 2 v3_x9_x12 4 ~v4_x9_x15 >= 1
+line 363: p 344 2 d s
+  ConstraintId 345: 1 v2_x13_x15 1 v3_x9_x12 1 ~v4_x9_x15 >= 1
+line 364: u 1 v3_x9_x12 1 v2_x13_x15 1 ~v4_x9_x15  >= 1;
+  ConstraintId 346: 1 v2_x13_x15 1 v3_x9_x12 1 ~v4_x9_x15 >= 1
+line 365: p 86 51 +
+  ConstraintId 347: 3 ~v3_x9_x12 5 v3_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 366: p 347 s
+  ConstraintId 348: 3 ~v3_x9_x12 4 v3_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 367: u 1 ~v3_x9_x12 1 ~v0_x13_x15 1 v3_x9_x15  >= 1;
+  ConstraintId 349: 1 ~v0_x13_x15 1 ~v3_x9_x12 1 v3_x9_x15 >= 1
+line 368: p 87 54 +
+  ConstraintId 350: 1 v4_x9_x12 4 ~v4_x9_x15 1 x13 1 x14 1 x15 >= 1
+line 369: p 350 74 +
+  ConstraintId 351: 3 v1_x13_x15 1 v4_x9_x12 4 ~v4_x9_x15 >= 1
+line 370: p 351 2 d s
+  ConstraintId 352: 1 v1_x13_x15 1 v4_x9_x12 1 ~v4_x9_x15 >= 1
+line 371: u 1 v4_x9_x12 1 v1_x13_x15 1 ~v4_x9_x15  >= 1;
+  ConstraintId 353: 1 v1_x13_x15 1 v4_x9_x12 1 ~v4_x9_x15 >= 1
+line 372: p 88 47 +
+  ConstraintId 354: 1 ~v1_x9_x12 4 v4_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 1
+line 373: p 354 77 +
+  ConstraintId 355: 1 ~v1_x9_x12 3 ~v3_x13_x15 4 v4_x9_x15 >= 1
+line 374: p 355 s
+  ConstraintId 356: 1 ~v1_x9_x12 1 ~v3_x13_x15 1 v4_x9_x15 >= 1
+line 375: u 1 ~v1_x9_x12 1 ~v3_x13_x15 1 v4_x9_x15  >= 1;
+  ConstraintId 357: 1 ~v1_x9_x12 1 ~v3_x13_x15 1 v4_x9_x15 >= 1
+line 376: p 89 50 +
+  ConstraintId 358: 3 v2_x9_x12 5 ~v5_x9_x15 1 x13 1 x14 1 x15 >= 4
+line 377: p 358 2 d s
+  ConstraintId 359: 2 v2_x9_x12 2 ~v5_x9_x15 1 x13 1 x14 1 x15 >= 2
+line 378: u 1 v2_x9_x12 1 v4_x13_x15 1 ~v5_x9_x15  >= 1;
+  ConstraintId 360: 1 v2_x9_x12 1 v4_x13_x15 1 ~v5_x9_x15 >= 1
+line 379: p 88 49 +
+  ConstraintId 361: 2 ~v2_x9_x12 4 v4_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 2
+line 380: p 361 75 +
+  ConstraintId 362: 2 ~v2_x9_x12 2 ~v2_x13_x15 4 v4_x9_x15 >= 1
+line 381: p 362 s
+  ConstraintId 363: 1 ~v2_x9_x12 1 ~v2_x13_x15 1 v4_x9_x15 >= 1
+line 382: u 1 ~v2_x9_x12 1 ~v2_x13_x15 1 v4_x9_x15  >= 1;
+  ConstraintId 364: 1 ~v2_x9_x12 1 ~v2_x13_x15 1 v4_x9_x15 >= 1
+line 383: p 89 52 +
+  ConstraintId 365: 2 v3_x9_x12 5 ~v5_x9_x15 1 x13 1 x14 1 x15 >= 3
+line 384: p 365 78 +
+  ConstraintId 366: 2 v3_x9_x12 1 v3_x13_x15 5 ~v5_x9_x15 >= 1
+line 385: p 366 2 d s
+  ConstraintId 367: 1 v3_x9_x12 1 v3_x13_x15 1 ~v5_x9_x15 >= 1
+line 386: u 1 v3_x9_x12 1 v3_x13_x15 1 ~v5_x9_x15  >= 1;
+  ConstraintId 368: 1 v3_x9_x12 1 v3_x13_x15 1 ~v5_x9_x15 >= 1
+line 387: p 88 51 +
+  ConstraintId 369: 3 ~v3_x9_x12 4 v4_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 3
+line 388: p 369 73 +
+  ConstraintId 370: 1 ~v1_x13_x15 3 ~v3_x9_x12 4 v4_x9_x15 >= 1
+line 389: p 370 s
+  ConstraintId 371: 1 ~v1_x13_x15 1 ~v3_x9_x12 1 v4_x9_x15 >= 1
+line 390: u 1 ~v3_x9_x12 1 ~v1_x13_x15 1 v4_x9_x15  >= 1;
+  ConstraintId 372: 1 ~v1_x13_x15 1 ~v3_x9_x12 1 v4_x9_x15 >= 1
+line 391: p 89 54 +
+  ConstraintId 373: 1 v4_x9_x12 5 ~v5_x9_x15 1 x13 1 x14 1 x15 >= 2
+line 392: p 373 76 +
+  ConstraintId 374: 2 v2_x13_x15 1 v4_x9_x12 5 ~v5_x9_x15 >= 1
+line 393: p 374 2 d s
+  ConstraintId 375: 1 v2_x13_x15 1 v4_x9_x12 1 ~v5_x9_x15 >= 1
+line 394: u 1 v4_x9_x12 1 v2_x13_x15 1 ~v5_x9_x15  >= 1;
+  ConstraintId 376: 1 v2_x13_x15 1 v4_x9_x12 1 ~v5_x9_x15 >= 1
+line 395: p 88 53 +
+  ConstraintId 377: 4 ~v4_x9_x12 4 v4_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 396: p 377 s
+  ConstraintId 378: 4 ~v4_x9_x12 4 v4_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 4
+line 397: u 1 ~v4_x9_x12 1 ~v0_x13_x15 1 v4_x9_x15  >= 1;
+  ConstraintId 379: 1 ~v0_x13_x15 1 ~v4_x9_x12 1 v4_x9_x15 >= 1
+line 398: p 89 74 +
+  ConstraintId 380: 3 v1_x13_x15 5 ~v5_x9_x15 1 x9 1 x10 1 x11 1 x12 >= 5
+line 399: p 380 2 d s
+  ConstraintId 381: 2 v1_x13_x15 3 ~v5_x9_x15 1 x9 1 x10 1 x11 1 x12 >= 3
+line 400: u 1 v5_x9_x12 1 v1_x13_x15 1 ~v5_x9_x15  >= 1;
+  ConstraintId 382: 1 v1_x13_x15 1 v5_x9_x12 1 ~v5_x9_x15 >= 1
+line 401: p 90 49 +
+  ConstraintId 383: 2 ~v2_x9_x12 3 v5_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 1
+line 402: p 383 77 +
+  ConstraintId 384: 2 ~v2_x9_x12 3 ~v3_x13_x15 3 v5_x9_x15 >= 1
+line 403: p 384 s
+  ConstraintId 385: 1 ~v2_x9_x12 1 ~v3_x13_x15 1 v5_x9_x15 >= 1
+line 404: u 1 ~v2_x9_x12 1 ~v3_x13_x15 1 v5_x9_x15  >= 1;
+  ConstraintId 386: 1 ~v2_x9_x12 1 ~v3_x13_x15 1 v5_x9_x15 >= 1
+line 405: p 91 52 +
+  ConstraintId 387: 2 v3_x9_x12 6 ~v6_x9_x15 1 x13 1 x14 1 x15 >= 4
+line 406: p 387 2 d s
+  ConstraintId 388: 1 v3_x9_x12 2 ~v6_x9_x15 1 x13 1 x14 1 x15 >= 2
+line 407: u 1 v3_x9_x12 1 v4_x13_x15 1 ~v6_x9_x15  >= 1;
+  ConstraintId 389: 1 v3_x9_x12 1 v4_x13_x15 1 ~v6_x9_x15 >= 1
+line 408: p 90 51 +
+  ConstraintId 390: 3 ~v3_x9_x12 3 v5_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 2
+line 409: p 390 75 +
+  ConstraintId 391: 2 ~v2_x13_x15 3 ~v3_x9_x12 3 v5_x9_x15 >= 1
+line 410: p 391 s
+  ConstraintId 392: 1 ~v2_x13_x15 1 ~v3_x9_x12 1 v5_x9_x15 >= 1
+line 411: u 1 ~v3_x9_x12 1 ~v2_x13_x15 1 v5_x9_x15  >= 1;
+  ConstraintId 393: 1 ~v2_x13_x15 1 ~v3_x9_x12 1 v5_x9_x15 >= 1
+line 412: p 91 54 +
+  ConstraintId 394: 1 v4_x9_x12 6 ~v6_x9_x15 1 x13 1 x14 1 x15 >= 3
+line 413: p 394 78 +
+  ConstraintId 395: 1 v3_x13_x15 1 v4_x9_x12 6 ~v6_x9_x15 >= 1
+line 414: p 395 2 d s
+  ConstraintId 396: 1 v3_x13_x15 1 v4_x9_x12 1 ~v6_x9_x15 >= 1
+line 415: u 1 v4_x9_x12 1 v3_x13_x15 1 ~v6_x9_x15  >= 1;
+  ConstraintId 397: 1 v3_x13_x15 1 v4_x9_x12 1 ~v6_x9_x15 >= 1
+line 416: p 90 53 +
+  ConstraintId 398: 4 ~v4_x9_x12 3 v5_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 3
+line 417: p 398 73 +
+  ConstraintId 399: 1 ~v1_x13_x15 4 ~v4_x9_x12 3 v5_x9_x15 >= 1
+line 418: p 399 s
+  ConstraintId 400: 1 ~v1_x13_x15 1 ~v4_x9_x12 1 v5_x9_x15 >= 1
+line 419: u 1 ~v4_x9_x12 1 ~v1_x13_x15 1 v5_x9_x15  >= 1;
+  ConstraintId 401: 1 ~v1_x13_x15 1 ~v4_x9_x12 1 v5_x9_x15 >= 1
+line 420: p 91 76 +
+  ConstraintId 402: 2 v2_x13_x15 6 ~v6_x9_x15 1 x9 1 x10 1 x11 1 x12 >= 5
+line 421: p 402 2 d s
+  ConstraintId 403: 1 v2_x13_x15 3 ~v6_x9_x15 1 x9 1 x10 1 x11 1 x12 >= 3
+line 422: u 1 v5_x9_x12 1 v2_x13_x15 1 ~v6_x9_x15  >= 1;
+  ConstraintId 404: 1 v2_x13_x15 1 v5_x9_x12 1 ~v6_x9_x15 >= 1
+line 423: p 92 51 +
+  ConstraintId 405: 3 ~v3_x9_x12 2 v6_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 1
+line 424: p 405 77 +
+  ConstraintId 406: 3 ~v3_x9_x12 3 ~v3_x13_x15 2 v6_x9_x15 >= 1
+line 425: p 406 s
+  ConstraintId 407: 1 ~v3_x9_x12 1 ~v3_x13_x15 1 v6_x9_x15 >= 1
+line 426: u 1 ~v3_x9_x12 1 ~v3_x13_x15 1 v6_x9_x15  >= 1;
+  ConstraintId 408: 1 ~v3_x9_x12 1 ~v3_x13_x15 1 v6_x9_x15 >= 1
+line 427: p 93 54 +
+  ConstraintId 409: 1 v4_x9_x12 7 ~v7_x9_x15 1 x13 1 x14 1 x15 >= 4
+line 428: p 409 2 d s
+  ConstraintId 410: 1 v4_x9_x12 2 ~v7_x9_x15 1 x13 1 x14 1 x15 >= 2
+line 429: u 1 v4_x9_x12 1 v4_x13_x15 1 ~v7_x9_x15  >= 1;
+  ConstraintId 411: 1 v4_x9_x12 1 v4_x13_x15 1 ~v7_x9_x15 >= 1
+line 430: p 92 53 +
+  ConstraintId 412: 4 ~v4_x9_x12 2 v6_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 2
+line 431: p 412 75 +
+  ConstraintId 413: 2 ~v2_x13_x15 4 ~v4_x9_x12 2 v6_x9_x15 >= 1
+line 432: p 413 s
+  ConstraintId 414: 1 ~v2_x13_x15 1 ~v4_x9_x12 1 v6_x9_x15 >= 1
+line 433: u 1 ~v4_x9_x12 1 ~v2_x13_x15 1 v6_x9_x15  >= 1;
+  ConstraintId 415: 1 ~v2_x13_x15 1 ~v4_x9_x12 1 v6_x9_x15 >= 1
+line 434: p 93 78 +
+  ConstraintId 416: 1 v3_x13_x15 7 ~v7_x9_x15 1 x9 1 x10 1 x11 1 x12 >= 5
+line 435: p 416 2 d s
+  ConstraintId 417: 1 v3_x13_x15 3 ~v7_x9_x15 1 x9 1 x10 1 x11 1 x12 >= 3
+line 436: u 1 v5_x9_x12 1 v3_x13_x15 1 ~v7_x9_x15  >= 1;
+  ConstraintId 418: 1 v3_x13_x15 1 v5_x9_x12 1 ~v7_x9_x15 >= 1
+line 437: p 94 53 +
+  ConstraintId 419: 4 ~v4_x9_x12 1 v7_x9_x15 1 ~x13 1 ~x14 1 ~x15 >= 1
+line 438: p 419 77 +
+  ConstraintId 420: 3 ~v3_x13_x15 4 ~v4_x9_x12 1 v7_x9_x15 >= 1
+line 439: p 420 s
+  ConstraintId 421: 1 ~v3_x13_x15 1 ~v4_x9_x12 1 v7_x9_x15 >= 1
+line 440: u 1 ~v4_x9_x12 1 ~v3_x13_x15 1 v7_x9_x15  >= 1;
+  ConstraintId 422: 1 ~v3_x13_x15 1 ~v4_x9_x12 1 v7_x9_x15 >= 1
+line 441: u 1 v5_x9_x12 1 v4_x13_x15 1 ~v8_x9_x15  >= 1;
+  ConstraintId 423: 1 v4_x13_x15 1 v5_x9_x12 1 ~v8_x9_x15 >= 1
+line 442: u 1 ~y76 1 ~y78 1 v0_x16_x17  >= 1;
+  ConstraintId 424: 1 v0_x16_x17 1 ~y76 1 ~y78 >= 1
+line 443: u 1 x16 1 x17 1 ~v1_x16_x17  >= 1;
+  ConstraintId 425: 1 ~v1_x16_x17 1 x16 1 x17 >= 1
+line 444: u 1 ~y76 1 ~x17 1 v1_x16_x17  >= 1;
+  ConstraintId 426: 1 v1_x16_x17 1 ~x17 1 ~y76 >= 1
+line 445: u 1 x16 1 y79 1 ~v2_x16_x17  >= 1;
+  ConstraintId 427: 1 ~v2_x16_x17 1 x16 1 y79 >= 1
+line 446: u 1 ~x16 1 ~y78 1 v1_x16_x17  >= 1;
+  ConstraintId 428: 1 v1_x16_x17 1 ~x16 1 ~y78 >= 1
+line 447: u 1 y77 1 x17 1 ~v2_x16_x17  >= 1;
+  ConstraintId 429: 1 ~v2_x16_x17 1 x17 1 y77 >= 1
+line 448: u 1 ~x16 1 ~x17 1 v2_x16_x17  >= 1;
+  ConstraintId 430: 1 v2_x16_x17 1 ~x16 1 ~x17 >= 1
+line 449: u 1 y77 1 y79 1 ~v3_x16_x17  >= 1;
+  ConstraintId 431: 1 ~v3_x16_x17 1 y77 1 y79 >= 1
+line 450: u 1 ~v0_x16_x17 1 ~y82 1 v0_x16_x18  >= 1;
+  ConstraintId 432: 1 ~v0_x16_x17 1 v0_x16_x18 1 ~y82 >= 1
+line 451: p 115 108 +
+  ConstraintId 433: 2 v1_x16_x17 1 ~v1_x16_x18 1 x18 >= 1
+line 452: p 433 2 d s
+  ConstraintId 434: 1 v1_x16_x17 1 ~v1_x16_x18 1 x18 >= 1
+line 453: u 1 v1_x16_x17 1 x18 1 ~v1_x16_x18  >= 1;
+  ConstraintId 435: 1 v1_x16_x17 1 ~v1_x16_x18 1 x18 >= 1
+line 454: u 1 ~v0_x16_x17 1 ~x18 1 v1_x16_x18  >= 1;
+  ConstraintId 436: 1 ~v0_x16_x17 1 v1_x16_x18 1 ~x18 >= 1
+line 455: p 117 108 +
+  ConstraintId 437: 2 v1_x16_x17 2 ~v2_x16_x18 1 x18 >= 2
+line 456: p 437 2 d s
+  ConstraintId 438: 1 v1_x16_x17 1 ~v2_x16_x18 1 x18 >= 1
+line 457: u 1 v1_x16_x17 1 y83 1 ~v2_x16_x18  >= 1;
+  ConstraintId 439: 1 v1_x16_x17 1 ~v2_x16_x18 1 y83 >= 1
+line 458: p 116 107 +
+  ConstraintId 440: 1 ~v1_x16_x17 3 v1_x16_x18 1 ~x18 >= 2
+line 459: p 440 s
+  ConstraintId 441: 1 ~v1_x16_x17 2 v1_x16_x18 1 ~x18 >= 2
+line 460: u 1 ~v1_x16_x17 1 ~y82 1 v1_x16_x18  >= 1;
+  ConstraintId 442: 1 ~v1_x16_x17 1 v1_x16_x18 1 ~y82 >= 1
+line 461: p 117 110 +
+  ConstraintId 443: 1 v2_x16_x17 2 ~v2_x16_x18 1 x18 >= 1
+line 462: p 443 2 d s
+  ConstraintId 444: 1 v2_x16_x17 1 ~v2_x16_x18 1 x18 >= 1
+line 463: u 1 v2_x16_x17 1 x18 1 ~v2_x16_x18  >= 1;
+  ConstraintId 445: 1 v2_x16_x17 1 ~v2_x16_x18 1 x18 >= 1
+line 464: p 118 107 +
+  ConstraintId 446: 1 ~v1_x16_x17 2 v2_x16_x18 1 ~x18 >= 1
+line 465: p 446 s
+  ConstraintId 447: 1 ~v1_x16_x17 1 v2_x16_x18 1 ~x18 >= 1
+line 466: u 1 ~v1_x16_x17 1 ~x18 1 v2_x16_x18  >= 1;
+  ConstraintId 448: 1 ~v1_x16_x17 1 v2_x16_x18 1 ~x18 >= 1
+line 467: p 119 110 +
+  ConstraintId 449: 1 v2_x16_x17 3 ~v3_x16_x18 1 x18 >= 2
+line 468: p 449 2 d s
+  ConstraintId 450: 1 v2_x16_x17 1 ~v3_x16_x18 1 x18 >= 1
+line 469: u 1 v2_x16_x17 1 y83 1 ~v3_x16_x18  >= 1;
+  ConstraintId 451: 1 v2_x16_x17 1 ~v3_x16_x18 1 y83 >= 1
+line 470: p 118 109 +
+  ConstraintId 452: 2 ~v2_x16_x17 2 v2_x16_x18 1 ~x18 >= 2
+line 471: p 452 s
+  ConstraintId 453: 2 ~v2_x16_x17 2 v2_x16_x18 1 ~x18 >= 2
+line 472: u 1 ~v2_x16_x17 1 ~y82 1 v2_x16_x18  >= 1;
+  ConstraintId 454: 1 ~v2_x16_x17 1 v2_x16_x18 1 ~y82 >= 1
+line 473: u 1 v3_x16_x17 1 x18 1 ~v3_x16_x18  >= 1;
+  ConstraintId 455: 1 v3_x16_x17 1 ~v3_x16_x18 1 x18 >= 1
+line 474: p 120 109 +
+  ConstraintId 456: 2 ~v2_x16_x17 1 v3_x16_x18 1 ~x18 >= 1
+line 475: p 456 s
+  ConstraintId 457: 1 ~v2_x16_x17 1 v3_x16_x18 1 ~x18 >= 1
+line 476: u 1 ~v2_x16_x17 1 ~x18 1 v3_x16_x18  >= 1;
+  ConstraintId 458: 1 ~v2_x16_x17 1 v3_x16_x18 1 ~x18 >= 1
+line 477: u 1 v3_x16_x17 1 y83 1 ~v4_x16_x18  >= 1;
+  ConstraintId 459: 1 v3_x16_x17 1 ~v4_x16_x18 1 y83 >= 1
+line 478: u 1 ~y89 1 ~y91 1 v0_x19_x20  >= 1;
+  ConstraintId 460: 1 v0_x19_x20 1 ~y89 1 ~y91 >= 1
+line 479: u 1 x19 1 x20 1 ~v1_x19_x20  >= 1;
+  ConstraintId 461: 1 ~v1_x19_x20 1 x19 1 x20 >= 1
+line 480: u 1 ~y89 1 ~x20 1 v1_x19_x20  >= 1;
+  ConstraintId 462: 1 v1_x19_x20 1 ~x20 1 ~y89 >= 1
+line 481: u 1 x19 1 y92 1 ~v2_x19_x20  >= 1;
+  ConstraintId 463: 1 ~v2_x19_x20 1 x19 1 y92 >= 1
+line 482: u 1 ~x19 1 ~y91 1 v1_x19_x20  >= 1;
+  ConstraintId 464: 1 v1_x19_x20 1 ~x19 1 ~y91 >= 1
+line 483: u 1 y90 1 x20 1 ~v2_x19_x20  >= 1;
+  ConstraintId 465: 1 ~v2_x19_x20 1 x20 1 y90 >= 1
+line 484: u 1 ~x19 1 ~x20 1 v2_x19_x20  >= 1;
+  ConstraintId 466: 1 v2_x19_x20 1 ~x19 1 ~x20 >= 1
+line 485: u 1 y90 1 y92 1 ~v3_x19_x20  >= 1;
+  ConstraintId 467: 1 ~v3_x19_x20 1 y90 1 y92 >= 1
+line 486: u 1 ~v0_x16_x18 1 ~v0_x19_x20 1 v0_x16_x20  >= 1;
+  ConstraintId 468: 1 ~v0_x16_x18 1 v0_x16_x20 1 ~v0_x19_x20 >= 1
+line 487: p 135 116 +
+  ConstraintId 469: 3 v1_x16_x18 1 ~v1_x16_x20 1 x19 1 x20 >= 1
+line 488: p 469 130 +
+  ConstraintId 470: 3 v1_x16_x18 1 ~v1_x16_x20 2 v1_x19_x20 >= 1
+line 489: p 470 2 d s
+  ConstraintId 471: 1 v1_x16_x18 1 ~v1_x16_x20 1 v1_x19_x20 >= 1
+line 490: u 1 v1_x16_x18 1 v1_x19_x20 1 ~v1_x16_x20  >= 1;
+  ConstraintId 472: 1 v1_x16_x18 1 ~v1_x16_x20 1 v1_x19_x20 >= 1
+line 491: p 136 129 +
+  ConstraintId 473: 5 v1_x16_x20 1 ~v1_x19_x20 1 ~x16 1 ~x17 1 ~x18 >= 4
+line 492: p 473 s
+  ConstraintId 474: 4 v1_x16_x20 1 ~v1_x19_x20 1 ~x16 1 ~x17 1 ~x18 >= 4
+line 493: u 1 ~v0_x16_x18 1 ~v1_x19_x20 1 v1_x16_x20  >= 1;
+  ConstraintId 475: 1 ~v0_x16_x18 1 v1_x16_x20 1 ~v1_x19_x20 >= 1
+line 494: p 137 116 +
+  ConstraintId 476: 3 v1_x16_x18 2 ~v2_x16_x20 1 x19 1 x20 >= 2
+line 495: p 476 132 +
+  ConstraintId 477: 3 v1_x16_x18 2 ~v2_x16_x20 1 v2_x19_x20 >= 1
+line 496: p 477 2 d s
+  ConstraintId 478: 1 v1_x16_x18 1 ~v2_x16_x20 1 v2_x19_x20 >= 1
+line 497: u 1 v1_x16_x18 1 v2_x19_x20 1 ~v2_x16_x20  >= 1;
+  ConstraintId 479: 1 v1_x16_x18 1 ~v2_x16_x20 1 v2_x19_x20 >= 1
+line 498: p 136 115 +
+  ConstraintId 480: 1 ~v1_x16_x18 5 v1_x16_x20 1 ~x19 1 ~x20 >= 3
+line 499: p 480 s
+  ConstraintId 481: 1 ~v1_x16_x18 3 v1_x16_x20 1 ~x19 1 ~x20 >= 3
+line 500: u 1 ~v1_x16_x18 1 ~v0_x19_x20 1 v1_x16_x20  >= 1;
+  ConstraintId 482: 1 ~v0_x19_x20 1 ~v1_x16_x18 1 v1_x16_x20 >= 1
+line 501: p 137 118 +
+  ConstraintId 483: 2 v2_x16_x18 2 ~v2_x16_x20 1 x19 1 x20 >= 1
+line 502: p 483 130 +
+  ConstraintId 484: 2 v1_x19_x20 2 v2_x16_x18 2 ~v2_x16_x20 >= 1
+line 503: p 484 2 d s
+  ConstraintId 485: 1 v1_x19_x20 1 v2_x16_x18 1 ~v2_x16_x20 >= 1
+line 504: u 1 v2_x16_x18 1 v1_x19_x20 1 ~v2_x16_x20  >= 1;
+  ConstraintId 486: 1 v1_x19_x20 1 v2_x16_x18 1 ~v2_x16_x20 >= 1
+line 505: p 138 131 +
+  ConstraintId 487: 4 v2_x16_x20 2 ~v2_x19_x20 1 ~x16 1 ~x17 1 ~x18 >= 4
+line 506: p 487 s
+  ConstraintId 488: 4 v2_x16_x20 2 ~v2_x19_x20 1 ~x16 1 ~x17 1 ~x18 >= 4
+line 507: u 1 ~v0_x16_x18 1 ~v2_x19_x20 1 v2_x16_x20  >= 1;
+  ConstraintId 489: 1 ~v0_x16_x18 1 v2_x16_x20 1 ~v2_x19_x20 >= 1
+line 508: p 139 116 +
+  ConstraintId 490: 3 v1_x16_x18 3 ~v3_x16_x20 1 x19 1 x20 >= 3
+line 509: p 490 2 d s
+  ConstraintId 491: 2 v1_x16_x18 2 ~v3_x16_x20 1 x19 1 x20 >= 2
+line 510: u 1 v1_x16_x18 1 v3_x19_x20 1 ~v3_x16_x20  >= 1;
+  ConstraintId 492: 1 v1_x16_x18 1 ~v3_x16_x20 1 v3_x19_x20 >= 1
+line 511: p 138 115 +
+  ConstraintId 493: 1 ~v1_x16_x18 4 v2_x16_x20 1 ~x19 1 ~x20 >= 2
+line 512: p 493 129 +
+  ConstraintId 494: 1 ~v1_x16_x18 1 ~v1_x19_x20 4 v2_x16_x20 >= 1
+line 513: p 494 s
+  ConstraintId 495: 1 ~v1_x16_x18 1 ~v1_x19_x20 1 v2_x16_x20 >= 1
+line 514: u 1 ~v1_x16_x18 1 ~v1_x19_x20 1 v2_x16_x20  >= 1;
+  ConstraintId 496: 1 ~v1_x16_x18 1 ~v1_x19_x20 1 v2_x16_x20 >= 1
+line 515: p 139 118 +
+  ConstraintId 497: 2 v2_x16_x18 3 ~v3_x16_x20 1 x19 1 x20 >= 2
+line 516: p 497 132 +
+  ConstraintId 498: 2 v2_x16_x18 1 v2_x19_x20 3 ~v3_x16_x20 >= 1
+line 517: p 498 2 d s
+  ConstraintId 499: 1 v2_x16_x18 1 v2_x19_x20 1 ~v3_x16_x20 >= 1
+line 518: u 1 v2_x16_x18 1 v2_x19_x20 1 ~v3_x16_x20  >= 1;
+  ConstraintId 500: 1 v2_x16_x18 1 v2_x19_x20 1 ~v3_x16_x20 >= 1
+line 519: p 138 117 +
+  ConstraintId 501: 2 ~v2_x16_x18 4 v2_x16_x20 1 ~x19 1 ~x20 >= 3
+line 520: p 501 s
+  ConstraintId 502: 2 ~v2_x16_x18 3 v2_x16_x20 1 ~x19 1 ~x20 >= 3
+line 521: u 1 ~v2_x16_x18 1 ~v0_x19_x20 1 v2_x16_x20  >= 1;
+  ConstraintId 503: 1 ~v0_x19_x20 1 ~v2_x16_x18 1 v2_x16_x20 >= 1
+line 522: p 139 120 +
+  ConstraintId 504: 1 v3_x16_x18 3 ~v3_x16_x20 1 x19 1 x20 >= 1
+line 523: p 504 130 +
+  ConstraintId 505: 2 v1_x19_x20 1 v3_x16_x18 3 ~v3_x16_x20 >= 1
+line 524: p 505 2 d s
+  ConstraintId 506: 1 v1_x19_x20 1 v3_x16_x18 1 ~v3_x16_x20 >= 1
+line 525: u 1 v3_x16_x18 1 v1_x19_x20 1 ~v3_x16_x20  >= 1;
+  ConstraintId 507: 1 v1_x19_x20 1 v3_x16_x18 1 ~v3_x16_x20 >= 1
+line 526: p 140 115 +
+  ConstraintId 508: 1 ~v1_x16_x18 3 v3_x16_x20 1 ~x19 1 ~x20 >= 1
+line 527: p 508 131 +
+  ConstraintId 509: 1 ~v1_x16_x18 2 ~v2_x19_x20 3 v3_x16_x20 >= 1
+line 528: p 509 s
+  ConstraintId 510: 1 ~v1_x16_x18 1 ~v2_x19_x20 1 v3_x16_x20 >= 1
+line 529: u 1 ~v1_x16_x18 1 ~v2_x19_x20 1 v3_x16_x20  >= 1;
+  ConstraintId 511: 1 ~v1_x16_x18 1 ~v2_x19_x20 1 v3_x16_x20 >= 1
+line 530: p 141 118 +
+  ConstraintId 512: 2 v2_x16_x18 4 ~v4_x16_x20 1 x19 1 x20 >= 3
+line 531: p 512 2 d s
+  ConstraintId 513: 1 v2_x16_x18 2 ~v4_x16_x20 1 x19 1 x20 >= 2
+line 532: u 1 v2_x16_x18 1 v3_x19_x20 1 ~v4_x16_x20  >= 1;
+  ConstraintId 514: 1 v2_x16_x18 1 v3_x19_x20 1 ~v4_x16_x20 >= 1
+line 533: p 140 117 +
+  ConstraintId 515: 2 ~v2_x16_x18 3 v3_x16_x20 1 ~x19 1 ~x20 >= 2
+line 534: p 515 129 +
+  ConstraintId 516: 1 ~v1_x19_x20 2 ~v2_x16_x18 3 v3_x16_x20 >= 1
+line 535: p 516 s
+  ConstraintId 517: 1 ~v1_x19_x20 1 ~v2_x16_x18 1 v3_x16_x20 >= 1
+line 536: u 1 ~v2_x16_x18 1 ~v1_x19_x20 1 v3_x16_x20  >= 1;
+  ConstraintId 518: 1 ~v1_x19_x20 1 ~v2_x16_x18 1 v3_x16_x20 >= 1
+line 537: p 141 120 +
+  ConstraintId 519: 1 v3_x16_x18 4 ~v4_x16_x20 1 x19 1 x20 >= 2
+line 538: p 519 132 +
+  ConstraintId 520: 1 v2_x19_x20 1 v3_x16_x18 4 ~v4_x16_x20 >= 1
+line 539: p 520 2 d s
+  ConstraintId 521: 1 v2_x19_x20 1 v3_x16_x18 1 ~v4_x16_x20 >= 1
+line 540: u 1 v3_x16_x18 1 v2_x19_x20 1 ~v4_x16_x20  >= 1;
+  ConstraintId 522: 1 v2_x19_x20 1 v3_x16_x18 1 ~v4_x16_x20 >= 1
+line 541: p 140 119 +
+  ConstraintId 523: 3 ~v3_x16_x18 3 v3_x16_x20 1 ~x19 1 ~x20 >= 3
+line 542: p 523 s
+  ConstraintId 524: 3 ~v3_x16_x18 3 v3_x16_x20 1 ~x19 1 ~x20 >= 3
+line 543: u 1 ~v3_x16_x18 1 ~v0_x19_x20 1 v3_x16_x20  >= 1;
+  ConstraintId 525: 1 ~v0_x19_x20 1 ~v3_x16_x18 1 v3_x16_x20 >= 1
+line 544: p 141 130 +
+  ConstraintId 526: 2 v1_x19_x20 4 ~v4_x16_x20 1 x16 1 x17 1 x18 >= 4
+line 545: p 526 2 d s
+  ConstraintId 527: 1 v1_x19_x20 2 ~v4_x16_x20 1 x16 1 x17 1 x18 >= 2
+line 546: u 1 v4_x16_x18 1 v1_x19_x20 1 ~v4_x16_x20  >= 1;
+  ConstraintId 528: 1 v1_x19_x20 1 v4_x16_x18 1 ~v4_x16_x20 >= 1
+line 547: p 142 117 +
+  ConstraintId 529: 2 ~v2_x16_x18 2 v4_x16_x20 1 ~x19 1 ~x20 >= 1
+line 548: p 529 131 +
+  ConstraintId 530: 2 ~v2_x16_x18 2 ~v2_x19_x20 2 v4_x16_x20 >= 1
+line 549: p 530 s
+  ConstraintId 531: 1 ~v2_x16_x18 1 ~v2_x19_x20 1 v4_x16_x20 >= 1
+line 550: u 1 ~v2_x16_x18 1 ~v2_x19_x20 1 v4_x16_x20  >= 1;
+  ConstraintId 532: 1 ~v2_x16_x18 1 ~v2_x19_x20 1 v4_x16_x20 >= 1
+line 551: p 143 120 +
+  ConstraintId 533: 1 v3_x16_x18 5 ~v5_x16_x20 1 x19 1 x20 >= 3
+line 552: p 533 2 d s
+  ConstraintId 534: 1 v3_x16_x18 2 ~v5_x16_x20 1 x19 1 x20 >= 2
+line 553: u 1 v3_x16_x18 1 v3_x19_x20 1 ~v5_x16_x20  >= 1;
+  ConstraintId 535: 1 v3_x16_x18 1 v3_x19_x20 1 ~v5_x16_x20 >= 1
+line 554: p 142 119 +
+  ConstraintId 536: 3 ~v3_x16_x18 2 v4_x16_x20 1 ~x19 1 ~x20 >= 2
+line 555: p 536 129 +
+  ConstraintId 537: 1 ~v1_x19_x20 3 ~v3_x16_x18 2 v4_x16_x20 >= 1
+line 556: p 537 s
+  ConstraintId 538: 1 ~v1_x19_x20 1 ~v3_x16_x18 1 v4_x16_x20 >= 1
+line 557: u 1 ~v3_x16_x18 1 ~v1_x19_x20 1 v4_x16_x20  >= 1;
+  ConstraintId 539: 1 ~v1_x19_x20 1 ~v3_x16_x18 1 v4_x16_x20 >= 1
+line 558: p 143 132 +
+  ConstraintId 540: 1 v2_x19_x20 5 ~v5_x16_x20 1 x16 1 x17 1 x18 >= 4
+line 559: p 540 2 d s
+  ConstraintId 541: 1 v2_x19_x20 2 ~v5_x16_x20 1 x16 1 x17 1 x18 >= 2
+line 560: u 1 v4_x16_x18 1 v2_x19_x20 1 ~v5_x16_x20  >= 1;
+  ConstraintId 542: 1 v2_x19_x20 1 v4_x16_x18 1 ~v5_x16_x20 >= 1
+line 561: p 144 119 +
+  ConstraintId 543: 3 ~v3_x16_x18 1 v5_x16_x20 1 ~x19 1 ~x20 >= 1
+line 562: p 543 131 +
+  ConstraintId 544: 2 ~v2_x19_x20 3 ~v3_x16_x18 1 v5_x16_x20 >= 1
+line 563: p 544 s
+  ConstraintId 545: 1 ~v2_x19_x20 1 ~v3_x16_x18 1 v5_x16_x20 >= 1
+line 564: u 1 ~v3_x16_x18 1 ~v2_x19_x20 1 v5_x16_x20  >= 1;
+  ConstraintId 546: 1 ~v2_x19_x20 1 ~v3_x16_x18 1 v5_x16_x20 >= 1
+line 565: u 1 v4_x16_x18 1 v3_x19_x20 1 ~v6_x16_x20  >= 1;
+  ConstraintId 547: 1 v3_x19_x20 1 v4_x16_x18 1 ~v6_x16_x20 >= 1
+line 566: u 1 ~v0_x9_x15 1 ~v0_x16_x20 1 v0_x9_x20  >= 1;
+  ConstraintId 548: 1 ~v0_x9_x15 1 v0_x9_x20 1 ~v0_x16_x20 >= 1
+line 567: p 147 82 +
+  ConstraintId 549: 7 v1_x9_x15 1 ~v1_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 568: p 549 136 +
+  ConstraintId 550: 7 v1_x9_x15 1 ~v1_x9_x20 5 v1_x16_x20 >= 1
+line 569: p 550 2 d s
+  ConstraintId 551: 1 v1_x9_x15 1 ~v1_x9_x20 1 v1_x16_x20 >= 1
+line 570: u 1 v1_x9_x15 1 v1_x16_x20 1 ~v1_x9_x20  >= 1;
+  ConstraintId 552: 1 v1_x9_x15 1 ~v1_x9_x20 1 v1_x16_x20 >= 1
+line 571: p 148 135 +
+  ConstraintId 553: 12 v1_x9_x20 1 ~v1_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 572: p 553 s
+  ConstraintId 554: 8 v1_x9_x20 1 ~v1_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 573: u 1 ~v0_x9_x15 1 ~v1_x16_x20 1 v1_x9_x20  >= 1;
+  ConstraintId 555: 1 ~v0_x9_x15 1 v1_x9_x20 1 ~v1_x16_x20 >= 1
+line 574: p 149 82 +
+  ConstraintId 556: 7 v1_x9_x15 2 ~v2_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 575: p 556 138 +
+  ConstraintId 557: 7 v1_x9_x15 2 ~v2_x9_x20 4 v2_x16_x20 >= 1
+line 576: p 557 2 d s
+  ConstraintId 558: 1 v1_x9_x15 1 ~v2_x9_x20 1 v2_x16_x20 >= 1
+line 577: u 1 v1_x9_x15 1 v2_x16_x20 1 ~v2_x9_x20  >= 1;
+  ConstraintId 559: 1 v1_x9_x15 1 ~v2_x9_x20 1 v2_x16_x20 >= 1
+line 578: p 148 81 +
+  ConstraintId 560: 1 ~v1_x9_x15 12 v1_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 579: p 560 s
+  ConstraintId 561: 1 ~v1_x9_x15 6 v1_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 580: u 1 ~v1_x9_x15 1 ~v0_x16_x20 1 v1_x9_x20  >= 1;
+  ConstraintId 562: 1 ~v0_x16_x20 1 ~v1_x9_x15 1 v1_x9_x20 >= 1
+line 581: p 149 84 +
+  ConstraintId 563: 6 v2_x9_x15 2 ~v2_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 582: p 563 136 +
+  ConstraintId 564: 5 v1_x16_x20 6 v2_x9_x15 2 ~v2_x9_x20 >= 1
+line 583: p 564 2 d s
+  ConstraintId 565: 1 v1_x16_x20 1 v2_x9_x15 1 ~v2_x9_x20 >= 1
+line 584: u 1 v2_x9_x15 1 v1_x16_x20 1 ~v2_x9_x20  >= 1;
+  ConstraintId 566: 1 v1_x16_x20 1 v2_x9_x15 1 ~v2_x9_x20 >= 1
+line 585: p 150 137 +
+  ConstraintId 567: 11 v2_x9_x20 2 ~v2_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 586: p 567 s
+  ConstraintId 568: 8 v2_x9_x20 2 ~v2_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 587: u 1 ~v0_x9_x15 1 ~v2_x16_x20 1 v2_x9_x20  >= 1;
+  ConstraintId 569: 1 ~v0_x9_x15 1 v2_x9_x20 1 ~v2_x16_x20 >= 1
+line 588: p 151 82 +
+  ConstraintId 570: 7 v1_x9_x15 3 ~v3_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 589: p 570 140 +
+  ConstraintId 571: 7 v1_x9_x15 3 ~v3_x9_x20 3 v3_x16_x20 >= 1
+line 590: p 571 2 d s
+  ConstraintId 572: 1 v1_x9_x15 1 ~v3_x9_x20 1 v3_x16_x20 >= 1
+line 591: u 1 v1_x9_x15 1 v3_x16_x20 1 ~v3_x9_x20  >= 1;
+  ConstraintId 573: 1 v1_x9_x15 1 ~v3_x9_x20 1 v3_x16_x20 >= 1
+line 592: p 150 81 +
+  ConstraintId 574: 1 ~v1_x9_x15 11 v2_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 593: p 574 135 +
+  ConstraintId 575: 1 ~v1_x9_x15 1 ~v1_x16_x20 11 v2_x9_x20 >= 1
+line 594: p 575 s
+  ConstraintId 576: 1 ~v1_x9_x15 1 ~v1_x16_x20 1 v2_x9_x20 >= 1
+line 595: u 1 ~v1_x9_x15 1 ~v1_x16_x20 1 v2_x9_x20  >= 1;
+  ConstraintId 577: 1 ~v1_x9_x15 1 ~v1_x16_x20 1 v2_x9_x20 >= 1
+line 596: p 151 84 +
+  ConstraintId 578: 6 v2_x9_x15 3 ~v3_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 597: p 578 138 +
+  ConstraintId 579: 6 v2_x9_x15 4 v2_x16_x20 3 ~v3_x9_x20 >= 1
+line 598: p 579 2 d s
+  ConstraintId 580: 1 v2_x9_x15 1 v2_x16_x20 1 ~v3_x9_x20 >= 1
+line 599: u 1 v2_x9_x15 1 v2_x16_x20 1 ~v3_x9_x20  >= 1;
+  ConstraintId 581: 1 v2_x9_x15 1 v2_x16_x20 1 ~v3_x9_x20 >= 1
+line 600: p 150 83 +
+  ConstraintId 582: 2 ~v2_x9_x15 11 v2_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 601: p 582 s
+  ConstraintId 583: 2 ~v2_x9_x15 6 v2_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 602: u 1 ~v2_x9_x15 1 ~v0_x16_x20 1 v2_x9_x20  >= 1;
+  ConstraintId 584: 1 ~v0_x16_x20 1 ~v2_x9_x15 1 v2_x9_x20 >= 1
+line 603: p 151 86 +
+  ConstraintId 585: 5 v3_x9_x15 3 ~v3_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 604: p 585 136 +
+  ConstraintId 586: 5 v1_x16_x20 5 v3_x9_x15 3 ~v3_x9_x20 >= 1
+line 605: p 586 2 d s
+  ConstraintId 587: 1 v1_x16_x20 1 v3_x9_x15 1 ~v3_x9_x20 >= 1
+line 606: u 1 v3_x9_x15 1 v1_x16_x20 1 ~v3_x9_x20  >= 1;
+  ConstraintId 588: 1 v1_x16_x20 1 v3_x9_x15 1 ~v3_x9_x20 >= 1
+line 607: p 152 139 +
+  ConstraintId 589: 10 v3_x9_x20 3 ~v3_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 608: p 589 s
+  ConstraintId 590: 8 v3_x9_x20 3 ~v3_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 609: u 1 ~v0_x9_x15 1 ~v3_x16_x20 1 v3_x9_x20  >= 1;
+  ConstraintId 591: 1 ~v0_x9_x15 1 v3_x9_x20 1 ~v3_x16_x20 >= 1
+line 610: p 153 82 +
+  ConstraintId 592: 7 v1_x9_x15 4 ~v4_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 611: p 592 142 +
+  ConstraintId 593: 7 v1_x9_x15 4 ~v4_x9_x20 2 v4_x16_x20 >= 1
+line 612: p 593 2 d s
+  ConstraintId 594: 1 v1_x9_x15 1 ~v4_x9_x20 1 v4_x16_x20 >= 1
+line 613: u 1 v1_x9_x15 1 v4_x16_x20 1 ~v4_x9_x20  >= 1;
+  ConstraintId 595: 1 v1_x9_x15 1 ~v4_x9_x20 1 v4_x16_x20 >= 1
+line 614: p 152 81 +
+  ConstraintId 596: 1 ~v1_x9_x15 10 v3_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 615: p 596 137 +
+  ConstraintId 597: 1 ~v1_x9_x15 2 ~v2_x16_x20 10 v3_x9_x20 >= 1
+line 616: p 597 s
+  ConstraintId 598: 1 ~v1_x9_x15 1 ~v2_x16_x20 1 v3_x9_x20 >= 1
+line 617: u 1 ~v1_x9_x15 1 ~v2_x16_x20 1 v3_x9_x20  >= 1;
+  ConstraintId 599: 1 ~v1_x9_x15 1 ~v2_x16_x20 1 v3_x9_x20 >= 1
+line 618: p 153 84 +
+  ConstraintId 600: 6 v2_x9_x15 4 ~v4_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 619: p 600 140 +
+  ConstraintId 601: 6 v2_x9_x15 3 v3_x16_x20 4 ~v4_x9_x20 >= 1
+line 620: p 601 2 d s
+  ConstraintId 602: 1 v2_x9_x15 1 v3_x16_x20 1 ~v4_x9_x20 >= 1
+line 621: u 1 v2_x9_x15 1 v3_x16_x20 1 ~v4_x9_x20  >= 1;
+  ConstraintId 603: 1 v2_x9_x15 1 v3_x16_x20 1 ~v4_x9_x20 >= 1
+line 622: p 152 83 +
+  ConstraintId 604: 2 ~v2_x9_x15 10 v3_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 623: p 604 135 +
+  ConstraintId 605: 1 ~v1_x16_x20 2 ~v2_x9_x15 10 v3_x9_x20 >= 1
+line 624: p 605 s
+  ConstraintId 606: 1 ~v1_x16_x20 1 ~v2_x9_x15 1 v3_x9_x20 >= 1
+line 625: u 1 ~v2_x9_x15 1 ~v1_x16_x20 1 v3_x9_x20  >= 1;
+  ConstraintId 607: 1 ~v1_x16_x20 1 ~v2_x9_x15 1 v3_x9_x20 >= 1
+line 626: p 153 86 +
+  ConstraintId 608: 5 v3_x9_x15 4 ~v4_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 627: p 608 138 +
+  ConstraintId 609: 4 v2_x16_x20 5 v3_x9_x15 4 ~v4_x9_x20 >= 1
+line 628: p 609 2 d s
+  ConstraintId 610: 1 v2_x16_x20 1 v3_x9_x15 1 ~v4_x9_x20 >= 1
+line 629: u 1 v3_x9_x15 1 v2_x16_x20 1 ~v4_x9_x20  >= 1;
+  ConstraintId 611: 1 v2_x16_x20 1 v3_x9_x15 1 ~v4_x9_x20 >= 1
+line 630: p 152 85 +
+  ConstraintId 612: 3 ~v3_x9_x15 10 v3_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 631: p 612 s
+  ConstraintId 613: 3 ~v3_x9_x15 6 v3_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 632: u 1 ~v3_x9_x15 1 ~v0_x16_x20 1 v3_x9_x20  >= 1;
+  ConstraintId 614: 1 ~v0_x16_x20 1 ~v3_x9_x15 1 v3_x9_x20 >= 1
+line 633: p 153 88 +
+  ConstraintId 615: 4 v4_x9_x15 4 ~v4_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 634: p 615 136 +
+  ConstraintId 616: 5 v1_x16_x20 4 v4_x9_x15 4 ~v4_x9_x20 >= 1
+line 635: p 616 2 d s
+  ConstraintId 617: 1 v1_x16_x20 1 v4_x9_x15 1 ~v4_x9_x20 >= 1
+line 636: u 1 v4_x9_x15 1 v1_x16_x20 1 ~v4_x9_x20  >= 1;
+  ConstraintId 618: 1 v1_x16_x20 1 v4_x9_x15 1 ~v4_x9_x20 >= 1
+line 637: p 154 141 +
+  ConstraintId 619: 9 v4_x9_x20 4 ~v4_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 638: p 619 s
+  ConstraintId 620: 8 v4_x9_x20 4 ~v4_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 639: u 1 ~v0_x9_x15 1 ~v4_x16_x20 1 v4_x9_x20  >= 1;
+  ConstraintId 621: 1 ~v0_x9_x15 1 v4_x9_x20 1 ~v4_x16_x20 >= 1
+line 640: p 155 82 +
+  ConstraintId 622: 7 v1_x9_x15 5 ~v5_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 641: p 622 144 +
+  ConstraintId 623: 7 v1_x9_x15 5 ~v5_x9_x20 1 v5_x16_x20 >= 1
+line 642: p 623 2 d s
+  ConstraintId 624: 1 v1_x9_x15 1 ~v5_x9_x20 1 v5_x16_x20 >= 1
+line 643: u 1 v1_x9_x15 1 v5_x16_x20 1 ~v5_x9_x20  >= 1;
+  ConstraintId 625: 1 v1_x9_x15 1 ~v5_x9_x20 1 v5_x16_x20 >= 1
+line 644: p 154 81 +
+  ConstraintId 626: 1 ~v1_x9_x15 9 v4_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 645: p 626 139 +
+  ConstraintId 627: 1 ~v1_x9_x15 3 ~v3_x16_x20 9 v4_x9_x20 >= 1
+line 646: p 627 s
+  ConstraintId 628: 1 ~v1_x9_x15 1 ~v3_x16_x20 1 v4_x9_x20 >= 1
+line 647: u 1 ~v1_x9_x15 1 ~v3_x16_x20 1 v4_x9_x20  >= 1;
+  ConstraintId 629: 1 ~v1_x9_x15 1 ~v3_x16_x20 1 v4_x9_x20 >= 1
+line 648: p 155 84 +
+  ConstraintId 630: 6 v2_x9_x15 5 ~v5_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 649: p 630 142 +
+  ConstraintId 631: 6 v2_x9_x15 2 v4_x16_x20 5 ~v5_x9_x20 >= 1
+line 650: p 631 2 d s
+  ConstraintId 632: 1 v2_x9_x15 1 v4_x16_x20 1 ~v5_x9_x20 >= 1
+line 651: u 1 v2_x9_x15 1 v4_x16_x20 1 ~v5_x9_x20  >= 1;
+  ConstraintId 633: 1 v2_x9_x15 1 v4_x16_x20 1 ~v5_x9_x20 >= 1
+line 652: p 154 83 +
+  ConstraintId 634: 2 ~v2_x9_x15 9 v4_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 653: p 634 137 +
+  ConstraintId 635: 2 ~v2_x9_x15 2 ~v2_x16_x20 9 v4_x9_x20 >= 1
+line 654: p 635 s
+  ConstraintId 636: 1 ~v2_x9_x15 1 ~v2_x16_x20 1 v4_x9_x20 >= 1
+line 655: u 1 ~v2_x9_x15 1 ~v2_x16_x20 1 v4_x9_x20  >= 1;
+  ConstraintId 637: 1 ~v2_x9_x15 1 ~v2_x16_x20 1 v4_x9_x20 >= 1
+line 656: p 155 86 +
+  ConstraintId 638: 5 v3_x9_x15 5 ~v5_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 657: p 638 140 +
+  ConstraintId 639: 5 v3_x9_x15 3 v3_x16_x20 5 ~v5_x9_x20 >= 1
+line 658: p 639 2 d s
+  ConstraintId 640: 1 v3_x9_x15 1 v3_x16_x20 1 ~v5_x9_x20 >= 1
+line 659: u 1 v3_x9_x15 1 v3_x16_x20 1 ~v5_x9_x20  >= 1;
+  ConstraintId 641: 1 v3_x9_x15 1 v3_x16_x20 1 ~v5_x9_x20 >= 1
+line 660: p 154 85 +
+  ConstraintId 642: 3 ~v3_x9_x15 9 v4_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 661: p 642 135 +
+  ConstraintId 643: 1 ~v1_x16_x20 3 ~v3_x9_x15 9 v4_x9_x20 >= 1
+line 662: p 643 s
+  ConstraintId 644: 1 ~v1_x16_x20 1 ~v3_x9_x15 1 v4_x9_x20 >= 1
+line 663: u 1 ~v3_x9_x15 1 ~v1_x16_x20 1 v4_x9_x20  >= 1;
+  ConstraintId 645: 1 ~v1_x16_x20 1 ~v3_x9_x15 1 v4_x9_x20 >= 1
+line 664: p 155 88 +
+  ConstraintId 646: 4 v4_x9_x15 5 ~v5_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 665: p 646 138 +
+  ConstraintId 647: 4 v2_x16_x20 4 v4_x9_x15 5 ~v5_x9_x20 >= 1
+line 666: p 647 2 d s
+  ConstraintId 648: 1 v2_x16_x20 1 v4_x9_x15 1 ~v5_x9_x20 >= 1
+line 667: u 1 v4_x9_x15 1 v2_x16_x20 1 ~v5_x9_x20  >= 1;
+  ConstraintId 649: 1 v2_x16_x20 1 v4_x9_x15 1 ~v5_x9_x20 >= 1
+line 668: p 154 87 +
+  ConstraintId 650: 4 ~v4_x9_x15 9 v4_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 669: p 650 s
+  ConstraintId 651: 4 ~v4_x9_x15 6 v4_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 670: u 1 ~v4_x9_x15 1 ~v0_x16_x20 1 v4_x9_x20  >= 1;
+  ConstraintId 652: 1 ~v0_x16_x20 1 ~v4_x9_x15 1 v4_x9_x20 >= 1
+line 671: p 155 90 +
+  ConstraintId 653: 3 v5_x9_x15 5 ~v5_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 672: p 653 136 +
+  ConstraintId 654: 5 v1_x16_x20 3 v5_x9_x15 5 ~v5_x9_x20 >= 1
+line 673: p 654 2 d s
+  ConstraintId 655: 1 v1_x16_x20 1 v5_x9_x15 1 ~v5_x9_x20 >= 1
+line 674: u 1 v5_x9_x15 1 v1_x16_x20 1 ~v5_x9_x20  >= 1;
+  ConstraintId 656: 1 v1_x16_x20 1 v5_x9_x15 1 ~v5_x9_x20 >= 1
+line 675: p 156 143 +
+  ConstraintId 657: 8 v5_x9_x20 5 ~v5_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 676: p 657 s
+  ConstraintId 658: 8 v5_x9_x20 5 ~v5_x16_x20 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 >= 8
+line 677: u 1 ~v0_x9_x15 1 ~v5_x16_x20 1 v5_x9_x20  >= 1;
+  ConstraintId 659: 1 ~v0_x9_x15 1 v5_x9_x20 1 ~v5_x16_x20 >= 1
+line 678: p 157 82 +
+  ConstraintId 660: 7 v1_x9_x15 6 ~v6_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 679: p 660 2 d s
+  ConstraintId 661: 3 v1_x9_x15 3 ~v6_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 680: u 1 v1_x9_x15 1 v6_x16_x20 1 ~v6_x9_x20  >= 1;
+  ConstraintId 662: 1 v1_x9_x15 1 ~v6_x9_x20 1 v6_x16_x20 >= 1
+line 681: p 156 81 +
+  ConstraintId 663: 1 ~v1_x9_x15 8 v5_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 682: p 663 141 +
+  ConstraintId 664: 1 ~v1_x9_x15 4 ~v4_x16_x20 8 v5_x9_x20 >= 1
+line 683: p 664 s
+  ConstraintId 665: 1 ~v1_x9_x15 1 ~v4_x16_x20 1 v5_x9_x20 >= 1
+line 684: u 1 ~v1_x9_x15 1 ~v4_x16_x20 1 v5_x9_x20  >= 1;
+  ConstraintId 666: 1 ~v1_x9_x15 1 ~v4_x16_x20 1 v5_x9_x20 >= 1
+line 685: p 157 84 +
+  ConstraintId 667: 6 v2_x9_x15 6 ~v6_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 686: p 667 144 +
+  ConstraintId 668: 6 v2_x9_x15 1 v5_x16_x20 6 ~v6_x9_x20 >= 1
+line 687: p 668 2 d s
+  ConstraintId 669: 1 v2_x9_x15 1 v5_x16_x20 1 ~v6_x9_x20 >= 1
+line 688: u 1 v2_x9_x15 1 v5_x16_x20 1 ~v6_x9_x20  >= 1;
+  ConstraintId 670: 1 v2_x9_x15 1 v5_x16_x20 1 ~v6_x9_x20 >= 1
+line 689: p 156 83 +
+  ConstraintId 671: 2 ~v2_x9_x15 8 v5_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 690: p 671 139 +
+  ConstraintId 672: 2 ~v2_x9_x15 3 ~v3_x16_x20 8 v5_x9_x20 >= 1
+line 691: p 672 s
+  ConstraintId 673: 1 ~v2_x9_x15 1 ~v3_x16_x20 1 v5_x9_x20 >= 1
+line 692: u 1 ~v2_x9_x15 1 ~v3_x16_x20 1 v5_x9_x20  >= 1;
+  ConstraintId 674: 1 ~v2_x9_x15 1 ~v3_x16_x20 1 v5_x9_x20 >= 1
+line 693: p 157 86 +
+  ConstraintId 675: 5 v3_x9_x15 6 ~v6_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 694: p 675 142 +
+  ConstraintId 676: 5 v3_x9_x15 2 v4_x16_x20 6 ~v6_x9_x20 >= 1
+line 695: p 676 2 d s
+  ConstraintId 677: 1 v3_x9_x15 1 v4_x16_x20 1 ~v6_x9_x20 >= 1
+line 696: u 1 v3_x9_x15 1 v4_x16_x20 1 ~v6_x9_x20  >= 1;
+  ConstraintId 678: 1 v3_x9_x15 1 v4_x16_x20 1 ~v6_x9_x20 >= 1
+line 697: p 156 85 +
+  ConstraintId 679: 3 ~v3_x9_x15 8 v5_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 698: p 679 137 +
+  ConstraintId 680: 2 ~v2_x16_x20 3 ~v3_x9_x15 8 v5_x9_x20 >= 1
+line 699: p 680 s
+  ConstraintId 681: 1 ~v2_x16_x20 1 ~v3_x9_x15 1 v5_x9_x20 >= 1
+line 700: u 1 ~v3_x9_x15 1 ~v2_x16_x20 1 v5_x9_x20  >= 1;
+  ConstraintId 682: 1 ~v2_x16_x20 1 ~v3_x9_x15 1 v5_x9_x20 >= 1
+line 701: p 157 88 +
+  ConstraintId 683: 4 v4_x9_x15 6 ~v6_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 702: p 683 140 +
+  ConstraintId 684: 3 v3_x16_x20 4 v4_x9_x15 6 ~v6_x9_x20 >= 1
+line 703: p 684 2 d s
+  ConstraintId 685: 1 v3_x16_x20 1 v4_x9_x15 1 ~v6_x9_x20 >= 1
+line 704: u 1 v4_x9_x15 1 v3_x16_x20 1 ~v6_x9_x20  >= 1;
+  ConstraintId 686: 1 v3_x16_x20 1 v4_x9_x15 1 ~v6_x9_x20 >= 1
+line 705: p 156 87 +
+  ConstraintId 687: 4 ~v4_x9_x15 8 v5_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 706: p 687 135 +
+  ConstraintId 688: 1 ~v1_x16_x20 4 ~v4_x9_x15 8 v5_x9_x20 >= 1
+line 707: p 688 s
+  ConstraintId 689: 1 ~v1_x16_x20 1 ~v4_x9_x15 1 v5_x9_x20 >= 1
+line 708: u 1 ~v4_x9_x15 1 ~v1_x16_x20 1 v5_x9_x20  >= 1;
+  ConstraintId 690: 1 ~v1_x16_x20 1 ~v4_x9_x15 1 v5_x9_x20 >= 1
+line 709: p 157 90 +
+  ConstraintId 691: 3 v5_x9_x15 6 ~v6_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 710: p 691 138 +
+  ConstraintId 692: 4 v2_x16_x20 3 v5_x9_x15 6 ~v6_x9_x20 >= 1
+line 711: p 692 2 d s
+  ConstraintId 693: 1 v2_x16_x20 1 v5_x9_x15 1 ~v6_x9_x20 >= 1
+line 712: u 1 v5_x9_x15 1 v2_x16_x20 1 ~v6_x9_x20  >= 1;
+  ConstraintId 694: 1 v2_x16_x20 1 v5_x9_x15 1 ~v6_x9_x20 >= 1
+line 713: p 156 89 +
+  ConstraintId 695: 5 ~v5_x9_x15 8 v5_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 714: p 695 s
+  ConstraintId 696: 5 ~v5_x9_x15 6 v5_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 715: u 1 ~v5_x9_x15 1 ~v0_x16_x20 1 v5_x9_x20  >= 1;
+  ConstraintId 697: 1 ~v0_x16_x20 1 ~v5_x9_x15 1 v5_x9_x20 >= 1
+line 716: p 157 92 +
+  ConstraintId 698: 2 v6_x9_x15 6 ~v6_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 717: p 698 136 +
+  ConstraintId 699: 5 v1_x16_x20 2 v6_x9_x15 6 ~v6_x9_x20 >= 1
+line 718: p 699 2 d s
+  ConstraintId 700: 1 v1_x16_x20 1 v6_x9_x15 1 ~v6_x9_x20 >= 1
+line 719: u 1 v6_x9_x15 1 v1_x16_x20 1 ~v6_x9_x20  >= 1;
+  ConstraintId 701: 1 v1_x16_x20 1 v6_x9_x15 1 ~v6_x9_x20 >= 1
+line 720: p 158 81 +
+  ConstraintId 702: 1 ~v1_x9_x15 7 v6_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 721: p 702 143 +
+  ConstraintId 703: 1 ~v1_x9_x15 5 ~v5_x16_x20 7 v6_x9_x20 >= 1
+line 722: p 703 s
+  ConstraintId 704: 1 ~v1_x9_x15 1 ~v5_x16_x20 1 v6_x9_x20 >= 1
+line 723: u 1 ~v1_x9_x15 1 ~v5_x16_x20 1 v6_x9_x20  >= 1;
+  ConstraintId 705: 1 ~v1_x9_x15 1 ~v5_x16_x20 1 v6_x9_x20 >= 1
+line 724: p 159 84 +
+  ConstraintId 706: 6 v2_x9_x15 7 ~v7_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 725: p 706 2 d s
+  ConstraintId 707: 3 v2_x9_x15 3 ~v7_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 726: u 1 v2_x9_x15 1 v6_x16_x20 1 ~v7_x9_x20  >= 1;
+  ConstraintId 708: 1 v2_x9_x15 1 v6_x16_x20 1 ~v7_x9_x20 >= 1
+line 727: p 158 83 +
+  ConstraintId 709: 2 ~v2_x9_x15 7 v6_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 728: p 709 141 +
+  ConstraintId 710: 2 ~v2_x9_x15 4 ~v4_x16_x20 7 v6_x9_x20 >= 1
+line 729: p 710 s
+  ConstraintId 711: 1 ~v2_x9_x15 1 ~v4_x16_x20 1 v6_x9_x20 >= 1
+line 730: u 1 ~v2_x9_x15 1 ~v4_x16_x20 1 v6_x9_x20  >= 1;
+  ConstraintId 712: 1 ~v2_x9_x15 1 ~v4_x16_x20 1 v6_x9_x20 >= 1
+line 731: p 159 86 +
+  ConstraintId 713: 5 v3_x9_x15 7 ~v7_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 732: p 713 144 +
+  ConstraintId 714: 5 v3_x9_x15 1 v5_x16_x20 7 ~v7_x9_x20 >= 1
+line 733: p 714 2 d s
+  ConstraintId 715: 1 v3_x9_x15 1 v5_x16_x20 1 ~v7_x9_x20 >= 1
+line 734: u 1 v3_x9_x15 1 v5_x16_x20 1 ~v7_x9_x20  >= 1;
+  ConstraintId 716: 1 v3_x9_x15 1 v5_x16_x20 1 ~v7_x9_x20 >= 1
+line 735: p 158 85 +
+  ConstraintId 717: 3 ~v3_x9_x15 7 v6_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 736: p 717 139 +
+  ConstraintId 718: 3 ~v3_x9_x15 3 ~v3_x16_x20 7 v6_x9_x20 >= 1
+line 737: p 718 s
+  ConstraintId 719: 1 ~v3_x9_x15 1 ~v3_x16_x20 1 v6_x9_x20 >= 1
+line 738: u 1 ~v3_x9_x15 1 ~v3_x16_x20 1 v6_x9_x20  >= 1;
+  ConstraintId 720: 1 ~v3_x9_x15 1 ~v3_x16_x20 1 v6_x9_x20 >= 1
+line 739: p 159 88 +
+  ConstraintId 721: 4 v4_x9_x15 7 ~v7_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 740: p 721 142 +
+  ConstraintId 722: 4 v4_x9_x15 2 v4_x16_x20 7 ~v7_x9_x20 >= 1
+line 741: p 722 2 d s
+  ConstraintId 723: 1 v4_x9_x15 1 v4_x16_x20 1 ~v7_x9_x20 >= 1
+line 742: u 1 v4_x9_x15 1 v4_x16_x20 1 ~v7_x9_x20  >= 1;
+  ConstraintId 724: 1 v4_x9_x15 1 v4_x16_x20 1 ~v7_x9_x20 >= 1
+line 743: p 158 87 +
+  ConstraintId 725: 4 ~v4_x9_x15 7 v6_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 744: p 725 137 +
+  ConstraintId 726: 2 ~v2_x16_x20 4 ~v4_x9_x15 7 v6_x9_x20 >= 1
+line 745: p 726 s
+  ConstraintId 727: 1 ~v2_x16_x20 1 ~v4_x9_x15 1 v6_x9_x20 >= 1
+line 746: u 1 ~v4_x9_x15 1 ~v2_x16_x20 1 v6_x9_x20  >= 1;
+  ConstraintId 728: 1 ~v2_x16_x20 1 ~v4_x9_x15 1 v6_x9_x20 >= 1
+line 747: p 159 90 +
+  ConstraintId 729: 3 v5_x9_x15 7 ~v7_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 748: p 729 140 +
+  ConstraintId 730: 3 v3_x16_x20 3 v5_x9_x15 7 ~v7_x9_x20 >= 1
+line 749: p 730 2 d s
+  ConstraintId 731: 1 v3_x16_x20 1 v5_x9_x15 1 ~v7_x9_x20 >= 1
+line 750: u 1 v5_x9_x15 1 v3_x16_x20 1 ~v7_x9_x20  >= 1;
+  ConstraintId 732: 1 v3_x16_x20 1 v5_x9_x15 1 ~v7_x9_x20 >= 1
+line 751: p 158 89 +
+  ConstraintId 733: 5 ~v5_x9_x15 7 v6_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 752: p 733 135 +
+  ConstraintId 734: 1 ~v1_x16_x20 5 ~v5_x9_x15 7 v6_x9_x20 >= 1
+line 753: p 734 s
+  ConstraintId 735: 1 ~v1_x16_x20 1 ~v5_x9_x15 1 v6_x9_x20 >= 1
+line 754: u 1 ~v5_x9_x15 1 ~v1_x16_x20 1 v6_x9_x20  >= 1;
+  ConstraintId 736: 1 ~v1_x16_x20 1 ~v5_x9_x15 1 v6_x9_x20 >= 1
+line 755: p 159 92 +
+  ConstraintId 737: 2 v6_x9_x15 7 ~v7_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 756: p 737 138 +
+  ConstraintId 738: 4 v2_x16_x20 2 v6_x9_x15 7 ~v7_x9_x20 >= 1
+line 757: p 738 2 d s
+  ConstraintId 739: 1 v2_x16_x20 1 v6_x9_x15 1 ~v7_x9_x20 >= 1
+line 758: u 1 v6_x9_x15 1 v2_x16_x20 1 ~v7_x9_x20  >= 1;
+  ConstraintId 740: 1 v2_x16_x20 1 v6_x9_x15 1 ~v7_x9_x20 >= 1
+line 759: p 158 91 +
+  ConstraintId 741: 6 ~v6_x9_x15 7 v6_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 760: p 741 s
+  ConstraintId 742: 6 ~v6_x9_x15 6 v6_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 761: u 1 ~v6_x9_x15 1 ~v0_x16_x20 1 v6_x9_x20  >= 1;
+  ConstraintId 743: 1 ~v0_x16_x20 1 ~v6_x9_x15 1 v6_x9_x20 >= 1
+line 762: p 159 94 +
+  ConstraintId 744: 1 v7_x9_x15 7 ~v7_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 1
+line 763: p 744 136 +
+  ConstraintId 745: 5 v1_x16_x20 1 v7_x9_x15 7 ~v7_x9_x20 >= 1
+line 764: p 745 2 d s
+  ConstraintId 746: 1 v1_x16_x20 1 v7_x9_x15 1 ~v7_x9_x20 >= 1
+line 765: u 1 v7_x9_x15 1 v1_x16_x20 1 ~v7_x9_x20  >= 1;
+  ConstraintId 747: 1 v1_x16_x20 1 v7_x9_x15 1 ~v7_x9_x20 >= 1
+line 766: p 160 83 +
+  ConstraintId 748: 2 ~v2_x9_x15 6 v7_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 767: p 748 143 +
+  ConstraintId 749: 2 ~v2_x9_x15 5 ~v5_x16_x20 6 v7_x9_x20 >= 1
+line 768: p 749 s
+  ConstraintId 750: 1 ~v2_x9_x15 1 ~v5_x16_x20 1 v7_x9_x20 >= 1
+line 769: u 1 ~v2_x9_x15 1 ~v5_x16_x20 1 v7_x9_x20  >= 1;
+  ConstraintId 751: 1 ~v2_x9_x15 1 ~v5_x16_x20 1 v7_x9_x20 >= 1
+line 770: p 161 86 +
+  ConstraintId 752: 5 v3_x9_x15 8 ~v8_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 771: p 752 2 d s
+  ConstraintId 753: 3 v3_x9_x15 3 ~v8_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 772: u 1 v3_x9_x15 1 v6_x16_x20 1 ~v8_x9_x20  >= 1;
+  ConstraintId 754: 1 v3_x9_x15 1 v6_x16_x20 1 ~v8_x9_x20 >= 1
+line 773: p 160 85 +
+  ConstraintId 755: 3 ~v3_x9_x15 6 v7_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 774: p 755 141 +
+  ConstraintId 756: 3 ~v3_x9_x15 4 ~v4_x16_x20 6 v7_x9_x20 >= 1
+line 775: p 756 s
+  ConstraintId 757: 1 ~v3_x9_x15 1 ~v4_x16_x20 1 v7_x9_x20 >= 1
+line 776: u 1 ~v3_x9_x15 1 ~v4_x16_x20 1 v7_x9_x20  >= 1;
+  ConstraintId 758: 1 ~v3_x9_x15 1 ~v4_x16_x20 1 v7_x9_x20 >= 1
+line 777: p 161 88 +
+  ConstraintId 759: 4 v4_x9_x15 8 ~v8_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 778: p 759 144 +
+  ConstraintId 760: 4 v4_x9_x15 1 v5_x16_x20 8 ~v8_x9_x20 >= 1
+line 779: p 760 2 d s
+  ConstraintId 761: 1 v4_x9_x15 1 v5_x16_x20 1 ~v8_x9_x20 >= 1
+line 780: u 1 v4_x9_x15 1 v5_x16_x20 1 ~v8_x9_x20  >= 1;
+  ConstraintId 762: 1 v4_x9_x15 1 v5_x16_x20 1 ~v8_x9_x20 >= 1
+line 781: p 160 87 +
+  ConstraintId 763: 4 ~v4_x9_x15 6 v7_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 782: p 763 139 +
+  ConstraintId 764: 3 ~v3_x16_x20 4 ~v4_x9_x15 6 v7_x9_x20 >= 1
+line 783: p 764 s
+  ConstraintId 765: 1 ~v3_x16_x20 1 ~v4_x9_x15 1 v7_x9_x20 >= 1
+line 784: u 1 ~v4_x9_x15 1 ~v3_x16_x20 1 v7_x9_x20  >= 1;
+  ConstraintId 766: 1 ~v3_x16_x20 1 ~v4_x9_x15 1 v7_x9_x20 >= 1
+line 785: p 161 90 +
+  ConstraintId 767: 3 v5_x9_x15 8 ~v8_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 786: p 767 142 +
+  ConstraintId 768: 2 v4_x16_x20 3 v5_x9_x15 8 ~v8_x9_x20 >= 1
+line 787: p 768 2 d s
+  ConstraintId 769: 1 v4_x16_x20 1 v5_x9_x15 1 ~v8_x9_x20 >= 1
+line 788: u 1 v5_x9_x15 1 v4_x16_x20 1 ~v8_x9_x20  >= 1;
+  ConstraintId 770: 1 v4_x16_x20 1 v5_x9_x15 1 ~v8_x9_x20 >= 1
+line 789: p 160 89 +
+  ConstraintId 771: 5 ~v5_x9_x15 6 v7_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 790: p 771 137 +
+  ConstraintId 772: 2 ~v2_x16_x20 5 ~v5_x9_x15 6 v7_x9_x20 >= 1
+line 791: p 772 s
+  ConstraintId 773: 1 ~v2_x16_x20 1 ~v5_x9_x15 1 v7_x9_x20 >= 1
+line 792: u 1 ~v5_x9_x15 1 ~v2_x16_x20 1 v7_x9_x20  >= 1;
+  ConstraintId 774: 1 ~v2_x16_x20 1 ~v5_x9_x15 1 v7_x9_x20 >= 1
+line 793: p 161 92 +
+  ConstraintId 775: 2 v6_x9_x15 8 ~v8_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 794: p 775 140 +
+  ConstraintId 776: 3 v3_x16_x20 2 v6_x9_x15 8 ~v8_x9_x20 >= 1
+line 795: p 776 2 d s
+  ConstraintId 777: 1 v3_x16_x20 1 v6_x9_x15 1 ~v8_x9_x20 >= 1
+line 796: u 1 v6_x9_x15 1 v3_x16_x20 1 ~v8_x9_x20  >= 1;
+  ConstraintId 778: 1 v3_x16_x20 1 v6_x9_x15 1 ~v8_x9_x20 >= 1
+line 797: p 160 91 +
+  ConstraintId 779: 6 ~v6_x9_x15 6 v7_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 798: p 779 135 +
+  ConstraintId 780: 1 ~v1_x16_x20 6 ~v6_x9_x15 6 v7_x9_x20 >= 1
+line 799: p 780 s
+  ConstraintId 781: 1 ~v1_x16_x20 1 ~v6_x9_x15 1 v7_x9_x20 >= 1
+line 800: u 1 ~v6_x9_x15 1 ~v1_x16_x20 1 v7_x9_x20  >= 1;
+  ConstraintId 782: 1 ~v1_x16_x20 1 ~v6_x9_x15 1 v7_x9_x20 >= 1
+line 801: p 161 94 +
+  ConstraintId 783: 1 v7_x9_x15 8 ~v8_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 2
+line 802: p 783 138 +
+  ConstraintId 784: 4 v2_x16_x20 1 v7_x9_x15 8 ~v8_x9_x20 >= 1
+line 803: p 784 2 d s
+  ConstraintId 785: 1 v2_x16_x20 1 v7_x9_x15 1 ~v8_x9_x20 >= 1
+line 804: u 1 v7_x9_x15 1 v2_x16_x20 1 ~v8_x9_x20  >= 1;
+  ConstraintId 786: 1 v2_x16_x20 1 v7_x9_x15 1 ~v8_x9_x20 >= 1
+line 805: p 160 93 +
+  ConstraintId 787: 7 ~v7_x9_x15 6 v7_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 806: p 787 s
+  ConstraintId 788: 6 ~v7_x9_x15 6 v7_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 6
+line 807: u 1 ~v7_x9_x15 1 ~v0_x16_x20 1 v7_x9_x20  >= 1;
+  ConstraintId 789: 1 ~v0_x16_x20 1 ~v7_x9_x15 1 v7_x9_x20 >= 1
+line 808: p 161 136 +
+  ConstraintId 790: 5 v1_x16_x20 8 ~v8_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 8
+line 809: p 790 2 d s
+  ConstraintId 791: 3 v1_x16_x20 4 ~v8_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 4
+line 810: u 1 v8_x9_x15 1 v1_x16_x20 1 ~v8_x9_x20  >= 1;
+  ConstraintId 792: 1 v1_x16_x20 1 v8_x9_x15 1 ~v8_x9_x20 >= 1
+line 811: p 162 85 +
+  ConstraintId 793: 3 ~v3_x9_x15 5 v8_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 812: p 793 143 +
+  ConstraintId 794: 3 ~v3_x9_x15 5 ~v5_x16_x20 5 v8_x9_x20 >= 1
+line 813: p 794 s
+  ConstraintId 795: 1 ~v3_x9_x15 1 ~v5_x16_x20 1 v8_x9_x20 >= 1
+line 814: u 1 ~v3_x9_x15 1 ~v5_x16_x20 1 v8_x9_x20  >= 1;
+  ConstraintId 796: 1 ~v3_x9_x15 1 ~v5_x16_x20 1 v8_x9_x20 >= 1
+line 815: p 163 88 +
+  ConstraintId 797: 4 v4_x9_x15 9 ~v9_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 816: p 797 2 d s
+  ConstraintId 798: 2 v4_x9_x15 3 ~v9_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 817: u 1 v4_x9_x15 1 v6_x16_x20 1 ~v9_x9_x20  >= 1;
+  ConstraintId 799: 1 v4_x9_x15 1 v6_x16_x20 1 ~v9_x9_x20 >= 1
+line 818: p 162 87 +
+  ConstraintId 800: 4 ~v4_x9_x15 5 v8_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 819: p 800 141 +
+  ConstraintId 801: 4 ~v4_x9_x15 4 ~v4_x16_x20 5 v8_x9_x20 >= 1
+line 820: p 801 s
+  ConstraintId 802: 1 ~v4_x9_x15 1 ~v4_x16_x20 1 v8_x9_x20 >= 1
+line 821: u 1 ~v4_x9_x15 1 ~v4_x16_x20 1 v8_x9_x20  >= 1;
+  ConstraintId 803: 1 ~v4_x9_x15 1 ~v4_x16_x20 1 v8_x9_x20 >= 1
+line 822: p 163 90 +
+  ConstraintId 804: 3 v5_x9_x15 9 ~v9_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 823: p 804 144 +
+  ConstraintId 805: 3 v5_x9_x15 1 v5_x16_x20 9 ~v9_x9_x20 >= 1
+line 824: p 805 2 d s
+  ConstraintId 806: 1 v5_x9_x15 1 v5_x16_x20 1 ~v9_x9_x20 >= 1
+line 825: u 1 v5_x9_x15 1 v5_x16_x20 1 ~v9_x9_x20  >= 1;
+  ConstraintId 807: 1 v5_x9_x15 1 v5_x16_x20 1 ~v9_x9_x20 >= 1
+line 826: p 162 89 +
+  ConstraintId 808: 5 ~v5_x9_x15 5 v8_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 827: p 808 139 +
+  ConstraintId 809: 3 ~v3_x16_x20 5 ~v5_x9_x15 5 v8_x9_x20 >= 1
+line 828: p 809 s
+  ConstraintId 810: 1 ~v3_x16_x20 1 ~v5_x9_x15 1 v8_x9_x20 >= 1
+line 829: u 1 ~v5_x9_x15 1 ~v3_x16_x20 1 v8_x9_x20  >= 1;
+  ConstraintId 811: 1 ~v3_x16_x20 1 ~v5_x9_x15 1 v8_x9_x20 >= 1
+line 830: p 163 92 +
+  ConstraintId 812: 2 v6_x9_x15 9 ~v9_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 831: p 812 142 +
+  ConstraintId 813: 2 v4_x16_x20 2 v6_x9_x15 9 ~v9_x9_x20 >= 1
+line 832: p 813 2 d s
+  ConstraintId 814: 1 v4_x16_x20 1 v6_x9_x15 1 ~v9_x9_x20 >= 1
+line 833: u 1 v6_x9_x15 1 v4_x16_x20 1 ~v9_x9_x20  >= 1;
+  ConstraintId 815: 1 v4_x16_x20 1 v6_x9_x15 1 ~v9_x9_x20 >= 1
+line 834: p 162 91 +
+  ConstraintId 816: 6 ~v6_x9_x15 5 v8_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 835: p 816 137 +
+  ConstraintId 817: 2 ~v2_x16_x20 6 ~v6_x9_x15 5 v8_x9_x20 >= 1
+line 836: p 817 s
+  ConstraintId 818: 1 ~v2_x16_x20 1 ~v6_x9_x15 1 v8_x9_x20 >= 1
+line 837: u 1 ~v6_x9_x15 1 ~v2_x16_x20 1 v8_x9_x20  >= 1;
+  ConstraintId 819: 1 ~v2_x16_x20 1 ~v6_x9_x15 1 v8_x9_x20 >= 1
+line 838: p 163 94 +
+  ConstraintId 820: 1 v7_x9_x15 9 ~v9_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 839: p 820 140 +
+  ConstraintId 821: 3 v3_x16_x20 1 v7_x9_x15 9 ~v9_x9_x20 >= 1
+line 840: p 821 2 d s
+  ConstraintId 822: 1 v3_x16_x20 1 v7_x9_x15 1 ~v9_x9_x20 >= 1
+line 841: u 1 v7_x9_x15 1 v3_x16_x20 1 ~v9_x9_x20  >= 1;
+  ConstraintId 823: 1 v3_x16_x20 1 v7_x9_x15 1 ~v9_x9_x20 >= 1
+line 842: p 162 93 +
+  ConstraintId 824: 7 ~v7_x9_x15 5 v8_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 5
+line 843: p 824 135 +
+  ConstraintId 825: 1 ~v1_x16_x20 7 ~v7_x9_x15 5 v8_x9_x20 >= 1
+line 844: p 825 s
+  ConstraintId 826: 1 ~v1_x16_x20 1 ~v7_x9_x15 1 v8_x9_x20 >= 1
+line 845: u 1 ~v7_x9_x15 1 ~v1_x16_x20 1 v8_x9_x20  >= 1;
+  ConstraintId 827: 1 ~v1_x16_x20 1 ~v7_x9_x15 1 v8_x9_x20 >= 1
+line 846: p 163 138 +
+  ConstraintId 828: 4 v2_x16_x20 9 ~v9_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 8
+line 847: p 828 2 d s
+  ConstraintId 829: 2 v2_x16_x20 4 ~v9_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 4
+line 848: u 1 v8_x9_x15 1 v2_x16_x20 1 ~v9_x9_x20  >= 1;
+  ConstraintId 830: 1 v2_x16_x20 1 v8_x9_x15 1 ~v9_x9_x20 >= 1
+line 849: p 164 87 +
+  ConstraintId 831: 4 ~v4_x9_x15 4 v9_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 850: p 831 143 +
+  ConstraintId 832: 4 ~v4_x9_x15 5 ~v5_x16_x20 4 v9_x9_x20 >= 1
+line 851: p 832 s
+  ConstraintId 833: 1 ~v4_x9_x15 1 ~v5_x16_x20 1 v9_x9_x20 >= 1
+line 852: u 1 ~v4_x9_x15 1 ~v5_x16_x20 1 v9_x9_x20  >= 1;
+  ConstraintId 834: 1 ~v4_x9_x15 1 ~v5_x16_x20 1 v9_x9_x20 >= 1
+line 853: p 165 90 +
+  ConstraintId 835: 3 v5_x9_x15 10 ~v10_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 854: p 835 2 d s
+  ConstraintId 836: 2 v5_x9_x15 3 ~v10_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 855: u 1 v5_x9_x15 1 v6_x16_x20 1 ~v10_x9_x20  >= 1;
+  ConstraintId 837: 1 v5_x9_x15 1 v6_x16_x20 1 ~v10_x9_x20 >= 1
+line 856: p 164 89 +
+  ConstraintId 838: 5 ~v5_x9_x15 4 v9_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 857: p 838 141 +
+  ConstraintId 839: 4 ~v4_x16_x20 5 ~v5_x9_x15 4 v9_x9_x20 >= 1
+line 858: p 839 s
+  ConstraintId 840: 1 ~v4_x16_x20 1 ~v5_x9_x15 1 v9_x9_x20 >= 1
+line 859: u 1 ~v5_x9_x15 1 ~v4_x16_x20 1 v9_x9_x20  >= 1;
+  ConstraintId 841: 1 ~v4_x16_x20 1 ~v5_x9_x15 1 v9_x9_x20 >= 1
+line 860: p 165 92 +
+  ConstraintId 842: 2 v6_x9_x15 10 ~v10_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 861: p 842 144 +
+  ConstraintId 843: 1 v5_x16_x20 2 v6_x9_x15 10 ~v10_x9_x20 >= 1
+line 862: p 843 2 d s
+  ConstraintId 844: 1 v5_x16_x20 1 v6_x9_x15 1 ~v10_x9_x20 >= 1
+line 863: u 1 v6_x9_x15 1 v5_x16_x20 1 ~v10_x9_x20  >= 1;
+  ConstraintId 845: 1 v5_x16_x20 1 v6_x9_x15 1 ~v10_x9_x20 >= 1
+line 864: p 164 91 +
+  ConstraintId 846: 6 ~v6_x9_x15 4 v9_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 865: p 846 139 +
+  ConstraintId 847: 3 ~v3_x16_x20 6 ~v6_x9_x15 4 v9_x9_x20 >= 1
+line 866: p 847 s
+  ConstraintId 848: 1 ~v3_x16_x20 1 ~v6_x9_x15 1 v9_x9_x20 >= 1
+line 867: u 1 ~v6_x9_x15 1 ~v3_x16_x20 1 v9_x9_x20  >= 1;
+  ConstraintId 849: 1 ~v3_x16_x20 1 ~v6_x9_x15 1 v9_x9_x20 >= 1
+line 868: p 165 94 +
+  ConstraintId 850: 1 v7_x9_x15 10 ~v10_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 4
+line 869: p 850 142 +
+  ConstraintId 851: 2 v4_x16_x20 1 v7_x9_x15 10 ~v10_x9_x20 >= 1
+line 870: p 851 2 d s
+  ConstraintId 852: 1 v4_x16_x20 1 v7_x9_x15 1 ~v10_x9_x20 >= 1
+line 871: u 1 v7_x9_x15 1 v4_x16_x20 1 ~v10_x9_x20  >= 1;
+  ConstraintId 853: 1 v4_x16_x20 1 v7_x9_x15 1 ~v10_x9_x20 >= 1
+line 872: p 164 93 +
+  ConstraintId 854: 7 ~v7_x9_x15 4 v9_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 4
+line 873: p 854 137 +
+  ConstraintId 855: 2 ~v2_x16_x20 7 ~v7_x9_x15 4 v9_x9_x20 >= 1
+line 874: p 855 s
+  ConstraintId 856: 1 ~v2_x16_x20 1 ~v7_x9_x15 1 v9_x9_x20 >= 1
+line 875: u 1 ~v7_x9_x15 1 ~v2_x16_x20 1 v9_x9_x20  >= 1;
+  ConstraintId 857: 1 ~v2_x16_x20 1 ~v7_x9_x15 1 v9_x9_x20 >= 1
+line 876: p 165 140 +
+  ConstraintId 858: 3 v3_x16_x20 10 ~v10_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 8
+line 877: p 858 2 d s
+  ConstraintId 859: 2 v3_x16_x20 4 ~v10_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 4
+line 878: u 1 v8_x9_x15 1 v3_x16_x20 1 ~v10_x9_x20  >= 1;
+  ConstraintId 860: 1 v3_x16_x20 1 v8_x9_x15 1 ~v10_x9_x20 >= 1
+line 879: p 166 89 +
+  ConstraintId 861: 5 ~v5_x9_x15 3 v10_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 880: p 861 143 +
+  ConstraintId 862: 5 ~v5_x9_x15 5 ~v5_x16_x20 3 v10_x9_x20 >= 1
+line 881: p 862 s
+  ConstraintId 863: 1 ~v5_x9_x15 1 ~v5_x16_x20 1 v10_x9_x20 >= 1
+line 882: u 1 ~v5_x9_x15 1 ~v5_x16_x20 1 v10_x9_x20  >= 1;
+  ConstraintId 864: 1 ~v5_x9_x15 1 ~v5_x16_x20 1 v10_x9_x20 >= 1
+line 883: p 167 92 +
+  ConstraintId 865: 2 v6_x9_x15 11 ~v11_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 884: p 865 2 d s
+  ConstraintId 866: 1 v6_x9_x15 3 ~v11_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 885: u 1 v6_x9_x15 1 v6_x16_x20 1 ~v11_x9_x20  >= 1;
+  ConstraintId 867: 1 v6_x9_x15 1 v6_x16_x20 1 ~v11_x9_x20 >= 1
+line 886: p 166 91 +
+  ConstraintId 868: 6 ~v6_x9_x15 3 v10_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 887: p 868 141 +
+  ConstraintId 869: 4 ~v4_x16_x20 6 ~v6_x9_x15 3 v10_x9_x20 >= 1
+line 888: p 869 s
+  ConstraintId 870: 1 ~v4_x16_x20 1 ~v6_x9_x15 1 v10_x9_x20 >= 1
+line 889: u 1 ~v6_x9_x15 1 ~v4_x16_x20 1 v10_x9_x20  >= 1;
+  ConstraintId 871: 1 ~v4_x16_x20 1 ~v6_x9_x15 1 v10_x9_x20 >= 1
+line 890: p 167 94 +
+  ConstraintId 872: 1 v7_x9_x15 11 ~v11_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 5
+line 891: p 872 144 +
+  ConstraintId 873: 1 v5_x16_x20 1 v7_x9_x15 11 ~v11_x9_x20 >= 1
+line 892: p 873 2 d s
+  ConstraintId 874: 1 v5_x16_x20 1 v7_x9_x15 1 ~v11_x9_x20 >= 1
+line 893: u 1 v7_x9_x15 1 v5_x16_x20 1 ~v11_x9_x20  >= 1;
+  ConstraintId 875: 1 v5_x16_x20 1 v7_x9_x15 1 ~v11_x9_x20 >= 1
+line 894: p 166 93 +
+  ConstraintId 876: 7 ~v7_x9_x15 3 v10_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 3
+line 895: p 876 139 +
+  ConstraintId 877: 3 ~v3_x16_x20 7 ~v7_x9_x15 3 v10_x9_x20 >= 1
+line 896: p 877 s
+  ConstraintId 878: 1 ~v3_x16_x20 1 ~v7_x9_x15 1 v10_x9_x20 >= 1
+line 897: u 1 ~v7_x9_x15 1 ~v3_x16_x20 1 v10_x9_x20  >= 1;
+  ConstraintId 879: 1 ~v3_x16_x20 1 ~v7_x9_x15 1 v10_x9_x20 >= 1
+line 898: p 167 142 +
+  ConstraintId 880: 2 v4_x16_x20 11 ~v11_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 8
+line 899: p 880 2 d s
+  ConstraintId 881: 1 v4_x16_x20 4 ~v11_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 4
+line 900: u 1 v8_x9_x15 1 v4_x16_x20 1 ~v11_x9_x20  >= 1;
+  ConstraintId 882: 1 v4_x16_x20 1 v8_x9_x15 1 ~v11_x9_x20 >= 1
+line 901: p 168 91 +
+  ConstraintId 883: 6 ~v6_x9_x15 2 v11_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 902: p 883 143 +
+  ConstraintId 884: 5 ~v5_x16_x20 6 ~v6_x9_x15 2 v11_x9_x20 >= 1
+line 903: p 884 s
+  ConstraintId 885: 1 ~v5_x16_x20 1 ~v6_x9_x15 1 v11_x9_x20 >= 1
+line 904: u 1 ~v6_x9_x15 1 ~v5_x16_x20 1 v11_x9_x20  >= 1;
+  ConstraintId 886: 1 ~v5_x16_x20 1 ~v6_x9_x15 1 v11_x9_x20 >= 1
+line 905: p 169 94 +
+  ConstraintId 887: 1 v7_x9_x15 12 ~v12_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 6
+line 906: p 887 2 d s
+  ConstraintId 888: 1 v7_x9_x15 3 ~v12_x9_x20 1 x16 1 x17 1 x18 1 x19 1 x20 >= 3
+line 907: u 1 v7_x9_x15 1 v6_x16_x20 1 ~v12_x9_x20  >= 1;
+  ConstraintId 889: 1 v6_x16_x20 1 v7_x9_x15 1 ~v12_x9_x20 >= 1
+line 908: p 168 93 +
+  ConstraintId 890: 7 ~v7_x9_x15 2 v11_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 2
+line 909: p 890 141 +
+  ConstraintId 891: 4 ~v4_x16_x20 7 ~v7_x9_x15 2 v11_x9_x20 >= 1
+line 910: p 891 s
+  ConstraintId 892: 1 ~v4_x16_x20 1 ~v7_x9_x15 1 v11_x9_x20 >= 1
+line 911: u 1 ~v7_x9_x15 1 ~v4_x16_x20 1 v11_x9_x20  >= 1;
+  ConstraintId 893: 1 ~v4_x16_x20 1 ~v7_x9_x15 1 v11_x9_x20 >= 1
+line 912: p 169 144 +
+  ConstraintId 894: 1 v5_x16_x20 12 ~v12_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 8
+line 913: p 894 2 d s
+  ConstraintId 895: 1 v5_x16_x20 4 ~v12_x9_x20 1 x9 1 x10 1 x11 1 x12 1 x13 1 x14 1 x15 >= 4
+line 914: u 1 v8_x9_x15 1 v5_x16_x20 1 ~v12_x9_x20  >= 1;
+  ConstraintId 896: 1 v5_x16_x20 1 v8_x9_x15 1 ~v12_x9_x20 >= 1
+line 915: p 170 93 +
+  ConstraintId 897: 7 ~v7_x9_x15 1 v12_x9_x20 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 1
+line 916: p 897 143 +
+  ConstraintId 898: 5 ~v5_x16_x20 7 ~v7_x9_x15 1 v12_x9_x20 >= 1
+line 917: p 898 s
+  ConstraintId 899: 1 ~v5_x16_x20 1 ~v7_x9_x15 1 v12_x9_x20 >= 1
+line 918: u 1 ~v7_x9_x15 1 ~v5_x16_x20 1 v12_x9_x20  >= 1;
+  ConstraintId 900: 1 ~v5_x16_x20 1 ~v7_x9_x15 1 v12_x9_x20 >= 1
+line 919: u 1 v8_x9_x15 1 v6_x16_x20 1 ~v13_x9_x20  >= 1;
+  ConstraintId 901: 1 v6_x16_x20 1 v8_x9_x15 1 ~v13_x9_x20 >= 1
+line 920: * ==============================================================
+line 921: * Constraining through linking variables:
+line 922: p 153 13 + s
+  ConstraintId 902: 1 ~v4_x9_x20 >= 1
+line 923: u 1 ~v4_x9_x20  >= 1;
+  ConstraintId 903: 1 ~v4_x9_x20 >= 1
+line 924: p 155 13 + s
+  ConstraintId 904: 2 ~v5_x9_x20 >= 2
+line 925: u 1 ~v5_x9_x20  >= 1;
+  ConstraintId 905: 1 ~v5_x9_x20 >= 1
+line 926: p 157 13 + s
+  ConstraintId 906: 3 ~v6_x9_x20 >= 3
+line 927: u 1 ~v6_x9_x20  >= 1;
+  ConstraintId 907: 1 ~v6_x9_x20 >= 1
+line 928: p 159 13 + s
+  ConstraintId 908: 4 ~v7_x9_x20 >= 4
+line 929: u 1 ~v7_x9_x20  >= 1;
+  ConstraintId 909: 1 ~v7_x9_x20 >= 1
+line 930: p 161 13 + s
+  ConstraintId 910: 5 ~v8_x9_x20 >= 5
+line 931: u 1 ~v8_x9_x20  >= 1;
+  ConstraintId 911: 1 ~v8_x9_x20 >= 1
+line 932: p 163 13 + s
+  ConstraintId 912: 6 ~v9_x9_x20 >= 6
+line 933: u 1 ~v9_x9_x20  >= 1;
+  ConstraintId 913: 1 ~v9_x9_x20 >= 1
+line 934: p 165 13 + s
+  ConstraintId 914: 7 ~v10_x9_x20 >= 7
+line 935: u 1 ~v10_x9_x20  >= 1;
+  ConstraintId 915: 1 ~v10_x9_x20 >= 1
+line 936: p 167 13 + s
+  ConstraintId 916: 8 ~v11_x9_x20 >= 8
+line 937: u 1 ~v11_x9_x20  >= 1;
+  ConstraintId 917: 1 ~v11_x9_x20 >= 1
+line 938: p 169 13 + s
+  ConstraintId 918: 9 ~v12_x9_x20 >= 9
+line 939: u 1 ~v12_x9_x20  >= 1;
+  ConstraintId 919: 1 ~v12_x9_x20 >= 1
+line 940: * ==============================================================
+line 941: u 1 v1_x9_x12  >= 1;
+  ConstraintId 920: 1 v1_x9_x12 >= 1
+line 942: * ==============================================================
+line 943: * New model found:
+line 944: o x1 ~x2 ~x3 x4 x5 x6 ~x7 x8 ~x9 x10 ~x11 x12 ~x13 ~x14 ~x15 ~x16 ~x17 ~x18 x19 ~x20 v0_x9_x20 ~v13_x9_x20 v0_x9_x15 ~v8_x9_x15 v0_x9_x12 ~v5_x9_x12 v0_x9_x11 ~v4_x9_x11 v0_x9_x10 ~v3_x9_x10 y31 ~y32 y33 ~y34 v1_x9_x10 ~v2_x9_x10 y37 ~y38 v1_x9_x11 ~v2_x9_x11 ~v3_x9_x11 y42 ~y43 v1_x9_x12 v2_x9_x12 ~v3_x9_x12 ~v4_x9_x12 v0_x13_x15 ~v4_x13_x15 v0_x13_x14 ~v3_x13_x14 y52 ~y53 y54 ~y55 ~v1_x13_x14 ~v2_x13_x14 y58 ~y59 ~v1_x13_x15 ~v2_x13_x15 ~v3_x13_x15 v1_x9_x15 v2_x9_x15 ~v3_x9_x15 ~v4_x9_x15 ~v5_x9_x15 ~v6_x9_x15 ~v7_x9_x15 v0_x16_x20 ~v6_x16_x20 v0_x16_x18 ~v4_x16_x18 v0_x16_x17 ~v3_x16_x17 y76 ~y77 y78 ~y79 ~v1_x16_x17 ~v2_x16_x17 y82 ~y83 ~v1_x16_x18 ~v2_x16_x18 ~v3_x16_x18 v0_x19_x20 ~v3_x19_x20 y89 ~y90 y91 ~y92 v1_x19_x20 ~v2_x19_x20 v1_x16_x20 ~v2_x16_x20 ~v3_x16_x20 ~v4_x16_x20 ~v5_x16_x20 v1_x9_x20 v2_x9_x20 v3_x9_x20 ~v4_x9_x20 ~v5_x9_x20 ~v6_x9_x20 ~v7_x9_x20 ~v8_x9_x20 ~v9_x9_x20 ~v10_x9_x20 ~v11_x9_x20 ~v12_x9_x20
+  ConstraintId 921: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 10
+line 945: * ==============================================================
+line 946: * Constraining through linking variables:
+line 947: p 151 921 + s
+  ConstraintId 922: 1 ~v3_x9_x20 >= 1
+line 948: u 1 ~v3_x9_x20  >= 1;
+  ConstraintId 923: 1 ~v3_x9_x20 >= 1
+line 949: * ==============================================================
+line 950: u 1 v1_x16_x20  >= 1;
+  ConstraintId 924: 1 v1_x16_x20 >= 1
+line 951: u 1 v1_x19_x20 1 ~x5  >= 1;
+  ConstraintId 925: 1 v1_x19_x20 1 ~x5 >= 1
+line 952: u 1 v1_x9_x10 1 x2  >= 1;
+  ConstraintId 926: 1 v1_x9_x10 1 x2 >= 1
+line 953: * ==============================================================
+line 954: * New model found:
+line 955: o ~x1 ~x2 x3 x4 x5 ~x6 x7 ~x8 x9 ~x10 ~x11 ~x12 ~x13 ~x14 ~x15 ~x16 ~x17 ~x18 ~x19 x20 v0_x9_x20 ~v13_x9_x20 v0_x9_x15 ~v8_x9_x15 v0_x9_x12 ~v5_x9_x12 v0_x9_x11 ~v4_x9_x11 v0_x9_x10 ~v3_x9_x10 y31 ~y32 y33 ~y34 v1_x9_x10 ~v2_x9_x10 y37 ~y38 v1_x9_x11 ~v2_x9_x11 ~v3_x9_x11 y42 ~y43 v1_x9_x12 ~v2_x9_x12 ~v3_x9_x12 ~v4_x9_x12 v0_x13_x15 ~v4_x13_x15 v0_x13_x14 ~v3_x13_x14 y52 ~y53 y54 ~y55 ~v1_x13_x14 ~v2_x13_x14 y58 ~y59 ~v1_x13_x15 ~v2_x13_x15 ~v3_x13_x15 v1_x9_x15 ~v2_x9_x15 ~v3_x9_x15 ~v4_x9_x15 ~v5_x9_x15 ~v6_x9_x15 ~v7_x9_x15 v0_x16_x20 ~v6_x16_x20 v0_x16_x18 ~v4_x16_x18 v0_x16_x17 ~v3_x16_x17 y76 ~y77 y78 ~y79 ~v1_x16_x17 ~v2_x16_x17 y82 ~y83 ~v1_x16_x18 ~v2_x16_x18 ~v3_x16_x18 v0_x19_x20 ~v3_x19_x20 y89 ~y90 y91 ~y92 v1_x19_x20 ~v2_x19_x20 v1_x16_x20 ~v2_x16_x20 ~v3_x16_x20 ~v4_x16_x20 ~v5_x16_x20 v1_x9_x20 v2_x9_x20 ~v3_x9_x20 ~v4_x9_x20 ~v5_x9_x20 ~v6_x9_x20 ~v7_x9_x20 ~v8_x9_x20 ~v9_x9_x20 ~v10_x9_x20 ~v11_x9_x20 ~v12_x9_x20
+  ConstraintId 927: 1 ~x9 1 ~x10 1 ~x11 1 ~x12 1 ~x13 1 ~x14 1 ~x15 1 ~x16 1 ~x17 1 ~x18 1 ~x19 1 ~x20 >= 11
+line 956: * ==============================================================
+line 957: * Constraining through linking variables:
+line 958: p 149 927 + s
+  ConstraintId 928: 1 ~v2_x9_x20 >= 1
+line 959: u 1 ~v2_x9_x20  >= 1;
+  ConstraintId 929: 1 ~v2_x9_x20 >= 1
+line 960: * ==============================================================
+line 961: u >= 1;
+  ConstraintId 930: >= 1
+line 962: c 930
+=== end trace ===
+
+Verification succeeded.

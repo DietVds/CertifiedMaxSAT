@@ -16,14 +16,14 @@
 #include "SolverTypes.h"
 
 //=================================================================================================
-// Prooflogger -- reverse polish notation class:
+// Prooflogger -- VeriPB operation classes:
 
-class ReversePolishNotation {
+class VeriPBOperation {
 public:
     virtual std::string apply(int constraint_id_at_start_of_printing){};
 };
 
-class Operand : public ReversePolishNotation {
+class Operand : public VeriPBOperation {
 public:
     Operand(int value);
 
@@ -32,17 +32,24 @@ public:
     int value;
 
     std::string apply(int constraint_id_at_start_of_printing) override;
-
 };
 
-class Operation : public ReversePolishNotation {
+class RUP : public VeriPBOperation {
 public:
-    Operation(ReversePolishNotation* a, ReversePolishNotation* b, const char* operant);
+    RUP(vec<Lit>& clause);
+
+    // Clause
+    //
+    vec<Lit> clause;
+};
+
+class CP1 : public VeriPBOperation {
+public:
+    CP1(VeriPBOperation* a, const char* operant);
 
     // Operands
     //
-    ReversePolishNotation* a;
-    ReversePolishNotation* b;
+    VeriPBOperation* a;
 
     // Operant
     //
@@ -53,6 +60,23 @@ public:
     std::string apply(int constraint_id_at_start_of_printing) override;
 };
 
+class CP2 : public VeriPBOperation {
+public:
+    CP2(VeriPBOperation* a, VeriPBOperation* b, const char* operant);
+
+    // Operands
+    //
+    VeriPBOperation* a;
+    VeriPBOperation* b;
+
+    // Operant
+    //
+    std::string operant;
+
+    // Apply
+    //
+    std::string apply(int constraint_id_at_start_of_printing) override;
+};
 
 //=================================================================================================
 // Prooflogger -- the main class:
@@ -71,15 +95,10 @@ public:
     int constraint_counter = 0;
     int last_bound_constraint_id;
 
-    // Cardinality derivation
+    // Tree derivation
     //
-    int cardinality_constraint_counter = 0;
-    vec<ReversePolishNotation*> cardinality_derivation;
-
-    // Simplified constraint store
-    // 
-    bool simplify = false;
-    std::map<int, int> unit_store;
+    int tree_constraint_counter = 0;
+    vec<VeriPBOperation*> tree_derivation;
 
     // Meaningful variable names
     bool meaningful_names = false;
@@ -87,17 +106,19 @@ public:
     std::map<int, int> meaningful_name_UB;
     std::map<int, int> meaningful_name_n;
 
-    // Constraint and coeff store
+    // Constraint and weight stores
     //
-    std::map<int, int> constraint_store;
-    std::map<int, int> coeff_store;
+    std::map<int, int> C1_store;
+    std::map<int, int> C1_weight_store;
+    std::map<int, int> C2_store;
+    std::map<int, int> C2_weight_store;
 
     // Proof file
     std::stringstream proof;
     const char *proof_file_name         = "maxsat_proof.pbp";
     void set_proof_name                 (const char* name) {proof_file_name = name;};
     void write_proof_file               ();
-    void write_cardinality_derivation   ();
+    void write_tree_derivation          ();
     void write_proof_header             (int nbclause);
     void write_comment                  (const char* comment);
     void write_contradiction            ();
@@ -111,9 +132,11 @@ public:
     void write_linkingVar_clause        (vec<Lit>& clause);
     void write_bound_update             (vec<lbool>& model); 
     void write_unit_sub_red             (vec<Lit>& definition);
-    void write_C2_sum                   (vec<int>& constraint_ids, int third, int sigma, int from, int to);
-    int write_C_sub_red                 (vec<Lit>& definition, int sigma, int from, int to);
-    void delete_RPN_tree                (ReversePolishNotation* node); 
+    void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
+    void write_C1_sub_red_cardinality   (int var, int sigma, int from, int to);
+    void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
+    void write_C2_sub_red_cardinality   (int var, int sigma, int from, int to);
+    void delete_RPN_tree                (VeriPBOperation* node); 
 
     // OPB file
     std::ofstream OPB_file;
