@@ -32,41 +32,6 @@ std::string Operand::apply(int constraint_id_at_start_of_printing){
 //=================================================================================================
 // Proof file
 
-void Prooflogger::write_proof_file() {
-
-    if(meaningful_names) {
-
-        // Loop over all variables that have a meaningful name
-        std::string proof_string;
-        std::string simplified_name;
-        std::string to_replace;
-        int lb,ub,n;
-        for(std::map<int,int>::iterator it = meaningful_name_LB.begin(); it != meaningful_name_LB.end(); it++) {
-            proof_string = proof.str();
-
-            lb = meaningful_name_LB[it->first];
-            ub = meaningful_name_UB[it->first];
-            n = meaningful_name_n[it->first];
-
-            simplified_name = "v" + std::to_string(n) + "_x" + std::to_string(lb) + "_x" + std::to_string(ub); 
-            to_replace = "y" + std::to_string(it->first+1); 
-
-            // Replace them with their meaningful name
-            proof_string = std::regex_replace(proof_string, std::regex(to_replace), simplified_name);
-
-            // Save as proof
-            proof.str(proof_string);
-        }
-    }
-
-    // Write proof to proof file
-    std::ofstream proof_file(proof_file_name);
-    proof_file << proof.rdbuf();
-
-    // Close
-    proof_file.close();
-}
-
 void Prooflogger::write_tree_derivation() {
     int constraint_counter_at_start_of_derivations = constraint_counter;
     for(int i = 0; i < tree_derivation.size(); i++){
@@ -80,17 +45,17 @@ void Prooflogger::write_tree_derivation() {
             constraint_counter++;
         }
 
-        // Tree recursively free the RPN objects
-        delete_RPN_tree(tree_derivation[i]);
+        // Tree recursively free the tree derivation
+        delete_tree_derivation(tree_derivation[i]);
     }
 }
 
-void Prooflogger::delete_RPN_tree(VeriPBOperation* node) {
+void Prooflogger::delete_tree_derivation(VeriPBOperation* node) {
     if(dynamic_cast<CP1*>(node) != nullptr) {
-        delete_RPN_tree(dynamic_cast<CP1*>(node)->a);
+        delete_tree_derivation(dynamic_cast<CP1*>(node)->a);
     } else if(dynamic_cast<CP2*>(node) != nullptr) {
-        delete_RPN_tree(dynamic_cast<CP2*>(node)->a);
-        delete_RPN_tree(dynamic_cast<CP2*>(node)->b);
+        delete_tree_derivation(dynamic_cast<CP2*>(node)->a);
+        delete_tree_derivation(dynamic_cast<CP2*>(node)->b);
     } 
     delete(node);
 }
@@ -115,7 +80,24 @@ void Prooflogger::write_empty_clause() {
 }
 
 bool Prooflogger::is_aux_var(int var) {
-    return var + 1 > formula_length + n_variables;
+    return var + 1 > n_variables;
+}
+
+std::string Prooflogger::var_name(int var) {
+    std::string name;
+    if(meaningful_names && meaningful_name_UB.find(var) != meaningful_name_UB.end()) {
+        int lb = meaningful_name_LB[var];
+        int ub = meaningful_name_UB[var];
+        int n = meaningful_name_n[var];
+        name = "v" + std::to_string(n) + "_x" + std::to_string(lb) + "_x" + std::to_string(ub); 
+    } else if(is_aux_var(var)) {
+        name = "y";
+        name += std::to_string(var+1);
+    } else {
+        name = "x";
+        name += std::to_string(var+1);
+    } 
+    return name;
 }
 
 void Prooflogger::write_literal(Lit literal) {
@@ -125,28 +107,27 @@ void Prooflogger::write_literal(Lit literal) {
     weight_and_sign += (sign(literal) == 1 ? "~" : "");
 
     // Variable symbol
-    std::string symbol = is_aux_var(var(literal))? "y" : "x"; 
-    symbol += std::to_string(var(literal)+1);
+    std::string name = var_name(var(literal));
 
     // Write
-    proof << weight_and_sign << symbol << " ";
+    proof << weight_and_sign << name << " ";
 }
 
 void Prooflogger::write_literal_assignment(lbool assignment, int var) {
 
     // Sign
-    std::string sign = assignment == l_False ? "~" : "";
+    std::string sign = assignment == l_True? "" : "~";
 
     // Variable symbol
-    std::string symbol = is_aux_var(var)? "y" : "x"; 
-    symbol += std::to_string(var+1);
+    std::string symbol = var_name(var);
 
     // Write
     proof << sign << symbol << " ";
 }
 
 void Prooflogger::write_witness(Lit literal) {
-    proof<< " y" << var(literal)+1 << " -> " << std::to_string(sign(literal) == 0);
+    std::string name = var_name(var(literal));
+    proof<< name << " -> " << std::to_string(sign(literal) == 0);
 }
 
 void Prooflogger::write_clause(vec<Lit>& clause) {
@@ -163,8 +144,10 @@ void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
 void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
     int variable = var(clause[0]);
     int constraint_id = C2_store[variable];
-    proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n";
-    constraint_counter++;
+    if(constraint_id != 0) {
+        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n";
+        constraint_counter++;
+    }
     write_learnt_clause(clause);
 }
 
@@ -177,10 +160,21 @@ void Prooflogger::write_bound_update(vec<lbool>& model) {
     last_bound_constraint_id = ++constraint_counter;
 }
 
-void Prooflogger::write_unit_sub_red(vec<Lit>& definition) {
+void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, int to) {
+
+    if(meaningful_names) {
+
+        // If variable does not already have a meaningful name
+        if(meaningful_name_LB.find(var(definition[0])) == meaningful_name_LB.end()) {
+            meaningful_name_LB[var(definition[0])] = from+1;
+            meaningful_name_UB[var(definition[0])] = to+1;
+            meaningful_name_n[var(definition[0])] = sigma;
+        }
+    }
+
     proof << "red ";
     write_clause(definition);
-    proof << ">= 1;";
+    proof << ">= 1; ";
     write_witness(definition[0]);
     proof << "\n";
     constraint_counter++;
@@ -192,7 +186,9 @@ void Prooflogger::write_C1_sub_red_cardinality(int var, int sigma, int from, int
     for(int i = from; i < to+1; i++) {
         write_literal(~Lit(i));
     }
-    proof << weight << " y" << var+1 << " >= " << weight << "; y" << var+1 << " -> " << 1 << "\n";
+    proof << weight << " " << var_name(var) << " >= " << weight << "; ";
+    write_witness(Lit(var));
+    proof << "\n";
     constraint_counter++;
     C1_store[var] = constraint_counter;
     C1_weight_store[var] = weight;
@@ -204,17 +200,15 @@ void Prooflogger::write_C2_sub_red_cardinality(int var, int sigma, int from, int
     for(int i = from; i < to+1; i++) {
         write_literal(Lit(i));
     }
-    proof << weight << " ~y" << var+1 << " >= " << weight << "; y" << var+1 << " -> " << 0 << "\n";
+    proof << weight << " ~" << var_name(var) << " >= " << weight << "; ";
+    write_witness(~Lit(var));
+    proof << "\n";
     constraint_counter++;
     C2_store[var] = constraint_counter;
     C2_weight_store[var] = weight;
 }
 
 void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
-    /*
-        This method writes the substitution redundancy line for a C1
-        --> it keeps track of meaningful names
-    */
     int first = var(definition[0]);
     int second = var(definition[1]);
     int third = var(definition[2]);
@@ -263,10 +257,6 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
 }
 
 void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
-    /*
-        This method writes the substitution redundancy line for a C2
-        --> it keeps track of meaningful names
-    */
     int first = var(definition[0]);
     int second = var(definition[1]);
     int third = var(definition[2]);
@@ -314,13 +304,14 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     tree_constraint_counter++;
 }
 
+
 //=================================================================================================
 // OPB file
 
-void Prooflogger::write_OPB_header(int nbvar, int nbclause) {
+void Prooflogger::write_OPB_header(int nbvar, int nbsoft, int nbclause) {
     formula_length = nbclause;
-    n_variables = nbvar;
-    OPB_file << "* #variable= " << nbvar+nbclause << " #constraint= " << nbclause << "\n";
+    n_variables = nbvar+nbsoft;
+    OPB_file << "* #variable= " << nbvar+nbsoft << " #constraint= " << nbclause << "\n";
     OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
 }
 
@@ -334,14 +325,12 @@ void Prooflogger::write_minimise(int start_var, int num) {
     }
 }
 
-void Prooflogger::write_OPB_constraint(vec<Lit>& constraint, int weight) {
+void Prooflogger::write_OPB_constraint(vec<Lit>& constraint) {
     for (int i = 0; i < constraint.size(); i++) {
         if (sign(constraint[i]) == 1)
             constraints << "1 ~x" << var(constraint[i]) + 1 << " ";
         else
             constraints << "1 x" << var(constraint[i]) + 1 << " ";
     }
-    constraints << " >= " << weight << " ;\n";
+    constraints << ">= 1;\n";
 }
-
-

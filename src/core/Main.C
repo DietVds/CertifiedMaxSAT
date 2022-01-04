@@ -154,7 +154,7 @@ static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits,
     }
 
     // Write the clause to the OPB file
-    PL.write_OPB_constraint(lits, weight);
+    PL.write_OPB_constraint(lits);
 }
 
 template<class B>
@@ -174,6 +174,7 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
 
     // Read header
     skipWhitespace(in);
+    while(*in == 'c') skipLine(in);
     if (*in == 'p'){
 	     if (match(in, "p wcnf")){ // koshi 10.01.04
             vars    = parseInt(in);
@@ -203,7 +204,7 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
     PL.write_proof_header(clauses);
-    PL.write_OPB_header(vars, clauses);
+    PL.write_OPB_header(vars, out_nbsoft, clauses);
     PL.write_minimise(out_nbvar, out_nbsoft);
 }
 
@@ -251,6 +252,7 @@ void printUsage(char** argv)
     reportf("  -rnd-freq            = <num> [ 0 - 1 ]\n");
     reportf("  -verbosity           = {0,1,2}\n");
     reportf("  -proof-file          = /path/to/proof_file.proof (default: maxsat_proof.pbp)\n");
+    reportf("  -problem-file        = /path/to/problem_file.opb (default: maxsat_problem.opb)\n");
     reportf("  -meaningful_names    = whether or not to assign meaningful names to the auxiliairy variables\n");
     reportf("\n");
 }
@@ -279,11 +281,11 @@ void genCardinals(int from, int to,
 
   // First
   lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-  PL.write_unit_sub_red(lits);
+  PL.write_unit_sub_red(lits, 0, from, to);
 
   // Last
   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-  PL.write_unit_sub_red(lits);
+  PL.write_unit_sub_red(lits, inputSize+1, from, to);
 
 
   if (inputSize > 2) {
@@ -416,6 +418,9 @@ int main(int argc, char** argv)
     // Open OPB file
     PL.open_OPB_file();
 
+    // Open proof file
+    PL.open_proof_file();
+
     reportf("============================[ Problem Statistics ]=============================\n");
     reportf("|                                                                             |\n");
 
@@ -444,7 +449,7 @@ int main(int argc, char** argv)
         reportf("Solved by unit propagation\n");
         if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
         PL.write_empty_clause();
-        PL.write_proof_file();
+        PL.close_proof_file();
         printf("UNSATISFIABLE\n");
         exit(20);
     }
@@ -458,43 +463,41 @@ int main(int argc, char** argv)
     if (ret) { // koshi 09.12.25
       lcnt++;
       int answerNew = 0;
-      for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
-	    if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
+      for (int i = nbvar; i < nbvar+nbsoft; i++) if (S.model[i] == l_True) answerNew++;   // count the number ofunsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinality constraints
-        PL.write_comment("==============================================================");
-        PL.write_comment("First model found:"); 
-        PL.write_bound_update(S.model);
-        PL.write_comment("==============================================================");
-        PL.write_comment("Cardinality encoding:"); 
-	    genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
-        PL.write_comment("==============================================================");
-        PL.write_comment("Cardinality derivation:"); 
-        PL.write_tree_derivation();
-        PL.write_comment("==============================================================");
-        PL.write_comment("Constraining through linking variables:"); 
-	    for (int i = answerNew; i < linkingVar.size()-1; i++) {
-	      lits.clear();
-	      lits.push(~linkingVar[i]);
-          PL.write_linkingVar_clause(lits);
-	      S.addClause(lits);
-	    }
-        PL.write_comment("==============================================================");
-        answer = answerNew;
-    } else { // lcnt > 1 
-        PL.write_comment("==============================================================");
-        PL.write_comment("New model found:"); 
-        PL.write_bound_update(S.model);
-        PL.write_comment("==============================================================");
-        PL.write_comment("Constraining through linking variables:"); 
-	    for (int i = answerNew; i < answer; i++) {
-	      lits.clear();
-	      lits.push(~linkingVar[i]);
-          PL.write_linkingVar_clause(lits);
-	      S.addClause(lits);
-	    }
-        PL.write_comment("==============================================================");
-
-	answer = answerNew;
+          PL.write_comment("==============================================================");
+          PL.write_comment("First model found:"); 
+          PL.write_bound_update(S.model);
+          PL.write_comment("==============================================================");
+          PL.write_comment("Cardinality encoding:"); 
+	       genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
+          PL.write_comment("==============================================================");
+          PL.write_comment("Tree derivation:"); 
+          PL.write_tree_derivation();
+          PL.write_comment("==============================================================");
+          PL.write_comment("Constraining through linking variables:"); 
+	       for (int i = answerNew; i < linkingVar.size()-1; i++) {
+	         lits.clear();
+	         lits.push(~linkingVar[i]);
+             PL.write_linkingVar_clause(lits);
+	         S.addClause(lits);
+	       }
+          PL.write_comment("==============================================================");
+          answer = answerNew;
+      } else { // lcnt > 1 
+          PL.write_comment("==============================================================");
+          PL.write_comment("New model found:"); 
+          PL.write_bound_update(S.model);
+          PL.write_comment("==============================================================");
+          PL.write_comment("Constraining through linking variables:"); 
+	       for (int i = answerNew; i < answer; i++) {
+	           lits.clear();
+	           lits.push(~linkingVar[i]);
+               PL.write_linkingVar_clause(lits);
+	           S.addClause(lits);
+	       }
+          PL.write_comment("==============================================================");
+          answer = answerNew;
       }
       reportf("Current answer = %d\n",answer);
       goto solve;
@@ -515,7 +518,7 @@ int main(int argc, char** argv)
             fprintf(res, "UNSAT\n");
         fclose(res);
     }
-    PL.write_proof_file();
+    PL.close_proof_file();
 
 #ifdef NDEBUG
     exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
