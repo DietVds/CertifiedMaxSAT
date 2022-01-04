@@ -23,9 +23,9 @@ public:
     virtual std::string apply(int constraint_id_at_start_of_printing){};
 };
 
-class Operand : public VeriPBOperation {
+class CPOperand : public VeriPBOperation {
 public:
-    Operand(int value);
+    CPOperand(int value);
 
     // Value
     //
@@ -136,9 +136,9 @@ public:
     void write_bound_update             (vec<lbool>& model); 
     void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
     void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
-    void write_C1_sub_red_cardinality   (int var, int sigma, int from, int to);
+    void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
     void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
-    void write_C2_sub_red_cardinality   (int var, int sigma, int from, int to);
+    void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
 
     // OPB file
     std::ofstream OPB_file;

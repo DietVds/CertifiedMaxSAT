@@ -4,7 +4,7 @@
 // Prooflogger -- VeriPB operation classes:
 
 // Initialisers
-Operand::Operand(int value) : value(value){};
+CPOperand::CPOperand(int value) : value(value){};
 RUP::RUP(vec<Lit>& in_clause) {
     for(int i = 0; i < in_clause.size(); i++) {
         clause.push(in_clause[i]);
@@ -24,7 +24,7 @@ std::string CP2::apply(int constraint_id_at_start_of_printing) {
                                    + " " + this->operant ;
 }
 
-std::string Operand::apply(int constraint_id_at_start_of_printing){
+std::string CPOperand::apply(int constraint_id_at_start_of_printing){
     return std::to_string(this->value < 0 ? abs(this->value) + constraint_id_at_start_of_printing : this->value);
 }
 
@@ -180,7 +180,7 @@ void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, 
     constraint_counter++;
 }
 
-void Prooflogger::write_C1_sub_red_cardinality(int var, int sigma, int from, int to) {
+void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
     int weight = (to-from+1)-(sigma - 1);
     proof << "red ";
     for(int i = from; i < to+1; i++) {
@@ -194,7 +194,7 @@ void Prooflogger::write_C1_sub_red_cardinality(int var, int sigma, int from, int
     C1_weight_store[var] = weight;
 }
 
-void Prooflogger::write_C2_sub_red_cardinality(int var, int sigma, int from, int to) {
+void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int to) {
     int weight = sigma;
     proof << "red ";
     for(int i = from; i < to+1; i++) {
@@ -227,7 +227,7 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
     if(C1_store.find(third) == C1_store.end()) {
 
         // Write a substitution redundancy PB cardinality definition
-        write_C1_sub_red_cardinality(third, sigma, from, to);
+        write_P1_sub_red_cardinality(third, sigma, from, to);
     }
 
     // Write derivation of parts
@@ -235,19 +235,19 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
     bool resolved_one = false;
     if(C2_store.find(first) != C2_store.end()) {
         resolved_one = true;
-        tree_derivation.push(new CP2(new Operand(C1_store[third]), new Operand(C2_store[first]), "+"));
+        tree_derivation.push(new CP2(new CPOperand(C1_store[third]), new CPOperand(C2_store[first]), "+"));
         tree_constraint_counter++;
         total_weight += C2_weight_store[first];
     }
     if(C2_store.find(second) != C2_store.end()) {
         int to_add_to = resolved_one? -tree_constraint_counter : C1_store[third];
         resolved_one = true;
-        tree_derivation.push(new CP2(new Operand(to_add_to), new Operand(C2_store[second]), "+"));
+        tree_derivation.push(new CP2(new CPOperand(to_add_to), new CPOperand(C2_store[second]), "+"));
         tree_constraint_counter++;
         total_weight += C2_weight_store[second];
     }
     if(resolved_one) {
-        tree_derivation.push(new CP1(new Operand(-tree_constraint_counter), "s"));
+        tree_derivation.push(new CP1(new CPOperand(-tree_constraint_counter), "s"));
         tree_constraint_counter++;
     }
 
@@ -275,7 +275,7 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     if(C2_store.find(third) == C2_store.end()) {
 
         // Write a substitution redundancy PB cardinality definition
-        write_C2_sub_red_cardinality(third, sigma, from, to);
+        write_P2_sub_red_cardinality(third, sigma, from, to);
     }
 
     // Write derivation of parts
@@ -283,19 +283,19 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     bool resolved_one = false;
     if(C1_store.find(first) != C1_store.end()) {
         resolved_one = true;
-        tree_derivation.push(new CP2(new Operand(C2_store[third]), new Operand(C1_store[first]), "+"));
+        tree_derivation.push(new CP2(new CPOperand(C2_store[third]), new CPOperand(C1_store[first]), "+"));
         tree_constraint_counter++;
         total_weight += C1_weight_store[first];
     }
     if(C1_store.find(second) != C1_store.end()) {
         int to_add_to = resolved_one? -tree_constraint_counter : C2_store[third];
         resolved_one = true;
-        tree_derivation.push(new CP2(new Operand(to_add_to), new Operand(C1_store[second]), "+"));
+        tree_derivation.push(new CP2(new CPOperand(to_add_to), new CPOperand(C1_store[second]), "+"));
         tree_constraint_counter++;
         total_weight += C1_weight_store[second];
     }
     if(resolved_one) {
-        tree_derivation.push(new CP1(new CP2(new Operand(-tree_constraint_counter), new Operand(2), "d"), "s"));
+        tree_derivation.push(new CP1(new CP2(new CPOperand(-tree_constraint_counter), new CPOperand(2), "d"), "s"));
         tree_constraint_counter++;
     }
 

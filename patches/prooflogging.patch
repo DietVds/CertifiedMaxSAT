@@ -1,5 +1,5 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-01-04 10:06:40.096719464 +0100
+--- src_tmp/core/Main.C	2022-01-04 17:15:19.667720940 +0100
 +++ src/core/Main.C	2022-01-04 10:00:26.164659523 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
@@ -373,7 +373,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-01-04 10:01:36.526589507 +0100
++++ src/core/Prooflogger.C	2022-01-04 17:15:07.271641127 +0100
 @@ -0,0 +1,336 @@
 +#include "Prooflogger.h"
 +
@@ -381,7 +381,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +// Prooflogger -- VeriPB operation classes:
 +
 +// Initialisers
-+Operand::Operand(int value) : value(value){};
++CPOperand::CPOperand(int value) : value(value){};
 +RUP::RUP(vec<Lit>& in_clause) {
 +    for(int i = 0; i < in_clause.size(); i++) {
 +        clause.push(in_clause[i]);
@@ -401,7 +401,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +                                   + " " + this->operant ;
 +}
 +
-+std::string Operand::apply(int constraint_id_at_start_of_printing){
++std::string CPOperand::apply(int constraint_id_at_start_of_printing){
 +    return std::to_string(this->value < 0 ? abs(this->value) + constraint_id_at_start_of_printing : this->value);
 +}
 +
@@ -557,7 +557,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    constraint_counter++;
 +}
 +
-+void Prooflogger::write_C1_sub_red_cardinality(int var, int sigma, int from, int to) {
++void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
 +    int weight = (to-from+1)-(sigma - 1);
 +    proof << "red ";
 +    for(int i = from; i < to+1; i++) {
@@ -571,7 +571,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    C1_weight_store[var] = weight;
 +}
 +
-+void Prooflogger::write_C2_sub_red_cardinality(int var, int sigma, int from, int to) {
++void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int to) {
 +    int weight = sigma;
 +    proof << "red ";
 +    for(int i = from; i < to+1; i++) {
@@ -604,7 +604,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    if(C1_store.find(third) == C1_store.end()) {
 +
 +        // Write a substitution redundancy PB cardinality definition
-+        write_C1_sub_red_cardinality(third, sigma, from, to);
++        write_P1_sub_red_cardinality(third, sigma, from, to);
 +    }
 +
 +    // Write derivation of parts
@@ -612,19 +612,19 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    bool resolved_one = false;
 +    if(C2_store.find(first) != C2_store.end()) {
 +        resolved_one = true;
-+        tree_derivation.push(new CP2(new Operand(C1_store[third]), new Operand(C2_store[first]), "+"));
++        tree_derivation.push(new CP2(new CPOperand(C1_store[third]), new CPOperand(C2_store[first]), "+"));
 +        tree_constraint_counter++;
 +        total_weight += C2_weight_store[first];
 +    }
 +    if(C2_store.find(second) != C2_store.end()) {
 +        int to_add_to = resolved_one? -tree_constraint_counter : C1_store[third];
 +        resolved_one = true;
-+        tree_derivation.push(new CP2(new Operand(to_add_to), new Operand(C2_store[second]), "+"));
++        tree_derivation.push(new CP2(new CPOperand(to_add_to), new CPOperand(C2_store[second]), "+"));
 +        tree_constraint_counter++;
 +        total_weight += C2_weight_store[second];
 +    }
 +    if(resolved_one) {
-+        tree_derivation.push(new CP1(new Operand(-tree_constraint_counter), "s"));
++        tree_derivation.push(new CP1(new CPOperand(-tree_constraint_counter), "s"));
 +        tree_constraint_counter++;
 +    }
 +
@@ -652,7 +652,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    if(C2_store.find(third) == C2_store.end()) {
 +
 +        // Write a substitution redundancy PB cardinality definition
-+        write_C2_sub_red_cardinality(third, sigma, from, to);
++        write_P2_sub_red_cardinality(third, sigma, from, to);
 +    }
 +
 +    // Write derivation of parts
@@ -660,19 +660,19 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    bool resolved_one = false;
 +    if(C1_store.find(first) != C1_store.end()) {
 +        resolved_one = true;
-+        tree_derivation.push(new CP2(new Operand(C2_store[third]), new Operand(C1_store[first]), "+"));
++        tree_derivation.push(new CP2(new CPOperand(C2_store[third]), new CPOperand(C1_store[first]), "+"));
 +        tree_constraint_counter++;
 +        total_weight += C1_weight_store[first];
 +    }
 +    if(C1_store.find(second) != C1_store.end()) {
 +        int to_add_to = resolved_one? -tree_constraint_counter : C2_store[third];
 +        resolved_one = true;
-+        tree_derivation.push(new CP2(new Operand(to_add_to), new Operand(C1_store[second]), "+"));
++        tree_derivation.push(new CP2(new CPOperand(to_add_to), new CPOperand(C1_store[second]), "+"));
 +        tree_constraint_counter++;
 +        total_weight += C1_weight_store[second];
 +    }
 +    if(resolved_one) {
-+        tree_derivation.push(new CP1(new CP2(new Operand(-tree_constraint_counter), new Operand(2), "d"), "s"));
++        tree_derivation.push(new CP1(new CP2(new CPOperand(-tree_constraint_counter), new CPOperand(2), "d"), "s"));
 +        tree_constraint_counter++;
 +    }
 +
@@ -714,7 +714,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-01-04 09:57:50.780413614 +0100
++++ src/core/Prooflogger.h	2022-01-04 17:11:10.566159071 +0100
 @@ -0,0 +1,157 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
@@ -741,9 +741,9 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    virtual std::string apply(int constraint_id_at_start_of_printing){};
 +};
 +
-+class Operand : public VeriPBOperation {
++class CPOperand : public VeriPBOperation {
 +public:
-+    Operand(int value);
++    CPOperand(int value);
 +
 +    // Value
 +    //
@@ -854,9 +854,9 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_bound_update             (vec<lbool>& model); 
 +    void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
 +    void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
-+    void write_C1_sub_red_cardinality   (int var, int sigma, int from, int to);
++    void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
 +    void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
-+    void write_C2_sub_red_cardinality   (int var, int sigma, int from, int to);
++    void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
 +
 +    // OPB file
 +    std::ofstream OPB_file;
@@ -875,7 +875,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-01-04 10:06:40.096719464 +0100
+--- src_tmp/core/Solver.C	2022-01-04 17:15:19.667720940 +0100
 +++ src/core/Solver.C	2021-12-25 15:10:22.095546210 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -952,7 +952,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-01-04 10:06:40.096719464 +0100
+--- src_tmp/core/Solver.h	2022-01-04 17:15:19.667720940 +0100
 +++ src/core/Solver.h	2021-12-01 11:33:19.867138205 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
