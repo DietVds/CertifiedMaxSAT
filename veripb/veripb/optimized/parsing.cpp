@@ -852,7 +852,6 @@ public:
 
 
     std::unique_ptr<Formula<T>> parse(std::ifstream& f, const std::string& fileName) {
-        std::cout << "CNFParser.parse executed! :-) " << std::endl;
         formula = std::make_unique<Formula<T>>();
         WordIter it(fileName);
 
@@ -960,6 +959,7 @@ public:
 };
 
 
+
 template<typename T>
 std::unique_ptr<Formula<T>> parseOpb(std::string fileName, VariableNameManager& varMgr) {
     std::ifstream f(fileName);
@@ -977,6 +977,14 @@ std::array<std::unique_ptr<Inequality<T>>, 2> parseOpbConstraint(VariableNameMan
 
 template<typename T>
 std::unique_ptr<Formula<T>> parseCnf(std::string fileName, VariableNameManager& varMgr) {
+    std::ifstream f(fileName);
+    CNFParser<T> parser(varMgr);
+    std::unique_ptr<Formula<T>> result = parser.parse(f, fileName);
+    return result;
+}
+
+template<typename T>
+std::unique_ptr<Formula<T>> parseWcnf(std::string fileName, VariableNameManager& varMgr) {
     std::ifstream f(fileName);
     CNFParser<T> parser(varMgr);
     std::unique_ptr<Formula<T>> result = parser.parse(f, fileName);
@@ -1102,6 +1110,7 @@ void init_parsing(py::module &m){
     // m.def("parseOpbBigInt", &parseOpb<BigInt>, "Parse opb file with arbitrary precision.");
     m.def("parseCnf", &parseCnf<CoefType>, "Parse cnf file with fixed precision.");
     // m.def("parseCnfBigInt", &parseCnf<BigInt>, "Parse cnf file with arbitrary precision.");
+    m.def("parseWcnf", &parseWcnf<CoefType>, "Parse wcnf file with fixed precision.");
 
     m.def("parseConstraintOpb", &parseOpbConstraint<CoefType>, "Parse opb consraint with fixed precision.");
     // m.def("parseConstraintOpbBigInt", &parseOpbConstraint<BigInt>, "Parse opb constraint with arbitrary precision.");
