@@ -1,0 +1,11 @@
+diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.cpp
+--- src_tmp/veripb/optimized/parsing.cpp	2022-02-05 16:18:35.155922800 +0100
++++ veripb/veripb/optimized/parsing.cpp	2022-02-05 16:17:09.119843000 +0100
+@@ -852,6 +852,7 @@
+ 
+ 
+     std::unique_ptr<Formula<T>> parse(std::ifstream& f, const std::string& fileName) {
++        std::cout << "CNFParser.parse executed! :-) " << std::endl;
+         formula = std::make_unique<Formula<T>>();
+         WordIter it(fileName);
+ 

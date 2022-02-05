@@ -3,14 +3,17 @@
 # Assumptions
 # - Virtual env is activated
 
+ROOT_DIR=$(pwd)
+
+./scripts/build_veripb_src.sh ./src_tmp
+
 # Unrar
-cd veripb
-unrar x -ad veripb.rar
-cd veripb
+cd src_tmp
+patch -p1 < $ROOT_DIR/patches/veripb_wcnf.patch
 
 # Build 
 pip3 install ./
 
 # Clean up
 cd ..
-rm -rf veripb
+rm -rf src_tmp
