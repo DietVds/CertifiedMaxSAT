@@ -880,7 +880,6 @@ public:
     }
 
     void parseHeader(WordIter& it) {
-        std::cout << "parseHeader" << std::endl;
         it.expect("p");
         ++it;
         it.expect("wcnf");
