@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <cctype>
+#include <climits>
 
 #include "constraints.hpp"
 #include "BigInt.hpp"
@@ -838,6 +839,177 @@ public:
 };
 
 template<typename T>
+class WCNFParser {
+    VariableNameManager& variableNameManager;
+    std::vector<Term<T>> terms;
+    VarDouplicateDetection duplicateDetection;
+
+    std::unique_ptr<Formula<T>> formula;
+
+    int weighted_partial_top; // Max weight of clause, which generates hard clause
+
+public:
+    WCNFParser(VariableNameManager& mngr):
+        variableNameManager(mngr)
+    {}
+
+
+    std::unique_ptr<Formula<T>> parse(std::ifstream& f, const std::string& fileName) {
+        formula = std::make_unique<Formula<T>>();
+        formula->hasObjective = true;
+        WordIter it(fileName);
+
+        bool foundHeader = false;
+        while (WordIter::getline(f, it)) {
+            if (it != WordIter::end && ((*it)[0] != 'c')) {
+                if (!foundHeader) {
+                    parseHeader(it);
+                    foundHeader = true;
+                } else {
+                    auto res = parseConstraint(it);
+                    formula->add(std::move(res));
+                }
+            }
+        }
+
+        if (!foundHeader) {
+            throw ParseError(it, "Expected WCNF header.");
+        }
+
+        return std::move(formula);
+    }
+
+    void parseHeader(WordIter& it) {
+        std::cout << "parseHeader" << std::endl;
+        it.expect("p");
+        ++it;
+        it.expect("wcnf");
+        ++it;
+        formula->claimedNumVar = parseInt(it, "Expected number of variables.");
+        ++it;
+        formula->claimedNumC = parseInt(it, "Expected number of constraints.");
+        ++it;
+
+        if(it != WordIter::end){
+            weighted_partial_top = parseInt(it, "Value for hard clauses");
+        }
+        else{
+            weighted_partial_top = UINT_MAX;
+        }
+        ++it;
+
+        if (it != WordIter::end) {
+            throw ParseError(it, "Expected end of header line.");
+        }
+    }
+
+    std::unique_ptr<Inequality<T>> parseConstraint(WordIter& it) {
+        std::cout << "parseConstraint" << std::endl;
+        terms.clear();
+        duplicateDetection.clear();
+
+        char buffer[12];
+        char* bufferEnd = buffer + 12;
+        char* bufferStart;
+
+        bool hasDuplicates = false;
+        
+        int weight = 0;
+
+        while (it != WordIter::end && *it != "0") {
+
+            // If no weight has been parsed yet, this means that the first value will be the weight of the clause. 
+            // Assumption: add a relaxation variable with name "xi" with i a number in the range [nbvar+1, nbvar+1+nbclauses].
+            // TODO: check if this assumption is true.
+            if(weight==0){
+                weight = parseInt(it, "Value expected");
+                std::cout << "parsing weight " << std::to_string(weight) << std::endl;
+
+                if(weight < weighted_partial_top){
+                    std::cout << "soft clause detected " << std::endl;
+                    // Add the relaxation variable.
+
+                    formula->claimedNumVar++;
+
+                    string_view relaxVarName("x"+ std::to_string(formula->claimedNumVar));
+                    std::cout << "relaxation variable created: " << relaxVarName << std::endl;
+
+                    Lit lit = variableNameManager.getLit(relaxVarName); // getLit also calls getVar, which adds the variable name to the variable name manager if not exists.
+
+                    terms.emplace_back(1, lit);
+                    
+                    formula->objectiveCoeffs.push_back(weight);
+                    formula->objectiveVars.push_back(lit.var());
+                    formula->maxVar = std::max(formula->maxVar, static_cast<size_t>(lit.var()));
+                }
+                ++it;
+                continue;
+            }
+
+            // parse int to give nice error messages if input is not
+            // an integer, out put is not used because we construct
+            // string to be consistent with arbitrary variable names
+            parseInt(it, "Expected literal.");
+            if (it->size() > 11) {
+                throw ParseError(it, "Literal too large.");
+            }
+            bufferStart = bufferEnd - it->size();
+            std::copy(it->begin(), it->end(), bufferStart);
+            if (bufferStart[0] == '-') {
+                bufferStart -= 1;
+                bufferStart[0] = '~';
+                bufferStart[1] = 'x';
+            } else {
+                bufferStart -= 1;
+                bufferStart[0] = 'x';
+            }
+
+            std::string_view litString(bufferStart, bufferEnd - bufferStart);
+            Lit lit = parseLit(it, variableNameManager, &litString);
+            if (formula) {
+                formula->maxVar = std::max(formula->maxVar, static_cast<size_t>(lit.var()));
+            }
+
+            terms.emplace_back(1, lit);
+
+            if (duplicateDetection.add(lit.var())) {
+                hasDuplicates = true;
+            }
+
+            // Note that douplicate variables will be handled during
+            // construction of the Inequality that is if a literal
+            // appears twice it will get coefficient 2, if a variable
+            // appears with positive as well as negative polarity then
+            // a cancelation will be triggered reducing the degree to
+            // 0 and thereby trivializing the constraint.
+
+            // todo: maybe add warning if douplicate variables occur?
+
+            ++it;
+        }
+        if (*it != "0") {
+            throw ParseError(it, "Expected '0' at end of clause.");
+        }
+        ++it;
+
+        if (it != WordIter::end) {
+            throw ParseError(it, "Expected end line after constraint.");
+        }
+
+        
+
+
+        if (hasDuplicates) {
+            return std::make_unique<Inequality<T>>(terms, 1);
+        } else {
+            return std::make_unique<Inequality<T>>(
+                ClauseHandler(terms.size(), terms.size(), terms.begin(), terms.end()));
+        }
+    }
+};
+
+
+template<typename T>
 class CNFParser {
     VariableNameManager& variableNameManager;
     std::vector<Term<T>> terms;
@@ -986,7 +1158,7 @@ std::unique_ptr<Formula<T>> parseCnf(std::string fileName, VariableNameManager& 
 template<typename T>
 std::unique_ptr<Formula<T>> parseWcnf(std::string fileName, VariableNameManager& varMgr) {
     std::ifstream f(fileName);
-    CNFParser<T> parser(varMgr);
+    WCNFParser<T> parser(varMgr);
     std::unique_ptr<Formula<T>> result = parser.parse(f, fileName);
     return result;
 }
