@@ -904,7 +904,6 @@ public:
     }
 
     std::unique_ptr<Inequality<T>> parseConstraint(WordIter& it) {
-        std::cout << "parseConstraint" << std::endl;
         terms.clear();
         duplicateDetection.clear();
 
@@ -919,21 +918,14 @@ public:
         while (it != WordIter::end && *it != "0") {
 
             // If no weight has been parsed yet, this means that the first value will be the weight of the clause. 
-            // Assumption: add a relaxation variable with name "xi" with i a number in the range [nbvar+1, nbvar+1+nbclauses].
-            // TODO: check if this assumption is true.
+            // Assumption: add a relaxation variable with name "xi" with i a number in the range [nbvar+1, nbvar+nbclauses].
             if(weight==0){
                 weight = parseInt(it, "Value expected");
-                std::cout << "parsing weight " << std::to_string(weight) << std::endl;
-
+                
                 if(weight < weighted_partial_top){
-                    std::cout << "soft clause detected " << std::endl;
-                    // Add the relaxation variable.
-
-                    formula->claimedNumVar++;
+                    formula->claimedNumVar++; // Claim another variable as relaxation variable.
 
                     string_view relaxVarName("x"+ std::to_string(formula->claimedNumVar));
-                    std::cout << "relaxation variable created: " << relaxVarName << std::endl;
-
                     Lit lit = variableNameManager.getLit(relaxVarName); // getLit also calls getVar, which adds the variable name to the variable name manager if not exists.
 
                     terms.emplace_back(1, lit);
@@ -946,6 +938,8 @@ public:
                 continue;
             }
 
+            // Same as cnf parser:
+            
             // parse int to give nice error messages if input is not
             // an integer, out put is not used because we construct
             // string to be consistent with arbitrary variable names
@@ -995,9 +989,6 @@ public:
         if (it != WordIter::end) {
             throw ParseError(it, "Expected end line after constraint.");
         }
-
-        
-
 
         if (hasDuplicates) {
             return std::make_unique<Inequality<T>>(terms, 1);

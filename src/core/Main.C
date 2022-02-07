@@ -154,7 +154,7 @@ static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits,
     }
 
     // Write the clause to the OPB file
-    PL.write_OPB_constraint(lits);
+    // PL.write_OPB_constraint(lits); // wcnf file read directly by veripb
 }
 
 template<class B>
@@ -177,8 +177,8 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     while(*in == 'c') skipLine(in);
     if (*in == 'p'){
 	     if (match(in, "p wcnf")){ // koshi 10.01.04
-            vars    = parseInt(in);
-            clauses = parseInt(in);
+            vars    = parseInt(in);            
+            clauses = parseInt(in);            
 		    int top     = parseInt(in);
 		    out_nbvar   = vars;
 		    out_top     = top;
@@ -203,9 +203,12 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
         }
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
+    PL.n_variables = vars+out_nbsoft;
+    PL.formula_length = clauses;
     PL.write_proof_header(clauses);
-    PL.write_OPB_header(vars, out_nbsoft, clauses);
-    PL.write_minimise(out_nbvar, out_nbsoft);
+    
+    // PL.write_OPB_header(vars, out_nbsoft, clauses); // wcnf file read directly by veripb
+    // PL.write_minimise(out_nbvar, out_nbsoft);  // wcnf file read directly by veripb
 }
 
 // Inserts problem into solver.
@@ -380,9 +383,10 @@ int main(int argc, char** argv)
         } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
             PL.set_proof_name(value);
 
+        /*  // wcnf file read directly by veripb
         } else if ((value = hasPrefix(argv[i], "-opb-file="))) {
             PL.set_OPB_name(value);
-
+        */
         }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
             PL.meaningful_names = true;
 
@@ -415,8 +419,8 @@ int main(int argc, char** argv)
     if (in == NULL)
         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
 
-    // Open OPB file
-    PL.open_OPB_file();
+    // Open OPB file 
+    // PL.open_OPB_file(); // wcnf file read directly by veripb
 
     // Open proof file
     PL.open_proof_file();
@@ -436,8 +440,8 @@ int main(int argc, char** argv)
     // Close input file
     gzclose(in);
 
-    // Write OPB constraints
-    PL.write_OPB_file();
+    // Write OPB constraints 
+    //PL.write_OPB_file(); // wcnf file read directly by veripb
 
     // Open output file
     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;

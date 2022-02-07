@@ -309,8 +309,6 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
 // OPB file
 
 void Prooflogger::write_OPB_header(int nbvar, int nbsoft, int nbclause) {
-    formula_length = nbclause;
-    n_variables = nbvar+nbsoft;
     OPB_file << "* #variable= " << nbvar+nbsoft << " #constraint= " << nbclause << "\n";
     OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
 }

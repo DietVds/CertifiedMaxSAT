@@ -1,17 +1,6 @@
-diff -ruN src_tmp/veripb/optimized/constraints.hpp veripb/veripb/optimized/constraints.hpp
---- src_tmp/veripb/optimized/constraints.hpp	2022-02-07 10:15:13.105915600 +0100
-+++ veripb/veripb/optimized/constraints.hpp	2022-02-07 10:02:35.859968800 +0100
-@@ -15,6 +15,7 @@
- #include <numeric>
- #include <list>
- 
-+
- #include "BigInt.hpp"
- 
- #ifndef NDEBUG
 diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.cpp
---- src_tmp/veripb/optimized/parsing.cpp	2022-02-07 10:15:13.106250500 +0100
-+++ veripb/veripb/optimized/parsing.cpp	2022-02-07 10:15:01.184032700 +0100
+--- src_tmp/veripb/optimized/parsing.cpp	2022-02-07 14:54:28.318334400 +0100
++++ veripb/veripb/optimized/parsing.cpp	2022-02-07 11:23:20.052434600 +0100
 @@ -6,6 +6,7 @@
  #include <unordered_map>
  #include <vector>
@@ -20,7 +9,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
  
  #include "constraints.hpp"
  #include "BigInt.hpp"
-@@ -838,6 +839,177 @@
+@@ -838,6 +839,168 @@
  };
  
  template<typename T>
@@ -89,7 +78,6 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
 +    }
 +
 +    std::unique_ptr<Inequality<T>> parseConstraint(WordIter& it) {
-+        std::cout << "parseConstraint" << std::endl;
 +        terms.clear();
 +        duplicateDetection.clear();
 +
@@ -104,21 +92,14 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
 +        while (it != WordIter::end && *it != "0") {
 +
 +            // If no weight has been parsed yet, this means that the first value will be the weight of the clause. 
-+            // Assumption: add a relaxation variable with name "xi" with i a number in the range [nbvar+1, nbvar+1+nbclauses].
-+            // TODO: check if this assumption is true.
++            // Assumption: add a relaxation variable with name "xi" with i a number in the range [nbvar+1, nbvar+nbclauses].
 +            if(weight==0){
 +                weight = parseInt(it, "Value expected");
-+                std::cout << "parsing weight " << std::to_string(weight) << std::endl;
-+
++                
 +                if(weight < weighted_partial_top){
-+                    std::cout << "soft clause detected " << std::endl;
-+                    // Add the relaxation variable.
-+
-+                    formula->claimedNumVar++;
++                    formula->claimedNumVar++; // Claim another variable as relaxation variable.
 +
 +                    string_view relaxVarName("x"+ std::to_string(formula->claimedNumVar));
-+                    std::cout << "relaxation variable created: " << relaxVarName << std::endl;
-+
 +                    Lit lit = variableNameManager.getLit(relaxVarName); // getLit also calls getVar, which adds the variable name to the variable name manager if not exists.
 +
 +                    terms.emplace_back(1, lit);
@@ -131,6 +112,8 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
 +                continue;
 +            }
 +
++            // Same as cnf parser:
++            
 +            // parse int to give nice error messages if input is not
 +            // an integer, out put is not used because we construct
 +            // string to be consistent with arbitrary variable names
@@ -181,9 +164,6 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
 +            throw ParseError(it, "Expected end line after constraint.");
 +        }
 +
-+        
-+
-+
 +        if (hasDuplicates) {
 +            return std::make_unique<Inequality<T>>(terms, 1);
 +        } else {
@@ -198,7 +178,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
  class CNFParser {
      VariableNameManager& variableNameManager;
      std::vector<Term<T>> terms;
-@@ -959,6 +1131,7 @@
+@@ -959,6 +1122,7 @@
  };
  
  
@@ -206,7 +186,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
  template<typename T>
  std::unique_ptr<Formula<T>> parseOpb(std::string fileName, VariableNameManager& varMgr) {
      std::ifstream f(fileName);
-@@ -982,6 +1155,14 @@
+@@ -982,6 +1146,14 @@
      return result;
  }
  
@@ -221,7 +201,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
  int main(int argc, char const *argv[])
  {
  
-@@ -1101,6 +1282,7 @@
+@@ -1101,6 +1273,7 @@
      // m.def("parseOpbBigInt", &parseOpb<BigInt>, "Parse opb file with arbitrary precision.");
      m.def("parseCnf", &parseCnf<CoefType>, "Parse cnf file with fixed precision.");
      // m.def("parseCnfBigInt", &parseCnf<BigInt>, "Parse cnf file with arbitrary precision.");
@@ -230,7 +210,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
      m.def("parseConstraintOpb", &parseOpbConstraint<CoefType>, "Parse opb consraint with fixed precision.");
      // m.def("parseConstraintOpbBigInt", &parseOpbConstraint<BigInt>, "Parse opb constraint with arbitrary precision.");
 diff -ruN src_tmp/veripb/utils.py veripb/veripb/utils.py
---- src_tmp/veripb/utils.py	2022-02-07 10:15:13.310064800 +0100
+--- src_tmp/veripb/utils.py	2022-02-07 14:54:28.528172600 +0100
 +++ veripb/veripb/utils.py	2022-02-05 16:43:30.337378100 +0100
 @@ -17,7 +17,7 @@
  from veripb.parser import RuleParser
@@ -273,8 +253,8 @@ diff -ruN src_tmp/veripb/utils.py veripb/veripb/utils.py
  
 diff -ruN src_tmp/.vscode/settings.json veripb/.vscode/settings.json
 --- src_tmp/.vscode/settings.json	1970-01-01 01:00:00.000000000 +0100
-+++ veripb/.vscode/settings.json	2022-02-06 16:31:44.012955900 +0100
-@@ -0,0 +1,59 @@
++++ veripb/.vscode/settings.json	2022-02-07 11:33:05.636641600 +0100
+@@ -0,0 +1,61 @@
 +{
 +    "files.associations": {
 +        "*.rmd": "markdown",
@@ -331,7 +311,9 @@ diff -ruN src_tmp/.vscode/settings.json veripb/.vscode/settings.json
 +        "stdexcept": "cpp",
 +        "streambuf": "cpp",
 +        "cinttypes": "cpp",
-+        "typeinfo": "cpp"
++        "typeinfo": "cpp",
++        "Prooflogger.C": "cpp",
++        "Main.C": "cpp"
 +    }
 +}
 \ No newline at end of file
