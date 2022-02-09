@@ -1,0 +1,98 @@
+#!/bin/bash
+
+#SBATCH --job-name=CMS
+#SBATCH --time=24:00:00
+#SBATCH --ntasks=1
+#SBATCH --partition=ivybridge_mpi
+
+module load CMake/3.20.1-GCCcore-10.3.0
+module load Python/3.9.5-GCCcore-10.3.0
+
+instances=INSTANCES
+filename=FILENAME
+file_results="$instances.csv"
+
+let TIMEOUT_SOLVER=3600
+let TIMEOUT_SOLVER_PL=5*TIMEOUT_SOLVER
+let TIMEOUT_VERIPB=10*$TIMEOUT_SOLVER_PL
+
+let MEMOUT_SOLVER=32768
+let MEMOUT_SOLVER_PL=2*TIMEOUT_SOLVER
+let MEMOUT_VERIPB=2*$TIMEOUT_SOLVER_PL
+
+res_runtime_without_prooflogging="NA"
+res_mem_without_prooflogging="NA"
+res_runtime_with_prooflogging="NA"
+res_mem_with_prooflogging="NA"
+res_runtime_verification="NA"
+res_mem_verification="NA"
+res_verification_succeeded="NA"
+
+
+## VANILLA
+
+# run
+./runlim -r $TIMEOUT_SOLVER -s $MEMOUT_SOLVER -o $TMP_DIR/$filename.txt ./qmaxsat ./instances/filename 
+
+# extract time
+res_runtime_without_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+
+# extract space
+res_mem_without_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+
+# status
+status=$(cat $TMPDIR/$filename.txt | grep 'status:' | awk '{print $3}');
+
+echo $res_runtime_without_prooflogging
+echo $res_mem_without_prooflogging
+
+if [ $status == "ok" ]
+then
+	rm maxsat_proof.pbp
+
+    ## PROOFLOGGED
+    
+    # run
+    ./runlim -r $TIMEOUT_SOLVER_PL -s $MEMOUT_SOLVER_PL -o $TMP_DIR/$filename.txt ./qmaxsat_prooflogging ./instances/filename 
+
+    # extract time
+    res_runtime_with_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+
+    # extract space
+    res_mem_with_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+
+    # status
+    status=$(cat $TMPDIR/$filename.txt | grep 'status:' | awk '{print $3}');
+	
+	echo $res_runtime_with_prooflogging
+	echo $res_mem_with_prooflogging
+
+	if [ $status == "ok" ]
+    then	
+
+        ## VERIFICATION
+
+        # run
+        ./runlim -r $TIMEOUT_VERIPB -s $MEMOUT_VERIPB -o $TMP_DIR/$filename.txt ./veripb --wcnf ./instances/filename ./maxsat_proof.pbp
+
+        # extract time
+        res_runtime_verification=$(cat $TMPDIR/$filename.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+
+        # extract space
+        res_mem_verification=$(cat $TMPDIR/$filename.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+
+        # status
+        status=$(cat $TMPDIR/$filename.txt | grep 'status:' | awk '{print $3}');
+    
+    	echo $res_runtime_verification
+    	echo $res_mem_verification
+
+		if [ "$res" == "succeeded." ]
+		then
+			res_verification_succeeded=True
+		else
+			res_verification_succeeded=False	
+		fi
+	fi
+fi
+echo "$filename, $res_runtime_without_prooflogging, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> ./$(echo file_results)
