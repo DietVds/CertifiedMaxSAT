@@ -1,80 +1,23 @@
 #include "Prooflogger.h"
 
 //=================================================================================================
-// Prooflogger -- VeriPB operation classes:
-
-// Initialisers
-CPOperand::CPOperand(int value) : value(value){};
-RUP::RUP(vec<Lit>& in_clause) {
-    for(int i = 0; i < in_clause.size(); i++) {
-        clause.push(in_clause[i]);
-    }
-};
-CP1::CP1(VeriPBOperation* a, const char* operant) : a(a), operant(operant){};
-CP2::CP2(VeriPBOperation* a, VeriPBOperation* b, const char* operant) : a(a), b(b), operant(operant){};
-
-std::string CP1::apply(int constraint_id_at_start_of_printing) {
-    return a->apply(constraint_id_at_start_of_printing)  
-                                   + " " + this->operant;
-}
-
-std::string CP2::apply(int constraint_id_at_start_of_printing) {
-    return a->apply(constraint_id_at_start_of_printing) + " " 
-                                   + b->apply(constraint_id_at_start_of_printing) 
-                                   + " " + this->operant ;
-}
-
-std::string CPOperand::apply(int constraint_id_at_start_of_printing){
-    return std::to_string(this->value < 0 ? abs(this->value) + constraint_id_at_start_of_printing : this->value);
-}
-
-
-//=================================================================================================
 // Proof file
-
-void Prooflogger::write_tree_derivation() {
-    int constraint_counter_at_start_of_derivations = constraint_counter;
-    for(int i = 0; i < tree_derivation.size(); i++){
-
-        // Write RPN
-        if(dynamic_cast<RUP*>(tree_derivation[i]) != nullptr) {
-            RUP* learned_clause = dynamic_cast<RUP*>(tree_derivation[i]);
-            write_learnt_clause(learned_clause->clause);
-        } else {
-            proof << "p " << tree_derivation[i]->apply(constraint_counter_at_start_of_derivations ) << "\n";
-            constraint_counter++;
-        }
-
-        // Tree recursively free the tree derivation
-        delete_tree_derivation(tree_derivation[i]);
-    }
-}
-
-void Prooflogger::delete_tree_derivation(VeriPBOperation* node) {
-    if(dynamic_cast<CP1*>(node) != nullptr) {
-        delete_tree_derivation(dynamic_cast<CP1*>(node)->a);
-    } else if(dynamic_cast<CP2*>(node) != nullptr) {
-        delete_tree_derivation(dynamic_cast<CP2*>(node)->a);
-        delete_tree_derivation(dynamic_cast<CP2*>(node)->b);
-    } 
-    delete(node);
-}
 
 void Prooflogger::write_proof_header(int nbclause) {
     proof << "pseudo-Boolean proof version 1.0\n";
-    proof << "f " << nbclause << "\n";
+    proof << "f " << nbclause << "\n" << std::flush;
 }
 
 void Prooflogger::write_comment(const char* comment) {
-    proof<< "* " << comment << "\n";
+    proof<< "* " << comment << "\n" << std::flush;
 }
 
 void Prooflogger::write_contradiction() {
-    proof << "c " << constraint_counter << "\n";
+    proof << "c " << constraint_counter << "\n" << std::flush;
 }
 
 void Prooflogger::write_empty_clause() {
-    proof<< "u >= 1;\n";
+    proof<< "u >= 1;\n" << std::flush;
     constraint_counter++;
     write_contradiction();
 }
@@ -110,7 +53,7 @@ void Prooflogger::write_literal(Lit literal) {
     std::string name = var_name(var(literal));
 
     // Write
-    proof << weight_and_sign << name << " ";
+    proof << weight_and_sign << name << " " << std::flush;
 }
 
 void Prooflogger::write_literal_assignment(lbool assignment, int var) {
@@ -122,12 +65,12 @@ void Prooflogger::write_literal_assignment(lbool assignment, int var) {
     std::string symbol = var_name(var);
 
     // Write
-    proof << sign << symbol << " ";
+    proof << sign << symbol << " " << std::flush;
 }
 
 void Prooflogger::write_witness(Lit literal) {
     std::string name = var_name(var(literal));
-    proof<< name << " -> " << std::to_string(sign(literal) == 0);
+    proof<< name << " -> " << std::to_string(sign(literal) == 0) << std::flush;
 }
 
 void Prooflogger::write_clause(vec<Lit>& clause) {
@@ -137,7 +80,7 @@ void Prooflogger::write_clause(vec<Lit>& clause) {
 void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     proof << "u ";
     write_clause(clause);
-    proof << " >= 1;\n";
+    proof << " >= 1;\n" << std::flush;
     constraint_counter++;
 }
 
@@ -145,7 +88,7 @@ void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
     int variable = var(clause[0]);
     int constraint_id = C2_store[variable];
     if(constraint_id != 0) {
-        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n";
+        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" << std::flush;
         constraint_counter++;
     }
     write_learnt_clause(clause);
@@ -154,7 +97,7 @@ void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
 void Prooflogger::write_bound_update(vec<lbool>& model) {
     proof<< "o ";
     for(int i = 0; i < model.size(); i++) write_literal_assignment(model[i], i);
-    proof << "\n";
+    proof << "\n" << std::flush;
 
     // Veripb automatically adds an improvement constraint so counter needs to be incremented
     last_bound_constraint_id = ++constraint_counter;
@@ -176,7 +119,7 @@ void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, 
     write_clause(definition);
     proof << ">= 1; ";
     write_witness(definition[0]);
-    proof << "\n";
+    proof << "\n" << std::flush;
     constraint_counter++;
 }
 
@@ -188,7 +131,7 @@ void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int
     }
     proof << weight << " " << var_name(var) << " >= " << weight << "; ";
     write_witness(Lit(var));
-    proof << "\n";
+    proof << "\n" << std::flush;
     constraint_counter++;
     C1_store[var] = constraint_counter;
     C1_weight_store[var] = weight;
@@ -202,7 +145,7 @@ void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int
     }
     proof << weight << " ~" << var_name(var) << " >= " << weight << "; ";
     write_witness(~Lit(var));
-    proof << "\n";
+    proof << "\n" << std::flush;
     constraint_counter++;
     C2_store[var] = constraint_counter;
     C2_weight_store[var] = weight;
@@ -223,37 +166,26 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
         }
     }
 
-    // Verify if PB cardinality definition exists
-    if(C1_store.find(third) == C1_store.end()) {
-
-        // Write a substitution redundancy PB cardinality definition
-        write_P1_sub_red_cardinality(third, sigma, from, to);
-    }
-
     // Write derivation of parts
-    int total_weight = C1_weight_store[third];
     bool resolved_one = false;
     if(C2_store.find(first) != C2_store.end()) {
         resolved_one = true;
-        tree_derivation.push(new CP2(new CPOperand(C1_store[third]), new CPOperand(C2_store[first]), "+"));
-        tree_constraint_counter++;
-        total_weight += C2_weight_store[first];
+        proof << "p " << C1_store[third] << " " << C2_store[first] << " +\n" << std::flush;
+        constraint_counter++;
     }
     if(C2_store.find(second) != C2_store.end()) {
-        int to_add_to = resolved_one? -tree_constraint_counter : C1_store[third];
+        int to_add_to = resolved_one? constraint_counter : C1_store[third];
+        proof << "p " << to_add_to << " " << C2_store[second] << " +\n" << std::flush;
+        constraint_counter++;
         resolved_one = true;
-        tree_derivation.push(new CP2(new CPOperand(to_add_to), new CPOperand(C2_store[second]), "+"));
-        tree_constraint_counter++;
-        total_weight += C2_weight_store[second];
     }
     if(resolved_one) {
-        tree_derivation.push(new CP1(new CPOperand(-tree_constraint_counter), "s"));
-        tree_constraint_counter++;
+        proof << "p " << constraint_counter << " s\n" << std::flush;
+        constraint_counter++;
     }
 
     // Derivation is done so clause can be written as RUP
-    tree_derivation.push(new RUP(definition));
-    tree_constraint_counter++;
+    write_learnt_clause(definition);
 }
 
 void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
@@ -271,64 +203,84 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
         }
     }
 
-    // Verify if PB cardinality definition exists
-    if(C2_store.find(third) == C2_store.end()) {
-
-        // Write a substitution redundancy PB cardinality definition
-        write_P2_sub_red_cardinality(third, sigma, from, to);
-    }
-
     // Write derivation of parts
-    int total_weight = C2_weight_store[third];
     bool resolved_one = false;
     if(C1_store.find(first) != C1_store.end()) {
         resolved_one = true;
-        tree_derivation.push(new CP2(new CPOperand(C2_store[third]), new CPOperand(C1_store[first]), "+"));
-        tree_constraint_counter++;
-        total_weight += C1_weight_store[first];
+        proof << "p " << C2_store[third] << " " << C1_store[first] << " +\n" << std::flush;
+        constraint_counter++;
     }
     if(C1_store.find(second) != C1_store.end()) {
-        int to_add_to = resolved_one? -tree_constraint_counter : C2_store[third];
+        int to_add_to = resolved_one? constraint_counter : C2_store[third];
+        proof << "p " << to_add_to << " " << C1_store[second] << " +\n" << std::flush;
+        constraint_counter++;
         resolved_one = true;
-        tree_derivation.push(new CP2(new CPOperand(to_add_to), new CPOperand(C1_store[second]), "+"));
-        tree_constraint_counter++;
-        total_weight += C1_weight_store[second];
     }
     if(resolved_one) {
-        tree_derivation.push(new CP1(new CP2(new CPOperand(-tree_constraint_counter), new CPOperand(2), "d"), "s"));
-        tree_constraint_counter++;
+        proof << "p " << constraint_counter << " 2 d s\n" << std::flush;
+        constraint_counter++;
     }
 
     // Derivation is done so clause can be written as RUP
-    tree_derivation.push(new RUP(definition));
-    tree_constraint_counter++;
+    write_learnt_clause(definition);
 }
 
+void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {
+  int inputSize = to - from + 1;
+  linkingVar.clear();
 
-//=================================================================================================
-// OPB file
+  vec<Lit> linkingAlpha;
+  vec<Lit> linkingBeta;
 
-void Prooflogger::write_OPB_header(int nbvar, int nbsoft, int nbclause) {
-    OPB_file << "* #variable= " << nbvar+nbsoft << " #constraint= " << nbclause << "\n";
-    OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
-}
+  Var varZero = variable_counter++;
+  Var varLast = variable_counter++;
 
-void Prooflogger::write_minimise(int start_var, int num) {
-    if(num > 0) {
-        OPB_file << "min: ";
-        for(int i = start_var+1; i < start_var+num+1; i++) {
-            OPB_file << "1 x" << i << " ";
-        } 
-        OPB_file << ";\n";
+  // First
+  lits.clear(); lits.push(Lit(varZero));
+  write_unit_sub_red(lits, 0, from, to);
+
+  // Last
+  lits.clear(); lits.push(~Lit(varLast));
+  write_unit_sub_red(lits, inputSize+1, from, to);
+
+
+  if (inputSize > 2) {
+    int middle = inputSize/2;
+    genCardinalDefinitions(from, from+middle, lits, linkingAlpha);
+    genCardinalDefinitions(from+middle+1, to, lits, linkingBeta);
+  } else if (inputSize == 2) {
+    genCardinalDefinitions(from, from, lits, linkingAlpha);
+    genCardinalDefinitions(to, to, lits, linkingBeta);
+  }
+  if (inputSize == 1) {
+    linkingVar.push(Lit(varZero));
+    linkingVar.push(Lit(from));
+    linkingVar.push(Lit(varLast));
+  } else { // inputSize >= 2
+
+    write_comment("- Node clauses:");
+    linkingVar.push(Lit(varZero));
+    for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(variable_counter++));
+    linkingVar.push(Lit(varLast));
+
+    for (int sigma = 0; sigma <= inputSize; sigma++) {
+
+        // Verify if PB cardinality definition exists
+        if(C1_store.find(var(linkingVar[sigma])) == C1_store.end()) {
+
+            // Write a substitution redundancy PB cardinality definition
+            write_P1_sub_red_cardinality(var(linkingVar[sigma]), sigma, from, to);
+        }
+
+        // Verify if PB cardinality definition exists
+        if(C2_store.find(var(~linkingVar[sigma+1])) == C2_store.end()) {
+
+            // Write a substitution redundancy PB cardinality definition
+            write_P2_sub_red_cardinality(var(~linkingVar[sigma+1]), sigma+1, from, to);
+        }
     }
-}
-
-void Prooflogger::write_OPB_constraint(vec<Lit>& constraint) {
-    for (int i = 0; i < constraint.size(); i++) {
-        if (sign(constraint[i]) == 1)
-            constraints << "1 ~x" << var(constraint[i]) + 1 << " ";
-        else
-            constraints << "1 x" << var(constraint[i]) + 1 << " ";
-    }
-    constraints << ">= 1;\n";
+    write_comment("-------------------------------------------");
+  }
+  linkingAlpha.clear();
+  linkingBeta.clear();
 }

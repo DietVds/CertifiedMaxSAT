@@ -97,6 +97,8 @@ public:
 
     // Tree derivation
     //
+    int variable_counter = 0;
+    bool separate_tree = false;
     int tree_constraint_counter = 0;
     vec<VeriPBOperation*> tree_derivation;
 
@@ -139,18 +141,7 @@ public:
     void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
     void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
     void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
-
-    // OPB file
-    std::ofstream OPB_file;
-    std::stringstream constraints;
-    const char *OPB_file_name           = "maxsat_problem.opb";
-    void open_OPB_file                  ()                   {OPB_file.open(OPB_file_name);};
-    void write_OPB_file                 ()                   {OPB_file << constraints.rdbuf(); OPB_file.close();};
-    void set_OPB_name                   (const char* name)   {OPB_file_name = name;};
-
-    void write_OPB_header               (int nbvar, int nbsoft, int nbclause);
-    void write_minimise                 (int start_var, int num);
-    void write_OPB_constraint           (vec<Lit>& constraint);
+    void genCardinalDefinitions         (int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar); 
 };
 
 //=================================================================================================

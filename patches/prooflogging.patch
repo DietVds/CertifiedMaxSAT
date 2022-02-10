@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-02-07 14:54:10.164496200 +0100
-+++ src/core/Main.C	2022-02-07 12:18:01.283305500 +0100
+--- src_tmp/core/Main.C	2022-02-10 14:27:32.663497336 +0100
++++ src/core/Main.C	2022-02-10 14:26:46.355313738 +0100
 @@ -27,6 +27,7 @@
  #include <zlib.h>
  
@@ -44,7 +44,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  }
  
  template<class B>
-@@ -163,42 +167,56 @@
+@@ -163,42 +167,57 @@
  
  
  template<class B>
@@ -104,6 +104,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      }
      reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
 +    PL.n_variables = vars+out_nbsoft;
++    PL.variable_counter = PL.n_variables;
 +    PL.formula_length = clauses;
 +    PL.write_proof_header(clauses);
 +    
@@ -122,7 +123,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
  
  //=================================================================================================
-@@ -232,10 +250,13 @@
+@@ -232,10 +251,13 @@
  {
      reportf("USAGE: %s [options] <input-file> <result-output-file>\n\n  where input may be either in plain or gzipped DIMACS.\n\n", argv[0]);
      reportf("OPTIONS:\n\n");
@@ -135,12 +136,12 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +    reportf("  -rnd-freq            = <num> [ 0 - 1 ]\n");
 +    reportf("  -verbosity           = {0,1,2}\n");
 +    reportf("  -proof-file          = /path/to/proof_file.proof (default: maxsat_proof.pbp)\n");
-+    reportf("  -problem-file        = /path/to/problem_file.opb (default: maxsat_problem.opb)\n");
 +    reportf("  -meaningful_names    = whether or not to assign meaningful names to the auxiliairy variables\n");
++    reportf("  -separate_tree       = whether or not to separate the tree derivation in the proof\n");
      reportf("\n");
  }
  
-@@ -251,7 +272,7 @@
+@@ -251,7 +273,7 @@
  
  // koshi 10.01.08
  void genCardinals(int from, int to, 
@@ -149,17 +150,17 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -261,42 +282,54 @@
+@@ -261,42 +283,54 @@
    Var varZero = S.newVar();
    Var varLast = S.newVar();
  
 +  // First
    lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-+  PL.write_unit_sub_red(lits, 0, from, to);
++  PL.write_learnt_clause(lits);
 +
 +  // Last
    lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-+  PL.write_unit_sub_red(lits, inputSize+1, from, to);
++  PL.write_learnt_clause(lits);
 +
  
    if (inputSize > 2) {
@@ -223,7 +224,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    }
    linkingAlpha.clear();
    linkingBeta.clear();
-@@ -304,10 +337,10 @@
+@@ -304,10 +338,10 @@
  
  int main(int argc, char** argv)
  {
@@ -236,19 +237,18 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      int         i, j;
      const char* value;
      for (i = j = 0; i < argc; i++){
-@@ -347,6 +380,16 @@
+@@ -347,6 +381,15 @@
              printUsage(argv);
              exit(0);
  
 +        } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
 +            PL.set_proof_name(value);
 +
-+        /*  // wcnf file read directly by veripb
-+        } else if ((value = hasPrefix(argv[i], "-opb-file="))) {
-+            PL.set_OPB_name(value);
-+        */
 +        }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
 +            PL.meaningful_names = true;
++
++        }else if (strcmp(argv[i], "-s") == 0 || strcmp(argv[i], "-separate_tree") == 0 || strcmp(argv[i], "--separate_tree") == 0){
++            PL.separate_tree = true;
 +
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
@@ -262,20 +262,17 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #if defined(__linux__)
      fpu_control_t oldcw, newcw;
      _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
-@@ -376,6 +419,12 @@
+@@ -376,6 +419,9 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
-+    // Open OPB file 
-+    // PL.open_OPB_file(); // wcnf file read directly by veripb
-+
 +    // Open proof file
 +    PL.open_proof_file();
 +
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,8 +432,18 @@
+@@ -383,8 +429,15 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
@@ -288,14 +285,11 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +    // Close input file
      gzclose(in);
 +
-+    // Write OPB constraints 
-+    //PL.write_OPB_file(); // wcnf file read directly by veripb
-+
 +    // Open output file
      FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
      double parse_time = cpuTime() - cpu_time;
-@@ -393,6 +452,8 @@
+@@ -393,6 +446,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
@@ -304,7 +298,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -406,23 +467,41 @@
+@@ -406,23 +461,41 @@
      if (ret) { // koshi 09.12.25
        lcnt++;
        int answerNew = 0;
@@ -324,11 +318,11 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +          PL.write_comment("First model found:"); 
 +          PL.write_bound_update(S.model);
 +          PL.write_comment("==============================================================");
-+          PL.write_comment("Cardinality encoding:"); 
-+	       genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
++          PL.write_comment("Cardinality definitions:"); 
++	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
 +          PL.write_comment("==============================================================");
 +          PL.write_comment("Tree derivation:"); 
-+          PL.write_tree_derivation();
++	      genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
 +          PL.write_comment("==============================================================");
 +          PL.write_comment("Constraining through linking variables:"); 
 +	       for (int i = answerNew; i < linkingVar.size()-1; i++) {
@@ -362,7 +356,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
        }
        reportf("Current answer = %d\n",answer);
        goto solve;
-@@ -439,10 +518,11 @@
+@@ -439,10 +512,11 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -377,8 +371,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-02-07 12:18:18.496585500 +0100
-@@ -0,0 +1,334 @@
++++ src/core/Prooflogger.C	2022-02-10 14:25:30.895012161 +0100
+@@ -0,0 +1,343 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -422,7 +416,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +            RUP* learned_clause = dynamic_cast<RUP*>(tree_derivation[i]);
 +            write_learnt_clause(learned_clause->clause);
 +        } else {
-+            proof << "p " << tree_derivation[i]->apply(constraint_counter_at_start_of_derivations ) << "\n";
++            proof << "p " << tree_derivation[i]->apply(constraint_counter_at_start_of_derivations) << "\n" << std::flush;
 +            constraint_counter++;
 +        }
 +
@@ -443,19 +437,19 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +
 +void Prooflogger::write_proof_header(int nbclause) {
 +    proof << "pseudo-Boolean proof version 1.0\n";
-+    proof << "f " << nbclause << "\n";
++    proof << "f " << nbclause << "\n" << std::flush;
 +}
 +
 +void Prooflogger::write_comment(const char* comment) {
-+    proof<< "* " << comment << "\n";
++    proof<< "* " << comment << "\n" << std::flush;
 +}
 +
 +void Prooflogger::write_contradiction() {
-+    proof << "c " << constraint_counter << "\n";
++    proof << "c " << constraint_counter << "\n" << std::flush;
 +}
 +
 +void Prooflogger::write_empty_clause() {
-+    proof<< "u >= 1;\n";
++    proof<< "u >= 1;\n" << std::flush;
 +    constraint_counter++;
 +    write_contradiction();
 +}
@@ -491,7 +485,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    std::string name = var_name(var(literal));
 +
 +    // Write
-+    proof << weight_and_sign << name << " ";
++    proof << weight_and_sign << name << " " << std::flush;
 +}
 +
 +void Prooflogger::write_literal_assignment(lbool assignment, int var) {
@@ -503,12 +497,12 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    std::string symbol = var_name(var);
 +
 +    // Write
-+    proof << sign << symbol << " ";
++    proof << sign << symbol << " " << std::flush;
 +}
 +
 +void Prooflogger::write_witness(Lit literal) {
 +    std::string name = var_name(var(literal));
-+    proof<< name << " -> " << std::to_string(sign(literal) == 0);
++    proof<< name << " -> " << std::to_string(sign(literal) == 0) << std::flush;
 +}
 +
 +void Prooflogger::write_clause(vec<Lit>& clause) {
@@ -518,7 +512,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
 +    proof << "u ";
 +    write_clause(clause);
-+    proof << " >= 1;\n";
++    proof << " >= 1;\n" << std::flush;
 +    constraint_counter++;
 +}
 +
@@ -526,7 +520,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    int variable = var(clause[0]);
 +    int constraint_id = C2_store[variable];
 +    if(constraint_id != 0) {
-+        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n";
++        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" << std::flush;
 +        constraint_counter++;
 +    }
 +    write_learnt_clause(clause);
@@ -535,7 +529,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +void Prooflogger::write_bound_update(vec<lbool>& model) {
 +    proof<< "o ";
 +    for(int i = 0; i < model.size(); i++) write_literal_assignment(model[i], i);
-+    proof << "\n";
++    proof << "\n" << std::flush;
 +
 +    // Veripb automatically adds an improvement constraint so counter needs to be incremented
 +    last_bound_constraint_id = ++constraint_counter;
@@ -557,7 +551,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    write_clause(definition);
 +    proof << ">= 1; ";
 +    write_witness(definition[0]);
-+    proof << "\n";
++    proof << "\n" << std::flush;
 +    constraint_counter++;
 +}
 +
@@ -569,7 +563,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    }
 +    proof << weight << " " << var_name(var) << " >= " << weight << "; ";
 +    write_witness(Lit(var));
-+    proof << "\n";
++    proof << "\n" << std::flush;
 +    constraint_counter++;
 +    C1_store[var] = constraint_counter;
 +    C1_weight_store[var] = weight;
@@ -583,7 +577,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    }
 +    proof << weight << " ~" << var_name(var) << " >= " << weight << "; ";
 +    write_witness(~Lit(var));
-+    proof << "\n";
++    proof << "\n" << std::flush;
 +    constraint_counter++;
 +    C2_store[var] = constraint_counter;
 +    C2_weight_store[var] = weight;
@@ -604,37 +598,26 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        }
 +    }
 +
-+    // Verify if PB cardinality definition exists
-+    if(C1_store.find(third) == C1_store.end()) {
-+
-+        // Write a substitution redundancy PB cardinality definition
-+        write_P1_sub_red_cardinality(third, sigma, from, to);
-+    }
-+
 +    // Write derivation of parts
-+    int total_weight = C1_weight_store[third];
 +    bool resolved_one = false;
 +    if(C2_store.find(first) != C2_store.end()) {
 +        resolved_one = true;
-+        tree_derivation.push(new CP2(new CPOperand(C1_store[third]), new CPOperand(C2_store[first]), "+"));
-+        tree_constraint_counter++;
-+        total_weight += C2_weight_store[first];
++        proof << "p " << C1_store[third] << " " << C2_store[first] << " +\n" << std::flush;
++        constraint_counter++;
 +    }
 +    if(C2_store.find(second) != C2_store.end()) {
-+        int to_add_to = resolved_one? -tree_constraint_counter : C1_store[third];
++        int to_add_to = resolved_one? constraint_counter : C1_store[third];
++        proof << "p " << to_add_to << " " << C2_store[second] << " +\n" << std::flush;
++        constraint_counter++;
 +        resolved_one = true;
-+        tree_derivation.push(new CP2(new CPOperand(to_add_to), new CPOperand(C2_store[second]), "+"));
-+        tree_constraint_counter++;
-+        total_weight += C2_weight_store[second];
 +    }
 +    if(resolved_one) {
-+        tree_derivation.push(new CP1(new CPOperand(-tree_constraint_counter), "s"));
-+        tree_constraint_counter++;
++        proof << "p " << constraint_counter << " s\n" << std::flush;
++        constraint_counter++;
 +    }
 +
 +    // Derivation is done so clause can be written as RUP
-+    tree_derivation.push(new RUP(definition));
-+    tree_constraint_counter++;
++    write_learnt_clause(definition);
 +}
 +
 +void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
@@ -652,72 +635,92 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        }
 +    }
 +
-+    // Verify if PB cardinality definition exists
-+    if(C2_store.find(third) == C2_store.end()) {
-+
-+        // Write a substitution redundancy PB cardinality definition
-+        write_P2_sub_red_cardinality(third, sigma, from, to);
-+    }
-+
 +    // Write derivation of parts
-+    int total_weight = C2_weight_store[third];
 +    bool resolved_one = false;
 +    if(C1_store.find(first) != C1_store.end()) {
 +        resolved_one = true;
-+        tree_derivation.push(new CP2(new CPOperand(C2_store[third]), new CPOperand(C1_store[first]), "+"));
-+        tree_constraint_counter++;
-+        total_weight += C1_weight_store[first];
++        proof << "p " << C2_store[third] << " " << C1_store[first] << " +\n" << std::flush;
++        constraint_counter++;
 +    }
 +    if(C1_store.find(second) != C1_store.end()) {
-+        int to_add_to = resolved_one? -tree_constraint_counter : C2_store[third];
++        int to_add_to = resolved_one? constraint_counter : C2_store[third];
++        proof << "p " << to_add_to << " " << C1_store[second] << " +\n" << std::flush;
++        constraint_counter++;
 +        resolved_one = true;
-+        tree_derivation.push(new CP2(new CPOperand(to_add_to), new CPOperand(C1_store[second]), "+"));
-+        tree_constraint_counter++;
-+        total_weight += C1_weight_store[second];
 +    }
 +    if(resolved_one) {
-+        tree_derivation.push(new CP1(new CP2(new CPOperand(-tree_constraint_counter), new CPOperand(2), "d"), "s"));
-+        tree_constraint_counter++;
++        proof << "p " << constraint_counter << " 2 d s\n" << std::flush;
++        constraint_counter++;
 +    }
 +
 +    // Derivation is done so clause can be written as RUP
-+    tree_derivation.push(new RUP(definition));
-+    tree_constraint_counter++;
++    write_learnt_clause(definition);
 +}
 +
++void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {
++  int inputSize = to - from + 1;
++  linkingVar.clear();
 +
-+//=================================================================================================
-+// OPB file
++  vec<Lit> linkingAlpha;
++  vec<Lit> linkingBeta;
 +
-+void Prooflogger::write_OPB_header(int nbvar, int nbsoft, int nbclause) {
-+    OPB_file << "* #variable= " << nbvar+nbsoft << " #constraint= " << nbclause << "\n";
-+    OPB_file << "*\n* This MaxSAT instance was automatically generated.\n*\n";
-+}
++  Var varZero = variable_counter++;
++  Var varLast = variable_counter++;
 +
-+void Prooflogger::write_minimise(int start_var, int num) {
-+    if(num > 0) {
-+        OPB_file << "min: ";
-+        for(int i = start_var+1; i < start_var+num+1; i++) {
-+            OPB_file << "1 x" << i << " ";
-+        } 
-+        OPB_file << ";\n";
++  // First
++  lits.clear(); lits.push(Lit(varZero));
++  write_unit_sub_red(lits, 0, from, to);
++
++  // Last
++  lits.clear(); lits.push(~Lit(varLast));
++  write_unit_sub_red(lits, inputSize+1, from, to);
++
++
++  if (inputSize > 2) {
++    int middle = inputSize/2;
++    genCardinalDefinitions(from, from+middle, lits, linkingAlpha);
++    genCardinalDefinitions(from+middle+1, to, lits, linkingBeta);
++  } else if (inputSize == 2) {
++    genCardinalDefinitions(from, from, lits, linkingAlpha);
++    genCardinalDefinitions(to, to, lits, linkingBeta);
++  }
++  if (inputSize == 1) {
++    linkingVar.push(Lit(varZero));
++    linkingVar.push(Lit(from));
++    linkingVar.push(Lit(varLast));
++  } else { // inputSize >= 2
++
++    write_comment("- Node clauses:");
++    linkingVar.push(Lit(varZero));
++    for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(variable_counter++));
++    linkingVar.push(Lit(varLast));
++
++    for (int sigma = 0; sigma <= inputSize; sigma++) {
++
++        // Verify if PB cardinality definition exists
++        if(C1_store.find(var(linkingVar[sigma])) == C1_store.end()) {
++
++            // Write a substitution redundancy PB cardinality definition
++            write_P1_sub_red_cardinality(var(linkingVar[sigma]), sigma, from, to);
++        }
++
++        // Verify if PB cardinality definition exists
++        if(C2_store.find(var(~linkingVar[sigma+1])) == C2_store.end()) {
++
++            // Write a substitution redundancy PB cardinality definition
++            write_P2_sub_red_cardinality(var(~linkingVar[sigma+1]), sigma+1, from, to);
++        }
 +    }
-+}
-+
-+void Prooflogger::write_OPB_constraint(vec<Lit>& constraint) {
-+    for (int i = 0; i < constraint.size(); i++) {
-+        if (sign(constraint[i]) == 1)
-+            constraints << "1 ~x" << var(constraint[i]) + 1 << " ";
-+        else
-+            constraints << "1 x" << var(constraint[i]) + 1 << " ";
-+    }
-+    constraints << ">= 1;\n";
++    write_comment("-------------------------------------------");
++  }
++  linkingAlpha.clear();
++  linkingBeta.clear();
 +}
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-01-04 17:16:50.736056400 +0100
-@@ -0,0 +1,157 @@
++++ src/core/Prooflogger.h	2022-02-10 14:14:41.056346290 +0100
+@@ -0,0 +1,148 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -817,6 +820,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +
 +    // Tree derivation
 +    //
++    int variable_counter = 0;
++    bool separate_tree = false;
 +    int tree_constraint_counter = 0;
 +    vec<VeriPBOperation*> tree_derivation;
 +
@@ -859,26 +864,15 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
 +    void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
 +    void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
-+
-+    // OPB file
-+    std::ofstream OPB_file;
-+    std::stringstream constraints;
-+    const char *OPB_file_name           = "maxsat_problem.opb";
-+    void open_OPB_file                  ()                   {OPB_file.open(OPB_file_name);};
-+    void write_OPB_file                 ()                   {OPB_file << constraints.rdbuf(); OPB_file.close();};
-+    void set_OPB_name                   (const char* name)   {OPB_file_name = name;};
-+
-+    void write_OPB_header               (int nbvar, int nbsoft, int nbclause);
-+    void write_minimise                 (int start_var, int num);
-+    void write_OPB_constraint           (vec<Lit>& constraint);
++    void genCardinalDefinitions         (int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar); 
 +};
 +
 +//=================================================================================================
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-02-07 14:54:10.164822800 +0100
-+++ src/core/Solver.C	2021-12-26 11:37:17.936500100 +0100
+--- src_tmp/core/Solver.C	2022-02-10 14:27:32.663497336 +0100
++++ src/core/Solver.C	2022-02-09 13:06:55.898642708 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -954,8 +948,8 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-02-07 14:54:10.163953800 +0100
-+++ src/core/Solver.h	2021-12-22 10:25:15.730665200 +0100
+--- src_tmp/core/Solver.h	2022-02-10 14:27:32.663497336 +0100
++++ src/core/Solver.h	2022-02-09 13:06:55.898642708 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
  

@@ -152,9 +152,6 @@ static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits,
 	// koshi 10.01.04        while (var >= S.nVars()) S.newVar();
         lits.push( (parsed_lit > 0) ? Lit(var) : ~Lit(var) );
     }
-
-    // Write the clause to the OPB file
-    // PL.write_OPB_constraint(lits); // wcnf file read directly by veripb
 }
 
 template<class B>
@@ -204,11 +201,9 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
     PL.n_variables = vars+out_nbsoft;
+    PL.variable_counter = PL.n_variables;
     PL.formula_length = clauses;
     PL.write_proof_header(clauses);
-    
-    // PL.write_OPB_header(vars, out_nbsoft, clauses); // wcnf file read directly by veripb
-    // PL.write_minimise(out_nbvar, out_nbsoft);  // wcnf file read directly by veripb
 }
 
 // Inserts problem into solver.
@@ -255,7 +250,6 @@ void printUsage(char** argv)
     reportf("  -rnd-freq            = <num> [ 0 - 1 ]\n");
     reportf("  -verbosity           = {0,1,2}\n");
     reportf("  -proof-file          = /path/to/proof_file.proof (default: maxsat_proof.pbp)\n");
-    reportf("  -problem-file        = /path/to/problem_file.opb (default: maxsat_problem.opb)\n");
     reportf("  -meaningful_names    = whether or not to assign meaningful names to the auxiliairy variables\n");
     reportf("\n");
 }
@@ -284,11 +278,11 @@ void genCardinals(int from, int to,
 
   // First
   lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-  PL.write_unit_sub_red(lits, 0, from, to);
+  PL.write_learnt_clause(lits);
 
   // Last
   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-  PL.write_unit_sub_red(lits, inputSize+1, from, to);
+  PL.write_learnt_clause(lits);
 
 
   if (inputSize > 2) {
@@ -383,10 +377,6 @@ int main(int argc, char** argv)
         } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
             PL.set_proof_name(value);
 
-        /*  // wcnf file read directly by veripb
-        } else if ((value = hasPrefix(argv[i], "-opb-file="))) {
-            PL.set_OPB_name(value);
-        */
         }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
             PL.meaningful_names = true;
 
@@ -419,9 +409,6 @@ int main(int argc, char** argv)
     if (in == NULL)
         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
 
-    // Open OPB file 
-    // PL.open_OPB_file(); // wcnf file read directly by veripb
-
     // Open proof file
     PL.open_proof_file();
 
@@ -439,9 +426,6 @@ int main(int argc, char** argv)
 
     // Close input file
     gzclose(in);
-
-    // Write OPB constraints 
-    //PL.write_OPB_file(); // wcnf file read directly by veripb
 
     // Open output file
     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
@@ -473,11 +457,11 @@ int main(int argc, char** argv)
           PL.write_comment("First model found:"); 
           PL.write_bound_update(S.model);
           PL.write_comment("==============================================================");
-          PL.write_comment("Cardinality encoding:"); 
-	       genCardinals(nbvar,nbvar+nbsoft-1, S,PL,lits,linkingVar);
+          PL.write_comment("Cardinality definitions:"); 
+	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
           PL.write_comment("==============================================================");
           PL.write_comment("Tree derivation:"); 
-          PL.write_tree_derivation();
+	      genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
           PL.write_comment("==============================================================");
           PL.write_comment("Constraining through linking variables:"); 
 	       for (int i = answerNew; i < linkingVar.size()-1; i++) {
