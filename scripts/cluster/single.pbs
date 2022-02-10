@@ -1,17 +1,16 @@
 #!/bin/bash
 
 #SBATCH --job-name=CMS
-#SBATCH --time=24:00:00
+#SBATCH --time=2:00:00
 #SBATCH --ntasks=1
 #SBATCH --partition=skylake
-#SBATCH --mem-per-cpu=20480
+#SBATCH --mem-per-cpu=33792
 
 module load CMake/3.20.1-GCCcore-10.3.0
 module load Python/3.9.5-GCCcore-10.3.0
 
 instances=INSTANCES
 filename=FILENAME
-file_results="results/$instances.csv"
 
 let TIMEOUT_SOLVER=3600
 let TIMEOUT_SOLVER_PL=TIMEOUT_SOLVER
@@ -34,7 +33,6 @@ res_verification_succeeded="NA"
 
 # run
 ./runlim -r $TIMEOUT_SOLVER -s $MEMOUT_SOLVER -o $TMPDIR/$filename.txt ./qmaxsat ./$instances/$filename 
-cat $TMPDIR/$filename.txt
 
 # extract time
 res_runtime_without_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
@@ -96,4 +94,4 @@ then
 		fi
 	fi
 fi
-echo "$instances, $filename, $res_runtime_without_prooflogging, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> ./"$file_results"
+echo "$instances, $filename, $res_runtime_without_prooflogging, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> ./results/"$instances"/"$filename"_result.csv
