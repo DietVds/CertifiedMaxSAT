@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-02-11 11:05:37.982202700 +0100
-+++ src/core/Main.C	2022-02-11 10:50:17.629747200 +0100
+--- src_tmp/core/Main.C	2022-02-11 13:49:41.214260100 +0100
++++ src/core/Main.C	2022-02-11 13:49:30.156113300 +0100
 @@ -26,7 +26,13 @@
  #include <signal.h>
  #include <zlib.h>
@@ -142,7 +142,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -261,53 +281,80 @@
+@@ -261,53 +281,82 @@
    Var varZero = S.newVar();
    Var varLast = S.newVar();
  
@@ -241,10 +241,12 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      S.verbosity = 1;
  
 -
++    bool log_duration_totalizer = false;
++    
      int         i, j;
      const char* value;
      for (i = j = 0; i < argc; i++){
-@@ -347,6 +394,12 @@
+@@ -347,6 +396,15 @@
              printUsage(argv);
              exit(0);
  
@@ -254,10 +256,13 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +        }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
 +            PL.meaningful_names = true;
 +
++        }else if (strcmp(argv[i], "-ld") == 0 || strcmp(argv[i], "-log_duration_totalizer") == 0 || strcmp(argv[i], "--log_duration_totalizer") == 0){
++            log_duration_totalizer = true;
++
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -357,7 +410,7 @@
+@@ -357,7 +415,7 @@
      argc = j;
  
  
@@ -266,17 +271,19 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #if defined(__linux__)
      fpu_control_t oldcw, newcw;
      _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
-@@ -376,6 +429,9 @@
+@@ -376,6 +434,11 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
 +    // Open proof file
 +    PL.open_proof_file();
 +
++
++
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,8 +439,15 @@
+@@ -383,8 +446,15 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
@@ -293,7 +300,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
      double parse_time = cpuTime() - cpu_time;
-@@ -393,6 +456,8 @@
+@@ -393,6 +463,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
@@ -302,7 +309,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -406,23 +471,66 @@
+@@ -406,23 +478,64 @@
      if (ret) { // koshi 09.12.25
        lcnt++;
        int answerNew = 0;
@@ -318,8 +325,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 -	answer = answerNew;
 +
 +      std::chrono::time_point<std::chrono::system_clock> start;
-+      std::string duration_comment;
-+
++      
 +      for (int i = nbvar; i < nbvar+nbsoft; i++) if (S.model[i] == l_True) answerNew++;   // count the number ofunsatisfied soft clauses
 +      if (lcnt == 1) { // first model: generate cardinality constraints
 +          PL.write_comment("==============================================================");
@@ -332,9 +338,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +
 +	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
 +          
-+          duration_comment = "duration PL genCardinalDefinitions = " + MyChrono::duration_since(start) + "s";
-+          PL.write_comment(duration_comment.c_str());
-+         
++          auto duration_genCardinalDefinitions = "genCardinalDefinitions: " + MyChrono::duration_since(start) + "s";
++          
 +          PL.write_comment("==============================================================");
 +          PL.write_comment("Tree derivation:"); 
 +	      
@@ -342,24 +347,24 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +          
 +          genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
 +          
-+          duration_comment = "duration genCardinals = " + MyChrono::duration_since(start) + "s";
-+          PL.write_comment(duration_comment.c_str());
++          auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
 +          
++          if(log_duration_totalizer){
++              std::ofstream log_duration_totalizer_stream;
++              log_duration_totalizer_stream.open("duration_totalizer.txt");
++              log_duration_totalizer_stream << duration_genCardinalDefinitions << "\n" << duration_genCardinals << "\n";
++              log_duration_totalizer_stream.close();
++          }
++
 +          PL.write_comment("==============================================================");
 +          PL.write_comment("Constraining through linking variables:"); 
 +	      
-+          start = MyChrono::startClock();
-+          
 +           for (int i = answerNew; i < linkingVar.size()-1; i++) {
 +	         lits.clear();
 +	         lits.push(~linkingVar[i]);
 +             PL.write_linkingVar_clause(lits);
 +	         S.addClause(lits);
 +	       }
-+         
-+          duration_comment = "duration constraining through linking variables = " + MyChrono::duration_since(start) + "s";
-+          PL.write_comment(duration_comment.c_str());
-+          
 +          PL.write_comment("==============================================================");
 +          answer = answerNew;
        } else { // lcnt > 1 
@@ -385,7 +390,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
        }
        reportf("Current answer = %d\n",answer);
        goto solve;
-@@ -439,10 +547,11 @@
+@@ -439,10 +552,11 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -843,7 +848,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-02-11 11:05:37.982662700 +0100
+--- src_tmp/core/Solver.C	2022-02-11 13:49:41.214826300 +0100
 +++ src/core/Solver.C	2021-12-26 11:37:17.936500100 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -920,7 +925,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-02-11 11:05:37.981368900 +0100
+--- src_tmp/core/Solver.h	2022-02-11 13:49:41.213492900 +0100
 +++ src/core/Solver.h	2021-12-22 10:25:15.730665200 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h

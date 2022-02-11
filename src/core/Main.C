@@ -355,6 +355,8 @@ int main(int argc, char** argv)
     Solver      S(&PL);
     S.verbosity = 1;
 
+    bool log_duration_totalizer = false;
+    
     int         i, j;
     const char* value;
     for (i = j = 0; i < argc; i++){
@@ -400,6 +402,9 @@ int main(int argc, char** argv)
         }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
             PL.meaningful_names = true;
 
+        }else if (strcmp(argv[i], "-ld") == 0 || strcmp(argv[i], "-log_duration_totalizer") == 0 || strcmp(argv[i], "--log_duration_totalizer") == 0){
+            log_duration_totalizer = true;
+
         }else if (strncmp(argv[i], "-", 1) == 0){
             reportf("ERROR! unknown flag %s\n", argv[i]);
             exit(0);
@@ -431,6 +436,8 @@ int main(int argc, char** argv)
 
     // Open proof file
     PL.open_proof_file();
+
+
 
     reportf("============================[ Problem Statistics ]=============================\n");
     reportf("|                                                                             |\n");
@@ -473,8 +480,7 @@ int main(int argc, char** argv)
       int answerNew = 0;
 
       std::chrono::time_point<std::chrono::system_clock> start;
-      std::string duration_comment;
-
+      
       for (int i = nbvar; i < nbvar+nbsoft; i++) if (S.model[i] == l_True) answerNew++;   // count the number ofunsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinality constraints
           PL.write_comment("==============================================================");
@@ -487,9 +493,8 @@ int main(int argc, char** argv)
 
 	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
           
-          duration_comment = "duration PL genCardinalDefinitions = " + MyChrono::duration_since(start) + "s";
-          PL.write_comment(duration_comment.c_str());
-         
+          auto duration_genCardinalDefinitions = "genCardinalDefinitions: " + MyChrono::duration_since(start) + "s";
+          
           PL.write_comment("==============================================================");
           PL.write_comment("Tree derivation:"); 
 	      
@@ -497,24 +502,24 @@ int main(int argc, char** argv)
           
           genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
           
-          duration_comment = "duration genCardinals = " + MyChrono::duration_since(start) + "s";
-          PL.write_comment(duration_comment.c_str());
+          auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
           
+          if(log_duration_totalizer){
+              std::ofstream log_duration_totalizer_stream;
+              log_duration_totalizer_stream.open("duration_totalizer.txt");
+              log_duration_totalizer_stream << duration_genCardinalDefinitions << "\n" << duration_genCardinals << "\n";
+              log_duration_totalizer_stream.close();
+          }
+
           PL.write_comment("==============================================================");
           PL.write_comment("Constraining through linking variables:"); 
 	      
-          start = MyChrono::startClock();
-          
            for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	         lits.clear();
 	         lits.push(~linkingVar[i]);
              PL.write_linkingVar_clause(lits);
 	         S.addClause(lits);
 	       }
-         
-          duration_comment = "duration constraining through linking variables = " + MyChrono::duration_since(start) + "s";
-          PL.write_comment(duration_comment.c_str());
-          
           PL.write_comment("==============================================================");
           answer = answerNew;
       } else { // lcnt > 1 
