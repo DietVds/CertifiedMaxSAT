@@ -1,0 +1,84 @@
+diff -ruN src_tmp/core/Main.C src_tmp_chrono/core/Main.C
+--- src_tmp/core/Main.C	2022-02-11 14:44:53.992964600 +0100
++++ src_tmp_chrono/core/Main.C	2022-02-11 14:49:58.389897100 +0100
+@@ -26,6 +26,12 @@
+ #include <signal.h>
+ #include <zlib.h>
+ 
++// Added for chrono
++#include <iostream>
++#include <chrono>
++#include <string>
++#include <fstream>
++
+ #include "Solver.h"
+ 
+ /*************************************************************************************/
+@@ -236,6 +242,7 @@
+     reportf("  -decay         = <num> [ 0 - 1 ]\n");
+     reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
+     reportf("  -verbosity     = {0,1,2}\n");
++    reportf("   -log_duration_totalizer     = log the duration of the totalizer creation to a seperate file");
+     reportf("\n");
+ }
+ 
+@@ -302,11 +309,27 @@
+   linkingBeta.clear();
+ }
+ 
++class MyChrono{
++    public:
++        static std::chrono::time_point<std::chrono::system_clock> startClock(){
++            return std::chrono::system_clock::now();
++        }
++
++        static std::string duration_since(std::chrono::time_point<std::chrono::system_clock>& start){
++            auto end = std::chrono::system_clock::now();
++            std::chrono::duration<double> diff = end - start;
++            
++            return std::to_string(diff.count());
++        }
++
++};
++
+ int main(int argc, char** argv)
+ {
+     Solver      S;
+     S.verbosity = 1;
+ 
++    bool log_duration_totalizer = false;
+ 
+     int         i, j;
+     const char* value;
+@@ -343,6 +366,9 @@
+                 exit(0); }
+             S.verbosity = verbosity;
+ 
++        }else if (strcmp(argv[i], "-ld") == 0 || strcmp(argv[i], "-log_duration_totalizer") == 0 || strcmp(argv[i], "--log_duration_totalizer") == 0){
++            log_duration_totalizer = true;
++
+         }else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-help") == 0 || strcmp(argv[i], "--help") == 0){
+             printUsage(argv);
+             exit(0);
+@@ -409,7 +435,20 @@
+       for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
+ 	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
+       if (lcnt == 1) { // first model: generate cardinal constraints
+-	genCardinals(nbvar,nbvar+nbsoft-1, S,lits,linkingVar);
++	
++    auto start = MyChrono::startClock();
++
++    genCardinals(nbvar,nbvar+nbsoft-1, S,lits,linkingVar);
++
++    auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
++          
++    if(log_duration_totalizer){
++        std::ofstream log_duration_totalizer_stream;
++        log_duration_totalizer_stream.open("duration_totalizer.txt");
++        log_duration_totalizer_stream << duration_genCardinals << "\n";
++        log_duration_totalizer_stream.close();
++    }
++
+ 	for (int i = answerNew; i < linkingVar.size()-1; i++) {
+ 	  lits.clear();
+ 	  lits.push(~linkingVar[i]);
