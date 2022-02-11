@@ -256,6 +256,7 @@ void printUsage(char** argv)
     reportf("  -verbosity           = {0,1,2}\n");
     reportf("  -proof-file          = /path/to/proof_file.proof (default: maxsat_proof.pbp)\n");
     reportf("  -meaningful_names    = whether or not to assign meaningful names to the auxiliairy variables\n");
+    reportf("   -log_duration_totalizer     = log the duration of the totalizer creation to a seperate file");
     reportf("\n");
 }
 
