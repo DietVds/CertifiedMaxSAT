@@ -2,9 +2,7 @@
 
 instances=$1
 instances_escaped=$(sed 's;/;\\/;g' <<< "$instances")
-file_results="$instances.csv"
-
-echo "filename, runtime_without_prooflogging, mem_without_prooflogging, runtime_with_prooflogging, mem_with_prooflogging, runtime_verification, mem_verification, verification_succeeded" > ./"$file_results"
+mkdir results/"$instances"
 
 for filename in $(ls "$instances")
 do
