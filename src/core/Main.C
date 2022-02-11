@@ -26,6 +26,11 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #include <signal.h>
 #include <zlib.h>
 
+// Added for chrono
+#include <iostream>
+#include <chrono>
+#include <string>
+
 #include "Solver.h"
 #include "Prooflogger.h"
 
@@ -329,6 +334,21 @@ void genCardinals(int from, int to,
   linkingBeta.clear();
 }
 
+class MyChrono{
+    public:
+        static std::chrono::time_point<std::chrono::system_clock> startClock(){
+            return std::chrono::system_clock::now();
+        }
+
+        static std::string duration_since(std::chrono::time_point<std::chrono::system_clock>& start){
+            auto end = std::chrono::system_clock::now();
+            std::chrono::duration<double> diff = end - start;
+            
+            return std::to_string(diff.count());
+        }
+
+};
+
 int main(int argc, char** argv)
 {
     Prooflogger PL;
@@ -451,6 +471,10 @@ int main(int argc, char** argv)
     if (ret) { // koshi 09.12.25
       lcnt++;
       int answerNew = 0;
+
+      std::chrono::time_point<std::chrono::system_clock> start;
+      std::string duration_comment;
+
       for (int i = nbvar; i < nbvar+nbsoft; i++) if (S.model[i] == l_True) answerNew++;   // count the number ofunsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinality constraints
           PL.write_comment("==============================================================");
@@ -458,18 +482,39 @@ int main(int argc, char** argv)
           PL.write_bound_update(S.model);
           PL.write_comment("==============================================================");
           PL.write_comment("Cardinality definitions:"); 
+
+          start = MyChrono::startClock();
+
 	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
+          
+          duration_comment = "duration PL genCardinalDefinitions = " + MyChrono::duration_since(start) + "s";
+          PL.write_comment(duration_comment.c_str());
+         
           PL.write_comment("==============================================================");
           PL.write_comment("Tree derivation:"); 
-	      genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
+	      
+          start = MyChrono::startClock();
+          
+          genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
+          
+          duration_comment = "duration genCardinals = " + MyChrono::duration_since(start) + "s";
+          PL.write_comment(duration_comment.c_str());
+          
           PL.write_comment("==============================================================");
           PL.write_comment("Constraining through linking variables:"); 
-	       for (int i = answerNew; i < linkingVar.size()-1; i++) {
+	      
+          start = MyChrono::startClock();
+          
+           for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	         lits.clear();
 	         lits.push(~linkingVar[i]);
              PL.write_linkingVar_clause(lits);
 	         S.addClause(lits);
 	       }
+         
+          duration_comment = "duration constraining through linking variables = " + MyChrono::duration_since(start) + "s";
+          PL.write_comment(duration_comment.c_str());
+          
           PL.write_comment("==============================================================");
           answer = answerNew;
       } else { // lcnt > 1 

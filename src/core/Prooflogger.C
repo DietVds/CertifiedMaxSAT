@@ -5,19 +5,19 @@
 
 void Prooflogger::write_proof_header(int nbclause) {
     proof << "pseudo-Boolean proof version 1.0\n";
-    proof << "f " << nbclause << "\n" << std::flush;
+    proof << "f " << nbclause << "\n" ;
 }
 
 void Prooflogger::write_comment(const char* comment) {
-    proof<< "* " << comment << "\n" << std::flush;
+    proof<< "* " << comment << "\n" ;
 }
 
 void Prooflogger::write_contradiction() {
-    proof << "c " << constraint_counter << "\n" << std::flush;
+    proof << "c " << constraint_counter << "\n" ;
 }
 
 void Prooflogger::write_empty_clause() {
-    proof<< "u >= 1;\n" << std::flush;
+    proof<< "u >= 1;\n" ;
     constraint_counter++;
     write_contradiction();
 }
@@ -53,7 +53,7 @@ void Prooflogger::write_literal(Lit literal) {
     std::string name = var_name(var(literal));
 
     // Write
-    proof << weight_and_sign << name << " " << std::flush;
+    proof << weight_and_sign << name << " " ;
 }
 
 void Prooflogger::write_literal_assignment(lbool assignment, int var) {
@@ -65,12 +65,12 @@ void Prooflogger::write_literal_assignment(lbool assignment, int var) {
     std::string symbol = var_name(var);
 
     // Write
-    proof << sign << symbol << " " << std::flush;
+    proof << sign << symbol << " " ;
 }
 
 void Prooflogger::write_witness(Lit literal) {
     std::string name = var_name(var(literal));
-    proof<< name << " -> " << std::to_string(sign(literal) == 0) << std::flush;
+    proof<< name << " -> " << std::to_string(sign(literal) == 0) ;
 }
 
 void Prooflogger::write_clause(vec<Lit>& clause) {
@@ -80,7 +80,7 @@ void Prooflogger::write_clause(vec<Lit>& clause) {
 void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     proof << "u ";
     write_clause(clause);
-    proof << " >= 1;\n" << std::flush;
+    proof << " >= 1;\n" ;
     constraint_counter++;
 }
 
@@ -88,7 +88,7 @@ void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
     int variable = var(clause[0]);
     int constraint_id = C2_store[variable];
     if(constraint_id != 0) {
-        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" << std::flush;
+        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" ;
         constraint_counter++;
     }
     write_learnt_clause(clause);
@@ -97,7 +97,7 @@ void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
 void Prooflogger::write_bound_update(vec<lbool>& model) {
     proof<< "o ";
     for(int i = 0; i < model.size(); i++) write_literal_assignment(model[i], i);
-    proof << "\n" << std::flush;
+    proof << "\n" ;
 
     // Veripb automatically adds an improvement constraint so counter needs to be incremented
     last_bound_constraint_id = ++constraint_counter;
@@ -119,7 +119,7 @@ void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, 
     write_clause(definition);
     proof << ">= 1; ";
     write_witness(definition[0]);
-    proof << "\n" << std::flush;
+    proof << "\n" ;
     constraint_counter++;
 }
 
@@ -131,7 +131,7 @@ void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int
     }
     proof << weight << " " << var_name(var) << " >= " << weight << "; ";
     write_witness(Lit(var));
-    proof << "\n" << std::flush;
+    proof << "\n" ;
     constraint_counter++;
     C1_store[var] = constraint_counter;
     C1_weight_store[var] = weight;
@@ -145,7 +145,7 @@ void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int
     }
     proof << weight << " ~" << var_name(var) << " >= " << weight << "; ";
     write_witness(~Lit(var));
-    proof << "\n" << std::flush;
+    proof << "\n" ;
     constraint_counter++;
     C2_store[var] = constraint_counter;
     C2_weight_store[var] = weight;
@@ -170,17 +170,17 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
     bool resolved_one = false;
     if(C2_store.find(first) != C2_store.end()) {
         resolved_one = true;
-        proof << "p " << C1_store[third] << " " << C2_store[first] << " +\n" << std::flush;
+        proof << "p " << C1_store[third] << " " << C2_store[first] << " +\n" ;
         constraint_counter++;
     }
     if(C2_store.find(second) != C2_store.end()) {
         int to_add_to = resolved_one? constraint_counter : C1_store[third];
-        proof << "p " << to_add_to << " " << C2_store[second] << " +\n" << std::flush;
+        proof << "p " << to_add_to << " " << C2_store[second] << " +\n" ;
         constraint_counter++;
         resolved_one = true;
     }
     if(resolved_one) {
-        proof << "p " << constraint_counter << " s\n" << std::flush;
+        proof << "p " << constraint_counter << " s\n" ;
         constraint_counter++;
     }
 
@@ -207,17 +207,17 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     bool resolved_one = false;
     if(C1_store.find(first) != C1_store.end()) {
         resolved_one = true;
-        proof << "p " << C2_store[third] << " " << C1_store[first] << " +\n" << std::flush;
+        proof << "p " << C2_store[third] << " " << C1_store[first] << " +\n" ;
         constraint_counter++;
     }
     if(C1_store.find(second) != C1_store.end()) {
         int to_add_to = resolved_one? constraint_counter : C2_store[third];
-        proof << "p " << to_add_to << " " << C1_store[second] << " +\n" << std::flush;
+        proof << "p " << to_add_to << " " << C1_store[second] << " +\n" ;
         constraint_counter++;
         resolved_one = true;
     }
     if(resolved_one) {
-        proof << "p " << constraint_counter << " 2 d s\n" << std::flush;
+        proof << "p " << constraint_counter << " 2 d s\n" ;
         constraint_counter++;
     }
 
