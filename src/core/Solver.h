@@ -21,15 +21,12 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #define Solver_h
 
 #include <cstdio>
-#include <fstream>
-#include <iostream>
 
 #include "Vec.h"
 #include "Heap.h"
 #include "Alg.h"
 
 #include "SolverTypes.h"
-#include "Prooflogger.h"
 
 
 //=================================================================================================
@@ -41,12 +38,8 @@ public:
 
     // Constructor/Destructor:
     //
-    Solver(Prooflogger *PL);
+    Solver();
     ~Solver();
-
-    // Proof logging:
-    //
-    Prooflogger* PL;
 
     // Problem specification:
     //
@@ -153,19 +146,19 @@ protected:
 
     // Main internal methods:
     //
-    void     insertVarOrder   (Var x);                                                  // Insert a variable in the decision order priority queue.
-    Lit      pickBranchLit    (int polarity_mode, double random_var_freq);              // Return the next decision variable.
-    void     newDecisionLevel ();                                                       // Begins a new decision level.
-    void     uncheckedEnqueue (Lit p, Clause* from = NULL);                             // Enqueue a literal. Assumes value of literal is undefined.
-    bool     enqueue          (Lit p, Clause* from = NULL);                             // Test if fact 'p' contradicts current state, enqueue otherwise.
-    Clause*  propagate        ();                                                       // Perform unit propagation. Returns possibly conflicting clause.
-    void     cancelUntil      (int level);                                              // Backtrack until a certain level.
-    void     analyze          (Clause* confl, vec<Lit>& out_learnt, int& out_btlevel);  // (bt = backtrack)
-    void     analyzeFinal     (Lit p, vec<Lit>& out_conflict);                          // COULD THIS BE IMPLEMENTED BY THE ORDINARIY "analyze" BY SOME REASONABLE GENERALIZATION?
-    bool     litRedundant     (Lit p, uint32_t abstract_levels);                        // (helper method for 'analyze()')
-    lbool    search           (int nof_conflicts, int nof_learnts);                     // Search for a given number of conflicts.
-    void     reduceDB         ();                                                       // Reduce the set of learnt clauses.
-    void     removeSatisfied  (vec<Clause*>& cs);                                       // Shrink 'cs' to contain only non-satisfied clauses.
+    void     insertVarOrder   (Var x);                                                 // Insert a variable in the decision order priority queue.
+    Lit      pickBranchLit    (int polarity_mode, double random_var_freq);             // Return the next decision variable.
+    void     newDecisionLevel ();                                                      // Begins a new decision level.
+    void     uncheckedEnqueue (Lit p, Clause* from = NULL);                            // Enqueue a literal. Assumes value of literal is undefined.
+    bool     enqueue          (Lit p, Clause* from = NULL);                            // Test if fact 'p' contradicts current state, enqueue otherwise.
+    Clause*  propagate        ();                                                      // Perform unit propagation. Returns possibly conflicting clause.
+    void     cancelUntil      (int level);                                             // Backtrack until a certain level.
+    void     analyze          (Clause* confl, vec<Lit>& out_learnt, int& out_btlevel); // (bt = backtrack)
+    void     analyzeFinal     (Lit p, vec<Lit>& out_conflict);                         // COULD THIS BE IMPLEMENTED BY THE ORDINARIY "analyze" BY SOME REASONABLE GENERALIZATION?
+    bool     litRedundant     (Lit p, uint32_t abstract_levels);                       // (helper method for 'analyze()')
+    lbool    search           (int nof_conflicts, int nof_learnts);                    // Search for a given number of conflicts.
+    void     reduceDB         ();                                                      // Reduce the set of learnt clauses.
+    void     removeSatisfied  (vec<Clause*>& cs);                                      // Shrink 'cs' to contain only non-satisfied clauses.
 
     // Maintaining Variable/Clause activity:
     //

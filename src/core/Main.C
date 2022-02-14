@@ -30,9 +30,9 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #include <iostream>
 #include <chrono>
 #include <string>
+#include <fstream>
 
 #include "Solver.h"
-#include "Prooflogger.h"
 
 /*************************************************************************************/
 #ifdef _MSC_VER
@@ -137,18 +137,18 @@ static int parseInt(B& in) {
     return neg ? -val : val; }
 
 template<class B>
-static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits, 
+static void readClause(B& in, Solver& S, vec<Lit>& lits, 
 		       int nbvar, int top, int& nbsoft) { // koshi 10.01.04
 
-    int parsed_lit, var, weight;
+    int     parsed_lit, var;
     lits.clear();
-    weight = parseInt(in); // koshi 10.01.04
-    if (weight == 1) { // soft clause
+    parsed_lit = parseInt(in); // koshi 10.01.04
+    if (parsed_lit == 1) { // soft clause
       nbsoft++;
       lits.push(Lit(S.newVar()));
-    } else if (weight != top) { // weight of hard clause must be top
+    } else if (parsed_lit != top) { // weight of hard clause must be top
       reportf("Unexpected weight %c\n", *in), exit(3);
-    } else weight = top;
+    }
 
     for (;;){
         parsed_lit = parseInt(in);
@@ -169,54 +169,42 @@ static bool match(B& in, char* str) {
 
 
 template<class B>
-static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL, 
+static void parse_DIMACS_main(B& in, Solver& S, 
 			      int& out_nbvar, int& out_top, int& out_nbsoft) {
     vec<Lit> lits;
-    int vars, clauses;
-
-    // Read header
-    skipWhitespace(in);
-    while(*in == 'c') skipLine(in);
-    if (*in == 'p'){
-	     if (match(in, "p wcnf")){ // koshi 10.01.04
-            vars    = parseInt(in);            
-            clauses = parseInt(in);            
-		    int top     = parseInt(in);
-		    out_nbvar   = vars;
-		    out_top     = top;
-            reportf("|  Number of variables:    %-12d                                       |\n", vars);
-            reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
-            reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
-		    while (vars > S.nVars()) S.newVar();
-        } else {
-            reportf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);
-        }
-    } else reportf("PARSE ERROR! No header given!");
-
-    // Read clauses
     for (;;){
         skipWhitespace(in);
         if (*in == EOF)
             break;
-        else if (*in == 'c' || *in == 'p') skipLine(in);
-        else {
-	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
+        else if (*in == 'p'){
+	  if (match(in, "p wcnf")){ // koshi 10.01.04
+                int vars    = parseInt(in);
+                int clauses = parseInt(in);
+		int top     = parseInt(in);
+		out_nbvar   = vars;
+		out_top     = top;
+                reportf("|  Number of variables:    %-12d                                       |\n", vars);
+                reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
+                reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
+		while (vars > S.nVars()) S.newVar();
+            }else{
+                reportf("PARSE ERROR! Unexpected char: %c\n", *in), exit(3);
+            }
+        } else if (*in == 'c' || *in == 'p')
+            skipLine(in);
+        else
+	  readClause(in, S, lits, out_nbvar,out_top,out_nbsoft),
             S.addClause(lits);
-        }
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
-    PL.n_variables = vars+out_nbsoft;
-    PL.variable_counter = PL.n_variables;
-    PL.formula_length = clauses;
-    PL.write_proof_header(clauses);
 }
 
 // Inserts problem into solver.
 //
-static void parse_DIMACS(gzFile input_stream, Solver& S, Prooflogger &PL, 
+static void parse_DIMACS(gzFile input_stream, Solver& S, 
 			 int& out_nbvar, int& out_top, int& out_nbsoft) { // koshi 10.01.04
     StreamBuffer in(input_stream);
-    parse_DIMACS_main(in, S, PL, out_nbvar, out_top, out_nbsoft); }
+    parse_DIMACS_main(in, S, out_nbvar, out_top, out_nbsoft); }
 
 
 //=================================================================================================
@@ -250,12 +238,10 @@ void printUsage(char** argv)
 {
     reportf("USAGE: %s [options] <input-file> <result-output-file>\n\n  where input may be either in plain or gzipped DIMACS.\n\n", argv[0]);
     reportf("OPTIONS:\n\n");
-    reportf("  -polarity-mode       = {true,false,rnd}\n");
-    reportf("  -decay               = <num> [ 0 - 1 ]\n");
-    reportf("  -rnd-freq            = <num> [ 0 - 1 ]\n");
-    reportf("  -verbosity           = {0,1,2}\n");
-    reportf("  -proof-file          = /path/to/proof_file.proof (default: maxsat_proof.pbp)\n");
-    reportf("  -meaningful_names    = whether or not to assign meaningful names to the auxiliairy variables\n");
+    reportf("  -polarity-mode = {true,false,rnd}\n");
+    reportf("  -decay         = <num> [ 0 - 1 ]\n");
+    reportf("  -rnd-freq      = <num> [ 0 - 1 ]\n");
+    reportf("  -verbosity     = {0,1,2}\n");
     reportf("   -log_duration_totalizer     = log the duration of the totalizer creation to a seperate file");
     reportf("\n");
 }
@@ -272,7 +258,7 @@ const char* hasPrefix(const char* str, const char* prefix)
 
 // koshi 10.01.08
 void genCardinals(int from, int to, 
-		  Solver& S, Prooflogger& PL, vec<Lit>& lits, vec<Lit>& linkingVar) {
+		  Solver& S, vec<Lit>& lits, vec<Lit>& linkingVar) {
   int inputSize = to - from + 1;
   linkingVar.clear();
 
@@ -282,54 +268,42 @@ void genCardinals(int from, int to,
   Var varZero = S.newVar();
   Var varLast = S.newVar();
 
-  // First
   lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-  PL.write_learnt_clause(lits);
-
-  // Last
   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-  PL.write_learnt_clause(lits);
-
 
   if (inputSize > 2) {
     int middle = inputSize/2;
-    genCardinals(from, from+middle, S,PL,lits,linkingAlpha);
-    genCardinals(from+middle+1, to, S,PL,lits,linkingBeta);
+    genCardinals(from, from+middle, S,lits,linkingAlpha);
+    genCardinals(from+middle+1, to, S,lits,linkingBeta);
   } else if (inputSize == 2) {
-    genCardinals(from, from, S,PL,lits,linkingAlpha);
-    genCardinals(to, to, S,PL,lits,linkingBeta);
+    genCardinals(from, from, S,lits,linkingAlpha);
+    genCardinals(to, to, S,lits,linkingBeta);
   }
   if (inputSize == 1) {
     linkingVar.push(Lit(varZero));
     linkingVar.push(Lit(from));
     linkingVar.push(Lit(varLast));
   } else { // inputSize >= 2
-
-    PL.write_comment("- Node clauses:");
     linkingVar.push(Lit(varZero));
     for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
     linkingVar.push(Lit(varLast));
-
     for (int sigma = 0; sigma <= inputSize; sigma++) {
-        for (int alpha = 0; alpha < linkingAlpha.size()-1; alpha++) {
-	        int beta = sigma - alpha;
-	        if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
-	            lits.clear();
-	            lits.push(~linkingAlpha[alpha]);
-	            lits.push(~linkingBeta[beta]);
-	            lits.push(linkingVar[sigma]);
-                PL.write_C1(lits, sigma, from, to);
-	            S.addClause(lits);
-	            lits.clear();
-	            lits.push(linkingAlpha[alpha+1]);
-	            lits.push(linkingBeta[beta+1]);
-	            lits.push(~linkingVar[sigma+1]);
-                PL.write_C2(lits, sigma+1, from, to);
-	            S.addClause(lits);
-	        }
-        }
+      for (int alpha = 0; alpha < linkingAlpha.size()-1; alpha++) {
+	int beta = sigma - alpha;
+	if (0 <= beta && beta < linkingBeta.size()-1) { // create constraints
+	  lits.clear();
+	  lits.push(~linkingAlpha[alpha]);
+	  lits.push(~linkingBeta[beta]);
+	  lits.push(linkingVar[sigma]);
+	  S.addClause(lits);
+	  lits.clear();
+	  lits.push(linkingAlpha[alpha+1]);
+	  lits.push(linkingBeta[beta+1]);
+	  lits.push(~linkingVar[sigma+1]);
+	  S.addClause(lits);
+	}
+      }
     }
-    PL.write_comment("-------------------------------------------");
   }
   linkingAlpha.clear();
   linkingBeta.clear();
@@ -352,12 +326,13 @@ class MyChrono{
 
 int main(int argc, char** argv)
 {
-    Prooflogger PL;
-    Solver      S(&PL);
+    Solver      S;
     S.verbosity = 1;
 
-    bool log_duration_totalizer = false;
-    
+    // Duration file
+    bool log_duration_totalizer         = false;
+    const char *duration_file_name      = "totalizer_duration.txt";
+
     int         i, j;
     const char* value;
     for (i = j = 0; i < argc; i++){
@@ -393,18 +368,13 @@ int main(int argc, char** argv)
                 exit(0); }
             S.verbosity = verbosity;
 
+        } else if ((value = hasPrefix(argv[i], "-log_duration_totalizer="))) {
+            log_duration_totalizer = true;
+            duration_file_name = value;
+
         }else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "-help") == 0 || strcmp(argv[i], "--help") == 0){
             printUsage(argv);
             exit(0);
-
-        } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
-            PL.set_proof_name(value);
-
-        }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
-            PL.meaningful_names = true;
-
-        }else if (strcmp(argv[i], "-ld") == 0 || strcmp(argv[i], "-log_duration_totalizer") == 0 || strcmp(argv[i], "--log_duration_totalizer") == 0){
-            log_duration_totalizer = true;
 
         }else if (strncmp(argv[i], "-", 1) == 0){
             reportf("ERROR! unknown flag %s\n", argv[i]);
@@ -416,7 +386,7 @@ int main(int argc, char** argv)
     argc = j;
 
 
-    reportf("This is QMaxSAT 0.1 based on MiniSat 2.0 beta, extended for prooflogging\n");
+    reportf("This is QMaxSAT 0.1 based on MiniSat 2.0 beta\n");
 #if defined(__linux__)
     fpu_control_t oldcw, newcw;
     _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
@@ -435,11 +405,6 @@ int main(int argc, char** argv)
     if (in == NULL)
         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
 
-    // Open proof file
-    PL.open_proof_file();
-
-
-
     reportf("============================[ Problem Statistics ]=============================\n");
     reportf("|                                                                             |\n");
 
@@ -447,15 +412,8 @@ int main(int argc, char** argv)
     int nbvar  = 0; // number of original variables
     int top    = 0; // weight of hard clause
     int nbsoft = 0; // number of soft clauses
-    parse_DIMACS(in, S, PL, nbvar, top, nbsoft);
-    
-    // Initialise PL constraint counter
-    PL.constraint_counter = S.nClauses();
-
-    // Close input file
+    parse_DIMACS(in, S, nbvar, top, nbsoft);
     gzclose(in);
-
-    // Open output file
     FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
 
     double parse_time = cpuTime() - cpu_time;
@@ -464,8 +422,6 @@ int main(int argc, char** argv)
     if (!S.simplify()){
         reportf("Solved by unit propagation\n");
         if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
-        PL.write_empty_clause();
-        PL.close_proof_file();
         printf("UNSATISFIABLE\n");
         exit(20);
     }
@@ -479,64 +435,36 @@ int main(int argc, char** argv)
     if (ret) { // koshi 09.12.25
       lcnt++;
       int answerNew = 0;
+      for (int i = nbvar; i < nbvar+nbsoft; i++) // count the number of
+	if (S.model[i] == l_True) answerNew++;   // unsatisfied soft clauses
+      if (lcnt == 1) { // first model: generate cardinal constraints
+	
+    auto start = MyChrono::startClock();
 
-      std::chrono::time_point<std::chrono::system_clock> start;
-      
-      for (int i = nbvar; i < nbvar+nbsoft; i++) if (S.model[i] == l_True) answerNew++;   // count the number ofunsatisfied soft clauses
-      if (lcnt == 1) { // first model: generate cardinality constraints
-          PL.write_comment("==============================================================");
-          PL.write_comment("First model found:"); 
-          PL.write_bound_update(S.model);
-          PL.write_comment("==============================================================");
-          PL.write_comment("Cardinality definitions:"); 
+    genCardinals(nbvar,nbvar+nbsoft-1, S,lits,linkingVar);
 
-          start = MyChrono::startClock();
+    auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
+          
+    if(log_duration_totalizer){
+        std::ofstream log_duration_totalizer_stream;
+        log_duration_totalizer_stream.open(duration_file_name);
+        log_duration_totalizer_stream << duration_genCardinals << "\n";
+        log_duration_totalizer_stream.close();
+    }
 
-	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
-          
-          auto duration_genCardinalDefinitions = "genCardinalDefinitions: " + MyChrono::duration_since(start) + "s";
-          
-          PL.write_comment("==============================================================");
-          PL.write_comment("Tree derivation:"); 
-	      
-          start = MyChrono::startClock();
-          
-          genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
-          
-          auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
-          
-          if(log_duration_totalizer){
-              std::ofstream log_duration_totalizer_stream;
-              log_duration_totalizer_stream.open("duration_totalizer.txt");
-              log_duration_totalizer_stream << duration_genCardinalDefinitions << "\n" << duration_genCardinals << "\n";
-              log_duration_totalizer_stream.close();
-          }
-
-          PL.write_comment("==============================================================");
-          PL.write_comment("Constraining through linking variables:"); 
-	      
-           for (int i = answerNew; i < linkingVar.size()-1; i++) {
-	         lits.clear();
-	         lits.push(~linkingVar[i]);
-             PL.write_linkingVar_clause(lits);
-	         S.addClause(lits);
-	       }
-          PL.write_comment("==============================================================");
-          answer = answerNew;
+	for (int i = answerNew; i < linkingVar.size()-1; i++) {
+	  lits.clear();
+	  lits.push(~linkingVar[i]);
+	  S.addClause(lits);
+	}
+	answer = answerNew;
       } else { // lcnt > 1 
-          PL.write_comment("==============================================================");
-          PL.write_comment("New model found:"); 
-          PL.write_bound_update(S.model);
-          PL.write_comment("==============================================================");
-          PL.write_comment("Constraining through linking variables:"); 
-	       for (int i = answerNew; i < answer; i++) {
-	           lits.clear();
-	           lits.push(~linkingVar[i]);
-               PL.write_linkingVar_clause(lits);
-	           S.addClause(lits);
-	       }
-          PL.write_comment("==============================================================");
-          answer = answerNew;
+	for (int i = answerNew; i < answer; i++) {
+	  lits.clear();
+	  lits.push(~linkingVar[i]);
+	  S.addClause(lits);
+	}
+	answer = answerNew;
       }
       reportf("Current answer = %d\n",answer);
       goto solve;
@@ -553,11 +481,10 @@ int main(int argc, char** argv)
                 if (S.model[i] != l_Undef)
                     fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
             fprintf(res, " 0\n");
-        } else
+        }else
             fprintf(res, "UNSAT\n");
         fclose(res);
     }
-    PL.close_proof_file();
 
 #ifdef NDEBUG
     exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')

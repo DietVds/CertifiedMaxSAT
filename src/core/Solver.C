@@ -26,7 +26,7 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 // Constructor/Destructor:
 
 
-Solver::Solver(Prooflogger *PL) :
+Solver::Solver() :
 
     // Parameters: (formerly in 'SearchParams')
     var_decay(1 / 0.95), clause_decay(1 / 0.999), random_var_freq(0.02)
@@ -53,10 +53,6 @@ Solver::Solver(Prooflogger *PL) :
   , random_seed      (91648253)
   , progress_estimate(0)
   , remove_satisfied (true)
-
-  // Prooflogger
-  //
-  , PL(PL)
 {}
 
 
@@ -548,7 +544,7 @@ bool Solver::simplify()
 |    all variables are decision variables, this means that the clause set is satisfiable. 'l_False'
 |    if the clause set is unsatisfiable. 'l_Undef' if the bound on number of conflicts is reached.
 |________________________________________________________________________________________________@*/
-lbool Solver::search(int nof_conflicts, int nof_learnts) 
+lbool Solver::search(int nof_conflicts, int nof_learnts)
 {
     assert(ok);
     int         backtrack_level;
@@ -564,19 +560,12 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
         if (confl != NULL){
             // CONFLICT
             conflicts++; conflictC++;
-            if (decisionLevel() == 0) {
-                PL->write_empty_clause();
-                return l_False;
-            }
+            if (decisionLevel() == 0) return l_False;
 
             first = false;
 
             learnt_clause.clear();
             analyze(confl, learnt_clause, backtrack_level);
-
-            // Write the learnt clause to the proof file
-            PL->write_learnt_clause(learnt_clause);
-
             cancelUntil(backtrack_level);
             assert(value(learnt_clause[0]) == l_Undef);
 
@@ -603,10 +592,8 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
                 return l_Undef; }
 
             // Simplify the set of problem clauses:
-            if (decisionLevel() == 0 && !simplify()) {
-                PL->write_empty_clause();
+            if (decisionLevel() == 0 && !simplify())
                 return l_False;
-            }
 
             if (nof_learnts >= 0 && learnts.size()-nAssigns() >= nof_learnts)
                 // Reduce the set of learnt clauses:
@@ -667,10 +654,7 @@ bool Solver::solve(const vec<Lit>& assumps)
     model.clear();
     conflict.clear();
 
-    if (!ok) {
-        PL->write_empty_clause();
-        return false;
-    }
+    if (!ok) return false;
 
     assumps.copyTo(assumptions);
 
