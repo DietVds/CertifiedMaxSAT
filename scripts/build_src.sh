@@ -11,8 +11,11 @@ else
 
     # Untar archives
     cd base
-    tar xvzf minisat-2.2.0.tar.gz                       #--> no need to specify folder, it is archived like this
-    tar xvzf qmaxsat-v0-1.tgz --one-top-level=qmaxsat   #--> need to specifiy subfolder
+    tar xvzf minisat-2.2.0.tar.gz
+    mkdir qmaxsat
+    tar xvzf qmaxsat-v0-1.tgz 
+    mv 0.1 mtl qmaxsat
+    rm LICENSE README
 
     # Delete unneeded build files
     rm qmaxsat/0.1/*.o
