@@ -5,7 +5,7 @@ Our contact information:
 | :--- | :--- |
 | Dieter Vandesande | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
 | Wolf De Wulf | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) |
-| Bart Bogaerts | [bart.bogaerts@vub.be](mailto:bart.bogaerts@vub.be)] |
+| Bart Bogaerts | [bart.bogaerts@vub.be](mailto:bart.bogaerts@vub.be) |
 
 ## Patches
 
