@@ -1,14 +1,15 @@
 # A Certified MaxSAT Solver
 
-Underneath you can find our contact information:
-| Name | Student id | Email address |
-| :--- | :--- |:--- |
-| Wolf De Wulf | 0546395 | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) |
-| Dieter Vandesande | 0565683 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
+Our contact information:
+| Name | Email address |
+| :--- | :--- |
+| Dieter Vandesande | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
+| Wolf De Wulf | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) |
+| Bart Bogaerts | [bart.bogaerts@vub.be](mailto:bart.bogaerts@vub.be)] |
 
 ## Patches
 
-The [patches](patches) folder contains a number of patches, in what follows a description is given for each of them.
+The [patches](patches) folder contains a number of patches, underneath we give a description for each of them.
 
 ### MiniSAT fix
 
