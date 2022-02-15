@@ -82,6 +82,7 @@ void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     write_clause(clause);
     proof << " >= 1;\n" ;
     constraint_counter++;
+    proof << "* " << "^constraint id = " << constraint_counter << "\n";
 }
 
 void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
@@ -121,6 +122,7 @@ void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, 
     write_witness(definition[0]);
     proof << "\n" ;
     constraint_counter++;
+    proof << "* " << "^constraint id = " << constraint_counter << "\n";
 }
 
 void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
@@ -133,8 +135,8 @@ void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int
     write_witness(Lit(var));
     proof << "\n" ;
     constraint_counter++;
+    proof << "* " << "^constraint id = " << constraint_counter << "\n";
     C1_store[var] = constraint_counter;
-    C1_weight_store[var] = weight;
 }
 
 void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int to) {
@@ -147,8 +149,8 @@ void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int
     write_witness(~Lit(var));
     proof << "\n" ;
     constraint_counter++;
+    proof << "* " << "^constraint id = " << constraint_counter << "\n";
     C2_store[var] = constraint_counter;
-    C2_weight_store[var] = weight;
 }
 
 void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
@@ -172,16 +174,19 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
         resolved_one = true;
         proof << "p " << C1_store[third] << " " << C2_store[first] << " +\n" ;
         constraint_counter++;
+        proof << "* " << "^constraint id = " << constraint_counter << "\n";
     }
     if(C2_store.find(second) != C2_store.end()) {
         int to_add_to = resolved_one? constraint_counter : C1_store[third];
         proof << "p " << to_add_to << " " << C2_store[second] << " +\n" ;
         constraint_counter++;
+        proof << "* " << "^constraint id = " << constraint_counter << "\n";
         resolved_one = true;
     }
     if(resolved_one) {
         proof << "p " << constraint_counter << " s\n" ;
         constraint_counter++;
+        proof << "* " << "^constraint id = " << constraint_counter << "\n";
     }
 
     // Derivation is done so clause can be written as RUP
@@ -209,16 +214,19 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
         resolved_one = true;
         proof << "p " << C2_store[third] << " " << C1_store[first] << " +\n" ;
         constraint_counter++;
+        proof << "* " << "^constraint id = " << constraint_counter << "\n";
     }
     if(C1_store.find(second) != C1_store.end()) {
         int to_add_to = resolved_one? constraint_counter : C2_store[third];
         proof << "p " << to_add_to << " " << C1_store[second] << " +\n" ;
         constraint_counter++;
+        proof << "* " << "^constraint id = " << constraint_counter << "\n";
         resolved_one = true;
     }
     if(resolved_one) {
         proof << "p " << constraint_counter << " 2 d s\n" ;
         constraint_counter++;
+        proof << "* " << "^constraint id = " << constraint_counter << "\n";
     }
 
     // Derivation is done so clause can be written as RUP

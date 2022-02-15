@@ -208,6 +208,7 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     PL.n_variables = vars+out_nbsoft;
     PL.variable_counter = PL.n_variables;
     PL.formula_length = clauses;
+    PL.constraint_counter = clauses;
     PL.write_proof_header(clauses);
 }
 
@@ -453,7 +454,7 @@ int main(int argc, char** argv)
     parse_DIMACS(in, S, PL, nbvar, top, nbsoft);
     
     // Initialise PL constraint counter
-    PL.constraint_counter = S.nClauses();
+    //PL.constraint_counter = S.nClauses();
 
     // Close input file
     gzclose(in);

@@ -16,70 +16,7 @@
 #include "SolverTypes.h"
 
 //=================================================================================================
-// Prooflogger -- VeriPB operation classes:
-
-class VeriPBOperation {
-public:
-    virtual std::string apply(int constraint_id_at_start_of_printing){};
-};
-
-class CPOperand : public VeriPBOperation {
-public:
-    CPOperand(int value);
-
-    // Value
-    //
-    int value;
-
-    std::string apply(int constraint_id_at_start_of_printing) override;
-};
-
-class RUP : public VeriPBOperation {
-public:
-    RUP(vec<Lit>& clause);
-
-    // Clause
-    //
-    vec<Lit> clause;
-};
-
-class CP1 : public VeriPBOperation {
-public:
-    CP1(VeriPBOperation* a, const char* operant);
-
-    // Operands
-    //
-    VeriPBOperation* a;
-
-    // Operant
-    //
-    std::string operant;
-
-    // Apply
-    //
-    std::string apply(int constraint_id_at_start_of_printing) override;
-};
-
-class CP2 : public VeriPBOperation {
-public:
-    CP2(VeriPBOperation* a, VeriPBOperation* b, const char* operant);
-
-    // Operands
-    //
-    VeriPBOperation* a;
-    VeriPBOperation* b;
-
-    // Operant
-    //
-    std::string operant;
-
-    // Apply
-    //
-    std::string apply(int constraint_id_at_start_of_printing) override;
-};
-
-//=================================================================================================
-// Prooflogger -- the main class:
+// Prooflogger 
 
 
 class Prooflogger {
@@ -105,12 +42,10 @@ public:
     std::map<int, int> meaningful_name_UB;
     std::map<int, int> meaningful_name_n;
 
-    // Constraint and weight stores
+    // Constraint stores
     //
     std::map<int, int> C1_store;
-    std::map<int, int> C1_weight_store;
     std::map<int, int> C2_store;
-    std::map<int, int> C2_weight_store;
 
     // Proof file
     std::ofstream proof;
@@ -119,7 +54,6 @@ public:
     void open_proof_file                (){proof.open(proof_file_name);};
     void close_proof_file               (){proof.close();};
     void write_tree_derivation          ();
-    void delete_tree_derivation         (VeriPBOperation* node); 
     void write_proof_header             (int nbclause);
     void write_comment                  (const char* comment);
     void write_contradiction            ();
