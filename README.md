@@ -9,13 +9,14 @@ Underneath you can find our contact information:
 ## Patches
 The [patches](patches) folder contains a number of patches, in what follows a description is given for each of them:
 
- * 
+### 
 
 ## Building scripts
+The [scripts](scripts) folder contains a number of buildings scripts, in what follows a description is given for each of them:
 
-### Building the solver
+### Building the certified solver
 
-Run the `build.sh` script to extract the MiniSat and QMaxSAT archives, combine them, apply the patches to them and build the final solver:
+Run the `build.sh` script to extract the MiniSat and QMaxSAT archives, combine them, apply the fix a prooflogging patches to them and build the final solver:
 
 ```console
 ./scripts/build.sh
@@ -35,14 +36,6 @@ Run the `build_src.sh` script to extract the MiniSat and QMaxSAT archives, combi
 
 ```console
 ./scripts/build_src.sh PATH_TO_SRC
-```
-
-### Creating a patch file for the current src folder
-
-Run the `build_patch.sh` script to create a patch file that compares the current `src` to a fresh `src` built by `build_src.sh`:
-
-```console
-./scripts/build_patch.sh PATCH_FILE_NAME
 ```
 
 ## Usage
