@@ -7,39 +7,27 @@ Underneath you can find our contact information:
 | Dieter Vandesande | 0565683 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
 
 ## Patches
+
 The [patches](patches) folder contains a number of patches, in what follows a description is given for each of them:
 
-### 
+### MiniSAT fix
 
-## Building scripts
-The [scripts](scripts) folder contains a number of buildings scripts, in what follows a description is given for each of them:
+The [qmaxsat_fix.patch](patches/qmaxsat_fix.patch) patch applies a fix to the Qmaxsat 0.1 source code such that it works with recent C++ compilers.
 
-### Building the certified solver
+### Prooflogging
 
-Run the `build.sh` script to extract the MiniSat and QMaxSAT archives, combine them, apply the fix a prooflogging patches to them and build the final solver:
+The [prooflogging.patch](patches/prooflogging.patch) patch extends the (fixed) Qmaxsat 0.1 source code with prooflogging.
 
-```console
-./scripts/build.sh
-```
+### VeriPB WCNF extension
 
-### Building veripb
-
-Run the `build_src.sh` script to extract the veripb archive and build/install the proof verifier:
-
-```console
-./scripts/build_veripb.sh
-```
-
-### Building the source code
-
-Run the `build_src.sh` script to extract the MiniSat and QMaxSAT archives, combine them and apply the patches to them:
-
-```console
-./scripts/build_src.sh PATH_TO_SRC
-```
+The [veripb_wcnf.patch](patches/veripb_wcnf.patch) patch extends the VeriPB source code with the ability to read from `.wcnf` files, use the `-wcnf` flag.
 
 ## Usage
 
 ```console
 ./qmaxsat --help
 ```
+
+## Citation
+
+D. Vandesande, W. De Wulf, B. Bogaerts. A Certified MaxSAT Solver. (to be submitted at SAT2022)
