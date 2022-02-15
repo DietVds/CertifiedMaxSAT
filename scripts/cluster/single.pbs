@@ -3,14 +3,16 @@
 #SBATCH --job-name=CMS
 #SBATCH --time=2:00:00
 #SBATCH --ntasks=1
-#SBATCH --partition=skylake
-#SBATCH --mem-per-cpu=33792
+#SBATCH --partition=skylake_mpi
+#SBATCH --mem-per-cpu=40960
 
 module load CMake/3.20.1-GCCcore-10.3.0
 module load Python/3.9.5-GCCcore-10.3.0
 
 instances=INSTANCES
 filename=FILENAME
+extension="${filename##*.}"
+filename="${filename%.*}"
 
 let TIMEOUT_SOLVER=3600
 let TIMEOUT_SOLVER_PL=TIMEOUT_SOLVER
@@ -18,7 +20,7 @@ let TIMEOUT_VERIPB=10*$TIMEOUT_SOLVER_PL
 
 let MEMOUT_SOLVER=32768
 let MEMOUT_SOLVER_PL=MEMOUT_SOLVER
-let MEMOUT_VERIPB=$MEMOUT_SOLVER_PL
+let MEMOUT_VERIPB=40960
 
 res_runtime_without_prooflogging="NA"
 res_mem_without_prooflogging="NA"
@@ -36,19 +38,20 @@ res_proofsize="NA"
 ## VANILLA
 
 # run
-./runlim -r $TIMEOUT_SOLVER -s $MEMOUT_SOLVER -o $TMPDIR/$filename.txt ./qmaxsat -log_duration_totalizer $TMPDIR/$filename_totalizer.txt ./$instances/$filename 
+./runlim -r $TIMEOUT_SOLVER -s $MEMOUT_SOLVER -o $TMPDIR/${filename}.txt ./qmaxsat -log_duration_totalizer=$TMPDIR/${filename}_totalizer.txt $instances/${filename}.${extension}
+cat $TMPDIR/${filename}_totalizer.txt
 
 # extract time
-res_runtime_without_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+res_runtime_without_prooflogging=$(cat $TMPDIR/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
 # extract space
-res_mem_without_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+res_mem_without_prooflogging=$(cat $TMPDIR/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
 #extract time for genCardinals
-res_time_genCardinals_without_PL=$(cat $TMPDIR/$filename_totalizer.txt | grep 'genCardinals:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+res_time_genCardinals_without_PL=$(cat $TMPDIR/${filename}_totalizer.txt | grep 'genCardinals:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
 # status
-status=$(cat $TMPDIR/$filename.txt | grep 'status:' | awk '{print $3}');
+status=$(cat $TMPDIR/${filename}.txt | grep 'status:' | awk '{print $3}');
 
 echo "$filename without prooflogging:"
 echo "runtime: $res_runtime_without_prooflogging "
@@ -57,21 +60,20 @@ echo "runtime genCardinals: $res_time_genCardinals_without_PL"
 
 if [[ "$status" == "ok" ]]
 then
-    rm $VSC_SCRATCH/$filename_proof.pbp
 
     ## PROOFLOGGED
     
     # run
-    ./runlim -r $TIMEOUT_SOLVER_PL -s $MEMOUT_SOLVER_PL -o $TMPDIR/$filename.txt ./qmaxsat_prooflogging -log_duration_totalizer $TMPDIR/$filename_totalizer.txt -proof-file $VSC_SCRATCH/$filename_proof.pbp ./$instances/$filename 
+    ./runlim -r $TIMEOUT_SOLVER_PL -s $MEMOUT_SOLVER_PL -o $TMPDIR/${filename}.txt ./qmaxsat_prooflogging -log_duration_totalizer=$TMPDIR/${filename}_totalizer.txt -proof-file=$VSC_SCRATCH/${filename}_proof.pbp $instances/${filename}.${extension} 
 
     # extract time
-    res_runtime_with_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+    res_runtime_with_prooflogging=$(cat $TMPDIR/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
     # extract space
-    res_mem_with_prooflogging=$(cat $TMPDIR/$filename.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+    res_mem_with_prooflogging=$(cat $TMPDIR/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
     #extract time for genCardinals
-    res_time_genCardinals=$(cat $TMPDIR/$filename_totalizer.txt | grep 'genCardinals:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+    res_time_genCardinals=$(cat $TMPDIR/${filename}_totalizer.txt | grep 'genCardinals:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
    	
     if [[ "$res_time_genCardinals" == "" ]]
     then
@@ -79,7 +81,7 @@ then
     fi
 
     #extract time for genCardinalDefinitions
-    res_time_genCardinalDefinitions=$(cat $TMPDIR/$filename_totalizer.txt | grep 'genCardinalDefinitions:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+    res_time_genCardinalDefinitions=$(cat $TMPDIR/${filename}_totalizer.txt | grep 'genCardinalDefinitions:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
     	
     if [[ "$res_time_genCardinalDefinitions" == "" ]]
     then
@@ -87,22 +89,22 @@ then
     fi
 	    	
     # extract proof size
-    proofsize=$(stat --printf="%s" $VSC_SCRATCH/$filename_proof.pbp)
+    res_proofsize=$(stat --printf="%s" $VSC_SCRATCH/${filename}_proof.pbp)
     
-    if [[ "$proofsize" == "" ]]
+    if [[ "$res_proofsize" == "" ]]
     then
-        proofsize="NA"
+        res_proofsize="NA"
     fi
 
     # status
-    status=$(cat $TMPDIR/$filename.txt | grep 'status:' | awk '{print $3}');
+    status=$(cat $TMPDIR/${filename}.txt | grep 'status:' | awk '{print $3}');
 
     echo "$filename with prooflogging:"
     echo "runtime: $res_runtime_with_prooflogging "
     echo "mem: $res_mem_with_prooflogging"
     echo "duration genCardinalDefinitions: $res_time_genCardinalDefinitions"
     echo "duration genCardinals: $res_time_genCardinals"
-    echo "proofsize: $proofsize"
+    echo "proofsize: $res_proofsize"
 	
     if [[ "$status" == "ok" ]]
     then	
@@ -110,28 +112,29 @@ then
         ## VERIFICATION
 
         # run
-        ./runlim -r $TIMEOUT_VERIPB -s $MEMOUT_VERIPB -o $TMPDIR/$filename.txt ./veripb --wcnf ./$instances/$filename $VSC_SCRATCH/$filename_proof.pbp > $TMPDIR/$filename_verification.txt
+        ./runlim -r $TIMEOUT_VERIPB -s $MEMOUT_VERIPB -o $TMPDIR/${filename}.txt ./veripb --wcnf $instances/${filename}.${extension} $VSC_SCRATCH/${filename}_proof.pbp > $TMPDIR/${filename}_verification.txt
 
         # extract time
-        res_runtime_verification=$(cat $TMPDIR/$filename.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+        res_runtime_verification=$(cat $TMPDIR/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
         # extract space
-        res_mem_verification=$(cat $TMPDIR/$filename.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+        res_mem_verification=$(cat $TMPDIR/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
         # status
-        status=$(cat $TMPDIR/$filename.txt | grep 'status:' | awk '{print $3}');
+        status=$(cat $TMPDIR/${filename}.txt | grep 'status:' | awk '{print $3}');
     
 
   	echo "$filename verification:"
 	echo "runtime: $res_runtime_verification "
 	echo "mem: $res_mem_verification"
 
-	if grep -q "succeeded" $TMPDIR/$filename_verification.txt; then
+	if grep -q "succeeded" $TMPDIR/${filename}_verification.txt; then
 		res_verification_succeeded=1
 	else
 		res_verification_succeeded=0	
 	fi
+        rm $VSC_SCRATCH/${filename}_proof.pbp
     fi
 fi
 
-echo "$instances, $filename, $res_runtime_without_prooflogging, $res_time_genCardinals_without_PL, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $proofsize, $res_time_genCardinals, $res_time_genCardinalDefinitions,  $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> ./results/"$instances"/"$filename"_result.csv
+echo "$filename, $res_runtime_without_prooflogging, $res_time_genCardinals_without_PL, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $res_proofsize, $res_time_genCardinals, $res_time_genCardinalDefinitions, $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> ./results/"$filename"_result.csv
