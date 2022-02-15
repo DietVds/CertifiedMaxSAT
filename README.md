@@ -8,7 +8,7 @@ Underneath you can find our contact information:
 
 ## Patches
 
-The [patches](patches) folder contains a number of patches, in what follows a description is given for each of them:
+The [patches](patches) folder contains a number of patches, in what follows a description is given for each of them.
 
 ### MiniSAT fix
 
@@ -20,7 +20,8 @@ The [prooflogging.patch](patches/prooflogging.patch) patch extends the (fixed) Q
 
 ### VeriPB WCNF extension
 
-The [veripb_wcnf.patch](patches/veripb_wcnf.patch) patch extends the VeriPB source code with the ability to read from `.wcnf` files, use the `-wcnf` flag.
+The [veripb_wcnf.patch](patches/veripb_wcnf.patch) patch extends the VeriPB source code with the ability to read from `.wcnf` files.  
+Use the `-wcnf` flag to indicate that the input file is in the `.wcnf` format.
 
 ## Usage
 
