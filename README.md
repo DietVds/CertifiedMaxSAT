@@ -1,6 +1,4 @@
-# A certified MaxSAT solver
-
-This project was made in the context of the Discrete Modelling, Optimization and Search (DMOS) course, given by Prof. Dr. Bart Bogaerts at the [VUB](https://www.vub.be/).
+# A Certified MaxSAT Solver
 
 Underneath you can find our contact information:
 | Name | Student id | Email address |
@@ -8,7 +6,14 @@ Underneath you can find our contact information:
 | Wolf De Wulf | 0546395 | [wolf.de.wulf@vub.be](mailto:wolf.de.wulf@vub.be) |
 | Dieter Vandesande | 0565683 | [dieter.vandesande@vub.be](mailto:dieter.vandesande@vub.be) |
 
-## Building the solver
+## Patches
+The [patches](patches) folder contains a number of patches, in what follows a description is given for each of them:
+
+ * 
+
+## Building scripts
+
+### Building the solver
 
 Run the `build.sh` script to extract the MiniSat and QMaxSAT archives, combine them, apply the patches to them and build the final solver:
 
@@ -16,7 +21,7 @@ Run the `build.sh` script to extract the MiniSat and QMaxSAT archives, combine t
 ./scripts/build.sh
 ```
 
-## Building veripb
+### Building veripb
 
 Run the `build_src.sh` script to extract the veripb archive and build/install the proof verifier:
 
@@ -24,7 +29,7 @@ Run the `build_src.sh` script to extract the veripb archive and build/install th
 ./scripts/build_veripb.sh
 ```
 
-## Building the source code
+### Building the source code
 
 Run the `build_src.sh` script to extract the MiniSat and QMaxSAT archives, combine them and apply the patches to them:
 
@@ -32,7 +37,7 @@ Run the `build_src.sh` script to extract the MiniSat and QMaxSAT archives, combi
 ./scripts/build_src.sh PATH_TO_SRC
 ```
 
-## Creating a patch file for the current src folder
+### Creating a patch file for the current src folder
 
 Run the `build_patch.sh` script to create a patch file that compares the current `src` to a fresh `src` built by `build_src.sh`:
 
