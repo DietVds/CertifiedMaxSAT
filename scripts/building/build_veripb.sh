@@ -5,7 +5,7 @@
 
 ROOT_DIR=$(pwd)
 
-./scripts/build_veripb_src.sh ./src_tmp
+./scripts/building/build_veripb_src.sh ./src_tmp
 
 # Unrar
 cd src_tmp

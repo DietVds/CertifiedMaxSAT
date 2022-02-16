@@ -4,16 +4,16 @@
 ROOT_DIR=$(pwd)
 
 # Build the source code
-./scripts/build_src.sh ./src_tmp
+./scripts/building/build_src.sh ./src_tmp
 
 # Apply the proof logging patch
 cd src_tmp
-patch -p1 < $ROOT_DIR/patches/log_duration_gencard_without_PL.patch
+patch -p1 < $ROOT_DIR/patches/prooflogging.patch
 
 # Build, cleanup and move binary to root
 cd core
 make
 rm *.o
-mv qmaxsat ../../qmaxsat_without_PL
+mv qmaxsat ../..
 cd $ROOT_DIR
 rm -rf src_tmp

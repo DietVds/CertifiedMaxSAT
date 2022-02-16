@@ -9,7 +9,7 @@ then
 else
 
     # Build a fresh src
-    ./scripts/build_src.sh ./src_tmp
+    ./scripts/building/build_src.sh ./src_tmp
 
     # Create a patch file for the current src dir
     diff -ruN src_tmp src > patches/$1

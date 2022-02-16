@@ -9,7 +9,7 @@ then
 else
 
     # Build a fresh src
-    ./scripts/build_veripb_src.sh ./src_tmp
+    ./scripts/building/build_veripb_src.sh ./src_tmp
 
     # Create a patch file for the current src dir
     diff -ruN src_tmp veripb > patches/$1
