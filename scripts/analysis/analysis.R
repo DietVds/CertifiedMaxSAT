@@ -1,5 +1,6 @@
 library(ggplot2)
-
+library(ggthemes)
+theme_set(theme_light())
 
 # Read results
 results <- read.csv(file = "/home/wolf/CertifiedMaxSAT/scripts/analysis/results2021.csv")
@@ -9,6 +10,37 @@ colnames(results) <- c("instance", "runtime", "totalizer", "mem", "runtime_w", "
 #--------------------------------
 # PLOTS
 #--------------------------------
+
+# TYPE1
+no_NAs <- results[!is.na(results$proofsize), ]
+to <- 3600
+
+ggplot(no_NAs, aes(x = runtime_w, y = runtime, color = log10((proofsize / 10^3) + 1))) +
+    geom_point(shape = 4) +
+    scale_x_log10(limits = c(0.1, 10000), breaks = c(1, 10, 100, 1000, 10000)) +
+    scale_y_log10(limits = c(0.1, 10000), breaks = c(1, 10, 100, 1000, 10000)) +
+    scale_color_continuous(breaks = c(3, 6, 9), labels = c("1MB", "1GB", "1TB")) +
+    coord_fixed(ratio = 1) +
+    geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+    labs(color = "Proofsize") +
+    xlab("QMaxSATpb (time in s)") +
+    ylab("QMaxSAT (time in s)")
+
+ggsave("./scripts/analysis/without_vs_with.pdf", device = "pdf", width = 20, height = 20, units = "cm")
+
+# TYPE2
+ggplot(no_NAs, aes(x = runtime_v, y = runtime_w)) +
+    geom_point() +
+    scale_x_log10(limits = c(0.1, 3 * to), breaks = c(1, 10, 100, 1000, 10000)) +
+    scale_y_log10(limits = c(0.1, 10000), breaks = c(1, 10, 100, 1000, 10000)) +
+    coord_fixed(ratio = 1) +
+    geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+    labs(color = "Requires Breaking", shape = "Requires Breaking") +
+    theme(legend.position = "top") +
+    xlab("VeriPB (time in s)") +
+    ylab("QMaxSAT (time in s)")
+
+ggsave("./scripts/analysis/solving_vs_verification.pdf", device = "pdf", width = 20, height = 20, units = "cm")
 
 # Total solved instances
 runtime <- sort(results[!is.na(results$runtime) & results$runtime < 3600, "runtime"])
@@ -27,4 +59,4 @@ p <- ggplot(data = combined) +
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.ticks.length = unit(-0.2, "cm")
     )
-ggsave(plot = p, width = 8, height = 8, dpi = 300, filename = "./scripts/analysis/total.pdf")
+ggsave("./scripts/analysis/total.pdf", device = "pdf", width = 20, height = 20, units = "cm")
