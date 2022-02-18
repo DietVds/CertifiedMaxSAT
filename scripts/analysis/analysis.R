@@ -1,10 +1,45 @@
 library(ggplot2)
-library(ggthemes)
+library(grid)
 theme_set(theme_light())
 
 # Read results
-results <- read.csv(file = "/home/wolf/CertifiedMaxSAT/scripts/analysis/results2021.csv")
+results <- read.csv(file = "/home/wolf/CertifiedMaxSAT/scripts/analysis/results2021.csv", stringsAsFactors = FALSE)
 colnames(results) <- c("instance", "runtime", "totalizer", "mem", "runtime_w", "proofsize", "totalizer_w", "totalizer2_w", "mem_w", "runtime_v", "mem_v", "status")
+instances <- results$instance
+results <- as.data.frame(lapply(results, as.numeric))
+results$instance <- instances
+
+# QMaxSATpb OOTs
+for (row in 1:nrow(results)) {
+    if (!is.na(results[row, "runtime_w"]) & results[row, "runtime_w"] >= 3600) {
+        results[row, "runtime_w"] <- 4000
+        results[row, "proofsize"] <- 0
+    }
+}
+
+# QMaxSATpb OOMs
+for (row in 1:nrow(results)) {
+    if (!is.na(results[row, "mem_w"]) & results[row, "mem_w"] >= 32768) {
+        results[row, "runtime_w"] <- 8500
+        results[row, "proofsize"] <- 0
+    }
+}
+
+# VeriPB OOTs
+for (row in 1:nrow(results)) {
+    if (!is.na(results[row, "runtime_v"]) & results[row, "runtime_v"] >= 36000) {
+        results[row, "runtime_v"] <- 36000
+    }
+}
+
+# VeriPB OOMs
+for (row in 1:nrow(results)) {
+    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 40960) {
+        print(results[row, "instance"])
+        print(results[row, "proofsize"])
+        results[row, "runtime_v"] <- 86000
+    }
+}
 
 
 #--------------------------------
@@ -12,35 +47,76 @@ colnames(results) <- c("instance", "runtime", "totalizer", "mem", "runtime_w", "
 #--------------------------------
 
 # TYPE1
-no_NAs <- results[!is.na(results$proofsize), ]
-to <- 3600
+no_NAs <- results[!is.na(results$runtime) & results$runtime < 3600 & !is.na(results$mem) & results$mem < 32768, ]
 
 ggplot(no_NAs, aes(x = runtime_w, y = runtime, color = log10((proofsize / 10^3) + 1))) +
     geom_point(shape = 4) +
-    scale_x_log10(limits = c(0.1, 10000), breaks = c(1, 10, 100, 1000, 10000)) +
-    scale_y_log10(limits = c(0.1, 10000), breaks = c(1, 10, 100, 1000, 10000)) +
+    scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
+    scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_color_continuous(breaks = c(3, 6, 9), labels = c("1MB", "1GB", "1TB")) +
     coord_fixed(ratio = 1) +
+    geom_vline(xintercept = 4000, linetype = "dashed") +
+    geom_vline(xintercept = 8500, linetype = "dashed") +
     geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
     labs(color = "Proofsize") +
     xlab("QMaxSATpb (time in s)") +
-    ylab("QMaxSAT (time in s)")
-
+    ylab("QMaxSAT (time in s)") +
+    coord_cartesian(xlim = c(0.1, 10000), ylim = c(0.1, 10000)) +
+    annotate(
+        geom = "text",
+        label = "OoT",
+        x = 4250,
+        y = 0.081,
+        angle = 90,
+        vjust = 1,
+        size = 2
+    ) +
+    annotate(
+        geom = "text",
+        label = "OoM",
+        x = 9100,
+        y = 0.081,
+        angle = 90,
+        vjust = 1,
+        size = 2
+    )
 ggsave("./scripts/analysis/without_vs_with.pdf", device = "pdf", width = 20, height = 20, units = "cm")
 
 # TYPE2
-ggplot(no_NAs, aes(x = runtime_v, y = runtime_w)) +
-    geom_point() +
-    scale_x_log10(limits = c(0.1, 3 * to), breaks = c(1, 10, 100, 1000, 10000)) +
-    scale_y_log10(limits = c(0.1, 10000), breaks = c(1, 10, 100, 1000, 10000)) +
-    coord_fixed(ratio = 1) +
-    geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
-    labs(color = "Requires Breaking", shape = "Requires Breaking") +
-    theme(legend.position = "top") +
-    xlab("VeriPB (time in s)") +
-    ylab("QMaxSAT (time in s)")
+no_NAs2 <- results[!is.na(results$runtime) & results$runtime < 3600 & !is.na(results$mem) & results$mem < 32768, ]
 
-ggsave("./scripts/analysis/solving_vs_verification.pdf", device = "pdf", width = 20, height = 20, units = "cm")
+ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^3) + 1))) +
+    geom_point(shape = 4) +
+    scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
+    scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
+    scale_color_continuous(breaks = c(3, 6, 9), labels = c("1MB", "1GB", "1TB")) +
+    coord_fixed(ratio = 1) +
+    geom_vline(xintercept = 36000, linetype = "dashed") +
+    geom_vline(xintercept = 86000, linetype = "dashed") +
+    geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+    xlab("VeriPB (time in s)") +
+    ylab("QMaxSATpb (time in s)") +
+    labs(color = "Proofsize") +
+    coord_cartesian(xlim = c(0.1, 100000), ylim = c(0.1, 10000)) +
+    annotate(
+        geom = "text",
+        label = "OoT",
+        x = 38000,
+        y = 0.081,
+        angle = 90,
+        vjust = 1,
+        size = 2
+    ) +
+    annotate(
+        geom = "text",
+        label = "OoM",
+        x = 91000,
+        y = 0.081,
+        angle = 90,
+        vjust = 1,
+        size = 2
+    )
+ggsave("./scripts/analysis/solving_vs_verification.pdf", device = "pdf", width = 30, height = 20, units = "cm")
 
 # Total solved instances
 runtime <- sort(results[!is.na(results$runtime) & results$runtime < 3600, "runtime"])
@@ -59,4 +135,4 @@ p <- ggplot(data = combined) +
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.ticks.length = unit(-0.2, "cm")
     )
-ggsave("./scripts/analysis/total.pdf", device = "pdf", width = 20, height = 20, units = "cm")
+ggsave("./scripts/analysis/total.pdf", device = "pdf", width = 30, height = 20, units = "cm")
