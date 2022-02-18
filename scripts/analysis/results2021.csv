@@ -262,16 +262,11 @@ problems2021-phylogenetic-trees_berg-ms_200_22_20-2, 3601.09, 0.005091, 19750.6,
 problems2021-phylogenetic-trees_berg-ms_250_10_40-0, 3600.91, 0.008047, 13864.0, NA, NA, NA, NA, NA, NA, NA, NA
 problems2021-phylogenetic-trees_berg-ms_260_20_20-0, 3600.94, 0.008377, 13813.1, NA, NA, NA, NA, NA, NA, NA, NA
 problems2021-phylogenetic-trees_berg-ms_260_20_20-1, 3601.04, 0.008576, 13729.1, NA, NA, NA, NA, NA, NA, NA, NA
-problems2021-planning-bnn-cellda_x_10, 309.78, 0.000548, 4896.9, 309.50, 8184, 0.001719, 0.000630, 4897.0, 252.95, 40963.9, 0
-problems2021-planning-bnn-cellda_x_12, 1674.93, 0.000673, 5983.7, 1670.17, 24582, 0.002326, 0.000847, 5983.8, 174.89, 41064.5, 0
-problems2021-planning-bnn-cellda_y_10, 175.19, 0.000590, 4834.5, 174.57, 24579, 0.001738, 0.000624, 4834.5, 278.63, 40962.2, 0
-problems2021-planning-bnn-cellda_y_9, 74.92, 0.000524, 4326.0, 76.34, 32765, 0.001505, 0.000528, 4326.2, 288.55, 40961.3, 0
 problems2021-planning-bnn-sysadmin_5_3, 3600.16, 0.000114, 848.1, NA, NA, NA, NA, NA, NA, NA, NA
 problems2021-planning-bnn-sysadmin_5_4, 3600.10, 0.000132, 1045.1, NA, NA, NA, NA, NA, NA, NA, NA
 problems2021-program_disambiguation-Ramos-Q34_OPTIONS_1, 3600.13, 0.000543, 824.5, NA, NA, NA, NA, NA, NA, NA, NA
 problems2021-program_disambiguation-Ramos-Q43_YESNO_1, 7.08, 0.000098, 303.7, 7.16, 24589, 0.000424, 0.000203, 304.4, 25.61, 3069.7, 1
 problems2021-program_disambiguation-Ramos-Q53_YESNO_3, 1.50, 0.000022, 46.6, 0.99, 24583, 0.000058, 0.000045, 46.9, 3.57, 454.6, 1
-problems2021-protein_ins-1bpi_.2knt_.g.wcnf.t, 3394.75, 0.000728, 2323.9, 3441.84, 32764, 0.003533, 0.004645, 2325.9, 69.74, 41025.8, 0
 problems2021-protein_ins-1bpi_.5pti_.g.wcnf.t, 1807.91, 0.000882, 1832.6, 1839.81, 32768, 0.004324, 0.009469, 1832.2, 26.70, 2900.3, 1
 problems2021-protein_ins-2knt_.5pti_.g.wcnf.t, 593.65, 0.000664, 1066.0, 592.16, 32761, 0.003141, 0.005547, 1065.4, 12.89, 1495.1, 1
 problems2021-protein_ins-3ebx_.1era_.g.wcnf.t, 3600.33, 0.000626, 2873.0, NA, NA, NA, NA, NA, NA, NA, NA
@@ -450,3 +445,6 @@ problems2021-pseudoBoolean-primes-dimacs-cnf-normalized-hanoi4.opb.msat, 1.96, 0
 problems2021-ramsey-ram_k3_n9.ra0, 0.79, 0.005951, 5.2, 1.15, 11238640, 0.076538, 0.019960, 5.4, 349.09, 365.8, 1
 problems2021-RBAC_marco.mori-violations-role_smallcomp_0.0_5, 0.38, 0.009928, 0.2, 1.32, 18250332, 0.142943, 0.036022, 8.2, 107.49, 800.1, 1
 problems2021-reversi-rev44-2, 1.71, 0.000212, 1.4, 1.20, 275748, 0.002054, 0.001964, 0.1, 4.02, 18.8, 1
+problems2021-planning-bnn-cellda_x_10, 395.86, 0.000584, 4896.9, 408.69, 214440409, 0.003538, 0.001343, 4897.0, 259.78, 40961.3, 0
+problems2021-planning-bnn-cellda_y_10, 199.77, 0.000628, 4834.5, 201.83, 191560840, 0.003644, 0.001190, 4834.6, 254.64, 40965.4, 0
+problems2021-planning-bnn-cellda_y_9, 82.24, 0.000601, 4326.0, 80.62, 165920019, 0.002992, 0.001006, 4326.2, 288.77, 40962.7, 0

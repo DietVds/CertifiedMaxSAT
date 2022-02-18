@@ -50,7 +50,7 @@ for (row in 1:nrow(results)) {
 no_NAs <- results[!is.na(results$runtime) & results$runtime < 3600 & !is.na(results$mem) & results$mem < 32768, ]
 
 ggplot(no_NAs, aes(x = runtime_w, y = runtime, color = log10((proofsize / 10^3) + 1))) +
-    geom_point(shape = 4) +
+    geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_color_continuous(breaks = c(3, 6, 9), labels = c("1MB", "1GB", "1TB")) +
@@ -86,7 +86,7 @@ ggsave("./scripts/analysis/without_vs_with.pdf", device = "pdf", width = 20, hei
 no_NAs2 <- results[!is.na(results$runtime) & results$runtime < 3600 & !is.na(results$mem) & results$mem < 32768, ]
 
 ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^3) + 1))) +
-    geom_point(shape = 4) +
+    geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_color_continuous(breaks = c(3, 6, 9), labels = c("1MB", "1GB", "1TB")) +
