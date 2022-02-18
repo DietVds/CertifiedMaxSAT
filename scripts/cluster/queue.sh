@@ -2,11 +2,10 @@
 
 instances=$1
 instances_escaped=$(sed 's;/;\\/;g' <<< "$instances")
-mkdir results/"$instances"
 
 for filename in $(ls "$instances")
 do
-	gunzip ./"$instances"/"$filename"
+	gunzip "$instances"/"$filename"
 done
 
 for filename in $(ls "$instances")
