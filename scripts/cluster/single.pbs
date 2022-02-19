@@ -120,10 +120,6 @@ then
         # extract space
         res_mem_verification=$(cat $TMPDIR/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
-        # status
-        status=$(cat $TMPDIR/${filename}.txt | grep 'status:' | awk '{print $3}');
-    
-
   	    echo "$filename verification:"
 	    echo "runtime: $res_runtime_verification "
     	echo "mem: $res_mem_verification"
