@@ -1,5 +1,6 @@
 library(ggplot2)
 library(grid)
+library(ggthemes)
 theme_set(theme_light())
 
 # Read results
@@ -28,7 +29,7 @@ for (row in 1:nrow(results)) {
 # VeriPB OOTs
 for (row in 1:nrow(results)) {
     if (!is.na(results[row, "runtime_v"]) & results[row, "runtime_v"] >= 36000) {
-        results[row, "runtime_v"] <- 36000
+        results[row, "runtime_v"] <- 46000
     }
 }
 
@@ -37,7 +38,7 @@ for (row in 1:nrow(results)) {
     if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 40960) {
         print(results[row, "instance"])
         print(results[row, "proofsize"])
-        results[row, "runtime_v"] <- 86000
+        results[row, "runtime_v"] <- 99000
     }
 }
 
@@ -80,7 +81,7 @@ ggplot(no_NAs, aes(x = runtime_w, y = runtime, color = log10((proofsize / 10^3) 
         vjust = 1,
         size = 2
     )
-ggsave("./scripts/analysis/without_vs_with.pdf", device = "pdf", width = 20, height = 20, units = "cm")
+ggsave("./scripts/analysis/without_vs_with.pdf", device = "pdf", width = 14, height = 12, units = "cm")
 
 # TYPE2
 no_NAs2 <- results[!is.na(results$runtime) & results$runtime < 3600 & !is.na(results$mem) & results$mem < 32768, ]
@@ -91,8 +92,8 @@ ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^
     scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_color_continuous(breaks = c(3, 6, 9), labels = c("1MB", "1GB", "1TB")) +
     coord_fixed(ratio = 1) +
-    geom_vline(xintercept = 36000, linetype = "dashed") +
-    geom_vline(xintercept = 86000, linetype = "dashed") +
+    geom_vline(xintercept = 46000, linetype = "dashed") +
+    geom_vline(xintercept = 99000, linetype = "dashed") +
     geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
     xlab("VeriPB (time in s)") +
     ylab("QMaxSATpb (time in s)") +
@@ -101,7 +102,7 @@ ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^
     annotate(
         geom = "text",
         label = "OoT",
-        x = 38000,
+        x = 49000,
         y = 0.081,
         angle = 90,
         vjust = 1,
@@ -110,13 +111,13 @@ ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^
     annotate(
         geom = "text",
         label = "OoM",
-        x = 91000,
+        x = 105000,
         y = 0.081,
         angle = 90,
         vjust = 1,
         size = 2
     )
-ggsave("./scripts/analysis/solving_vs_verification.pdf", device = "pdf", width = 30, height = 20, units = "cm")
+ggsave("./scripts/analysis/solving_vs_verification.pdf", device = "pdf", width = 18, height = 12, units = "cm")
 
 # Total solved instances
 runtime <- sort(results[!is.na(results$runtime) & results$runtime < 3600, "runtime"])

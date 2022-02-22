@@ -1,14 +1,5 @@
 #!/bin/bash
 
-#SBATCH --job-name=CMS
-#SBATCH --time=11:00:00
-#SBATCH --ntasks=1
-#SBATCH --partition=skylake_mpi
-#SBATCH --mem-per-cpu=41960
-
-module load CMake/3.20.1-GCCcore-10.3.0
-module load Python/3.9.5-GCCcore-10.3.0
-
 instances=INSTANCES
 filename=FILENAME
 extension="${filename##*.}"
@@ -16,7 +7,7 @@ filename="${filename%.*}"
 
 let TIMEOUT_SOLVER=3600
 let TIMEOUT_SOLVER_PL=TIMEOUT_SOLVER
-let TIMEOUT_VERIPB=10*$TIMEOUT_SOLVER_PL
+let TIMEOUT_VERIPB=36000
 
 let MEMOUT_SOLVER=32768
 let MEMOUT_SOLVER_PL=MEMOUT_SOLVER
@@ -130,7 +121,7 @@ then
     		res_verification_succeeded=0	
     	fi
     fi
-    rm $VSC_SCRATCH/${filename}_proof.pbp
 fi
 
+rm $VSC_SCRATCH/${filename}_proof.pbp
 echo "$filename, $res_runtime_without_prooflogging, $res_time_genCardinals_without_PL, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $res_proofsize, $res_time_genCardinals, $res_time_genCardinalDefinitions, $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> ./results/"$filename"_result.csv
