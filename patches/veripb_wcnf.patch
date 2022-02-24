@@ -98,7 +98,9 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
 +                if(weight < weighted_partial_top){
 +                    formula->claimedNumVar++; // Claim another variable as relaxation variable.
 +
-+                    string_view relaxVarName("x"+ std::to_string(formula->claimedNumVar));
++                    std::string name = "x"+ std::to_string(formula->claimedNumVar);
++
++                    string_view relaxVarName(name);
 +                    Lit lit = variableNameManager.getLit(relaxVarName); // getLit also calls getVar, which adds the variable name to the variable name manager if not exists.
 +
 +                    terms.emplace_back(1, lit);
