@@ -12,13 +12,15 @@ results$instance <- instances
 
 # Safety checks
 mem_limit <- 5120
-time_limit <- 36000
+time_limit <- 18000
 for (row in 1:nrow(results)) {
+
+    # Incorrect instances
     if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "runtime_v"] < time_limit & results[row, "mem_v"] < mem_limit) {
         print(results[row, ])
     }
-}
-for (row in 1:nrow(results)) {
+
+    # OoMs
     if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "mem_v"] >= mem_limit) {
         print(results[row, ])
     }
@@ -29,9 +31,6 @@ for (row in 1:nrow(results)) {
     if (!is.na(results[row, "runtime_w"]) & results[row, "runtime_w"] >= 3600) {
         results[row, "runtime_w"] <- 4000
         results[row, "proofsize"] <- 0
-    }
-    if (!is.na(results[row, "runtime"]) & !is.na(results[row, "runtime_w"]) & results[row, "runtime_w"] < results[row, "runtime"]) {
-        print(results[row, ])
     }
 }
 
