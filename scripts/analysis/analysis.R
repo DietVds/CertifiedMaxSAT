@@ -4,17 +4,22 @@ library(ggthemes)
 theme_set(theme_light())
 
 # Read results
-results <- read.csv(file = "/home/wolf/CertifiedMaxSAT/scripts/analysis/results2021.csv", stringsAsFactors = FALSE)
+results <- read.csv(file = "/home/wolf/CertifiedMaxSAT/scripts/analysis/results2010.csv", stringsAsFactors = FALSE)
 colnames(results) <- c("instance", "runtime", "totalizer", "mem", "runtime_w", "proofsize", "totalizer_w", "totalizer2_w", "mem_w", "runtime_v", "mem_v", "status")
 instances <- results$instance
 results <- as.data.frame(lapply(results, as.numeric))
 results$instance <- instances
 
 # Safety checks
-mem_limit <- 40960
+mem_limit <- 5120
 time_limit <- 36000
 for (row in 1:nrow(results)) {
     if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "runtime_v"] < time_limit & results[row, "mem_v"] < mem_limit) {
+        print(results[row, ])
+    }
+}
+for (row in 1:nrow(results)) {
+    if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "mem_v"] >= mem_limit) {
         print(results[row, ])
     }
 }
