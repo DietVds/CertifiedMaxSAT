@@ -1,6 +1,6 @@
 diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.cpp
---- src_tmp/veripb/optimized/parsing.cpp	2022-02-07 15:17:57.890878100 +0100
-+++ veripb/veripb/optimized/parsing.cpp	2022-02-07 15:17:42.676798300 +0100
+--- src_tmp/veripb/optimized/parsing.cpp	2022-02-24 21:47:27.064164500 +0100
++++ veripb/veripb/optimized/parsing.cpp	2022-02-24 21:45:56.417591800 +0100
 @@ -6,6 +6,7 @@
  #include <unordered_map>
  #include <vector>
@@ -9,7 +9,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
  
  #include "constraints.hpp"
  #include "BigInt.hpp"
-@@ -838,6 +839,167 @@
+@@ -838,6 +839,169 @@
  };
  
  template<typename T>
@@ -99,8 +99,8 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
 +                    formula->claimedNumVar++; // Claim another variable as relaxation variable.
 +
 +                    std::string name = "x"+ std::to_string(formula->claimedNumVar);
-+
 +                    string_view relaxVarName(name);
++                    
 +                    Lit lit = variableNameManager.getLit(relaxVarName); // getLit also calls getVar, which adds the variable name to the variable name manager if not exists.
 +
 +                    terms.emplace_back(1, lit);
@@ -179,7 +179,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
  class CNFParser {
      VariableNameManager& variableNameManager;
      std::vector<Term<T>> terms;
-@@ -959,6 +1121,7 @@
+@@ -959,6 +1123,7 @@
  };
  
  
@@ -187,7 +187,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
  template<typename T>
  std::unique_ptr<Formula<T>> parseOpb(std::string fileName, VariableNameManager& varMgr) {
      std::ifstream f(fileName);
-@@ -982,6 +1145,14 @@
+@@ -982,6 +1147,14 @@
      return result;
  }
  
@@ -202,7 +202,7 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
  int main(int argc, char const *argv[])
  {
  
-@@ -1101,6 +1272,7 @@
+@@ -1101,6 +1274,7 @@
      // m.def("parseOpbBigInt", &parseOpb<BigInt>, "Parse opb file with arbitrary precision.");
      m.def("parseCnf", &parseCnf<CoefType>, "Parse cnf file with fixed precision.");
      // m.def("parseCnfBigInt", &parseCnf<BigInt>, "Parse cnf file with arbitrary precision.");
@@ -211,8 +211,8 @@ diff -ruN src_tmp/veripb/optimized/parsing.cpp veripb/veripb/optimized/parsing.c
      m.def("parseConstraintOpb", &parseOpbConstraint<CoefType>, "Parse opb consraint with fixed precision.");
      // m.def("parseConstraintOpbBigInt", &parseOpbConstraint<BigInt>, "Parse opb constraint with arbitrary precision.");
 diff -ruN src_tmp/veripb/utils.py veripb/veripb/utils.py
---- src_tmp/veripb/utils.py	2022-02-07 15:17:58.112182700 +0100
-+++ veripb/veripb/utils.py	2022-02-05 16:43:30.337378100 +0100
+--- src_tmp/veripb/utils.py	2022-02-24 21:47:27.291810300 +0100
++++ veripb/veripb/utils.py	2022-02-24 21:43:57.309323300 +0100
 @@ -17,7 +17,7 @@
  from veripb.parser import RuleParser
  from veripb.exceptions import ParseError
@@ -254,7 +254,7 @@ diff -ruN src_tmp/veripb/utils.py veripb/veripb/utils.py
  
 diff -ruN src_tmp/.vscode/settings.json veripb/.vscode/settings.json
 --- src_tmp/.vscode/settings.json	1970-01-01 01:00:00.000000000 +0100
-+++ veripb/.vscode/settings.json	2022-02-07 11:33:05.636641600 +0100
++++ veripb/.vscode/settings.json	2022-02-24 21:43:57.309804800 +0100
 @@ -0,0 +1,61 @@
 +{
 +    "files.associations": {
