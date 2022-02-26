@@ -11,7 +11,7 @@ TIMEOUT_VERIPB=$(echo 10*$TIMEOUT_SOLVER / 1 | bc)
 
 MEMOUT_SOLVER=MEM_L
 MEMOUT_SOLVER_PL=$MEMOUT_SOLVER
-MEMOUT_VERIPB=$(echo 10*$MEMOUT_SOLVER / 1 | bc)
+MEMOUT_VERIPB=$(echo 2*$MEMOUT_SOLVER / 1 | bc)
 
 res_runtime_without_prooflogging="NA"
 res_mem_without_prooflogging="NA"
