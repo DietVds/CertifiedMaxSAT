@@ -4,7 +4,7 @@ library(ggthemes)
 theme_set(theme_light())
 
 # Select evaluation
-evaluation <- 2010
+evaluation <- 2021
 
 # Read results
 if (evaluation == 2010) {
@@ -27,6 +27,7 @@ for (row in 1:nrow(results)) {
     # Incorrect instances
     if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "runtime_v"] < time_limit & results[row, "mem_v"] < mem_limit) {
         print(results[row, ])
+        results <- results[-c(row), ]
     }
 }
 
@@ -70,9 +71,9 @@ no_NAs <- results[!is.na(results$runtime) & results$runtime < time_limit & !is.n
 
 ggplot(no_NAs, aes(x = runtime_w, y = runtime, color = log10((proofsize / 10^3) + 1))) +
     geom_point() +
-    scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
-    scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
-    scale_color_continuous(breaks = c(3, 4, 5, 6), labels = c("1MB", "10MB", "100MB", "1GB")) +
+    scale_x_log10(breaks = c(1, 10, 100, 1000)) +
+    scale_y_log10(breaks = c(1, 10, 100, 1000)) +
+    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "100GB")) +
     coord_fixed(ratio = 1) +
     geom_vline(xintercept = 4000, linetype = "dashed") +
     geom_vline(xintercept = 8500, linetype = "dashed") +
@@ -110,7 +111,7 @@ ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^
     geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
-    scale_color_continuous(breaks = c(3, 4, 5, 6), labels = c("1MB", "10MB", "100MB", "1GB")) +
+    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "100GB")) +
     coord_fixed(ratio = 1) +
     geom_vline(xintercept = 46000, linetype = "dashed") +
     geom_vline(xintercept = 99000, linetype = "dashed") +
