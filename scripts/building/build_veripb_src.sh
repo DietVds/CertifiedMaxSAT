@@ -11,7 +11,9 @@ else
     
     # Untar archives
     cd base
-    unrar x -ad veripb.rar 
+    #unrar x -ad veripb.rar 
+    tar xvzf VeriPB-master.tar.gz
+    mv VeriPB-master veripb
     
     # Copy source to given directory
     cd $ROOT_DIR

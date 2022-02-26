@@ -4,7 +4,7 @@ library(ggthemes)
 theme_set(theme_light())
 
 # Select evaluation
-evaluation <- 2021
+evaluation <- 2010
 
 # Read results
 if (evaluation == 2010) {
@@ -27,6 +27,7 @@ for (row in 1:nrow(results)) {
     # Incorrect instances
     if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "runtime_v"] < time_limit & results[row, "mem_v"] < mem_limit) {
         print(results[row, ])
+        write(results[row,"instance"], "incorrects.txt", append=TRUE)
         results <- results[-c(row), ]
     }
 }
