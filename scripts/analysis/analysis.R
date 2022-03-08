@@ -4,7 +4,7 @@ library(ggthemes)
 theme_set(theme_light())
 
 # Select evaluation
-evaluation <- 2010
+evaluation <- 2021
 
 # Read results
 if (evaluation == 2010) {
@@ -12,7 +12,7 @@ if (evaluation == 2010) {
     mem_limit <- 512
     time_limit <- 1800
 } else {
-    results <- read.csv(file = "./scripts/analysis/results2021.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/results2021_2.csv", stringsAsFactors = FALSE)
     mem_limit <- 32768
     time_limit <- 3600
 }
@@ -27,7 +27,7 @@ for (row in 1:nrow(results)) {
     # Incorrect instances
     if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "runtime_v"] < time_limit & results[row, "mem_v"] < mem_limit) {
         print(results[row, ])
-        write(results[row,"instance"], "incorrects.txt", append=TRUE)
+        write(results[row, "instance"], "incorrects.txt", append = TRUE)
         results <- results[-c(row), ]
     }
 }
@@ -55,7 +55,7 @@ for (row in 1:nrow(results)) {
 
 # VeriPB OOMs
 for (row in 1:nrow(results)) {
-    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 10 * mem_limit) {
+    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 2 * mem_limit) {
         results[row, "runtime_v"] <- 99000
     }
 }
@@ -74,12 +74,12 @@ ggplot(no_NAs, aes(x = runtime_w, y = runtime, color = log10((proofsize / 10^3) 
     geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000)) +
-    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "100GB")) +
+    scale_color_continuous(breaks = c(2, 3, 4, 5, 6, 7), labels = c("100KB", "1MB", "10MB", "100MB", "1GB", "100GB")) +
     coord_fixed(ratio = 1) +
     geom_vline(xintercept = 4000, linetype = "dashed") +
     geom_vline(xintercept = 8500, linetype = "dashed") +
     geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
-    labs(color = "Memory used") +
+    labs(color = "Proofsize") +
     xlab("QMaxSATpb (time in s)") +
     ylab("QMaxSAT (time in s)") +
     coord_cartesian(xlim = c(0.1, 10000), ylim = c(0.1, 10000)) +
@@ -112,14 +112,14 @@ ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^
     geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
-    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "100GB")) +
+    scale_color_continuous(breaks = c(2, 3, 4, 5, 6, 7), labels = c("100KB", "1MB", "10MB", "100MB", "1GB", "100GB")) +
     coord_fixed(ratio = 1) +
     geom_vline(xintercept = 46000, linetype = "dashed") +
     geom_vline(xintercept = 99000, linetype = "dashed") +
     geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
     xlab("VeriPB (time in s)") +
     ylab("QMaxSATpb (time in s)") +
-    labs(color = "Memory used") +
+    labs(color = "Proofsize") +
     coord_cartesian(xlim = c(0.1, 100000), ylim = c(0.1, 10000)) +
     annotate(
         geom = "text",
@@ -140,3 +140,4 @@ ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^
         size = 2
     )
 ggsave("./scripts/analysis/solving_vs_verification.pdf", device = "pdf", width = 18, height = 12, units = "cm")
+
