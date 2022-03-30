@@ -12,7 +12,7 @@ if (evaluation == 2010) {
     mem_limit <- 512
     time_limit <- 1800
 } else {
-    results <- read.csv(file = "./scripts/analysis/results2021_2.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/results2021.csv", stringsAsFactors = FALSE)
     mem_limit <- 32768
     time_limit <- 3600
 }
@@ -51,15 +51,18 @@ for (row in 1:nrow(results)) {
     if (!is.na(results[row, "runtime_v"]) & results[row, "runtime_v"] >= 10 * time_limit) {
         results[row, "runtime_v"] <- 46000
     }
+    if (!is.na(results[row, "runtime_w"]) & results[row, "runtime_w"] < time_limit & !is.na(results[row, "mem_w"]) & results[row, "mem_w"] < mem_limit) {
+    }
 }
 
 # VeriPB OOMs
 for (row in 1:nrow(results)) {
-    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 2 * mem_limit) {
+    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 1.25 * mem_limit) {
         results[row, "runtime_v"] <- 99000
     }
+    if (!is.na(results[row, "runtime_w"]) & results[row, "runtime_w"] < time_limit & !is.na(results[row, "mem_w"]) & results[row, "mem_w"] < mem_limit) {
+    }
 }
-
 
 #--------------------------------
 # PLOTS
