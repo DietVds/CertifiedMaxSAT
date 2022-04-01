@@ -4,11 +4,11 @@ library(ggthemes)
 theme_set(theme_light())
 
 # Select evaluation
-evaluation <- 2021
+evaluation <- 2010
 
 # Read results
 if (evaluation == 2010) {
-    results <- read.csv(file = "./scripts/analysis/results2010.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/results2010_2.csv", stringsAsFactors = FALSE)
     mem_limit <- 512
     time_limit <- 1800
 } else {
@@ -29,6 +29,12 @@ for (row in 1:nrow(results)) {
         print(results[row, ])
         write(results[row, "instance"], "incorrects.txt", append = TRUE)
         results <- results[-c(row), ]
+    }
+
+    # 
+    if (!is.na(results[row, "runtime"]) & !is.na(results[row, "runtime_w"]) & results[row, "runtime_w"] < results[row, "runtime"] & results[row, "runtime"] < 1.5) {
+        print(results[row,])
+        write(results[row, "instance"], "weirds.txt", append = TRUE)
     }
 }
 

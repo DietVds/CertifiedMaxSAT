@@ -1,9 +1,9 @@
 # Select evaluation
-evaluation <- 2021
+evaluation <- 2010
 
 # Read results
 if (evaluation == 2010) {
-    results <- read.csv(file = "./scripts/analysis/results2010.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/results2010_2.csv", stringsAsFactors = FALSE)
     mem_limit <- 512
     time_limit <- 1800
 } else {
