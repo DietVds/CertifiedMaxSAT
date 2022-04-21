@@ -64,7 +64,9 @@ public:
     void write_literal_assignment       (lbool assignment, int var);
     void write_witness                  (Lit literal);
     void write_clause                   (vec<Lit>& clause);
+    void write_clause                   (Clause& clause);
     void write_learnt_clause            (vec<Lit>& clause);
+    void delete_learnt_clause           (Clause& clause);
     void write_linkingVar_clause        (vec<Lit>& clause);
     void write_bound_update             (vec<lbool>& model); 
     void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);

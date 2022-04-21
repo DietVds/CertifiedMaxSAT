@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-02-19 16:47:37.927568213 +0100
-+++ src/core/Main.C	2022-02-19 12:06:50.626500104 +0100
+--- src_tmp/core/Main.C	2022-04-21 15:18:50.095933700 +0200
++++ src/core/Main.C	2022-02-18 15:58:37.096012000 +0100
 @@ -26,7 +26,13 @@
  #include <signal.h>
  #include <zlib.h>
@@ -408,8 +408,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-02-19 16:47:21.126981223 +0100
-@@ -0,0 +1,286 @@
++++ src/core/Prooflogger.C	2022-04-21 15:12:41.373455100 +0200
+@@ -0,0 +1,298 @@
 +#include "Prooflogger.h"
 +
 +//=================================================================================================
@@ -489,11 +489,23 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    for (int i = 0; i < clause.size(); i++) write_literal(clause[i]);
 +}
 +
++void Prooflogger::write_clause(Clause& clause) {
++    for(int i = 0; i < clause.size(); i++){
++        write_literal(clause[i]);
++    } 
++}
++
 +void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
 +    proof << "u ";
 +    write_clause(clause);
 +    proof << " >= 1;\n" ;
 +    constraint_counter++;
++}
++
++void Prooflogger::delete_learnt_clause(Clause& clause) {
++    proof << "del find ";
++    write_clause(clause);
++    proof << " >= 1;\n" ;
 +}
 +
 +void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
@@ -699,8 +711,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-02-19 12:06:50.626500104 +0100
-@@ -0,0 +1,79 @@
++++ src/core/Prooflogger.h	2022-04-21 15:04:33.912912300 +0200
+@@ -0,0 +1,81 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -767,7 +779,9 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_literal_assignment       (lbool assignment, int var);
 +    void write_witness                  (Lit literal);
 +    void write_clause                   (vec<Lit>& clause);
++    void write_clause                   (Clause& clause);
 +    void write_learnt_clause            (vec<Lit>& clause);
++    void delete_learnt_clause           (Clause& clause);
 +    void write_linkingVar_clause        (vec<Lit>& clause);
 +    void write_bound_update             (vec<lbool>& model); 
 +    void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
@@ -782,8 +796,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-02-19 16:47:37.927568213 +0100
-+++ src/core/Solver.C	2022-02-19 12:06:50.626500104 +0100
+--- src_tmp/core/Solver.C	2022-04-21 15:18:50.096296400 +0200
++++ src/core/Solver.C	2022-04-21 15:10:58.434397000 +0200
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -804,7 +818,19 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  {}
  
  
-@@ -544,7 +548,7 @@
+@@ -143,7 +147,10 @@
+ 
+ void Solver::removeClause(Clause& c) {
+     detachClause(c);
+-    free(&c); }
++    PL->delete_learnt_clause(c);
++    free(&c); 
++    
++}
+ 
+ 
+ bool Solver::satisfied(const Clause& c) const {
+@@ -544,7 +551,7 @@
  |    all variables are decision variables, this means that the clause set is satisfiable. 'l_False'
  |    if the clause set is unsatisfiable. 'l_Undef' if the bound on number of conflicts is reached.
  |________________________________________________________________________________________________@*/
@@ -813,7 +839,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  {
      assert(ok);
      int         backtrack_level;
-@@ -560,12 +564,19 @@
+@@ -560,12 +567,19 @@
          if (confl != NULL){
              // CONFLICT
              conflicts++; conflictC++;
@@ -834,7 +860,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
              cancelUntil(backtrack_level);
              assert(value(learnt_clause[0]) == l_Undef);
  
-@@ -592,8 +603,10 @@
+@@ -592,8 +606,10 @@
                  return l_Undef; }
  
              // Simplify the set of problem clauses:
@@ -846,7 +872,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  
              if (nof_learnts >= 0 && learnts.size()-nAssigns() >= nof_learnts)
                  // Reduce the set of learnt clauses:
-@@ -654,7 +667,10 @@
+@@ -654,7 +670,10 @@
      model.clear();
      conflict.clear();
  
@@ -859,8 +885,8 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-02-19 16:47:37.927568213 +0100
-+++ src/core/Solver.h	2022-02-19 12:06:50.626500104 +0100
+--- src_tmp/core/Solver.h	2022-04-21 15:18:50.095210300 +0200
++++ src/core/Solver.h	2021-12-22 10:25:15.730665200 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
  
@@ -927,7 +953,7 @@ diff -ruN src_tmp/core/Solver.h src/core/Solver.h
      //
 diff -ruN src_tmp/minisat/core/depend.mk src/minisat/core/depend.mk
 --- src_tmp/minisat/core/depend.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/depend.mk	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/core/depend.mk	2022-02-18 15:58:37.102291500 +0100
 @@ -0,0 +1,16 @@
 +Main.o: Main.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
 + ../mtl/Alg.h SolverTypes.h
@@ -947,7 +973,7 @@ diff -ruN src_tmp/minisat/core/depend.mk src/minisat/core/depend.mk
 + ../mtl/Alg.h SolverTypes.h ../mtl/Sort.h
 diff -ruN src_tmp/minisat/core/Dimacs.h src/minisat/core/Dimacs.h
 --- src_tmp/minisat/core/Dimacs.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Dimacs.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/core/Dimacs.h	2022-02-18 15:58:37.099066800 +0100
 @@ -0,0 +1,89 @@
 +/****************************************************************************************[Dimacs.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -1040,7 +1066,7 @@ diff -ruN src_tmp/minisat/core/Dimacs.h src/minisat/core/Dimacs.h
 +#endif
 diff -ruN src_tmp/minisat/core/Main.C src/minisat/core/Main.C
 --- src_tmp/minisat/core/Main.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Main.C	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/core/Main.C	2022-02-18 15:58:37.099639000 +0100
 @@ -0,0 +1,450 @@
 +/******************************************************************************************[Main.C]
 +QMaxSAT -- Copyright (c) 2010-2011, Miyuki Koshimura
@@ -1494,7 +1520,7 @@ diff -ruN src_tmp/minisat/core/Main.C src/minisat/core/Main.C
 +}
 diff -ruN src_tmp/minisat/core/Makefile src/minisat/core/Makefile
 --- src_tmp/minisat/core/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Makefile	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/core/Makefile	2022-02-18 15:58:37.100249000 +0100
 @@ -0,0 +1,7 @@
 +MTL       = ../mtl
 +CHDRS     = $(wildcard *.h) $(wildcard $(MTL)/*.h)
@@ -1505,7 +1531,7 @@ diff -ruN src_tmp/minisat/core/Makefile src/minisat/core/Makefile
 +include ../mtl/template.mk
 diff -ruN src_tmp/minisat/core/Solver.C src/minisat/core/Solver.C
 --- src_tmp/minisat/core/Solver.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Solver.C	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/core/Solver.C	2022-02-18 15:58:37.100919600 +0100
 @@ -0,0 +1,741 @@
 +/****************************************************************************************[Solver.C]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2250,7 +2276,7 @@ diff -ruN src_tmp/minisat/core/Solver.C src/minisat/core/Solver.C
 +}
 diff -ruN src_tmp/minisat/core/Solver.h src/minisat/core/Solver.h
 --- src_tmp/minisat/core/Solver.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Solver.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/core/Solver.h	2022-02-18 15:58:37.101463700 +0100
 @@ -0,0 +1,302 @@
 +/****************************************************************************************[Solver.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2556,7 +2582,7 @@ diff -ruN src_tmp/minisat/core/Solver.h src/minisat/core/Solver.h
 +#endif
 diff -ruN src_tmp/minisat/core/SolverTypes.h src/minisat/core/SolverTypes.h
 --- src_tmp/minisat/core/SolverTypes.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/SolverTypes.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/core/SolverTypes.h	2022-02-18 15:58:37.101955400 +0100
 @@ -0,0 +1,200 @@
 +/***********************************************************************************[SolverTypes.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2760,7 +2786,7 @@ diff -ruN src_tmp/minisat/core/SolverTypes.h src/minisat/core/SolverTypes.h
 +#endif
 diff -ruN src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt src/minisat/doc/ReleaseNotes-2.2.0.txt
 --- src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/doc/ReleaseNotes-2.2.0.txt	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/doc/ReleaseNotes-2.2.0.txt	2022-02-18 15:58:37.102965500 +0100
 @@ -0,0 +1,79 @@
 +Release Notes for MiniSat 2.2.0
 +===============================
@@ -2843,7 +2869,7 @@ diff -ruN src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt src/minisat/doc/ReleaseNote
 +    elimination, and the longest clause used in backward subsumption).
 diff -ruN src_tmp/minisat/LICENSE src/minisat/LICENSE
 --- src_tmp/minisat/LICENSE	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/LICENSE	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/LICENSE	2022-02-18 15:58:37.097808300 +0100
 @@ -0,0 +1,21 @@
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
 +           Copyright (c) 2007-2010  Niklas Sorensson
@@ -2868,7 +2894,7 @@ diff -ruN src_tmp/minisat/LICENSE src/minisat/LICENSE
 +WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 diff -ruN src_tmp/minisat/mtl/Alg.h src/minisat/mtl/Alg.h
 --- src_tmp/minisat/mtl/Alg.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Alg.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/Alg.h	2022-02-18 15:58:37.103565300 +0100
 @@ -0,0 +1,57 @@
 +/*******************************************************************************************[Alg.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2929,7 +2955,7 @@ diff -ruN src_tmp/minisat/mtl/Alg.h src/minisat/mtl/Alg.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Alloc.h src/minisat/mtl/Alloc.h
 --- src_tmp/minisat/mtl/Alloc.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Alloc.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/Alloc.h	2022-02-18 15:58:37.104003500 +0100
 @@ -0,0 +1,131 @@
 +/*****************************************************************************************[Alloc.h]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -3064,7 +3090,7 @@ diff -ruN src_tmp/minisat/mtl/Alloc.h src/minisat/mtl/Alloc.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/BasicHeap.h src/minisat/mtl/BasicHeap.h
 --- src_tmp/minisat/mtl/BasicHeap.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/BasicHeap.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/BasicHeap.h	2022-02-18 15:58:37.104368500 +0100
 @@ -0,0 +1,98 @@
 +/******************************************************************************************[Heap.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3166,7 +3192,7 @@ diff -ruN src_tmp/minisat/mtl/BasicHeap.h src/minisat/mtl/BasicHeap.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/BoxedVec.h src/minisat/mtl/BoxedVec.h
 --- src_tmp/minisat/mtl/BoxedVec.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/BoxedVec.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/BoxedVec.h	2022-02-18 15:58:37.104761400 +0100
 @@ -0,0 +1,147 @@
 +/*******************************************************************************************[Vec.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3317,7 +3343,7 @@ diff -ruN src_tmp/minisat/mtl/BoxedVec.h src/minisat/mtl/BoxedVec.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/config.mk src/minisat/mtl/config.mk
 --- src_tmp/minisat/mtl/config.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/config.mk	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/config.mk	2022-02-18 15:58:37.108961900 +0100
 @@ -0,0 +1,6 @@
 +##
 +##  This file is for system specific configurations. For instance, on
@@ -3327,7 +3353,7 @@ diff -ruN src_tmp/minisat/mtl/config.mk src/minisat/mtl/config.mk
 +##  LFLAGS += -L/usr/local/lib
 diff -ruN src_tmp/minisat/mtl/Heap.h src/minisat/mtl/Heap.h
 --- src_tmp/minisat/mtl/Heap.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Heap.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/Heap.h	2022-02-18 15:58:37.105325400 +0100
 @@ -0,0 +1,169 @@
 +/******************************************************************************************[Heap.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3500,7 +3526,7 @@ diff -ruN src_tmp/minisat/mtl/Heap.h src/minisat/mtl/Heap.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/IntTypes.h src/minisat/mtl/IntTypes.h
 --- src_tmp/minisat/mtl/IntTypes.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/IntTypes.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/IntTypes.h	2022-02-18 15:58:37.105824100 +0100
 @@ -0,0 +1,42 @@
 +/**************************************************************************************[IntTypes.h]
 +Copyright (c) 2009-2010, Niklas Sorensson
@@ -3546,7 +3572,7 @@ diff -ruN src_tmp/minisat/mtl/IntTypes.h src/minisat/mtl/IntTypes.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Map.h src/minisat/mtl/Map.h
 --- src_tmp/minisat/mtl/Map.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Map.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/Map.h	2022-02-18 15:58:37.106368400 +0100
 @@ -0,0 +1,118 @@
 +/*******************************************************************************************[Map.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3668,7 +3694,7 @@ diff -ruN src_tmp/minisat/mtl/Map.h src/minisat/mtl/Map.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Queue.h src/minisat/mtl/Queue.h
 --- src_tmp/minisat/mtl/Queue.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Queue.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/Queue.h	2022-02-18 15:58:37.107309000 +0100
 @@ -0,0 +1,82 @@
 +/*****************************************************************************************[Queue.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3754,7 +3780,7 @@ diff -ruN src_tmp/minisat/mtl/Queue.h src/minisat/mtl/Queue.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Sort.h src/minisat/mtl/Sort.h
 --- src_tmp/minisat/mtl/Sort.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Sort.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/Sort.h	2022-02-18 15:58:37.107865000 +0100
 @@ -0,0 +1,93 @@
 +/******************************************************************************************[Sort.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3851,7 +3877,7 @@ diff -ruN src_tmp/minisat/mtl/Sort.h src/minisat/mtl/Sort.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/template.mk src/minisat/mtl/template.mk
 --- src_tmp/minisat/mtl/template.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/template.mk	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/template.mk	2022-02-18 15:58:37.109334300 +0100
 @@ -0,0 +1,90 @@
 +##
 +##  Template makefile for Standard, Profile, Debug, Release, and Release-static versions
@@ -3945,7 +3971,7 @@ diff -ruN src_tmp/minisat/mtl/template.mk src/minisat/mtl/template.mk
 +-include depend.mk
 diff -ruN src_tmp/minisat/mtl/Vec.h src/minisat/mtl/Vec.h
 --- src_tmp/minisat/mtl/Vec.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Vec.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/Vec.h	2022-02-18 15:58:37.108294100 +0100
 @@ -0,0 +1,133 @@
 +/*******************************************************************************************[Vec.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -4082,7 +4108,7 @@ diff -ruN src_tmp/minisat/mtl/Vec.h src/minisat/mtl/Vec.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/XAlloc.h src/minisat/mtl/XAlloc.h
 --- src_tmp/minisat/mtl/XAlloc.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/XAlloc.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/mtl/XAlloc.h	2022-02-18 15:58:37.108684000 +0100
 @@ -0,0 +1,45 @@
 +/****************************************************************************************[XAlloc.h]
 +Copyright (c) 2009-2010, Niklas Sorensson
@@ -4131,7 +4157,7 @@ diff -ruN src_tmp/minisat/mtl/XAlloc.h src/minisat/mtl/XAlloc.h
 +#endif
 diff -ruN src_tmp/minisat/README src/minisat/README
 --- src_tmp/minisat/README	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/README	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/README	2022-02-18 15:58:37.098307500 +0100
 @@ -0,0 +1,24 @@
 +================================================================================
 +DIRECTORY OVERVIEW:
@@ -4159,7 +4185,7 @@ diff -ruN src_tmp/minisat/README src/minisat/README
 +> minisat <cnf-file> -no-luby -rinc=1.5 -phase-saving=0 -rnd-freq=0.02
 diff -ruN src_tmp/minisat/simp/Main.cc src/minisat/simp/Main.cc
 --- src_tmp/minisat/simp/Main.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/Main.cc	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/simp/Main.cc	2022-02-18 15:58:37.109987700 +0100
 @@ -0,0 +1,211 @@
 +/*****************************************************************************************[Main.cc]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -4374,7 +4400,7 @@ diff -ruN src_tmp/minisat/simp/Main.cc src/minisat/simp/Main.cc
 +}
 diff -ruN src_tmp/minisat/simp/Makefile src/minisat/simp/Makefile
 --- src_tmp/minisat/simp/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/Makefile	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/simp/Makefile	2022-02-18 15:58:37.110329600 +0100
 @@ -0,0 +1,4 @@
 +EXEC      = minisat
 +DEPDIR    = mtl utils core
@@ -4382,7 +4408,7 @@ diff -ruN src_tmp/minisat/simp/Makefile src/minisat/simp/Makefile
 +include $(MROOT)/mtl/template.mk
 diff -ruN src_tmp/minisat/simp/SimpSolver.cc src/minisat/simp/SimpSolver.cc
 --- src_tmp/minisat/simp/SimpSolver.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/SimpSolver.cc	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/simp/SimpSolver.cc	2022-02-18 15:58:37.110853000 +0100
 @@ -0,0 +1,717 @@
 +/***********************************************************************************[SimpSolver.cc]
 +Copyright (c) 2006,      Niklas Een, Niklas Sorensson
@@ -5103,7 +5129,7 @@ diff -ruN src_tmp/minisat/simp/SimpSolver.cc src/minisat/simp/SimpSolver.cc
 +}
 diff -ruN src_tmp/minisat/simp/SimpSolver.h src/minisat/simp/SimpSolver.h
 --- src_tmp/minisat/simp/SimpSolver.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/SimpSolver.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/simp/SimpSolver.h	2022-02-18 15:58:37.111274000 +0100
 @@ -0,0 +1,197 @@
 +/************************************************************************************[SimpSolver.h]
 +Copyright (c) 2006,      Niklas Een, Niklas Sorensson
@@ -5304,7 +5330,7 @@ diff -ruN src_tmp/minisat/simp/SimpSolver.h src/minisat/simp/SimpSolver.h
 +#endif
 diff -ruN src_tmp/minisat/utils/Makefile src/minisat/utils/Makefile
 --- src_tmp/minisat/utils/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Makefile	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/utils/Makefile	2022-02-18 15:58:37.111769600 +0100
 @@ -0,0 +1,4 @@
 +EXEC      = system_test
 +DEPDIR    = mtl
@@ -5312,7 +5338,7 @@ diff -ruN src_tmp/minisat/utils/Makefile src/minisat/utils/Makefile
 +include $(MROOT)/mtl/template.mk
 diff -ruN src_tmp/minisat/utils/Options.cc src/minisat/utils/Options.cc
 --- src_tmp/minisat/utils/Options.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Options.cc	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/utils/Options.cc	2022-02-18 15:58:37.112429300 +0100
 @@ -0,0 +1,91 @@
 +/**************************************************************************************[Options.cc]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -5407,7 +5433,7 @@ diff -ruN src_tmp/minisat/utils/Options.cc src/minisat/utils/Options.cc
 +
 diff -ruN src_tmp/minisat/utils/Options.h src/minisat/utils/Options.h
 --- src_tmp/minisat/utils/Options.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Options.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/utils/Options.h	2022-02-18 15:58:37.112862300 +0100
 @@ -0,0 +1,386 @@
 +/***************************************************************************************[Options.h]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -5797,7 +5823,7 @@ diff -ruN src_tmp/minisat/utils/Options.h src/minisat/utils/Options.h
 +#endif
 diff -ruN src_tmp/minisat/utils/ParseUtils.h src/minisat/utils/ParseUtils.h
 --- src_tmp/minisat/utils/ParseUtils.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/ParseUtils.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/utils/ParseUtils.h	2022-02-18 15:58:37.113274800 +0100
 @@ -0,0 +1,122 @@
 +/************************************************************************************[ParseUtils.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -5923,7 +5949,7 @@ diff -ruN src_tmp/minisat/utils/ParseUtils.h src/minisat/utils/ParseUtils.h
 +#endif
 diff -ruN src_tmp/minisat/utils/System.cc src/minisat/utils/System.cc
 --- src_tmp/minisat/utils/System.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/System.cc	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/utils/System.cc	2022-02-18 15:58:37.113747400 +0100
 @@ -0,0 +1,95 @@
 +/***************************************************************************************[System.cc]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -6022,7 +6048,7 @@ diff -ruN src_tmp/minisat/utils/System.cc src/minisat/utils/System.cc
 +#endif
 diff -ruN src_tmp/minisat/utils/System.h src/minisat/utils/System.h
 --- src_tmp/minisat/utils/System.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/System.h	2022-02-19 12:06:50.626500104 +0100
++++ src/minisat/utils/System.h	2022-02-18 15:58:37.114347000 +0100
 @@ -0,0 +1,60 @@
 +/****************************************************************************************[System.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson

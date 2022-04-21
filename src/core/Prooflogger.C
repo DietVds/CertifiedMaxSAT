@@ -77,11 +77,23 @@ void Prooflogger::write_clause(vec<Lit>& clause) {
     for (int i = 0; i < clause.size(); i++) write_literal(clause[i]);
 }
 
+void Prooflogger::write_clause(Clause& clause) {
+    for(int i = 0; i < clause.size(); i++){
+        write_literal(clause[i]);
+    } 
+}
+
 void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
     proof << "u ";
     write_clause(clause);
     proof << " >= 1;\n" ;
     constraint_counter++;
+}
+
+void Prooflogger::delete_learnt_clause(Clause& clause) {
+    proof << "del find ";
+    write_clause(clause);
+    proof << " >= 1;\n" ;
 }
 
 void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
