@@ -29,7 +29,7 @@ do
 done
 
 # Make results folder if it does not exist yet
-if [! -d results ]; then
+if [ ! -d ./results ]; then
     mkdir results
 fi
 
