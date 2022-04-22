@@ -12,7 +12,7 @@ if (evaluation == 2010) {
     mem_limit <- 512
     time_limit <- 1800
 } else {
-    results <- read.csv(file = "./scripts/analysis/results2021.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/results2021_2.csv", stringsAsFactors = FALSE)
     mem_limit <- 32768
     time_limit <- 3600
 }
@@ -30,12 +30,6 @@ for (row in 1:nrow(results)) {
         write(results[row, "instance"], "incorrects.txt", append = TRUE)
         results <- results[-c(row), ]
     }
-
-    # 
-    #if (!is.na(results[row, "runtime"]) & !is.na(results[row, "runtime_w"]) & results[row, "runtime_w"] < results[row, "runtime"] & results[row, "runtime"] < 1.5) {
-    #    print(results[row,])
-    #    write(results[row, "instance"], "weirds.txt", append = TRUE)
-    #}
 }
 
 # QMaxSATpb OOTs
