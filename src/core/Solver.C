@@ -147,7 +147,9 @@ void Solver::detachClause(Clause& c) {
 
 void Solver::removeClause(Clause& c) {
     detachClause(c);
-    free(&c); }
+    PL->delete_learnt_clause(c);
+    free(&c); 
+}
 
 
 bool Solver::satisfied(const Clause& c) const {
