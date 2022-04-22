@@ -331,6 +331,8 @@ void genCardinals(int from, int to,
     }
     PL.write_comment("-------------------------------------------");
   }
+  PL.write_delete_cardinality_defs(linkingAlpha);
+  PL.write_delete_cardinality_defs(linkingBeta);
   linkingAlpha.clear();
   linkingBeta.clear();
 }
@@ -506,7 +508,8 @@ int main(int argc, char** argv)
           start = MyChrono::startClock();
           
           genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
-          
+          PL.write_delete_P1(linkingVar); // Only need P2-card defs to derive the C3-constraints
+
           auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
           
           if(log_duration_totalizer){

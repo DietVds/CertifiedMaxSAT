@@ -72,9 +72,13 @@ public:
     void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
     void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
     void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
+    void write_delete_P1                (const vec<Lit>& reification_literals);
     void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
     void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
+    void write_delete_P2                (const vec<Lit>& reification_literals);
     void genCardinalDefinitions         (int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar); 
+    void write_delete_P                 (const vec<Lit>& reification_literals, std::map<int,int>& constraint_store);
+    void write_delete_cardinality_defs  (const vec<Lit>& reification_literals);
 };
 
 //=================================================================================================
