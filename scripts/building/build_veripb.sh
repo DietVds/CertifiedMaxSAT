@@ -14,4 +14,4 @@ pip3 install ./
 
 # Clean up
 cd ..
-rm -rf src_tmp
+rm -rf VeriPB-master
