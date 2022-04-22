@@ -9,6 +9,7 @@ ROOT_DIR=$(pwd)
 unzip base/VeriPB-master.zip
 
 # Build 
+cd VeriPB-master
 pip3 install ./
 
 # Clean up
