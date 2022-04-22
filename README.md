@@ -32,4 +32,4 @@ Use the `-wcnf` flag to indicate that the input file is in the `.wcnf` format.
 
 ## Citation
 
-D. Vandesande, W. De Wulf, B. Bogaerts. A Certified MaxSAT Solver. (to be submitted at SAT2022)
+D. Vandesande, W. De Wulf, B. Bogaerts. A Certified MaxSAT Solver. (to be submitted at LPNMR2022)

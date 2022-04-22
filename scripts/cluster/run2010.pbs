@@ -27,5 +27,5 @@ do
     sed -i "s/INSTANCES/$instances_escaped/g" running_scripts2010/${filename}.sh
     chmod +x running_scripts2010/${filename}.sh
 done
-parallel -j $SLURM_NTASKS srun -N1 -n1 -c1 --exclusive ::: $(ls -1 ./running_scripts2010/*.sh)
+parallel --delay 0.2 -j $SLURM_NTASKS --joblog runtask.log --resume srun -N1 -n1 -c1 --exclusive ::: $(ls -1 ./running_scripts2010/*.sh)
 wait
