@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-04-22 11:18:56.182907800 +0200
-+++ src/core/Main.C	2022-04-22 11:10:36.860534600 +0200
+--- src_tmp/core/Main.C	2022-04-24 15:36:50.417256800 +0200
++++ src/core/Main.C	2022-04-24 14:08:24.220198200 +0200
 @@ -26,7 +26,13 @@
  #include <signal.h>
  #include <zlib.h>
@@ -411,7 +411,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-04-22 11:11:36.443881600 +0200
++++ src/core/Prooflogger.C	2022-04-24 14:08:24.221299100 +0200
 @@ -0,0 +1,325 @@
 +#include "Prooflogger.h"
 +//=================================================================================================
@@ -830,8 +830,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-04-22 11:18:56.183295500 +0200
-+++ src/core/Solver.C	2022-04-21 19:58:31.188003500 +0200
+--- src_tmp/core/Solver.C	2022-04-24 15:36:50.417685800 +0200
++++ src/core/Solver.C	2022-04-24 15:35:01.849268400 +0200
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -857,7 +857,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  void Solver::removeClause(Clause& c) {
      detachClause(c);
 -    free(&c); }
-+    PL->delete_learnt_clause(c);
++    //PL->delete_learnt_clause(c);
 +    free(&c); 
 +}
  
@@ -918,7 +918,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-04-22 11:18:56.182242100 +0200
+--- src_tmp/core/Solver.h	2022-04-24 15:36:50.416551500 +0200
 +++ src/core/Solver.h	2021-12-22 10:25:15.730665200 +0100
 @@ -21,12 +21,15 @@
  #define Solver_h
