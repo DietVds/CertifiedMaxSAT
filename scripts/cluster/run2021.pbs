@@ -27,5 +27,12 @@ do
     sed -i "s/INSTANCES/$instances_escaped/g" running_scripts2021/${filename}.sh
     chmod +x running_scripts2021/${filename}.sh
 done
-parallel -j $SLURM_NTASKS srun -N1 -n1 -c1 --exclusive ::: $(ls -1 ./running_scripts2021/*.sh)
+
+# Make results folder if it does not exist yet
+if [ ! -d ./results ]; then
+    mkdir results
+fi
+
+# Start running
+parallel --delay 0.2 -j $SLURM_NTASKS --joblog runtask.log --resume srun -N1 -n1 -c1 --exclusive ::: $(ls -1 ./running_scripts2021/*.sh)
 wait

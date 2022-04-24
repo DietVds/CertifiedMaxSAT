@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
-
-# Assumptions
-# - Virtual env is activated
+#
+# Script that extracts extracts VeriPB and builds/installs it
+#
 
 ROOT_DIR=$(pwd)
 
-./scripts/building/build_veripb_src.sh ./src_tmp
-
-# Unrar
-cd src_tmp
-patch -p1 < $ROOT_DIR/patches/veripb_wcnf.patch
+# Unzip
+unzip base/VeriPB-master.zip
 
 # Build 
+cd VeriPB-master
 pip3 install ./
 
 # Clean up
 cd ..
-rm -rf src_tmp
+rm -rf VeriPB-master

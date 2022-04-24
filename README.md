@@ -9,7 +9,7 @@ Our contact information:
 
 ## Patches
 
-The [patches](patches) folder contains a number of patches, underneath we give a description for each of them.
+The [patches](patches) folder contains two patches, underneath we give a description for them.
 
 ### MiniSAT fix
 
@@ -19,11 +19,6 @@ The [qmaxsat_fix.patch](patches/qmaxsat_fix.patch) patch applies a fix to the Qm
 
 The [prooflogging.patch](patches/prooflogging.patch) patch extends the (fixed) Qmaxsat 0.1 source code with prooflogging.
 
-### VeriPB WCNF extension
-
-The [veripb_wcnf.patch](patches/veripb_wcnf.patch) patch extends the VeriPB source code with the ability to read from `.wcnf` files.  
-Use the `-wcnf` flag to indicate that the input file is in the `.wcnf` format.
-
 ## Usage
 
 ```console
@@ -32,4 +27,4 @@ Use the `-wcnf` flag to indicate that the input file is in the `.wcnf` format.
 
 ## Citation
 
-D. Vandesande, W. De Wulf, B. Bogaerts. A Certified MaxSAT Solver. (to be submitted at SAT2022)
+D. Vandesande, W. De Wulf, B. Bogaerts. A Certified MaxSAT Solver. (to be submitted at LPNMR2022)
