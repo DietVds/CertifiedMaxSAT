@@ -201,7 +201,7 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
         else if (*in == 'c' || *in == 'p') skipLine(in);
         else {
 	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
-            S.addClause(lits);
+            S.addClauseInput(lits);
         }
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
@@ -284,12 +284,9 @@ void genCardinals(int from, int to,
 
   // First
   lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-  PL.write_learnt_clause(lits);
 
   // Last
   lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-  PL.write_learnt_clause(lits);
-
 
   if (inputSize > 2) {
     int middle = inputSize/2;

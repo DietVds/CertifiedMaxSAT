@@ -92,8 +92,11 @@ Var Solver::newVar(bool sign, bool dvar)
     return v;
 }
 
+bool Solver::addClauseInput(vec<Lit>& ps){
+    return addClause(ps, false);
+}
 
-bool Solver::addClause(vec<Lit>& ps)
+bool Solver::addClause(vec<Lit>& ps, bool write_proof)
 {
     assert(decisionLevel() == 0);
 
@@ -110,6 +113,9 @@ bool Solver::addClause(vec<Lit>& ps)
                 ps[j++] = p = ps[i];
         ps.shrink(i - j);
     }
+
+    if(write_proof)
+        PL->write_learnt_clause(ps);
 
     if (ps.size() == 0)
         return ok = false;
@@ -147,7 +153,7 @@ void Solver::detachClause(Clause& c) {
 
 void Solver::removeClause(Clause& c) {
     detachClause(c);
-    //PL->delete_learnt_clause(c);
+    PL->delete_learnt_clause(c);
     free(&c); 
 }
 
@@ -391,6 +397,13 @@ void Solver::uncheckedEnqueue(Lit p, Clause* from)
     level   [var(p)] = decisionLevel();
     reason  [var(p)] = from;
     trail.push(p);
+
+    // Literals propagated with decision level = 0 means that they can be learned as unit clause for the proof logger.
+    if(decisionLevel() == 0){
+        vec<Lit> c;
+        c.push(p);
+        PL->write_learnt_clause(c);
+    }
 }
 
 

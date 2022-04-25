@@ -102,7 +102,6 @@ void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
         proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" ;
         constraint_counter++;
     }
-    write_learnt_clause(clause);
 }
 
 void Prooflogger::write_bound_update(vec<lbool>& model) {
@@ -232,9 +231,6 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
         proof << "p " << constraint_counter << " s\n" ;
         constraint_counter++;
     }
-
-    // Derivation is done so clause can be written as RUP
-    write_learnt_clause(definition);
 }
 
 void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
@@ -259,9 +255,6 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
         proof << "p " << constraint_counter << " 2 d s\n" ;
         constraint_counter++;
     }
-
-    // Derivation is done so clause can be written as RUP
-    write_learnt_clause(definition);
 }
 
 void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {

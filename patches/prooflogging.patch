@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-04-24 15:36:50.417256800 +0200
-+++ src/core/Main.C	2022-04-24 14:08:24.220198200 +0200
+--- src_tmp/core/Main.C	2022-04-25 20:38:58.241221700 +0200
++++ src/core/Main.C	2022-04-25 20:37:09.287508500 +0200
 @@ -26,7 +26,13 @@
  #include <signal.h>
  #include <zlib.h>
@@ -92,10 +92,11 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 -            skipLine(in);
 -        else
 -	  readClause(in, S, lits, out_nbvar,out_top,out_nbsoft),
+-            S.addClause(lits);
 +        else if (*in == 'c' || *in == 'p') skipLine(in);
 +        else {
 +	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
-             S.addClause(lits);
++            S.addClauseInput(lits);
 +        }
      }
      reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
@@ -143,18 +144,15 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -261,52 +282,85 @@
+@@ -261,52 +282,82 @@
    Var varZero = S.newVar();
    Var varLast = S.newVar();
  
 +  // First
    lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
-+  PL.write_learnt_clause(lits);
 +
 +  // Last
    lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-+  PL.write_learnt_clause(lits);
-+
  
    if (inputSize > 2) {
      int middle = inputSize/2;
@@ -249,7 +247,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
      int         i, j;
      const char* value;
-@@ -347,6 +401,16 @@
+@@ -347,6 +398,16 @@
              printUsage(argv);
              exit(0);
  
@@ -266,7 +264,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -357,7 +421,7 @@
+@@ -357,7 +418,7 @@
      argc = j;
  
  
@@ -275,7 +273,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #if defined(__linux__)
      fpu_control_t oldcw, newcw;
      _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
-@@ -376,6 +440,12 @@
+@@ -376,6 +437,12 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
@@ -288,7 +286,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,8 +453,15 @@
+@@ -383,8 +450,15 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
@@ -305,7 +303,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
      double parse_time = cpuTime() - cpu_time;
-@@ -393,6 +470,8 @@
+@@ -393,6 +467,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
@@ -314,7 +312,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -406,23 +485,65 @@
+@@ -406,23 +482,65 @@
      if (ret) { // koshi 09.12.25
        lcnt++;
        int answerNew = 0;
@@ -396,7 +394,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
        }
        reportf("Current answer = %d\n",answer);
        goto solve;
-@@ -439,10 +560,11 @@
+@@ -439,10 +557,11 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -411,8 +409,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-04-24 14:08:24.221299100 +0200
-@@ -0,0 +1,325 @@
++++ src/core/Prooflogger.C	2022-04-25 20:37:57.432753600 +0200
+@@ -0,0 +1,318 @@
 +#include "Prooflogger.h"
 +//=================================================================================================
 +// Proof file
@@ -517,7 +515,6 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" ;
 +        constraint_counter++;
 +    }
-+    write_learnt_clause(clause);
 +}
 +
 +void Prooflogger::write_bound_update(vec<lbool>& model) {
@@ -647,9 +644,6 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        proof << "p " << constraint_counter << " s\n" ;
 +        constraint_counter++;
 +    }
-+
-+    // Derivation is done so clause can be written as RUP
-+    write_learnt_clause(definition);
 +}
 +
 +void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
@@ -674,9 +668,6 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        proof << "p " << constraint_counter << " 2 d s\n" ;
 +        constraint_counter++;
 +    }
-+
-+    // Derivation is done so clause can be written as RUP
-+    write_learnt_clause(definition);
 +}
 +
 +void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {
@@ -741,7 +732,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-04-22 10:44:02.191150600 +0200
++++ src/core/Prooflogger.h	2022-04-25 20:20:56.752488500 +0200
 @@ -0,0 +1,85 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
@@ -830,8 +821,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-04-24 15:36:50.417685800 +0200
-+++ src/core/Solver.C	2022-04-24 15:35:01.849268400 +0200
+--- src_tmp/core/Solver.C	2022-04-25 20:38:58.241629700 +0200
++++ src/core/Solver.C	2022-04-25 20:31:13.556485000 +0200
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -852,18 +843,55 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  {}
  
  
-@@ -143,7 +147,9 @@
+@@ -88,8 +92,11 @@
+     return v;
+ }
+ 
++bool Solver::addClauseInput(vec<Lit>& ps){
++    return addClause(ps, false);
++}
+ 
+-bool Solver::addClause(vec<Lit>& ps)
++bool Solver::addClause(vec<Lit>& ps, bool write_proof)
+ {
+     assert(decisionLevel() == 0);
+ 
+@@ -107,6 +114,9 @@
+         ps.shrink(i - j);
+     }
+ 
++    if(write_proof)
++        PL->write_learnt_clause(ps);
++
+     if (ps.size() == 0)
+         return ok = false;
+     else if (ps.size() == 1){
+@@ -143,7 +153,9 @@
  
  void Solver::removeClause(Clause& c) {
      detachClause(c);
 -    free(&c); }
-+    //PL->delete_learnt_clause(c);
++    PL->delete_learnt_clause(c);
 +    free(&c); 
 +}
  
  
  bool Solver::satisfied(const Clause& c) const {
-@@ -544,7 +550,7 @@
+@@ -385,6 +397,13 @@
+     level   [var(p)] = decisionLevel();
+     reason  [var(p)] = from;
+     trail.push(p);
++
++    // Literals propagated with decision level = 0 means that they can be learned as unit clause for the proof logger.
++    if(decisionLevel() == 0){
++        vec<Lit> c;
++        c.push(p);
++        PL->write_learnt_clause(c);
++    }
+ }
+ 
+ 
+@@ -544,7 +563,7 @@
  |    all variables are decision variables, this means that the clause set is satisfiable. 'l_False'
  |    if the clause set is unsatisfiable. 'l_Undef' if the bound on number of conflicts is reached.
  |________________________________________________________________________________________________@*/
@@ -872,7 +900,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  {
      assert(ok);
      int         backtrack_level;
-@@ -560,12 +566,19 @@
+@@ -560,12 +579,19 @@
          if (confl != NULL){
              // CONFLICT
              conflicts++; conflictC++;
@@ -893,7 +921,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
              cancelUntil(backtrack_level);
              assert(value(learnt_clause[0]) == l_Undef);
  
-@@ -592,8 +605,10 @@
+@@ -592,8 +618,10 @@
                  return l_Undef; }
  
              // Simplify the set of problem clauses:
@@ -905,7 +933,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  
              if (nof_learnts >= 0 && learnts.size()-nAssigns() >= nof_learnts)
                  // Reduce the set of learnt clauses:
-@@ -654,7 +669,10 @@
+@@ -654,7 +682,10 @@
      model.clear();
      conflict.clear();
  
@@ -918,8 +946,8 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-04-24 15:36:50.416551500 +0200
-+++ src/core/Solver.h	2021-12-22 10:25:15.730665200 +0100
+--- src_tmp/core/Solver.h	2022-04-25 20:38:58.240553800 +0200
++++ src/core/Solver.h	2022-04-25 20:30:46.991288600 +0200
 @@ -21,12 +21,15 @@
  #define Solver_h
  
@@ -936,7 +964,7 @@ diff -ruN src_tmp/core/Solver.h src/core/Solver.h
  
  
  //=================================================================================================
-@@ -38,9 +41,13 @@
+@@ -38,13 +41,18 @@
  
      // Constructor/Destructor:
      //
@@ -950,8 +978,15 @@ diff -ruN src_tmp/core/Solver.h src/core/Solver.h
 +
      // Problem specification:
      //
-     Var     newVar    (bool polarity = true, bool dvar = true); // Add a new variable with parameters specifying variable mode.
-@@ -146,19 +153,19 @@
+-    Var     newVar    (bool polarity = true, bool dvar = true); // Add a new variable with parameters specifying variable mode.
+-    bool    addClause (vec<Lit>& ps);                           // Add a clause to the solver. NOTE! 'ps' may be shrunk by this method!
++    Var     newVar          (bool polarity = true, bool dvar = true);   // Add a new variable with parameters specifying variable mode.
++    bool    addClause       (vec<Lit>& ps, bool write_proof=true);      // Add a clause to the solver. NOTE! 'ps' may be shrunk by this method!
++    bool    addClauseInput  (vec<Lit>& ps);                             // Calls addClause without proof logging.            
+ 
+     // Solving:
+     //
+@@ -146,19 +154,19 @@
  
      // Main internal methods:
      //

@@ -50,8 +50,9 @@ public:
 
     // Problem specification:
     //
-    Var     newVar    (bool polarity = true, bool dvar = true); // Add a new variable with parameters specifying variable mode.
-    bool    addClause (vec<Lit>& ps);                           // Add a clause to the solver. NOTE! 'ps' may be shrunk by this method!
+    Var     newVar          (bool polarity = true, bool dvar = true);   // Add a new variable with parameters specifying variable mode.
+    bool    addClause       (vec<Lit>& ps, bool write_proof=true);      // Add a clause to the solver. NOTE! 'ps' may be shrunk by this method!
+    bool    addClauseInput  (vec<Lit>& ps);                             // Calls addClause without proof logging.            
 
     // Solving:
     //
