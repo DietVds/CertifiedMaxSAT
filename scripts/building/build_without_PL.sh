@@ -8,7 +8,7 @@ ROOT_DIR=$(pwd)
 
 # Apply the proof logging patch
 cd src_tmp
-patch -p1 < $ROOT_DIR/patches/qmaxsat_with_timing.patch
+patch -p1 < $ROOT_DIR/patches/dev/qmaxsat_with_timing.patch
 
 # Build, cleanup and move binary to root
 cd core
