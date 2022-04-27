@@ -3,7 +3,8 @@
 #SBATCH --job-name=CMS
 #SBATCH --time=100:05:00
 #SBATCH --ntasks=20
-#SBATCH --partition=skylake
+#SBATCH --partition=broadwell_himem
+#SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=65836
 
 module load CMake/3.20.1-GCCcore-10.3.0
