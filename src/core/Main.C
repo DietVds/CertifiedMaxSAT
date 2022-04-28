@@ -180,10 +180,17 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     if (*in == 'p'){
 	     if (match(in, "p wcnf")){ // koshi 10.01.04
             vars    = parseInt(in);            
-            clauses = parseInt(in);            
+            clauses = parseInt(in);       
 		    int top     = parseInt(in);
 		    out_nbvar   = vars;
 		    out_top     = top;
+
+            PL.write_proof_header(clauses);  
+            PL.n_variables = vars+out_nbsoft;
+            PL.variable_counter = PL.n_variables;
+            PL.formula_length = clauses;
+            PL.constraint_counter = clauses;
+            
             reportf("|  Number of variables:    %-12d                                       |\n", vars);
             reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
             reportf("|  Weight of hard clauses: %-12d                                       |\n", top);
@@ -207,9 +214,6 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
     PL.n_variables = vars+out_nbsoft;
     PL.variable_counter = PL.n_variables;
-    PL.formula_length = clauses;
-    PL.constraint_counter = clauses;
-    PL.write_proof_header(clauses);
 }
 
 // Inserts problem into solver.
@@ -439,10 +443,7 @@ int main(int argc, char** argv)
 
     // Open proof file
     PL.open_proof_file();
-    if (log_duration_totalizer) 
-
-
-
+    
     reportf("============================[ Problem Statistics ]=============================\n");
     reportf("|                                                                             |\n");
 
