@@ -30,7 +30,6 @@ res_proofsize="NA"
 
 # run
 ./runlim -r $TIMEOUT_SOLVER -s $MEMOUT_SOLVER -o $VSC_SCRATCH/${filename}.txt ./qmaxsat -log_duration_totalizer=$VSC_SCRATCH/${filename}_totalizer.txt $instances/${filename}.${extension}
-cat $VSC_SCRATCH/${filename}_totalizer.txt
 
 # extract time
 res_runtime_without_prooflogging=$(cat $VSC_SCRATCH/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
@@ -124,4 +123,5 @@ then
 fi
 
 rm -f $VSC_SCRATCH/${filename}*
+rm core*
 echo "$filename, $res_runtime_without_prooflogging, $res_time_genCardinals_without_PL, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $res_proofsize, $res_time_genCardinals, $res_time_genCardinalDefinitions, $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> ./results/"$filename"_result.csv
