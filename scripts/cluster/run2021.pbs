@@ -11,6 +11,12 @@ module load CMake/3.20.1-GCCcore-10.3.0
 module load Python/3.9.5-GCCcore-10.3.0
 module load parallel/20210622-GCCcore-10.3.0
 
+# Build Veripb
+virtualenv --system-site-packages /tmp/env
+source /tmp/env/bin/activate
+python -m pip install --upgrade pip
+./scripts/building/build_veripb.sh
+
 instances=$VSC_DATA/problems2021
 instances_escaped=$(sed 's;/;\\/;g' <<< "$instances")
 mkdir running_scripts2021

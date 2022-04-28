@@ -10,7 +10,7 @@ unzip base/VeriPB-master.zip
 
 # Build 
 cd VeriPB-master
-pip3 install ./
+pip install ./
 
 # Clean up
 cd ..

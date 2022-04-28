@@ -102,7 +102,7 @@ then
         ## VERIFICATION
 
         # run
-        ./runlim -r $TIMEOUT_VERIPB -s $MEMOUT_VERIPB -o $VSC_SCRATCH/${filename}.txt ./veripb --wcnf $instances/${filename}.${extension} $VSC_SCRATCH/${filename}_proof.pbp > $VSC_SCRATCH/${filename}_verification.txt
+        ./runlim -r $TIMEOUT_VERIPB -s $MEMOUT_VERIPB -o $VSC_SCRATCH/${filename}.txt python -m veripb --wcnf $instances/${filename}.${extension} $VSC_SCRATCH/${filename}_proof.pbp > $VSC_SCRATCH/${filename}_verification.txt
 
         # extract time
         res_runtime_verification=$(cat $VSC_SCRATCH/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
