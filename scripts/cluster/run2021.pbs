@@ -2,7 +2,7 @@
 
 #SBATCH --job-name=CMS
 #SBATCH --time=5-00:00:00
-#SBATCH --ntasks=2
+#SBATCH --ntasks=20
 #SBATCH --partition=broadwell_himem
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=65836
@@ -15,7 +15,9 @@ module load parallel/20210622-GCCcore-10.3.0
 virtualenv --system-site-packages /tmp/env
 source /tmp/env/bin/activate
 python -m pip install --upgrade pip
-./scripts/building/build_veripb.sh
+unzip ../../base/VeriPB-master.zip
+python -m pip install ./VeriPB-master
+rm -rf VeriPB-master
 
 instances=$VSC_DATA/problems2021
 instances_escaped=$(sed 's;/;\\/;g' <<< "$instances")

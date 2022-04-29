@@ -1,8 +1,0 @@
-#!/apps/brussel/CO7/skylake/software/Python/3.9.5-GCCcore-10.3.0/bin/python3.9
-# -*- coding: utf-8 -*-
-import re
-import sys
-from veripb import run_cmd_main
-if __name__ == '__main__':
-    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
-    sys.exit(run_cmd_main())
