@@ -4,7 +4,7 @@ library(ggthemes)
 theme_set(theme_light())
 
 # Select evaluation
-evaluation <- 2010
+evaluation <- 2021
 
 # Read results
 if (evaluation == 2010) {
@@ -12,7 +12,7 @@ if (evaluation == 2010) {
     mem_limit <- 512
     time_limit <- 1800
 } else {
-    results <- read.csv(file = "./scripts/analysis/results2021_2.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/res.csv", stringsAsFactors = FALSE)
     mem_limit <- 32768
     time_limit <- 3600
 }
@@ -22,15 +22,18 @@ results <- as.data.frame(lapply(results, as.numeric))
 results$instance <- instances
 
 # Safety checks
+incorrects <- list()
 for (row in 1:nrow(results)) {
-
     # Incorrect instances
-    if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "runtime_v"] < time_limit & results[row, "mem_v"] < mem_limit) {
-        print(results[row, ])
+    if (!is.na(results[row, "status"]) & results[row, "status"] == 0 
+        & !is.na(results[row, "runtime_v"]) & results[row, "runtime_v"] < 10 * time_limit 
+        & !is.na(results[row, "mem_v"]) & results[row, "mem_v"] < 2*mem_limit) {
         write(results[row, "instance"], "incorrects.txt", append = TRUE)
-        results <- results[-c(row), ]
+        incorrects <- append(incorrects, row)
     }
 }
+print(results[unlist(incorrects), "instance"])
+results <- results[-unlist(incorrects),]
 
 # QMaxSATpb OOTs
 for (row in 1:nrow(results)) {
@@ -55,7 +58,7 @@ for (row in 1:nrow(results)) {
 
 # VeriPB OOMs
 for (row in 1:nrow(results)) {
-    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 1.25 * mem_limit) {
+    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 2 * mem_limit) {
         results[row, "runtime_v"] <- 99000
     }
 }
@@ -73,7 +76,7 @@ ggplot(no_NAs, aes(x = runtime_w, y = runtime, color = log10((proofsize / 10^3) 
     geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000)) +
-    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "10GB")) +
+    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7, 8), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "10GB", "100GB")) +
     coord_fixed(ratio = 1) +
     geom_vline(xintercept = 4000, linetype = "dashed") +
     geom_vline(xintercept = 8500, linetype = "dashed") +
@@ -111,7 +114,7 @@ ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^
     geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
-    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "10GB")) +
+    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7, 8), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "10GB", "100GB")) +
     coord_fixed(ratio = 1) +
     geom_vline(xintercept = 46000, linetype = "dashed") +
     geom_vline(xintercept = 99000, linetype = "dashed") +

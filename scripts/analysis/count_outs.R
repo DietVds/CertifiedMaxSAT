@@ -1,5 +1,5 @@
 # Select evaluation
-evaluation <- 2010
+evaluation <- 2021
 
 # Read results
 if (evaluation == 2010) {
@@ -7,7 +7,7 @@ if (evaluation == 2010) {
     mem_limit <- 512
     time_limit <- 1800
 } else {
-    results <- read.csv(file = "./scripts/analysis/results2021_2.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/res.csv", stringsAsFactors = FALSE)
     mem_limit <- 32768
     time_limit <- 3600
 }
@@ -15,6 +15,15 @@ colnames(results) <- c("instance", "runtime", "totalizer", "mem", "runtime_w", "
 instances <- results$instance
 results <- as.data.frame(lapply(results, as.numeric))
 results$instance <- instances
+
+for (row in 1:nrow(results)) {
+
+    # Incorrect instances
+    if (!is.na(results[row, "status"]) & results[row, "status"] == 0 & results[row, "runtime_v"] < time_limit & results[row, "mem_v"] < mem_limit) {
+        print(results[row, ])
+        results <- results[-c(row), ]
+    }
+}
 
 # VeriPB OOTs
 OoTs <- 0
