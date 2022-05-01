@@ -12,7 +12,7 @@ if (evaluation == 2010) {
     mem_limit <- 512
     time_limit <- 1800
 } else {
-    results <- read.csv(file = "./scripts/analysis/res.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/results2021_deletes.csv", stringsAsFactors = FALSE)
     mem_limit <- 32768
     time_limit <- 3600
 }
