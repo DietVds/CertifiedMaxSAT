@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-04-28 13:05:14.074304200 +0200
-+++ src/core/Main.C	2022-04-28 12:16:50.637379700 +0200
+--- src_tmp/core/Main.C	2022-05-02 10:51:52.875544300 +0200
++++ src/core/Main.C	2022-05-02 10:51:10.109752900 +0200
 @@ -26,7 +26,13 @@
  #include <signal.h>
  #include <zlib.h>
@@ -15,7 +15,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
  /*************************************************************************************/
  #ifdef _MSC_VER
-@@ -131,18 +137,18 @@
+@@ -131,18 +137,19 @@
      return neg ? -val : val; }
  
  template<class B>
@@ -31,6 +31,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +    weight = parseInt(in); // koshi 10.01.04
 +    if (weight == 1) { // soft clause
        nbsoft++;
++      PL.n_variables++;
        lits.push(Lit(S.newVar()));
 -    } else if (parsed_lit != top) { // weight of hard clause must be top
 +    } else if (weight != top) { // weight of hard clause must be top
@@ -40,7 +41,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
      for (;;){
          parsed_lit = parseInt(in);
-@@ -163,42 +169,59 @@
+@@ -163,42 +170,58 @@
  
  
  template<class B>
@@ -62,7 +63,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +		    out_top     = top;
 +
 +            PL.write_proof_header(clauses);  
-+            PL.n_variables = vars+out_nbsoft;
++            PL.n_variables = vars;
 +            PL.variable_counter = PL.n_variables;
 +            PL.formula_length = clauses;
 +            PL.constraint_counter = clauses;
@@ -107,7 +108,6 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +        }
      }
      reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
-+    PL.n_variables = vars+out_nbsoft;
 +    PL.variable_counter = PL.n_variables;
  }
  
@@ -410,7 +410,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-04-25 20:37:57.432753600 +0200
++++ src/core/Prooflogger.C	2022-05-02 10:16:18.667832300 +0200
 @@ -0,0 +1,318 @@
 +#include "Prooflogger.h"
 +//=================================================================================================
@@ -733,7 +733,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-04-25 20:20:56.752488500 +0200
++++ src/core/Prooflogger.h	2022-05-02 10:16:18.670886500 +0200
 @@ -0,0 +1,85 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
@@ -822,8 +822,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-04-28 13:05:14.074700000 +0200
-+++ src/core/Solver.C	2022-04-28 13:04:52.512045500 +0200
+--- src_tmp/core/Solver.C	2022-05-02 10:51:52.876083200 +0200
++++ src/core/Solver.C	2022-05-02 10:16:18.674601000 +0200
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -947,7 +947,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-04-28 13:05:14.075923000 +0200
+--- src_tmp/core/Solver.h	2022-05-02 10:51:52.874724900 +0200
 +++ src/core/Solver.h	2022-04-28 12:11:39.634740700 +0200
 @@ -21,12 +21,15 @@
  #define Solver_h

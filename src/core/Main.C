@@ -145,6 +145,7 @@ static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits,
     weight = parseInt(in); // koshi 10.01.04
     if (weight == 1) { // soft clause
       nbsoft++;
+      PL.n_variables++;
       lits.push(Lit(S.newVar()));
     } else if (weight != top) { // weight of hard clause must be top
       reportf("Unexpected weight %c\n", *in), exit(3);
@@ -186,7 +187,7 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
 		    out_top     = top;
 
             PL.write_proof_header(clauses);  
-            PL.n_variables = vars+out_nbsoft;
+            PL.n_variables = vars;
             PL.variable_counter = PL.n_variables;
             PL.formula_length = clauses;
             PL.constraint_counter = clauses;
@@ -212,7 +213,6 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
         }
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
-    PL.n_variables = vars+out_nbsoft;
     PL.variable_counter = PL.n_variables;
 }
 
