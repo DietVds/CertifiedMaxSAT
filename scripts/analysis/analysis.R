@@ -76,7 +76,7 @@ ggplot(no_NAs, aes(x = runtime_w, y = runtime, color = log10((proofsize / 10^3) 
     geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000)) +
-    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7, 8), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "10GB", "100GB")) +
+    scale_color_continuous(breaks = c(2, 3, 4, 5, 6, 7, 8), labels = c("100KB", "1MB", "10MB", "100MB", "1GB", "10GB", "100GB")) +
     coord_fixed(ratio = 1) +
     geom_vline(xintercept = 4000, linetype = "dashed") +
     geom_vline(xintercept = 8500, linetype = "dashed") +
@@ -114,7 +114,7 @@ ggplot(no_NAs2, aes(x = runtime_v, y = runtime_w, color = log10((proofsize / 10^
     geom_point() +
     scale_x_log10(breaks = c(1, 10, 100, 1000, 10000)) +
     scale_y_log10(breaks = c(1, 10, 100, 1000, 10000)) +
-    scale_color_continuous(breaks = c(1, 2, 3, 4, 5, 6, 7, 8), labels = c("10KB", "100KB", "1MB", "10MB", "100MB", "1GB", "10GB", "100GB")) +
+    scale_color_continuous(breaks = c(2, 3, 4, 5, 6, 7, 8), labels = c("100KB", "1MB", "10MB", "100MB", "1GB", "10GB", "100GB")) +
     coord_fixed(ratio = 1) +
     geom_vline(xintercept = 46000, linetype = "dashed") +
     geom_vline(xintercept = 99000, linetype = "dashed") +

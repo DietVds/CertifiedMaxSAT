@@ -7,7 +7,7 @@ if (evaluation == 2010) {
     mem_limit <- 512
     time_limit <- 1800
 } else {
-    results <- read.csv(file = "./scripts/analysis/results2021_deletes.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/results2021_2.csv", stringsAsFactors = FALSE)
     mem_limit <- 32768
     time_limit <- 3600
 }
@@ -48,7 +48,7 @@ total
 OoMs <- 0
 total <- 0
 for (row in 1:nrow(results)) {
-    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 1.25 * mem_limit) {
+    if (!is.na(results[row, "mem_v"]) & results[row, "mem_v"] >= 2 * mem_limit) {
         OoMs <- OoMs + 1
     }
     if (!is.na(results[row, "runtime_w"]) & results[row, "runtime_w"] < time_limit & !is.na(results[row, "mem_w"]) & results[row, "mem_w"] < mem_limit) {
