@@ -332,8 +332,8 @@ void genCardinals(int from, int to,
     }
     PL.write_comment("-------------------------------------------");
   }
-  PL.write_delete_cardinality_defs(linkingAlpha);
-  PL.write_delete_cardinality_defs(linkingBeta);
+  PL.delete_cardinality_defs(linkingAlpha);
+  PL.delete_cardinality_defs(linkingBeta);
   linkingAlpha.clear();
   linkingBeta.clear();
 }
@@ -479,6 +479,9 @@ int main(int argc, char** argv)
     int lcnt = 0; // loop count
     vec<Lit> linkingVar;
  solve:
+    PL.write_deletes();
+    PL.write_comment("==============================================================");
+    PL.write_comment("Call to MiniSAT:"); 
     bool ret = S.solve();
     if (ret) { // koshi 09.12.25
       lcnt++;
@@ -506,7 +509,7 @@ int main(int argc, char** argv)
           start = MyChrono::startClock();
           
           genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
-          PL.write_delete_P1(linkingVar); // Only need P2-card defs to derive the C3-constraints
+          PL.delete_P1(linkingVar); // Only need P2-card defs to derive the C3-constraints
 
           auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
           

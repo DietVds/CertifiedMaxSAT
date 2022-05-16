@@ -1,4 +1,6 @@
 #include "Prooflogger.h"
+#include<string>
+
 //=================================================================================================
 // Proof file
 
@@ -101,7 +103,11 @@ void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
     if(constraint_id != 0) {
         proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" ;
         constraint_counter++;
-    }
+        // The used constraints are deleted before the next MiniSAT-call
+        constraint_ids_to_delete.push_front(constraint_counter);
+        constraint_ids_to_delete.push_front(constraint_id);
+        C2_store.erase(constraint_id);
+    }    
 }
 
 void Prooflogger::write_bound_update(vec<lbool>& model) {
@@ -131,6 +137,7 @@ void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, 
     write_witness(definition[0]);
     proof << "\n" ;
     constraint_counter++;
+
 }
 
 void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
@@ -181,32 +188,41 @@ void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int
     C2_store[var] = constraint_counter;
 }
 
-void Prooflogger::write_delete_P(const vec<Lit>& reification_literals, std::map<int,int>& constraint_store){
+void Prooflogger::delete_P(const vec<Lit>& reification_literals, std::map<int,int>& constraint_store){
     for(int i = 0; i < reification_literals.size(); i++){
         int variable = var(reification_literals[i]);
         int constraint_id = constraint_store[variable];
 
         if(constraint_id != 0) // Only remove constraint if it is one that can be deleted.
                                 // We did not create the P1/P2 constraint definitions for the trivial v_0 and v_(vars(n)+1) variables.
-            proof << "del id " << constraint_id << "\n";
+            constraint_ids_to_delete.push_front(constraint_id);
+            // proof << "del id " << constraint_id << "\n";
 
         constraint_store.erase(variable);
     }
 }
 
-void Prooflogger::write_delete_P1(const vec<Lit>& reification_literals){
-    write_delete_P(reification_literals, C1_store);
+void Prooflogger::delete_P1(const vec<Lit>& reification_literals){
+    delete_P(reification_literals, C1_store);
 }
 
-void Prooflogger::write_delete_P2(const vec<Lit>& reification_literals){
-    write_delete_P(reification_literals, C2_store);
+void Prooflogger::delete_P2(const vec<Lit>& reification_literals){
+    delete_P(reification_literals, C2_store);
 }
 
-void Prooflogger::write_delete_cardinality_defs(const vec<Lit>& reification_literals){
-    write_delete_P1(reification_literals);
-    write_delete_P2(reification_literals);
+void Prooflogger::delete_cardinality_defs(const vec<Lit>& reification_literals){
+    delete_P1(reification_literals);
+    delete_P2(reification_literals);
 }
 
+void Prooflogger::write_deletes(){
+    while(! constraint_ids_to_delete.empty()){
+        int constraint_id = constraint_ids_to_delete.front();
+
+        proof << "del id " << constraint_id << "\n";
+        constraint_ids_to_delete.pop_front();
+    }
+}
 
 
 void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
@@ -220,18 +236,23 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
         resolved_one = true;
         proof << "p " << C1_store[third] << " " << C2_store[first] << " +\n" ;
         constraint_counter++;
+        constraint_ids_to_delete.push_front(constraint_counter);
     }
     if(C2_store.find(second) != C2_store.end()) {
         int to_add_to = resolved_one? constraint_counter : C1_store[third];
         proof << "p " << to_add_to << " " << C2_store[second] << " +\n" ;
         constraint_counter++;
+        constraint_ids_to_delete.push_front(constraint_counter);
         resolved_one = true;
     }
     if(resolved_one) {
         proof << "p " << constraint_counter << " s\n" ;
         constraint_counter++;
+        constraint_ids_to_delete.push_front(constraint_counter);
     }
 }
+
+
 
 void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     int first = var(definition[0]);
@@ -244,16 +265,19 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
         resolved_one = true;
         proof << "p " << C2_store[third] << " " << C1_store[first] << " +\n" ;
         constraint_counter++;
+        constraint_ids_to_delete.push_front(constraint_counter);
     }
     if(C1_store.find(second) != C1_store.end()) {
         int to_add_to = resolved_one? constraint_counter : C2_store[third];
         proof << "p " << to_add_to << " " << C1_store[second] << " +\n" ;
         constraint_counter++;
+        constraint_ids_to_delete.push_front(constraint_counter);
         resolved_one = true;
     }
     if(resolved_one) {
         proof << "p " << constraint_counter << " 2 d s\n" ;
         constraint_counter++;
+        constraint_ids_to_delete.push_front(constraint_counter);
     }
 }
 
@@ -270,11 +294,12 @@ void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<L
   // First
   lits.clear(); lits.push(Lit(varZero));
   write_unit_sub_red(lits, 0, from, to);
+  C1_store[varZero] = constraint_counter;
 
   // Last
   lits.clear(); lits.push(~Lit(varLast));
   write_unit_sub_red(lits, inputSize+1, from, to);
-
+  C1_store[varLast] = constraint_counter;
 
   if (inputSize > 2) {
     int middle = inputSize/2;
@@ -315,4 +340,16 @@ void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<L
   }
   linkingAlpha.clear();
   linkingBeta.clear();
+}
+
+void Prooflogger::write_clause_as_comment(vec<Lit>& clause) {
+    proof << "* ";
+    write_clause(clause);
+    proof << ">= 1;\n" ;
+}
+
+void Prooflogger::write_clause_as_comment(Clause& clause){
+    proof << "* ";
+    write_clause(clause);
+    proof << " >= 1;\n" ;
 }

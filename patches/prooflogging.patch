@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-05-02 10:51:52.875544300 +0200
-+++ src/core/Main.C	2022-05-02 10:51:10.109752900 +0200
+--- src_tmp/core/Main.C	2022-05-16 09:07:54.593999200 +0200
++++ src/core/Main.C	2022-05-16 09:01:39.033750000 +0200
 @@ -26,7 +26,13 @@
  #include <signal.h>
  #include <zlib.h>
@@ -217,8 +217,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      }
 +    PL.write_comment("-------------------------------------------");
    }
-+  PL.write_delete_cardinality_defs(linkingAlpha);
-+  PL.write_delete_cardinality_defs(linkingBeta);
++  PL.delete_cardinality_defs(linkingAlpha);
++  PL.delete_cardinality_defs(linkingBeta);
    linkingAlpha.clear();
    linkingBeta.clear();
  }
@@ -313,7 +313,14 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -406,23 +483,65 @@
+@@ -402,27 +479,72 @@
+     int lcnt = 0; // loop count
+     vec<Lit> linkingVar;
+  solve:
++    PL.write_deletes();
++    PL.write_comment("==============================================================");
++    PL.write_comment("Call to MiniSAT:"); 
+     bool ret = S.solve();
      if (ret) { // koshi 09.12.25
        lcnt++;
        int answerNew = 0;
@@ -350,7 +357,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +          start = MyChrono::startClock();
 +          
 +          genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
-+          PL.write_delete_P1(linkingVar); // Only need P2-card defs to derive the C3-constraints
++          PL.delete_P1(linkingVar); // Only need P2-card defs to derive the C3-constraints
 +
 +          auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
 +          
@@ -395,7 +402,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
        }
        reportf("Current answer = %d\n",answer);
        goto solve;
-@@ -439,10 +558,11 @@
+@@ -439,10 +561,11 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -410,9 +417,11 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-05-02 10:16:18.667832300 +0200
-@@ -0,0 +1,318 @@
++++ src/core/Prooflogger.C	2022-05-15 22:39:42.723913900 +0200
+@@ -0,0 +1,355 @@
 +#include "Prooflogger.h"
++#include<string>
++
 +//=================================================================================================
 +// Proof file
 +
@@ -515,7 +524,11 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    if(constraint_id != 0) {
 +        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" ;
 +        constraint_counter++;
-+    }
++        // The used constraints are deleted before the next MiniSAT-call
++        constraint_ids_to_delete.push_front(constraint_counter);
++        constraint_ids_to_delete.push_front(constraint_id);
++        C2_store.erase(constraint_id);
++    }    
 +}
 +
 +void Prooflogger::write_bound_update(vec<lbool>& model) {
@@ -545,6 +558,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    write_witness(definition[0]);
 +    proof << "\n" ;
 +    constraint_counter++;
++
 +}
 +
 +void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
@@ -595,32 +609,41 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    C2_store[var] = constraint_counter;
 +}
 +
-+void Prooflogger::write_delete_P(const vec<Lit>& reification_literals, std::map<int,int>& constraint_store){
++void Prooflogger::delete_P(const vec<Lit>& reification_literals, std::map<int,int>& constraint_store){
 +    for(int i = 0; i < reification_literals.size(); i++){
 +        int variable = var(reification_literals[i]);
 +        int constraint_id = constraint_store[variable];
 +
 +        if(constraint_id != 0) // Only remove constraint if it is one that can be deleted.
 +                                // We did not create the P1/P2 constraint definitions for the trivial v_0 and v_(vars(n)+1) variables.
-+            proof << "del id " << constraint_id << "\n";
++            constraint_ids_to_delete.push_front(constraint_id);
++            // proof << "del id " << constraint_id << "\n";
 +
 +        constraint_store.erase(variable);
 +    }
 +}
 +
-+void Prooflogger::write_delete_P1(const vec<Lit>& reification_literals){
-+    write_delete_P(reification_literals, C1_store);
++void Prooflogger::delete_P1(const vec<Lit>& reification_literals){
++    delete_P(reification_literals, C1_store);
 +}
 +
-+void Prooflogger::write_delete_P2(const vec<Lit>& reification_literals){
-+    write_delete_P(reification_literals, C2_store);
++void Prooflogger::delete_P2(const vec<Lit>& reification_literals){
++    delete_P(reification_literals, C2_store);
 +}
 +
-+void Prooflogger::write_delete_cardinality_defs(const vec<Lit>& reification_literals){
-+    write_delete_P1(reification_literals);
-+    write_delete_P2(reification_literals);
++void Prooflogger::delete_cardinality_defs(const vec<Lit>& reification_literals){
++    delete_P1(reification_literals);
++    delete_P2(reification_literals);
 +}
 +
++void Prooflogger::write_deletes(){
++    while(! constraint_ids_to_delete.empty()){
++        int constraint_id = constraint_ids_to_delete.front();
++
++        proof << "del id " << constraint_id << "\n";
++        constraint_ids_to_delete.pop_front();
++    }
++}
 +
 +
 +void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
@@ -634,18 +657,23 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        resolved_one = true;
 +        proof << "p " << C1_store[third] << " " << C2_store[first] << " +\n" ;
 +        constraint_counter++;
++        constraint_ids_to_delete.push_front(constraint_counter);
 +    }
 +    if(C2_store.find(second) != C2_store.end()) {
 +        int to_add_to = resolved_one? constraint_counter : C1_store[third];
 +        proof << "p " << to_add_to << " " << C2_store[second] << " +\n" ;
 +        constraint_counter++;
++        constraint_ids_to_delete.push_front(constraint_counter);
 +        resolved_one = true;
 +    }
 +    if(resolved_one) {
 +        proof << "p " << constraint_counter << " s\n" ;
 +        constraint_counter++;
++        constraint_ids_to_delete.push_front(constraint_counter);
 +    }
 +}
++
++
 +
 +void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
 +    int first = var(definition[0]);
@@ -658,16 +686,19 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +        resolved_one = true;
 +        proof << "p " << C2_store[third] << " " << C1_store[first] << " +\n" ;
 +        constraint_counter++;
++        constraint_ids_to_delete.push_front(constraint_counter);
 +    }
 +    if(C1_store.find(second) != C1_store.end()) {
 +        int to_add_to = resolved_one? constraint_counter : C2_store[third];
 +        proof << "p " << to_add_to << " " << C1_store[second] << " +\n" ;
 +        constraint_counter++;
++        constraint_ids_to_delete.push_front(constraint_counter);
 +        resolved_one = true;
 +    }
 +    if(resolved_one) {
 +        proof << "p " << constraint_counter << " 2 d s\n" ;
 +        constraint_counter++;
++        constraint_ids_to_delete.push_front(constraint_counter);
 +    }
 +}
 +
@@ -684,11 +715,12 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +  // First
 +  lits.clear(); lits.push(Lit(varZero));
 +  write_unit_sub_red(lits, 0, from, to);
++  C1_store[varZero] = constraint_counter;
 +
 +  // Last
 +  lits.clear(); lits.push(~Lit(varLast));
 +  write_unit_sub_red(lits, inputSize+1, from, to);
-+
++  C1_store[varLast] = constraint_counter;
 +
 +  if (inputSize > 2) {
 +    int middle = inputSize/2;
@@ -730,11 +762,23 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +  linkingAlpha.clear();
 +  linkingBeta.clear();
 +}
++
++void Prooflogger::write_clause_as_comment(vec<Lit>& clause) {
++    proof << "* ";
++    write_clause(clause);
++    proof << ">= 1;\n" ;
++}
++
++void Prooflogger::write_clause_as_comment(Clause& clause){
++    proof << "* ";
++    write_clause(clause);
++    proof << " >= 1;\n" ;
++}
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-05-02 10:16:18.670886500 +0200
-@@ -0,0 +1,85 @@
++++ src/core/Prooflogger.h	2022-05-11 11:35:59.531268700 +0200
+@@ -0,0 +1,92 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -743,6 +787,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#include <iostream>
 +#include <sstream>
 +#include <map>
++#include <forward_list>
 +#include <string>
 +#include <regex>
 +
@@ -784,6 +829,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    std::map<int, int> C1_store;
 +    std::map<int, int> C2_store;
 +
++    std::forward_list<int> constraint_ids_to_delete;
++
 +    // Proof file
 +    std::ofstream proof;
 +    const char *proof_file_name         = "maxsat_proof.pbp";
@@ -809,21 +856,25 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
 +    void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
 +    void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
-+    void write_delete_P1                (const vec<Lit>& reification_literals);
++    void delete_P1                      (const vec<Lit>& reification_literals);
 +    void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
 +    void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
-+    void write_delete_P2                (const vec<Lit>& reification_literals);
++    void delete_P2                      (const vec<Lit>& reification_literals);
 +    void genCardinalDefinitions         (int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar); 
-+    void write_delete_P                 (const vec<Lit>& reification_literals, std::map<int,int>& constraint_store);
-+    void write_delete_cardinality_defs  (const vec<Lit>& reification_literals);
++    void delete_P                       (const vec<Lit>& reification_literals, std::map<int,int>& constraint_store);
++    void delete_cardinality_defs        (const vec<Lit>& reification_literals);
++    void write_deletes                  ();
++
++    void write_clause_as_comment        (vec<Lit>& clause);
++    void write_clause_as_comment        (Clause& clause);
 +};
 +
 +//=================================================================================================
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-05-02 10:51:52.876083200 +0200
-+++ src/core/Solver.C	2022-05-02 10:16:18.674601000 +0200
+--- src_tmp/core/Solver.C	2022-05-16 09:07:54.594423500 +0200
++++ src/core/Solver.C	2022-05-16 09:07:07.539223000 +0200
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -862,7 +913,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      }
  
 +    if(write_proof)
-+        PL->write_learnt_clause(ps);
++        PL->write_learnt_clause(ps);       
 +
      if (ps.size() == 0)
          return ok = false;
@@ -878,21 +929,46 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  
  
  bool Solver::satisfied(const Clause& c) const {
-@@ -385,6 +397,13 @@
+@@ -228,7 +240,7 @@
+     out_learnt.push();      // (leave room for the asserting literal)
+     int index   = trail.size() - 1;
+     out_btlevel = 0;
+-
++    // PL->write_comment("~~~~~~~~~~~~~~ANALYZE~~~~~~~~~~~~~~~~~~");
+     do{
+         assert(confl != NULL);          // (otherwise should be UIP)
+         Clause& c = *confl;
+@@ -385,6 +397,8 @@
      level   [var(p)] = decisionLevel();
      reason  [var(p)] = from;
      trail.push(p);
 +
-+    // Literals propagated with decision level = 0 means that they can be learned as unit clause for the proof logger.
-+    if(decisionLevel() == 0){
-+        vec<Lit> c;
-+        c.push(p);
-+        PL->write_learnt_clause(c);
-+    }
++
  }
  
  
-@@ -544,7 +563,7 @@
+@@ -440,8 +454,18 @@
+                     // Copy the remaining watches:
+                     while (i < end)
+                         *j++ = *i++;
+-                }else
+-                    uncheckedEnqueue(first, &c);
++                }else{
++                    // PL->write_comment("2");
++
++                    // Literals propagated with decision level = 0 means that they can be learned as unit clause for the proof logger.
++                    if(decisionLevel() == 0){
++                        vec<Lit> c;
++                        c.push(first);
++                        PL->write_learnt_clause(c);
++                    }
++
++                    uncheckedEnqueue(first, &c);  
++                }
+             }
+         FoundWatch:;
+         }
+@@ -544,7 +568,7 @@
  |    all variables are decision variables, this means that the clause set is satisfiable. 'l_False'
  |    if the clause set is unsatisfiable. 'l_Undef' if the bound on number of conflicts is reached.
  |________________________________________________________________________________________________@*/
@@ -901,7 +977,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  {
      assert(ok);
      int         backtrack_level;
-@@ -560,12 +579,19 @@
+@@ -560,12 +584,19 @@
          if (confl != NULL){
              // CONFLICT
              conflicts++; conflictC++;
@@ -922,7 +998,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
              cancelUntil(backtrack_level);
              assert(value(learnt_clause[0]) == l_Undef);
  
-@@ -592,8 +618,10 @@
+@@ -592,8 +623,10 @@
                  return l_Undef; }
  
              // Simplify the set of problem clauses:
@@ -934,7 +1010,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  
              if (nof_learnts >= 0 && learnts.size()-nAssigns() >= nof_learnts)
                  // Reduce the set of learnt clauses:
-@@ -654,7 +682,10 @@
+@@ -654,7 +687,10 @@
      model.clear();
      conflict.clear();
  
@@ -947,7 +1023,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-05-02 10:51:52.874724900 +0200
+--- src_tmp/core/Solver.h	2022-05-16 09:07:54.593204600 +0200
 +++ src/core/Solver.h	2022-04-28 12:11:39.634740700 +0200
 @@ -21,12 +21,15 @@
  #define Solver_h

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <forward_list>
 #include <string>
 #include <regex>
 
@@ -47,6 +48,8 @@ public:
     std::map<int, int> C1_store;
     std::map<int, int> C2_store;
 
+    std::forward_list<int> constraint_ids_to_delete;
+
     // Proof file
     std::ofstream proof;
     const char *proof_file_name         = "maxsat_proof.pbp";
@@ -72,13 +75,17 @@ public:
     void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
     void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
     void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
-    void write_delete_P1                (const vec<Lit>& reification_literals);
+    void delete_P1                      (const vec<Lit>& reification_literals);
     void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
     void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
-    void write_delete_P2                (const vec<Lit>& reification_literals);
+    void delete_P2                      (const vec<Lit>& reification_literals);
     void genCardinalDefinitions         (int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar); 
-    void write_delete_P                 (const vec<Lit>& reification_literals, std::map<int,int>& constraint_store);
-    void write_delete_cardinality_defs  (const vec<Lit>& reification_literals);
+    void delete_P                       (const vec<Lit>& reification_literals, std::map<int,int>& constraint_store);
+    void delete_cardinality_defs        (const vec<Lit>& reification_literals);
+    void write_deletes                  ();
+
+    void write_clause_as_comment        (vec<Lit>& clause);
+    void write_clause_as_comment        (Clause& clause);
 };
 
 //=================================================================================================

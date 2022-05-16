@@ -115,7 +115,7 @@ bool Solver::addClause(vec<Lit>& ps, bool write_proof)
     }
 
     if(write_proof)
-        PL->write_learnt_clause(ps);
+        PL->write_learnt_clause(ps);       
 
     if (ps.size() == 0)
         return ok = false;
@@ -240,7 +240,7 @@ void Solver::analyze(Clause* confl, vec<Lit>& out_learnt, int& out_btlevel)
     out_learnt.push();      // (leave room for the asserting literal)
     int index   = trail.size() - 1;
     out_btlevel = 0;
-
+    // PL->write_comment("~~~~~~~~~~~~~~ANALYZE~~~~~~~~~~~~~~~~~~");
     do{
         assert(confl != NULL);          // (otherwise should be UIP)
         Clause& c = *confl;
@@ -398,12 +398,7 @@ void Solver::uncheckedEnqueue(Lit p, Clause* from)
     reason  [var(p)] = from;
     trail.push(p);
 
-    // Literals propagated with decision level = 0 means that they can be learned as unit clause for the proof logger.
-    if(decisionLevel() == 0){
-        vec<Lit> c;
-        c.push(p);
-        PL->write_learnt_clause(c);
-    }
+
 }
 
 
@@ -459,8 +454,18 @@ Clause* Solver::propagate()
                     // Copy the remaining watches:
                     while (i < end)
                         *j++ = *i++;
-                }else
-                    uncheckedEnqueue(first, &c);
+                }else{
+                    // PL->write_comment("2");
+
+                    // Literals propagated with decision level = 0 means that they can be learned as unit clause for the proof logger.
+                    if(decisionLevel() == 0){
+                        vec<Lit> c;
+                        c.push(first);
+                        PL->write_learnt_clause(c);
+                    }
+
+                    uncheckedEnqueue(first, &c);  
+                }
             }
         FoundWatch:;
         }
