@@ -12,7 +12,7 @@ if (evaluation == 2010) {
     mem_limit <- 512
     time_limit <- 1800
 } else {
-    results <- read.csv(file = "./scripts/analysis/results2021_deletes.csv", stringsAsFactors = FALSE)
+    results <- read.csv(file = "./scripts/analysis/results2021_deletes_2.csv", stringsAsFactors = FALSE)
     mem_limit <- 32768
     time_limit <- 3600
 }
@@ -33,6 +33,9 @@ for (row in 1:nrow(results)) {
     }
 }
 print(results[unlist(incorrects), "instance"])
+file<-file("todo.txt")
+writeLines(results[unlist(incorrects), "instance"], file)
+close(file)
 results <- results[-unlist(incorrects),]
 
 # QMaxSATpb OOTs
