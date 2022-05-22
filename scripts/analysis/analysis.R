@@ -33,9 +33,6 @@ for (row in 1:nrow(results)) {
     }
 }
 print(results[unlist(incorrects), "instance"])
-file<-file("todo.txt")
-writeLines(results[unlist(incorrects), "instance"], file)
-close(file)
 results <- results[-unlist(incorrects),]
 
 # QMaxSATpb OOTs
