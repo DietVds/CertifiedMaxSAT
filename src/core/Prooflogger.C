@@ -270,7 +270,7 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
         resolved_one = true;
     }
     if(resolved_one) {
-        ss << " 2 d s\n" ;
+        ss << " s\n" ;
         proof << ss.str();
         constraint_counter++;
         constraint_ids_to_delete.push_front(constraint_counter);
