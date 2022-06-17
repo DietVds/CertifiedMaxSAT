@@ -232,21 +232,19 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
 
     // Write derivation of parts
     bool resolved_one = false;
+    std::stringstream ss;
+    ss << "p " << C1_store[third];
     if(C2_store.find(first) != C2_store.end()) {
         resolved_one = true;
-        proof << "p " << C1_store[third] << " " << C2_store[first] << " +\n" ;
-        constraint_counter++;
-        constraint_ids_to_delete.push_front(constraint_counter);
+        ss << " " << C2_store[first] << " + " ;
     }
     if(C2_store.find(second) != C2_store.end()) {
-        int to_add_to = resolved_one? constraint_counter : C1_store[third];
-        proof << "p " << to_add_to << " " << C2_store[second] << " +\n" ;
-        constraint_counter++;
-        constraint_ids_to_delete.push_front(constraint_counter);
+        ss << " " << C2_store[second] << " +" ;
         resolved_one = true;
     }
     if(resolved_one) {
-        proof << "p " << constraint_counter << " s\n" ;
+        ss << " s\n" ;
+        proof << ss.str();
         constraint_counter++;
         constraint_ids_to_delete.push_front(constraint_counter);
     }
@@ -261,21 +259,19 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
 
     // Write derivation of parts
     bool resolved_one = false;
+    std::stringstream ss;
+    ss << "p " << C2_store[third];
     if(C1_store.find(first) != C1_store.end()) {
         resolved_one = true;
-        proof << "p " << C2_store[third] << " " << C1_store[first] << " +\n" ;
-        constraint_counter++;
-        constraint_ids_to_delete.push_front(constraint_counter);
+        ss  << " " << C1_store[first] << " + " ;
     }
     if(C1_store.find(second) != C1_store.end()) {
-        int to_add_to = resolved_one? constraint_counter : C2_store[third];
-        proof << "p " << to_add_to << " " << C1_store[second] << " +\n" ;
-        constraint_counter++;
-        constraint_ids_to_delete.push_front(constraint_counter);
+        ss << " " << C1_store[second] << " + " ;
         resolved_one = true;
     }
     if(resolved_one) {
-        proof << "p " << constraint_counter << " 2 d s\n" ;
+        ss << " 2 d s\n" ;
+        proof << ss.str();
         constraint_counter++;
         constraint_ids_to_delete.push_front(constraint_counter);
     }
