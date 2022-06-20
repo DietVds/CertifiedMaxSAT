@@ -145,6 +145,7 @@ void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int
     if(meaningful_names) {
 
         // If variable does not already have a meaningful name
+        // TODO: this should be abstracted
         if(meaningful_name_LB.find(var) == meaningful_name_LB.end()) {
             meaningful_name_LB[var] = from+1;
             meaningful_name_UB[var] = to+1;
