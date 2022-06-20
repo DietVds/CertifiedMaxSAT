@@ -93,12 +93,13 @@ Var Solver::newVar(bool sign, bool dvar)
 }
 
 bool Solver::addClauseInput(vec<Lit>& ps){
-    return addClause(ps, false);
+    return addClause(ps, false); 
 }
 
 bool Solver::addClause(vec<Lit>& ps, bool write_proof)
 {
     assert(decisionLevel() == 0);
+    bool changed = false;
 
     if (!ok)
         return false;
@@ -109,13 +110,22 @@ bool Solver::addClause(vec<Lit>& ps, bool write_proof)
         for (i = j = 0, p = lit_Undef; i < ps.size(); i++)
             if (value(ps[i]) == l_True || ps[i] == ~p)
                 return true;
-            else if (value(ps[i]) != l_False && ps[i] != p)
+            else if (value(ps[i]) != l_False && ps[i] != p){
                 ps[j++] = p = ps[i];
+            } else{
+                changed = true;
+            }
         ps.shrink(i - j);
+        
     }
 
-    if(write_proof)
-        PL->write_learnt_clause(ps);       
+    //NOTE: this is a very risky change. It assumes that EVERY method that calls "addclause" will add a clause 
+    //that the logger is already aware of (and hans JUST received). Only when the solver changes it, will it log changes.
+    if(write_proof && changed){
+        //TODO: it might be that this is triggered a bit too often. Some simplifications will ALSO have happened on the 
+        //veripb side, especially when related to the edge cases. 
+        PL->overwrite_learnt_clause(ps);       
+    }
 
     if (ps.size() == 0)
         return ok = false;
