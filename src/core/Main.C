@@ -293,7 +293,7 @@ void genCardinals(int from, int to,
   //We issue instructions to recover it (for in case it gets deleted from that store). 
   //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
   PL.proof << "p "<< PL.C1_store[var(Lit(varZero))]<<"\n"; PL.constraint_counter++;
-  S.addClause(lits,false);
+  S.addClause(lits);
 
   // Last
   lits.clear(); lits.push(~Lit(varLast)); 
@@ -301,7 +301,7 @@ void genCardinals(int from, int to,
   //We issue instructions to recover it (for in case it gets deleted from that store). 
   //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
   PL.proof << "p "<< PL.C2_store[var(Lit(varLast))]<<"\n"; PL.constraint_counter++;
-  S.addClause(lits,false);
+  S.addClause(lits);
 
   if (inputSize > 2) {
     int middle = inputSize/2;
