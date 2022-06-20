@@ -287,15 +287,14 @@ void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<L
   Var varZero = variable_counter++;
   Var varLast = variable_counter++;
 
-  // First
-  lits.clear(); lits.push(Lit(varZero));
-  write_unit_sub_red(lits, 0, from, to);
-  C1_store[varZero] = constraint_counter;
-
-  // Last
-  lits.clear(); lits.push(~Lit(varLast));
-  write_unit_sub_red(lits, inputSize+1, from, to);
-  C1_store[varLast] = constraint_counter;
+  // First and last lit are not special cases. They have the same definition 
+  // (except that in some cases terms might disappear becase of zero coefficient)
+  write_P1_sub_red_cardinality(var(Lit(varZero)), 0, from, to);
+  write_P2_sub_red_cardinality(var(Lit(varZero)), 0, from, to);
+    
+  write_P1_sub_red_cardinality(var(Lit(varLast)), inputSize+1, from, to);
+  write_P2_sub_red_cardinality(var(Lit(varLast  )), inputSize+1, from, to);
+   
 
   if (inputSize > 2) {
     int middle = inputSize/2;
