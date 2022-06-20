@@ -155,10 +155,17 @@ void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int
 
     int weight = (to-from+1)-(sigma - 1);
     proof << "red ";
-    for(int i = from; i < to+1; i++) {
-        write_literal(~Lit(i));
+    if(sigma > 0){
+        for(int i = from; i < to+1; i++) {
+            write_literal(~Lit(i));
+        }
+    } else{
+        weight = 1;
     }
-    proof << weight << " " << var_name(var) << " >= " << weight << "; ";
+    if(weight > 0 ){
+        proof << weight << " " << var_name(var);
+    }
+    proof << " >= " << weight << "; ";
     write_witness(Lit(var));
     proof << "\n" ;
     constraint_counter++;
@@ -179,10 +186,17 @@ void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int
 
     int weight = sigma;
     proof << "red ";
-    for(int i = from; i < to+1; i++) {
-        write_literal(Lit(i));
+    if(weight <= (to-from+1)){
+        for(int i = from; i < to+1; i++) {
+            write_literal(Lit(i));
+        }
+    } else{
+        weight = 1;
     }
-    proof << weight << " ~" << var_name(var) << " >= " << weight << "; ";
+    if(weight > 0){
+        proof << weight << " ~" << var_name(var);
+    }
+    proof << " >= " << weight << "; ";
     write_witness(~Lit(var));
     proof << "\n" ;
     constraint_counter++;
