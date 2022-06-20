@@ -331,13 +331,13 @@ void genCardinals(int from, int to,
 	            lits.push(~linkingBeta[beta]);
 	            lits.push(linkingVar[sigma]);
                 PL.write_C1(lits, sigma, from, to);
-	            S.addClause(lits); //NORMALLY THIS CLAUSE SHOULD NOT BE LOGGED!
+	            S.addClause(lits); 
 	            lits.clear();
 	            lits.push(linkingAlpha[alpha+1]);
 	            lits.push(linkingBeta[beta+1]);
 	            lits.push(~linkingVar[sigma+1]);
                 PL.write_C2(lits, sigma+1, from, to);
-	            S.addClause(lits); //NORMALLY THIS CLAUSE SHOULD NOT BE LOGGED!
+	            S.addClause(lits); 
 	        }
         }
     }
