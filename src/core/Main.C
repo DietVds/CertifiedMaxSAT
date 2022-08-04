@@ -61,7 +61,18 @@ static inline int memReadStat(int field)
     sprintf(name, "/proc/%d/statm", pid);
     FILE*   in = fopen(name, "rb");
     if (in == NULL) return 0;
-    int     value;
+    int     value;std::stringstream cn;
+  std::string scn;
+  
+  cn << "P_1,0" << "^" << from << "," << to << "(SR)" ;
+  cn >> scn; 
+  PL.write_comment(scn.c_str());
+
+  lits.clear(); lits.push(Lit(varZero));  
+  PL.write_sub_red(lits);
+  S.addClause(lits);
+  
+  // Last
     for (; field >= 0; field--)
         fscanf(in, "%d", &value);
     fclose(in);
@@ -277,7 +288,6 @@ const char* hasPrefix(const char* str, const char* prefix)
 // koshi 10.01.08
 void genCardinals(int from, int to, 
 		  Solver& S, Prooflogger& PL, vec<Lit>& lits, vec<Lit>& linkingVar) {
-  //It would probably be a lot better if "genCardinals" and "genCardinalDefinitions" were merged
   int inputSize = to - from + 1;
   linkingVar.clear();
 
@@ -287,20 +297,33 @@ void genCardinals(int from, int to,
   Var varZero = S.newVar();
   Var varLast = S.newVar();
 
-  // First
-  lits.clear(); lits.push(Lit(varZero)); 
-  //Logger already knows this clause but it is in the P1/P2 store. 
-  //We issue instructions to recover it (for in case it gets deleted from that store). 
-  //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
-  PL.proof << "p "<< PL.C1_store[var(Lit(varZero))]<<"\n"; PL.constraint_counter++;
-  S.addClause(lits);
+  // Clauses to fixate these variables to their value can be proven using substitution redundancy.
+  // These are in essence P1 and P2 constraints. However, they are added to the solver and should therefore not be deleted.
+  // By just proving them using substitution redundancy, the P1 and P2 stores are not filled.
+  // This ensures that when creating the P1/P2 constraints, these newly created constraints are used in the derivation of the C1 and C2 clauses. 
+  // After removing the P1/P2 constraints, the clauses to fixate the variables to their value are still present in the proof.
+  // This relies on the multi-set semantics of the clause store in VeriPB. 
+  std::stringstream cn;
+  std::string scn;
+  
+  cn << "P_1,0" << "^" << from << "," << to << "(SR)" ;
+  cn >> scn; 
+  PL.write_comment(scn.c_str());
 
+  lits.clear(); lits.push(Lit(varZero));  
+  PL.write_sub_red(lits);
+  S.addClause(lits);
+  
   // Last
+  cn.clear();
+  scn = "";
+  
+  cn << "P_2," << to-from+1 << "^" << from << "," << to << "(SR)" ;
+  cn >> scn; 
+  PL.write_comment(scn.c_str());
+
   lits.clear(); lits.push(~Lit(varLast)); 
-  //Logger already knows this clause but it is in the P1/P2 store. 
-  //We issue instructions to recover it (for in case it gets deleted from that store). 
-  //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
-  PL.proof << "p "<< PL.C2_store[var(Lit(varLast))]<<"\n"; PL.constraint_counter++;
+  PL.write_sub_red(lits);
   S.addClause(lits);
 
   if (inputSize > 2) {
@@ -311,10 +334,12 @@ void genCardinals(int from, int to,
     genCardinals(from, from, S,PL,lits,linkingAlpha);
     genCardinals(to, to, S,PL,lits,linkingBeta);
   }
+
   if (inputSize == 1) {
     linkingVar.push(Lit(varZero));
     linkingVar.push(Lit(from));
     linkingVar.push(Lit(varLast));
+
   } else { // inputSize >= 2
 
     PL.write_comment("- Node clauses:");
@@ -322,6 +347,9 @@ void genCardinals(int from, int to,
     for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
     linkingVar.push(Lit(varLast));
 
+    PL.genCardinalDefinitions(from, to, linkingVar);
+
+    // Creation of the totalizer clauses
     for (int sigma = 0; sigma <= inputSize; sigma++) {
         for (int alpha = 0; alpha < linkingAlpha.size()-1; alpha++) {
 	        int beta = sigma - alpha;
@@ -505,14 +533,6 @@ int main(int argc, char** argv)
           PL.write_comment("==============================================================");
           PL.write_comment("First model found:"); 
           PL.write_bound_update(S.model);
-          PL.write_comment("==============================================================");
-          PL.write_comment("Cardinality definitions:"); 
-
-          start = MyChrono::startClock();
-
-	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
-          
-          auto duration_genCardinalDefinitions = "genCardinalDefinitions: " + MyChrono::duration_since(start) + "s";
           
           PL.write_comment("==============================================================");
           PL.write_comment("Tree derivation:"); 
@@ -527,7 +547,7 @@ int main(int argc, char** argv)
           if(log_duration_totalizer){
               std::ofstream log_duration_totalizer_stream;
               log_duration_totalizer_stream.open(duration_file_name);
-              log_duration_totalizer_stream << duration_genCardinalDefinitions << "\n" << duration_genCardinals << "\n";
+              log_duration_totalizer_stream << duration_genCardinals << "\n";
               log_duration_totalizer_stream.close();
           }
 

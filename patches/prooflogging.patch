@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-06-20 10:20:55.841802379 +0200
-+++ src/core/Main.C	2022-06-20 10:19:47.577324004 +0200
+--- src_tmp/core/Main.C	2022-08-04 16:56:37.652656900 +0200
++++ src/core/Main.C	2022-08-04 16:56:30.967712700 +0200
 @@ -26,7 +26,13 @@
  #include <signal.h>
  #include <zlib.h>
@@ -139,36 +139,54 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("\n");
  }
  
-@@ -251,7 +276,8 @@
+@@ -251,7 +276,7 @@
  
  // koshi 10.01.08
  void genCardinals(int from, int to, 
 -		  Solver& S, vec<Lit>& lits, vec<Lit>& linkingVar) {
 +		  Solver& S, Prooflogger& PL, vec<Lit>& lits, vec<Lit>& linkingVar) {
-+  //It would probably be a lot better if "genCardinals" and "genCardinalDefinitions" were merged
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -261,52 +287,92 @@
+@@ -261,52 +286,116 @@
    Var varZero = S.newVar();
    Var varLast = S.newVar();
  
 -  lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
 -  lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
-+  // First
-+  lits.clear(); lits.push(Lit(varZero)); 
-+  //Logger already knows this clause but it is in the P1/P2 store. 
-+  //We issue instructions to recover it (for in case it gets deleted from that store). 
-+  //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
-+  PL.proof << "p "<< PL.C1_store[var(Lit(varZero))]<<"\n"; PL.constraint_counter++;
-+  S.addClause(lits);
++  // TODO: make sure that these are automatically created by 
++  // First and last variable are not a special case. They have the same definition 
++  // (except that in some cases terms might disappear because of zero coefficient).
++  // Therefore, their pseudo boolean definitions should be written to the proof.
++  // PL.write_P1_sub_red_cardinality(varZero, 0, from, to);
++  // PL.write_P2_sub_red_cardinality(varZero, 0, from, to);
++  // 
++  // PL.write_P1_sub_red_cardinality(varLast, inputSize+1, from, to);
++  // PL.write_P2_sub_red_cardinality(varLast, inputSize+1, from, to);
 +
++  // Clauses to set the first and last literal to its value can be proven by using substitution redundancy.
++  // First
++  std::stringstream cn;
++  std::string scn;
++  
++  cn << "P_1,0" << "^" << from << "," << to << "(SR)" ;
++  cn >> scn; 
++  PL.write_comment(scn.c_str());
++
++  lits.clear(); lits.push(Lit(varZero));  
++  PL.write_sub_red(lits);
++  S.addClause(lits);
++  
 +  // Last
++  cn.clear();
++  scn = "";
++  
++  cn << "P_2," << to-from+1 << "^" << from << "," << to << "(SR)" ;
++  cn >> scn; 
++  PL.write_comment(scn.c_str());
++
 +  lits.clear(); lits.push(~Lit(varLast)); 
-+  //Logger already knows this clause but it is in the P1/P2 store. 
-+  //We issue instructions to recover it (for in case it gets deleted from that store). 
-+  //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
-+  PL.proof << "p "<< PL.C2_store[var(Lit(varLast))]<<"\n"; PL.constraint_counter++;
++  PL.write_sub_red(lits);
 +  S.addClause(lits);
  
    if (inputSize > 2) {
@@ -183,10 +201,12 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +    genCardinals(from, from, S,PL,lits,linkingAlpha);
 +    genCardinals(to, to, S,PL,lits,linkingBeta);
    }
++
    if (inputSize == 1) {
      linkingVar.push(Lit(varZero));
      linkingVar.push(Lit(from));
      linkingVar.push(Lit(varLast));
++
    } else { // inputSize >= 2
 +
 +    PL.write_comment("- Node clauses:");
@@ -194,6 +214,9 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
      linkingVar.push(Lit(varLast));
 +
++    PL.genCardinalDefinitions(from, to, linkingVar);
++
++    // Creation of the totalizer clauses
      for (int sigma = 0; sigma <= inputSize; sigma++) {
 -      for (int alpha = 0; alpha < linkingAlpha.size()-1; alpha++) {
 -	int beta = sigma - alpha;
@@ -264,7 +287,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
      int         i, j;
      const char* value;
-@@ -347,6 +413,16 @@
+@@ -347,6 +436,16 @@
              printUsage(argv);
              exit(0);
  
@@ -281,7 +304,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -357,7 +433,7 @@
+@@ -357,7 +456,7 @@
      argc = j;
  
  
@@ -290,7 +313,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #if defined(__linux__)
      fpu_control_t oldcw, newcw;
      _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
-@@ -376,6 +452,9 @@
+@@ -376,6 +475,9 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
@@ -300,7 +323,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,8 +462,15 @@
+@@ -383,8 +485,15 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
@@ -317,7 +340,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
      double parse_time = cpuTime() - cpu_time;
-@@ -393,6 +479,8 @@
+@@ -393,6 +502,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
@@ -326,7 +349,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -402,27 +490,72 @@
+@@ -402,27 +513,64 @@
      int lcnt = 0; // loop count
      vec<Lit> linkingVar;
   solve:
@@ -355,14 +378,6 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +          PL.write_comment("==============================================================");
 +          PL.write_comment("First model found:"); 
 +          PL.write_bound_update(S.model);
-+          PL.write_comment("==============================================================");
-+          PL.write_comment("Cardinality definitions:"); 
-+
-+          start = MyChrono::startClock();
-+
-+	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
-+          
-+          auto duration_genCardinalDefinitions = "genCardinalDefinitions: " + MyChrono::duration_since(start) + "s";
 +          
 +          PL.write_comment("==============================================================");
 +          PL.write_comment("Tree derivation:"); 
@@ -377,7 +392,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +          if(log_duration_totalizer){
 +              std::ofstream log_duration_totalizer_stream;
 +              log_duration_totalizer_stream.open(duration_file_name);
-+              log_duration_totalizer_stream << duration_genCardinalDefinitions << "\n" << duration_genCardinals << "\n";
++              log_duration_totalizer_stream << duration_genCardinals << "\n";
 +              log_duration_totalizer_stream.close();
 +          }
 +
@@ -415,7 +430,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
        }
        reportf("Current answer = %d\n",answer);
        goto solve;
-@@ -439,10 +572,11 @@
+@@ -439,10 +587,11 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -430,10 +445,11 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-06-20 10:19:47.577324004 +0200
-@@ -0,0 +1,368 @@
++++ src/core/Prooflogger.C	2022-08-04 16:48:15.220947600 +0200
+@@ -0,0 +1,343 @@
 +#include "Prooflogger.h"
 +#include<string>
++#include<sstream>
 +
 +//=================================================================================================
 +// Proof file
@@ -566,28 +582,25 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    last_bound_constraint_id = ++constraint_counter;
 +}
 +
-+void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, int to) {
-+
-+    if(meaningful_names) {
-+
-+        // If variable does not already have a meaningful name
-+        if(meaningful_name_LB.find(var(definition[0])) == meaningful_name_LB.end()) {
-+            meaningful_name_LB[var(definition[0])] = from+1;
-+            meaningful_name_UB[var(definition[0])] = to+1;
-+            meaningful_name_n[var(definition[0])] = sigma;
-+        }
-+    }
-+
++void Prooflogger::write_sub_red(vec<Lit>& clause) {
++    // Proof a clause using substitution redundancy using the first literal as witness. 
 +    proof << "red ";
-+    write_clause(definition);
++    write_clause(clause);
 +    proof << ">= 1; ";
-+    write_witness(definition[0]);
++    write_witness(clause[0]);
 +    proof << "\n" ;
 +    constraint_counter++;
 +
 +}
 +
 +void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
++
++    std::stringstream cn;
++    std::string scn;
++
++    cn << "P_1," << sigma << "^" << from << "," << to ;
++    cn >> scn; 
++    write_comment(scn.c_str());
 +
 +    if(meaningful_names) {
 +
@@ -620,6 +633,13 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +}
 +
 +void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int to) {
++
++    std::stringstream cn;
++    std::string scn;
++
++    cn << "P_2," << sigma << "^" << from << "," << to ;
++    cn >> scn; 
++    write_comment(scn.c_str());
 +
 +    if(meaningful_names) {
 +
@@ -708,7 +728,15 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    
 +}
 +
++void Prooflogger::add_P1_as_clause(Var var){
++    proof << "p "<< C1_store[var]<<"\n"; 
++    constraint_counter++;
++}
 +
++void Prooflogger::add_P2_as_clause(Var var){
++    proof << "p "<< C2_store[var]<<"\n"; 
++    constraint_counter++;
++}
 +
 +void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
 +    int first = var(definition[0]);
@@ -729,64 +757,26 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    //constraint_ids_to_delete.push_front(constraint_counter);
 +}    
 +
-+void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {
-+  int inputSize = to - from + 1;
-+  linkingVar.clear();
++void Prooflogger::genCardinalDefinitions(int from, int to,  vec<Lit>& linkingVar){
++    int inputSize = to - from + 1;
 +
-+  vec<Lit> linkingAlpha;
-+  vec<Lit> linkingBeta;
++    if (inputSize > 1){
++        write_comment("writing P1's and P2's");
++        for (int sigma = 0; sigma <= inputSize; sigma++) {
 +
-+  Var varZero = variable_counter++;
-+  Var varLast = variable_counter++;
++            // Verify if PB cardinality definition exists
++            if(C1_store.find(var(linkingVar[sigma])) == C1_store.end()) {
++                // Write a substitution redundancy PB cardinality definition
++                write_P1_sub_red_cardinality(var(linkingVar[sigma]), sigma, from, to);
++            }
 +
-+  // First and last lit are not special cases. They have the same definition 
-+  // (except that in some cases terms might disappear becase of zero coefficient)
-+  write_P1_sub_red_cardinality(var(Lit(varZero)), 0, from, to);
-+  write_P2_sub_red_cardinality(var(Lit(varZero)), 0, from, to);
-+    
-+  write_P1_sub_red_cardinality(var(Lit(varLast)), inputSize+1, from, to);
-+  write_P2_sub_red_cardinality(var(Lit(varLast  )), inputSize+1, from, to);
-+   
-+
-+  if (inputSize > 2) {
-+    int middle = inputSize/2;
-+    genCardinalDefinitions(from, from+middle, lits, linkingAlpha);
-+    genCardinalDefinitions(from+middle+1, to, lits, linkingBeta);
-+  } else if (inputSize == 2) {
-+    genCardinalDefinitions(from, from, lits, linkingAlpha);
-+    genCardinalDefinitions(to, to, lits, linkingBeta);
-+  }
-+  if (inputSize == 1) {
-+    linkingVar.push(Lit(varZero));
-+    linkingVar.push(Lit(from));
-+    linkingVar.push(Lit(varLast));
-+  } else { // inputSize >= 2
-+
-+    write_comment("- Node clauses:");
-+    linkingVar.push(Lit(varZero));
-+    for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(variable_counter++));
-+    linkingVar.push(Lit(varLast));
-+
-+    for (int sigma = 0; sigma <= inputSize; sigma++) {
-+
-+        // Verify if PB cardinality definition exists
-+        if(C1_store.find(var(linkingVar[sigma])) == C1_store.end()) {
-+
-+            // Write a substitution redundancy PB cardinality definition
-+            write_P1_sub_red_cardinality(var(linkingVar[sigma]), sigma, from, to);
-+        }
-+
-+        // Verify if PB cardinality definition exists
-+        if(C2_store.find(var(~linkingVar[sigma+1])) == C2_store.end()) {
-+
-+            // Write a substitution redundancy PB cardinality definition
-+            write_P2_sub_red_cardinality(var(~linkingVar[sigma+1]), sigma+1, from, to);
++            // Verify if PB cardinality definition exists
++            if(C2_store.find(var(~linkingVar[sigma+1])) == C2_store.end()) {
++                // Write a substitution redundancy PB cardinality definition
++                write_P2_sub_red_cardinality(var(~linkingVar[sigma+1]), sigma+1, from, to);
++            }
 +        }
 +    }
-+    write_comment("-------------------------------------------");
-+  }
-+  linkingAlpha.clear();
-+  linkingBeta.clear();
 +}
 +
 +void Prooflogger::write_clause_as_comment(vec<Lit>& clause) {
@@ -803,8 +793,8 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-06-20 10:19:47.577324004 +0200
-@@ -0,0 +1,93 @@
++++ src/core/Prooflogger.h	2022-08-04 16:48:32.756054200 +0200
+@@ -0,0 +1,95 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
 +
@@ -880,14 +870,16 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void delete_learnt_clause           (Clause& clause);
 +    void write_linkingVar_clause        (vec<Lit>& clause);
 +    void write_bound_update             (vec<lbool>& model); 
-+    void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
++    void write_sub_red                  (vec<Lit>& clause);
 +    void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
 +    void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
 +    void delete_P1                      (const vec<Lit>& reification_literals);
 +    void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
 +    void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
 +    void delete_P2                      (const vec<Lit>& reification_literals);
-+    void genCardinalDefinitions         (int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar); 
++    void genCardinalDefinitions         (int from, int to, vec<Lit>& linkingVar);
++    void add_P1_as_clause               (Var var);
++    void add_P2_as_clause               (Var var);
 +    void delete_P                       (const vec<Lit>& reification_literals, std::map<int,int>& constraint_store);
 +    void delete_cardinality_defs        (const vec<Lit>& reification_literals);
 +    void write_deletes                  ();
@@ -900,8 +892,8 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-06-20 10:20:55.841802379 +0200
-+++ src/core/Solver.C	2022-06-20 10:19:47.577324004 +0200
+--- src_tmp/core/Solver.C	2022-08-04 16:56:37.653056200 +0200
++++ src/core/Solver.C	2022-08-04 13:32:08.802687400 +0200
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -922,7 +914,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  {}
  
  
-@@ -88,10 +92,14 @@
+@@ -88,10 +92,15 @@
      return v;
  }
  
@@ -933,12 +925,13 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
 -bool Solver::addClause(vec<Lit>& ps)
 +bool Solver::addClause(vec<Lit>& ps, bool write_proof)
  {
++    vec<Lit> ps_at_start; ps.copyTo(ps_at_start);
      assert(decisionLevel() == 0);
 +    bool changed = false;
  
      if (!ok)
          return false;
-@@ -102,9 +110,21 @@
+@@ -102,13 +111,26 @@
          for (i = j = 0, p = lit_Undef; i < ps.size(); i++)
              if (value(ps[i]) == l_True || ps[i] == ~p)
                  return true;
@@ -950,18 +943,24 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
 +            }
          ps.shrink(i - j);
 +        
-+    }
-+
+     }
+ 
+-    if (ps.size() == 0)
 +    //NOTE: this is a very risky change. It assumes that EVERY method that calls "addclause" will add a clause 
 +    //that the logger is already aware of (and hans JUST received). Only when the solver changes it, will it log changes.
 +    if(write_proof && changed){
 +        //TODO: it might be that this is triggered a bit too often. Some simplifications will ALSO have happened on the 
 +        //veripb side, especially when related to the edge cases. 
 +        PL->overwrite_learnt_clause(ps);       
-     }
- 
-     if (ps.size() == 0)
-@@ -143,7 +163,9 @@
++    }
++
++    if (ps.size() == 0){
+         return ok = false;
++    }
+     else if (ps.size() == 1){
+         assert(value(ps[0]) == l_Undef);
+         uncheckedEnqueue(ps[0]);
+@@ -143,7 +165,9 @@
  
  void Solver::removeClause(Clause& c) {
      detachClause(c);
@@ -972,7 +971,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  
  
  bool Solver::satisfied(const Clause& c) const {
-@@ -228,7 +250,7 @@
+@@ -228,7 +252,7 @@
      out_learnt.push();      // (leave room for the asserting literal)
      int index   = trail.size() - 1;
      out_btlevel = 0;
@@ -981,7 +980,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      do{
          assert(confl != NULL);          // (otherwise should be UIP)
          Clause& c = *confl;
-@@ -385,6 +407,8 @@
+@@ -385,6 +409,8 @@
      level   [var(p)] = decisionLevel();
      reason  [var(p)] = from;
      trail.push(p);
@@ -990,7 +989,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  }
  
  
-@@ -440,8 +464,18 @@
+@@ -440,8 +466,18 @@
                      // Copy the remaining watches:
                      while (i < end)
                          *j++ = *i++;
@@ -1011,7 +1010,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
              }
          FoundWatch:;
          }
-@@ -544,7 +578,7 @@
+@@ -544,7 +580,7 @@
  |    all variables are decision variables, this means that the clause set is satisfiable. 'l_False'
  |    if the clause set is unsatisfiable. 'l_Undef' if the bound on number of conflicts is reached.
  |________________________________________________________________________________________________@*/
@@ -1020,7 +1019,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  {
      assert(ok);
      int         backtrack_level;
-@@ -560,12 +594,19 @@
+@@ -560,12 +596,19 @@
          if (confl != NULL){
              // CONFLICT
              conflicts++; conflictC++;
@@ -1041,7 +1040,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
              cancelUntil(backtrack_level);
              assert(value(learnt_clause[0]) == l_Undef);
  
-@@ -592,8 +633,10 @@
+@@ -592,8 +635,10 @@
                  return l_Undef; }
  
              // Simplify the set of problem clauses:
@@ -1053,7 +1052,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  
              if (nof_learnts >= 0 && learnts.size()-nAssigns() >= nof_learnts)
                  // Reduce the set of learnt clauses:
-@@ -654,7 +697,10 @@
+@@ -654,7 +699,10 @@
      model.clear();
      conflict.clear();
  
@@ -1066,8 +1065,8 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-06-20 10:20:55.841802379 +0200
-+++ src/core/Solver.h	2022-06-20 10:19:03.913017738 +0200
+--- src_tmp/core/Solver.h	2022-08-04 16:56:37.654508800 +0200
++++ src/core/Solver.h	2022-08-04 10:02:30.646621200 +0200
 @@ -21,12 +21,15 @@
  #define Solver_h
  
@@ -1141,7 +1140,7 @@ diff -ruN src_tmp/core/Solver.h src/core/Solver.h
      //
 diff -ruN src_tmp/minisat/core/depend.mk src/minisat/core/depend.mk
 --- src_tmp/minisat/core/depend.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/depend.mk	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/depend.mk	2022-08-04 10:02:30.649398800 +0200
 @@ -0,0 +1,16 @@
 +Main.o: Main.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
 + ../mtl/Alg.h SolverTypes.h
@@ -1161,7 +1160,7 @@ diff -ruN src_tmp/minisat/core/depend.mk src/minisat/core/depend.mk
 + ../mtl/Alg.h SolverTypes.h ../mtl/Sort.h
 diff -ruN src_tmp/minisat/core/Dimacs.h src/minisat/core/Dimacs.h
 --- src_tmp/minisat/core/Dimacs.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Dimacs.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Dimacs.h	2022-08-04 10:02:30.647964400 +0200
 @@ -0,0 +1,89 @@
 +/****************************************************************************************[Dimacs.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -1254,7 +1253,7 @@ diff -ruN src_tmp/minisat/core/Dimacs.h src/minisat/core/Dimacs.h
 +#endif
 diff -ruN src_tmp/minisat/core/Main.C src/minisat/core/Main.C
 --- src_tmp/minisat/core/Main.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Main.C	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Main.C	2022-08-04 10:02:30.648311500 +0200
 @@ -0,0 +1,450 @@
 +/******************************************************************************************[Main.C]
 +QMaxSAT -- Copyright (c) 2010-2011, Miyuki Koshimura
@@ -1708,7 +1707,7 @@ diff -ruN src_tmp/minisat/core/Main.C src/minisat/core/Main.C
 +}
 diff -ruN src_tmp/minisat/core/Makefile src/minisat/core/Makefile
 --- src_tmp/minisat/core/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Makefile	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Makefile	2022-08-04 10:02:30.648442900 +0200
 @@ -0,0 +1,7 @@
 +MTL       = ../mtl
 +CHDRS     = $(wildcard *.h) $(wildcard $(MTL)/*.h)
@@ -1719,7 +1718,7 @@ diff -ruN src_tmp/minisat/core/Makefile src/minisat/core/Makefile
 +include ../mtl/template.mk
 diff -ruN src_tmp/minisat/core/Solver.C src/minisat/core/Solver.C
 --- src_tmp/minisat/core/Solver.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Solver.C	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Solver.C	2022-08-04 10:02:30.648819500 +0200
 @@ -0,0 +1,741 @@
 +/****************************************************************************************[Solver.C]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2464,7 +2463,7 @@ diff -ruN src_tmp/minisat/core/Solver.C src/minisat/core/Solver.C
 +}
 diff -ruN src_tmp/minisat/core/Solver.h src/minisat/core/Solver.h
 --- src_tmp/minisat/core/Solver.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Solver.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Solver.h	2022-08-04 10:02:30.649059900 +0200
 @@ -0,0 +1,302 @@
 +/****************************************************************************************[Solver.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2770,7 +2769,7 @@ diff -ruN src_tmp/minisat/core/Solver.h src/minisat/core/Solver.h
 +#endif
 diff -ruN src_tmp/minisat/core/SolverTypes.h src/minisat/core/SolverTypes.h
 --- src_tmp/minisat/core/SolverTypes.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/SolverTypes.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/SolverTypes.h	2022-08-04 10:02:30.649246200 +0200
 @@ -0,0 +1,200 @@
 +/***********************************************************************************[SolverTypes.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2974,7 +2973,7 @@ diff -ruN src_tmp/minisat/core/SolverTypes.h src/minisat/core/SolverTypes.h
 +#endif
 diff -ruN src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt src/minisat/doc/ReleaseNotes-2.2.0.txt
 --- src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/doc/ReleaseNotes-2.2.0.txt	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/doc/ReleaseNotes-2.2.0.txt	2022-08-04 10:02:30.649662900 +0200
 @@ -0,0 +1,79 @@
 +Release Notes for MiniSat 2.2.0
 +===============================
@@ -3057,7 +3056,7 @@ diff -ruN src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt src/minisat/doc/ReleaseNote
 +    elimination, and the longest clause used in backward subsumption).
 diff -ruN src_tmp/minisat/LICENSE src/minisat/LICENSE
 --- src_tmp/minisat/LICENSE	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/LICENSE	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/LICENSE	2022-08-04 10:02:30.647556900 +0200
 @@ -0,0 +1,21 @@
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
 +           Copyright (c) 2007-2010  Niklas Sorensson
@@ -3082,7 +3081,7 @@ diff -ruN src_tmp/minisat/LICENSE src/minisat/LICENSE
 +WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 diff -ruN src_tmp/minisat/mtl/Alg.h src/minisat/mtl/Alg.h
 --- src_tmp/minisat/mtl/Alg.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Alg.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Alg.h	2022-08-04 10:02:30.649951000 +0200
 @@ -0,0 +1,57 @@
 +/*******************************************************************************************[Alg.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3143,7 +3142,7 @@ diff -ruN src_tmp/minisat/mtl/Alg.h src/minisat/mtl/Alg.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Alloc.h src/minisat/mtl/Alloc.h
 --- src_tmp/minisat/mtl/Alloc.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Alloc.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Alloc.h	2022-08-04 10:02:30.650158600 +0200
 @@ -0,0 +1,131 @@
 +/*****************************************************************************************[Alloc.h]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -3278,7 +3277,7 @@ diff -ruN src_tmp/minisat/mtl/Alloc.h src/minisat/mtl/Alloc.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/BasicHeap.h src/minisat/mtl/BasicHeap.h
 --- src_tmp/minisat/mtl/BasicHeap.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/BasicHeap.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/BasicHeap.h	2022-08-04 10:02:30.650312600 +0200
 @@ -0,0 +1,98 @@
 +/******************************************************************************************[Heap.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3380,7 +3379,7 @@ diff -ruN src_tmp/minisat/mtl/BasicHeap.h src/minisat/mtl/BasicHeap.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/BoxedVec.h src/minisat/mtl/BoxedVec.h
 --- src_tmp/minisat/mtl/BoxedVec.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/BoxedVec.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/BoxedVec.h	2022-08-04 10:02:30.650467300 +0200
 @@ -0,0 +1,147 @@
 +/*******************************************************************************************[Vec.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3531,7 +3530,7 @@ diff -ruN src_tmp/minisat/mtl/BoxedVec.h src/minisat/mtl/BoxedVec.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/config.mk src/minisat/mtl/config.mk
 --- src_tmp/minisat/mtl/config.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/config.mk	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/mtl/config.mk	2022-08-04 10:02:30.651871300 +0200
 @@ -0,0 +1,6 @@
 +##
 +##  This file is for system specific configurations. For instance, on
@@ -3541,7 +3540,7 @@ diff -ruN src_tmp/minisat/mtl/config.mk src/minisat/mtl/config.mk
 +##  LFLAGS += -L/usr/local/lib
 diff -ruN src_tmp/minisat/mtl/Heap.h src/minisat/mtl/Heap.h
 --- src_tmp/minisat/mtl/Heap.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Heap.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Heap.h	2022-08-04 10:02:30.650695800 +0200
 @@ -0,0 +1,169 @@
 +/******************************************************************************************[Heap.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3714,7 +3713,7 @@ diff -ruN src_tmp/minisat/mtl/Heap.h src/minisat/mtl/Heap.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/IntTypes.h src/minisat/mtl/IntTypes.h
 --- src_tmp/minisat/mtl/IntTypes.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/IntTypes.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/IntTypes.h	2022-08-04 10:02:30.650877600 +0200
 @@ -0,0 +1,42 @@
 +/**************************************************************************************[IntTypes.h]
 +Copyright (c) 2009-2010, Niklas Sorensson
@@ -3760,7 +3759,7 @@ diff -ruN src_tmp/minisat/mtl/IntTypes.h src/minisat/mtl/IntTypes.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Map.h src/minisat/mtl/Map.h
 --- src_tmp/minisat/mtl/Map.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Map.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Map.h	2022-08-04 10:02:30.651068100 +0200
 @@ -0,0 +1,118 @@
 +/*******************************************************************************************[Map.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3882,7 +3881,7 @@ diff -ruN src_tmp/minisat/mtl/Map.h src/minisat/mtl/Map.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Queue.h src/minisat/mtl/Queue.h
 --- src_tmp/minisat/mtl/Queue.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Queue.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Queue.h	2022-08-04 10:02:30.651231700 +0200
 @@ -0,0 +1,82 @@
 +/*****************************************************************************************[Queue.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3968,7 +3967,7 @@ diff -ruN src_tmp/minisat/mtl/Queue.h src/minisat/mtl/Queue.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Sort.h src/minisat/mtl/Sort.h
 --- src_tmp/minisat/mtl/Sort.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Sort.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Sort.h	2022-08-04 10:02:30.651394700 +0200
 @@ -0,0 +1,93 @@
 +/******************************************************************************************[Sort.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -4065,7 +4064,7 @@ diff -ruN src_tmp/minisat/mtl/Sort.h src/minisat/mtl/Sort.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/template.mk src/minisat/mtl/template.mk
 --- src_tmp/minisat/mtl/template.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/template.mk	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/mtl/template.mk	2022-08-04 10:02:30.652012800 +0200
 @@ -0,0 +1,90 @@
 +##
 +##  Template makefile for Standard, Profile, Debug, Release, and Release-static versions
@@ -4159,7 +4158,7 @@ diff -ruN src_tmp/minisat/mtl/template.mk src/minisat/mtl/template.mk
 +-include depend.mk
 diff -ruN src_tmp/minisat/mtl/Vec.h src/minisat/mtl/Vec.h
 --- src_tmp/minisat/mtl/Vec.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Vec.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/mtl/Vec.h	2022-08-04 10:02:30.651585000 +0200
 @@ -0,0 +1,133 @@
 +/*******************************************************************************************[Vec.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -4296,7 +4295,7 @@ diff -ruN src_tmp/minisat/mtl/Vec.h src/minisat/mtl/Vec.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/XAlloc.h src/minisat/mtl/XAlloc.h
 --- src_tmp/minisat/mtl/XAlloc.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/XAlloc.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/mtl/XAlloc.h	2022-08-04 10:02:30.651745200 +0200
 @@ -0,0 +1,45 @@
 +/****************************************************************************************[XAlloc.h]
 +Copyright (c) 2009-2010, Niklas Sorensson
@@ -4345,7 +4344,7 @@ diff -ruN src_tmp/minisat/mtl/XAlloc.h src/minisat/mtl/XAlloc.h
 +#endif
 diff -ruN src_tmp/minisat/README src/minisat/README
 --- src_tmp/minisat/README	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/README	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/README	2022-08-04 10:02:30.647708300 +0200
 @@ -0,0 +1,24 @@
 +================================================================================
 +DIRECTORY OVERVIEW:
@@ -4373,7 +4372,7 @@ diff -ruN src_tmp/minisat/README src/minisat/README
 +> minisat <cnf-file> -no-luby -rinc=1.5 -phase-saving=0 -rnd-freq=0.02
 diff -ruN src_tmp/minisat/simp/Main.cc src/minisat/simp/Main.cc
 --- src_tmp/minisat/simp/Main.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/Main.cc	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/simp/Main.cc	2022-08-04 10:02:30.652383300 +0200
 @@ -0,0 +1,211 @@
 +/*****************************************************************************************[Main.cc]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -4588,7 +4587,7 @@ diff -ruN src_tmp/minisat/simp/Main.cc src/minisat/simp/Main.cc
 +}
 diff -ruN src_tmp/minisat/simp/Makefile src/minisat/simp/Makefile
 --- src_tmp/minisat/simp/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/Makefile	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/simp/Makefile	2022-08-04 10:02:30.652520700 +0200
 @@ -0,0 +1,4 @@
 +EXEC      = minisat
 +DEPDIR    = mtl utils core
@@ -4596,7 +4595,7 @@ diff -ruN src_tmp/minisat/simp/Makefile src/minisat/simp/Makefile
 +include $(MROOT)/mtl/template.mk
 diff -ruN src_tmp/minisat/simp/SimpSolver.cc src/minisat/simp/SimpSolver.cc
 --- src_tmp/minisat/simp/SimpSolver.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/SimpSolver.cc	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/simp/SimpSolver.cc	2022-08-04 10:02:30.652765500 +0200
 @@ -0,0 +1,717 @@
 +/***********************************************************************************[SimpSolver.cc]
 +Copyright (c) 2006,      Niklas Een, Niklas Sorensson
@@ -5317,7 +5316,7 @@ diff -ruN src_tmp/minisat/simp/SimpSolver.cc src/minisat/simp/SimpSolver.cc
 +}
 diff -ruN src_tmp/minisat/simp/SimpSolver.h src/minisat/simp/SimpSolver.h
 --- src_tmp/minisat/simp/SimpSolver.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/SimpSolver.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/simp/SimpSolver.h	2022-08-04 10:02:30.652939100 +0200
 @@ -0,0 +1,197 @@
 +/************************************************************************************[SimpSolver.h]
 +Copyright (c) 2006,      Niklas Een, Niklas Sorensson
@@ -5518,7 +5517,7 @@ diff -ruN src_tmp/minisat/simp/SimpSolver.h src/minisat/simp/SimpSolver.h
 +#endif
 diff -ruN src_tmp/minisat/utils/Makefile src/minisat/utils/Makefile
 --- src_tmp/minisat/utils/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Makefile	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/Makefile	2022-08-04 10:02:30.653245700 +0200
 @@ -0,0 +1,4 @@
 +EXEC      = system_test
 +DEPDIR    = mtl
@@ -5526,7 +5525,7 @@ diff -ruN src_tmp/minisat/utils/Makefile src/minisat/utils/Makefile
 +include $(MROOT)/mtl/template.mk
 diff -ruN src_tmp/minisat/utils/Options.cc src/minisat/utils/Options.cc
 --- src_tmp/minisat/utils/Options.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Options.cc	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/Options.cc	2022-08-04 10:02:30.653510700 +0200
 @@ -0,0 +1,91 @@
 +/**************************************************************************************[Options.cc]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -5621,7 +5620,7 @@ diff -ruN src_tmp/minisat/utils/Options.cc src/minisat/utils/Options.cc
 +
 diff -ruN src_tmp/minisat/utils/Options.h src/minisat/utils/Options.h
 --- src_tmp/minisat/utils/Options.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Options.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/Options.h	2022-08-04 10:02:30.653790800 +0200
 @@ -0,0 +1,386 @@
 +/***************************************************************************************[Options.h]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -6011,7 +6010,7 @@ diff -ruN src_tmp/minisat/utils/Options.h src/minisat/utils/Options.h
 +#endif
 diff -ruN src_tmp/minisat/utils/ParseUtils.h src/minisat/utils/ParseUtils.h
 --- src_tmp/minisat/utils/ParseUtils.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/ParseUtils.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/ParseUtils.h	2022-08-04 10:02:30.653951900 +0200
 @@ -0,0 +1,122 @@
 +/************************************************************************************[ParseUtils.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -6137,7 +6136,7 @@ diff -ruN src_tmp/minisat/utils/ParseUtils.h src/minisat/utils/ParseUtils.h
 +#endif
 diff -ruN src_tmp/minisat/utils/System.cc src/minisat/utils/System.cc
 --- src_tmp/minisat/utils/System.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/System.cc	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/System.cc	2022-08-04 10:02:30.654127000 +0200
 @@ -0,0 +1,95 @@
 +/***************************************************************************************[System.cc]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -6236,7 +6235,7 @@ diff -ruN src_tmp/minisat/utils/System.cc src/minisat/utils/System.cc
 +#endif
 diff -ruN src_tmp/minisat/utils/System.h src/minisat/utils/System.h
 --- src_tmp/minisat/utils/System.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/System.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/System.h	2022-08-04 10:02:30.654305200 +0200
 @@ -0,0 +1,60 @@
 +/****************************************************************************************[System.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson

@@ -45,8 +45,8 @@ public:
 
     // Constraint stores
     //TODO STRANGE NAMES: THEY ARE RELATED TO THE P-CONSTRAINTS, NOT THE C-CONSTRAINTS
-    std::map<int, int> C1_store;
-    std::map<int, int> C2_store;
+    std::map<int, int> P1_store;
+    std::map<int, int> P2_store;
 
     std::forward_list<int> constraint_ids_to_delete;
 
@@ -73,14 +73,16 @@ public:
     void delete_learnt_clause           (Clause& clause);
     void write_linkingVar_clause        (vec<Lit>& clause);
     void write_bound_update             (vec<lbool>& model); 
-    void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
+    void write_sub_red                  (vec<Lit>& clause);
     void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
     void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
     void delete_P1                      (const vec<Lit>& reification_literals);
     void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
     void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
     void delete_P2                      (const vec<Lit>& reification_literals);
-    void genCardinalDefinitions         (int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar); 
+    void genCardinalDefinitions         (int from, int to, vec<Lit>& linkingVar);
+    void add_P1_as_clause               (Var var);
+    void add_P2_as_clause               (Var var);
     void delete_P                       (const vec<Lit>& reification_literals, std::map<int,int>& constraint_store);
     void delete_cardinality_defs        (const vec<Lit>& reification_literals);
     void write_deletes                  ();

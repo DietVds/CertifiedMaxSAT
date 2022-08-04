@@ -1,5 +1,6 @@
 #include "Prooflogger.h"
 #include<string>
+#include<sstream>
 
 //=================================================================================================
 // Proof file
@@ -111,7 +112,7 @@ void Prooflogger::delete_learnt_clause(Clause& clause) {
 
 void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
     int variable = var(clause[0]);
-    int constraint_id = C2_store[variable];
+    int constraint_id = P2_store[variable];
     if(constraint_id != 0) {
         proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" ;
         constraint_counter++;
@@ -119,7 +120,7 @@ void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
         // The new constraint is NOT deleted: it will be given to minisat (in case minisat simplifies; it will take care of deletion)
         // constraint_ids_to_delete.push_front(constraint_counter);
         constraint_ids_to_delete.push_front(constraint_id);
-        C2_store.erase(constraint_id);
+        P2_store.erase(constraint_id);
     }    
 }
 
@@ -132,28 +133,25 @@ void Prooflogger::write_bound_update(vec<lbool>& model) {
     last_bound_constraint_id = ++constraint_counter;
 }
 
-void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, int to) {
-
-    if(meaningful_names) {
-
-        // If variable does not already have a meaningful name
-        if(meaningful_name_LB.find(var(definition[0])) == meaningful_name_LB.end()) {
-            meaningful_name_LB[var(definition[0])] = from+1;
-            meaningful_name_UB[var(definition[0])] = to+1;
-            meaningful_name_n[var(definition[0])] = sigma;
-        }
-    }
-
+void Prooflogger::write_sub_red(vec<Lit>& clause) {
+    // Proof a clause using substitution redundancy using the first literal as witness. 
     proof << "red ";
-    write_clause(definition);
+    write_clause(clause);
     proof << ">= 1; ";
-    write_witness(definition[0]);
+    write_witness(clause[0]);
     proof << "\n" ;
     constraint_counter++;
 
 }
 
 void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
+
+    std::stringstream cn;
+    std::string scn;
+
+    cn << "P_1," << sigma << "^" << from << "," << to ;
+    cn >> scn; 
+    write_comment(scn.c_str());
 
     if(meaningful_names) {
 
@@ -182,10 +180,17 @@ void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int
     write_witness(Lit(var));
     proof << "\n" ;
     constraint_counter++;
-    C1_store[var] = constraint_counter;
+    P1_store[var] = constraint_counter;
 }
 
 void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int to) {
+
+    std::stringstream cn;
+    std::string scn;
+
+    cn << "P_2," << sigma << "^" << from << "," << to ;
+    cn >> scn; 
+    write_comment(scn.c_str());
 
     if(meaningful_names) {
 
@@ -213,7 +218,7 @@ void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int
     write_witness(~Lit(var));
     proof << "\n" ;
     constraint_counter++;
-    C2_store[var] = constraint_counter;
+    P2_store[var] = constraint_counter;
 }
 
 void Prooflogger::delete_P(const vec<Lit>& reification_literals, std::map<int,int>& constraint_store){
@@ -231,11 +236,11 @@ void Prooflogger::delete_P(const vec<Lit>& reification_literals, std::map<int,in
 }
 
 void Prooflogger::delete_P1(const vec<Lit>& reification_literals){
-    delete_P(reification_literals, C1_store);
+    delete_P(reification_literals, P1_store);
 }
 
 void Prooflogger::delete_P2(const vec<Lit>& reification_literals){
-    delete_P(reification_literals, C2_store);
+    delete_P(reification_literals, P2_store);
 }
 
 void Prooflogger::delete_cardinality_defs(const vec<Lit>& reification_literals){
@@ -258,12 +263,12 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
     int second = var(definition[1]);
     int third = var(definition[2]);
     // Write derivation of parts
-    proof << "p " << C1_store[third];
-    if(C2_store.find(first) != C2_store.end()) {
-        proof << " " << C2_store[first] << " + " ;
+    proof << "p " << P1_store[third];
+    if(P2_store.find(first) != P2_store.end()) {
+        proof << " " << P2_store[first] << " + " ;
     } 
-    if(C2_store.find(second) != C2_store.end()) {
-        proof << " " << C2_store[second] << " +" ;
+    if(P2_store.find(second) != P2_store.end()) {
+        proof << " " << P2_store[second] << " +" ;
     }
     
     //In any case, we print the result. So that addClause does not ahve to  do logging afterwards
@@ -274,7 +279,15 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
     
 }
 
+void Prooflogger::add_P1_as_clause(Var var){
+    proof << "p "<< P1_store[var]<<"\n"; 
+    constraint_counter++;
+}
 
+void Prooflogger::add_P2_as_clause(Var var){
+    proof << "p "<< P2_store[var]<<"\n"; 
+    constraint_counter++;
+}
 
 void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     int first = var(definition[0]);
@@ -282,12 +295,12 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     int third = var(definition[2]);
 
     // Write derivation of parts
-    proof << "p " << C2_store[third];
-    if(C1_store.find(first) != C1_store.end()) {
-        proof  << " " << C1_store[first] << " + " ;
+    proof << "p " << P2_store[third];
+    if(P1_store.find(first) != P1_store.end()) {
+        proof  << " " << P1_store[first] << " + " ;
     } 
-    if(C1_store.find(second) != C1_store.end()) {
-        proof << " " << C1_store[second] << " + " ;
+    if(P1_store.find(second) != P1_store.end()) {
+        proof << " " << P1_store[second] << " + " ;
     } 
     proof << " s\n" ;
     constraint_counter++;
@@ -295,64 +308,26 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     //constraint_ids_to_delete.push_front(constraint_counter);
 }    
 
-void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {
-  int inputSize = to - from + 1;
-  linkingVar.clear();
+void Prooflogger::genCardinalDefinitions(int from, int to,  vec<Lit>& linkingVar){
+    int inputSize = to - from + 1;
 
-  vec<Lit> linkingAlpha;
-  vec<Lit> linkingBeta;
+    if (inputSize > 1){
+        write_comment("writing P1's and P2's");
+        for (int sigma = 0; sigma <= inputSize; sigma++) {
 
-  Var varZero = variable_counter++;
-  Var varLast = variable_counter++;
+            // Verify if PB cardinality definition exists
+            if(P1_store.find(var(linkingVar[sigma])) == P1_store.end()) {
+                // Write a substitution redundancy PB cardinality definition
+                write_P1_sub_red_cardinality(var(linkingVar[sigma]), sigma, from, to);
+            }
 
-  // First and last lit are not special cases. They have the same definition 
-  // (except that in some cases terms might disappear becase of zero coefficient)
-  write_P1_sub_red_cardinality(var(Lit(varZero)), 0, from, to);
-  write_P2_sub_red_cardinality(var(Lit(varZero)), 0, from, to);
-    
-  write_P1_sub_red_cardinality(var(Lit(varLast)), inputSize+1, from, to);
-  write_P2_sub_red_cardinality(var(Lit(varLast  )), inputSize+1, from, to);
-   
-
-  if (inputSize > 2) {
-    int middle = inputSize/2;
-    genCardinalDefinitions(from, from+middle, lits, linkingAlpha);
-    genCardinalDefinitions(from+middle+1, to, lits, linkingBeta);
-  } else if (inputSize == 2) {
-    genCardinalDefinitions(from, from, lits, linkingAlpha);
-    genCardinalDefinitions(to, to, lits, linkingBeta);
-  }
-  if (inputSize == 1) {
-    linkingVar.push(Lit(varZero));
-    linkingVar.push(Lit(from));
-    linkingVar.push(Lit(varLast));
-  } else { // inputSize >= 2
-
-    write_comment("- Node clauses:");
-    linkingVar.push(Lit(varZero));
-    for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(variable_counter++));
-    linkingVar.push(Lit(varLast));
-
-    for (int sigma = 0; sigma <= inputSize; sigma++) {
-
-        // Verify if PB cardinality definition exists
-        if(C1_store.find(var(linkingVar[sigma])) == C1_store.end()) {
-
-            // Write a substitution redundancy PB cardinality definition
-            write_P1_sub_red_cardinality(var(linkingVar[sigma]), sigma, from, to);
-        }
-
-        // Verify if PB cardinality definition exists
-        if(C2_store.find(var(~linkingVar[sigma+1])) == C2_store.end()) {
-
-            // Write a substitution redundancy PB cardinality definition
-            write_P2_sub_red_cardinality(var(~linkingVar[sigma+1]), sigma+1, from, to);
+            // Verify if PB cardinality definition exists
+            if(P2_store.find(var(~linkingVar[sigma+1])) == P2_store.end()) {
+                // Write a substitution redundancy PB cardinality definition
+                write_P2_sub_red_cardinality(var(~linkingVar[sigma+1]), sigma+1, from, to);
+            }
         }
     }
-    write_comment("-------------------------------------------");
-  }
-  linkingAlpha.clear();
-  linkingBeta.clear();
 }
 
 void Prooflogger::write_clause_as_comment(vec<Lit>& clause) {
