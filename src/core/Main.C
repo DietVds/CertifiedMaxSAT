@@ -277,6 +277,7 @@ const char* hasPrefix(const char* str, const char* prefix)
 // koshi 10.01.08
 void genCardinals(int from, int to, 
 		  Solver& S, Prooflogger& PL, vec<Lit>& lits, vec<Lit>& linkingVar) {
+  //It would probably be a lot better if "genCardinals" and "genCardinalDefinitions" were merged
   int inputSize = to - from + 1;
   linkingVar.clear();
 
@@ -287,10 +288,20 @@ void genCardinals(int from, int to,
   Var varLast = S.newVar();
 
   // First
-  lits.clear(); lits.push(Lit(varZero)); S.addClause(lits);
+  lits.clear(); lits.push(Lit(varZero)); 
+  //Logger already knows this clause but it is in the P1/P2 store. 
+  //We issue instructions to recover it (for in case it gets deleted from that store). 
+  //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
+  PL.proof << "p "<< PL.C1_store[var(Lit(varZero))]<<"\n"; PL.constraint_counter++;
+  S.addClause(lits);
 
   // Last
-  lits.clear(); lits.push(~Lit(varLast)); S.addClause(lits);
+  lits.clear(); lits.push(~Lit(varLast)); 
+  //Logger already knows this clause but it is in the P1/P2 store. 
+  //We issue instructions to recover it (for in case it gets deleted from that store). 
+  //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
+  PL.proof << "p "<< PL.C2_store[var(Lit(varLast))]<<"\n"; PL.constraint_counter++;
+  S.addClause(lits);
 
   if (inputSize > 2) {
     int middle = inputSize/2;
@@ -320,13 +331,13 @@ void genCardinals(int from, int to,
 	            lits.push(~linkingBeta[beta]);
 	            lits.push(linkingVar[sigma]);
                 PL.write_C1(lits, sigma, from, to);
-	            S.addClause(lits);
+	            S.addClause(lits); 
 	            lits.clear();
 	            lits.push(linkingAlpha[alpha+1]);
 	            lits.push(linkingBeta[beta+1]);
 	            lits.push(~linkingVar[sigma+1]);
                 PL.write_C2(lits, sigma+1, from, to);
-	            S.addClause(lits);
+	            S.addClause(lits); 
 	        }
         }
     }

@@ -44,7 +44,7 @@ public:
     std::map<int, int> meaningful_name_n;
 
     // Constraint stores
-    //
+    //TODO STRANGE NAMES: THEY ARE RELATED TO THE P-CONSTRAINTS, NOT THE C-CONSTRAINTS
     std::map<int, int> C1_store;
     std::map<int, int> C2_store;
 
@@ -69,6 +69,7 @@ public:
     void write_clause                   (vec<Lit>& clause);
     void write_clause                   (Clause& clause);
     void write_learnt_clause            (vec<Lit>& clause);
+    void overwrite_learnt_clause        (vec<Lit>& clause);
     void delete_learnt_clause           (Clause& clause);
     void write_linkingVar_clause        (vec<Lit>& clause);
     void write_bound_update             (vec<lbool>& model); 
