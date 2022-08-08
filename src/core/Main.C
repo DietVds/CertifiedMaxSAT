@@ -61,18 +61,7 @@ static inline int memReadStat(int field)
     sprintf(name, "/proc/%d/statm", pid);
     FILE*   in = fopen(name, "rb");
     if (in == NULL) return 0;
-    int     value;std::stringstream cn;
-  std::string scn;
-  
-  cn << "P_1,0" << "^" << from << "," << to << "(SR)" ;
-  cn >> scn; 
-  PL.write_comment(scn.c_str());
-
-  lits.clear(); lits.push(Lit(varZero));  
-  PL.write_sub_red(lits);
-  S.addClause(lits);
-  
-  // Last
+    int     value;
     for (; field >= 0; field--)
         fscanf(in, "%d", &value);
     fclose(in);
