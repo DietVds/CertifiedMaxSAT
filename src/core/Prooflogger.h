@@ -61,6 +61,7 @@ public:
     void write_comment                  (const char* comment);
     void write_contradiction            ();
     void write_empty_clause             ();
+    void store_meaningful_name          (int var, int from, int to, int n);
     bool is_aux_var                     (int var); 
     std::string var_name                (int var); 
     void write_literal                  (Lit literal);
@@ -71,6 +72,7 @@ public:
     void write_learnt_clause            (vec<Lit>& clause);
     void overwrite_learnt_clause        (vec<Lit>& clause);
     void delete_learnt_clause           (Clause& clause);
+    void delete_constraint              (int constraint_id);
     void write_linkingVar_clause        (vec<Lit>& clause);
     void write_bound_update             (vec<lbool>& model); 
     void write_sub_red                  (vec<Lit>& clause);

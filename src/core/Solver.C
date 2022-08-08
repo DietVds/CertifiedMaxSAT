@@ -98,6 +98,9 @@ bool Solver::addClauseInput(vec<Lit>& ps){
 
 bool Solver::addClause(vec<Lit>& ps, bool write_proof)
 {
+    vec<Lit> ps_orig;
+    ps.copyTo(ps_orig);
+
     assert(decisionLevel() == 0);
     bool changed = false;
 
@@ -123,7 +126,9 @@ bool Solver::addClause(vec<Lit>& ps, bool write_proof)
     //that the logger is already aware of (and hans JUST received). Only when the solver changes it, will it log changes.
     if(write_proof && changed){
         //TODO: it might be that this is triggered a bit too often. Some simplifications will ALSO have happened on the 
-        //veripb side, especially when related to the edge cases. 
+        //veripb side, especially when related to the edge cases.
+        PL->write_comment("overwrite by simplification in addClause. Original clause:"); 
+        PL->write_clause_as_comment(ps_orig);
         PL->overwrite_learnt_clause(ps);       
     }
 

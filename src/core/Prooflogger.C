@@ -28,6 +28,12 @@ bool Prooflogger::is_aux_var(int var) {
     return var + 1 > n_variables;
 }
 
+void Prooflogger::store_meaningful_name(int var, int from, int to, int n){
+    meaningful_name_LB[var] = from+1;
+    meaningful_name_UB[var] = to+1;
+    meaningful_name_n[var] = n;
+}
+
 std::string Prooflogger::var_name(int var) {
     std::string name;
     if(meaningful_names && meaningful_name_UB.find(var) != meaningful_name_UB.end()) {
@@ -110,16 +116,18 @@ void Prooflogger::delete_learnt_clause(Clause& clause) {
     proof << " >= 1;\n" ;
 }
 
+void Prooflogger::delete_constraint(int constraint_id){
+    proof << "del id " << constraint_id << "\n";
+}
+
 void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
     int variable = var(clause[0]);
     int constraint_id = P2_store[variable];
     if(constraint_id != 0) {
         proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" ;
         constraint_counter++;
-        // The used constraints are deleted before the next MiniSAT-call
-        // The new constraint is NOT deleted: it will be given to minisat (in case minisat simplifies; it will take care of deletion)
-        // constraint_ids_to_delete.push_front(constraint_counter);
-        constraint_ids_to_delete.push_front(constraint_id);
+        // The P2-constraint is not necessary anymore and can therefore be deleted.
+        delete_constraint(constraint_id);
         P2_store.erase(constraint_id);
     }    
 }
@@ -141,41 +149,22 @@ void Prooflogger::write_sub_red(vec<Lit>& clause) {
     write_witness(clause[0]);
     proof << "\n" ;
     constraint_counter++;
-
 }
 
 void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
-
-    std::stringstream cn;
-    std::string scn;
-
-    cn << "P_1," << sigma << "^" << from << "," << to ;
-    cn >> scn; 
-    write_comment(scn.c_str());
-
-    if(meaningful_names) {
-
-        // If variable does not already have a meaningful name
-        // TODO: this should be abstracted
-        if(meaningful_name_LB.find(var) == meaningful_name_LB.end()) {
-            meaningful_name_LB[var] = from+1;
-            meaningful_name_UB[var] = to+1;
-            meaningful_name_n[var] = sigma;
-        }
-    }
-
+    proof << "* P1 for " << var_name(var) << " from " << std::to_string(from) << " to " << std::to_string(to) << "\n";
     int weight = (to-from+1)-(sigma - 1);
     proof << "red ";
-    if(sigma > 0){
+    //if(sigma > 0){
         for(int i = from; i < to+1; i++) {
             write_literal(~Lit(i));
         }
-    } else{
-        weight = 1;
-    }
-    if(weight > 0 ){
+    //} else{
+    //    weight = 1;
+    //}
+    //if(weight > 0 ){
         proof << weight << " " << var_name(var);
-    }
+    //}
     proof << " >= " << weight << "; ";
     write_witness(Lit(var));
     proof << "\n" ;
@@ -184,36 +173,19 @@ void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int
 }
 
 void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int to) {
-
-    std::stringstream cn;
-    std::string scn;
-
-    cn << "P_2," << sigma << "^" << from << "," << to ;
-    cn >> scn; 
-    write_comment(scn.c_str());
-
-    if(meaningful_names) {
-
-        // If variable does not already have a meaningful name
-        if(meaningful_name_LB.find(var) == meaningful_name_LB.end()) {
-            meaningful_name_LB[var] = from+1;
-            meaningful_name_UB[var] = to+1;
-            meaningful_name_n[var] = sigma;
-        }
-    }
-
+    proof << "* P2 for " << var_name(var) << " from " << std::to_string(from) << " to " << std::to_string(to) << "\n";
     int weight = sigma;
     proof << "red ";
-    if(weight <= (to-from+1)){
+    //if(weight <= (to-from+1)){
         for(int i = from; i < to+1; i++) {
             write_literal(Lit(i));
         }
-    } else{
-        weight = 1;
-    }
-    if(weight > 0){
+    //} else{
+    //    weight = 1;
+    //}
+    //if(weight > 0){
         proof << weight << " ~" << var_name(var);
-    }
+    //}
     proof << " >= " << weight << "; ";
     write_witness(~Lit(var));
     proof << "\n" ;
@@ -221,15 +193,17 @@ void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int
     P2_store[var] = constraint_counter;
 }
 
+
 void Prooflogger::delete_P(const vec<Lit>& reification_literals, std::map<int,int>& constraint_store){
     for(int i = 0; i < reification_literals.size(); i++){
         int variable = var(reification_literals[i]);
         int constraint_id = constraint_store[variable];
 
         if(constraint_id != 0) // Only remove constraint if it is one that can be deleted.
-                                // We did not create the P1/P2 constraint definitions for the trivial v_0 and v_(vars(n)+1) variables.
-            constraint_ids_to_delete.push_front(constraint_id);
-            // proof << "del id " << constraint_id << "\n";
+                                
+            //constraint_ids_to_delete.push_front(constraint_id);
+            //proof << "del id " << constraint_id << "\n";
+            delete_constraint(constraint_id);
 
         constraint_store.erase(variable);
     }
@@ -257,14 +231,21 @@ void Prooflogger::write_deletes(){
     }
 }
 
-
 void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
+    
     int first = var(definition[0]);
     int second = var(definition[1]);
     int third = var(definition[2]);
+
+    proof << "* C1 " ; 
+    for(int i = 0; i < 3; i++)
+        write_literal(definition[i]);
+    proof << "\n";  
+
     // Write derivation of parts
     proof << "p " << P1_store[third];
-    if(P2_store.find(first) != P2_store.end()) {
+    if(P2_store.find(first) != P2_store// Don't write the P1/P2 definitions for sigma=1, since the counting variable is then equal to the variable itself.
+        .end()) {
         proof << " " << P2_store[first] << " + " ;
     } 
     if(P2_store.find(second) != P2_store.end()) {
@@ -276,7 +257,6 @@ void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
     constraint_counter++;
     //Should not be deleted! Goes to solver
     //constraint_ids_to_delete.push_front(constraint_counter);
-    
 }
 
 void Prooflogger::add_P1_as_clause(Var var){
@@ -294,6 +274,11 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
     int second = var(definition[1]);
     int third = var(definition[2]);
 
+    proof << "* C2 " ; 
+    for(int i = 0; i < 3; i++)
+        write_literal(definition[i]);
+    proof << "\n"; 
+
     // Write derivation of parts
     proof << "p " << P2_store[third];
     if(P1_store.find(first) != P1_store.end()) {
@@ -310,10 +295,10 @@ void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
 
 void Prooflogger::genCardinalDefinitions(int from, int to,  vec<Lit>& linkingVar){
     int inputSize = to - from + 1;
-
+    proof << "* genCardinalDefinitions from = " << std::to_string(from+1) << " to = " << std::to_string(to+1) << "\n" ;
+        
     if (inputSize > 1){
-        write_comment("writing P1's and P2's");
-        for (int sigma = 0; sigma <= inputSize; sigma++) {
+        for (int sigma = 0; sigma <= inputSize+1; sigma++) {
 
             // Verify if PB cardinality definition exists
             if(P1_store.find(var(linkingVar[sigma])) == P1_store.end()) {
@@ -322,11 +307,18 @@ void Prooflogger::genCardinalDefinitions(int from, int to,  vec<Lit>& linkingVar
             }
 
             // Verify if PB cardinality definition exists
-            if(P2_store.find(var(~linkingVar[sigma+1])) == P2_store.end()) {
+            if(P2_store.find(var(~linkingVar[sigma])) == P2_store.end()) {
                 // Write a substitution redundancy PB cardinality definition
-                write_P2_sub_red_cardinality(var(~linkingVar[sigma+1]), sigma+1, from, to);
+                write_P2_sub_red_cardinality(var(~linkingVar[sigma]), sigma, from, to);
             }
         }
+    } 
+    else{
+        // Don't write the P1/P2 definitions for sigma=1, since the counting variable is then equal to the variable itself.
+        // Also, P1 constraint for n = 0 is not written, because it is never used (C2 for n=0 is never created and deriving C1 only uses C2 constraints from its children nodes). 
+        // The same reasoning is valid for P2 for n = 2.
+        write_P2_sub_red_cardinality(var(~linkingVar[0]), 0, from, to);
+        write_P1_sub_red_cardinality(var(linkingVar[2]), 2, from, to);
     }
 }
 

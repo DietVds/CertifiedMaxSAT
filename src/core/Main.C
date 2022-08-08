@@ -286,31 +286,25 @@ void genCardinals(int from, int to,
   Var varZero = S.newVar();
   Var varLast = S.newVar();
 
+  if(PL.meaningful_names){
+    PL.store_meaningful_name(varZero, from, to, 0);
+    PL.store_meaningful_name(varLast, from, to, inputSize+1);
+  }
+
   // Clauses to fixate these variables to their value can be proven using substitution redundancy.
   // These are in essence P1 and P2 constraints. However, they are added to the solver and should therefore not be deleted.
   // By just proving them using substitution redundancy, the P1 and P2 stores are not filled.
   // This ensures that when creating the P1/P2 constraints, these newly created constraints are used in the derivation of the C1 and C2 clauses. 
   // After removing the P1/P2 constraints, the clauses to fixate the variables to their value are still present in the proof.
   // This relies on the multi-set semantics of the clause store in VeriPB. 
-  std::stringstream cn;
-  std::string scn;
   
-  cn << "P_1,0" << "^" << from << "," << to << "(SR)" ;
-  cn >> scn; 
-  PL.write_comment(scn.c_str());
-
+  PL.write_comment("clause added to the solver:");
   lits.clear(); lits.push(Lit(varZero));  
   PL.write_sub_red(lits);
   S.addClause(lits);
   
   // Last
-  cn.clear();
-  scn = "";
-  
-  cn << "P_2," << to-from+1 << "^" << from << "," << to << "(SR)" ;
-  cn >> scn; 
-  PL.write_comment(scn.c_str());
-
+  PL.write_comment("clause added to the solver:");
   lits.clear(); lits.push(~Lit(varLast)); 
   PL.write_sub_red(lits);
   S.addClause(lits);
@@ -329,14 +323,24 @@ void genCardinals(int from, int to,
     linkingVar.push(Lit(from));
     linkingVar.push(Lit(varLast));
 
+    PL.genCardinalDefinitions(from, to, linkingVar);
+
   } else { // inputSize >= 2
 
     PL.write_comment("- Node clauses:");
     linkingVar.push(Lit(varZero));
-    for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
-    linkingVar.push(Lit(varLast));
+    for (int i = 0; i < inputSize; i++){
+         linkingVar.push(Lit(S.newVar()));
+         if(PL.meaningful_names){
+            PL.store_meaningful_name(var(linkingVar[i+1]), from, to, i+1);
+         }
+    }
 
+    linkingVar.push(Lit(varLast));
+    
     PL.genCardinalDefinitions(from, to, linkingVar);
+    
+    PL.write_comment("Creation of the totalizer clauses");
 
     // Creation of the totalizer clauses
     for (int sigma = 0; sigma <= inputSize; sigma++) {
@@ -360,6 +364,7 @@ void genCardinals(int from, int to,
     }
     PL.write_comment("-------------------------------------------");
   }
+  PL.write_comment("Deletion of childrens PB constraints");
   PL.delete_cardinality_defs(linkingAlpha);
   PL.delete_cardinality_defs(linkingBeta);
   linkingAlpha.clear();
