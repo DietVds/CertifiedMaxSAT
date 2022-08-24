@@ -132,7 +132,7 @@ void Prooflogger::overwrite_learnt_clause(vec<Lit> &clause)
 }
 
 void Prooflogger::implies_rule(int constraint_id, vec<Lit>& c){
-    proof << "e " << constraint_id << " ";
+    proof << "i " << constraint_id << " ";
     write_clause(c);
     proof << " >= 1;" << std::endl;
 }

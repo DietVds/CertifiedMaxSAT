@@ -554,6 +554,7 @@ int main(int argc, char** argv)
 	         lits.clear();
 	         lits.push(~linkingVar[i]);
              PL.write_linkingVar_clause(lits);
+             PL.check_last_constraint(lits);
 	         S.addClause(lits);
 	       }
           PL.write_comment("==============================================================");
@@ -568,6 +569,7 @@ int main(int argc, char** argv)
 	           lits.clear();
 	           lits.push(~linkingVar[i]);
                PL.write_linkingVar_clause(lits);
+               PL.check_last_constraint(lits);
 	           S.addClause(lits);
 	       }
           PL.write_comment("==============================================================");
