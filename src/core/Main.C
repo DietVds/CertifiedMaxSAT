@@ -553,7 +553,7 @@ int main(int argc, char** argv)
            for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	         lits.clear();
 	         lits.push(~linkingVar[i]);
-             PL.write_linkingVar_clause(lits);
+             PL.write_linkingVar_clause(lits, i, answerNew);
              PL.check_last_constraint(lits);
 	         S.addClause(lits);
 	       }
@@ -568,7 +568,7 @@ int main(int argc, char** argv)
 	       for (int i = answerNew; i < answer; i++) {
 	           lits.clear();
 	           lits.push(~linkingVar[i]);
-               PL.write_linkingVar_clause(lits);
+               PL.write_linkingVar_clause(lits, i, answerNew);
                PL.check_last_constraint(lits);
 	           S.addClause(lits);
 	       }

@@ -75,7 +75,7 @@ public:
     void check_last_constraint          (vec<Lit>& c);    
     void delete_learnt_clause           (Clause& clause);
     void delete_constraint              (int constraint_id);
-    void write_linkingVar_clause        (vec<Lit>& clause);
+    void write_linkingVar_clause        (vec<Lit>& clause, int n, int answerNew);
     void write_bound_update             (vec<lbool>& model); 
     void write_sub_red                  (vec<Lit>& clause);
     void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);

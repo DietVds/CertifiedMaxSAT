@@ -153,13 +153,13 @@ void Prooflogger::delete_constraint(int constraint_id)
     proof << "del id " << constraint_id << "\n";
 }
 
-void Prooflogger::write_linkingVar_clause(vec<Lit> &clause)
+void Prooflogger::write_linkingVar_clause(vec<Lit> &clause, int n, int answerNew)
 {
     int variable = var(clause[0]);
     int constraint_id = P2_store[variable];
     if (constraint_id != 0)
     {
-        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n";
+        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + " << n-answerNew+1  << " d s\n";
         constraint_counter++;
         // The P2-constraint is not necessary anymore and can therefore be deleted.
         delete_constraint(constraint_id);

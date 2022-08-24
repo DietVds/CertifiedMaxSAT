@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-08-24 09:44:26.305806500 +0200
-+++ src/core/Main.C	2022-08-24 09:43:40.412587900 +0200
+--- src_tmp/core/Main.C	2022-08-24 09:57:19.296459700 +0200
++++ src/core/Main.C	2022-08-24 09:57:11.062436400 +0200
 @@ -26,7 +26,13 @@
  #include <signal.h>
  #include <zlib.h>
@@ -404,7 +404,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +           for (int i = answerNew; i < linkingVar.size()-1; i++) {
 +	         lits.clear();
 +	         lits.push(~linkingVar[i]);
-+             PL.write_linkingVar_clause(lits);
++             PL.write_linkingVar_clause(lits, i, answerNew);
 +             PL.check_last_constraint(lits);
 +	         S.addClause(lits);
 +	       }
@@ -425,7 +425,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +	       for (int i = answerNew; i < answer; i++) {
 +	           lits.clear();
 +	           lits.push(~linkingVar[i]);
-+               PL.write_linkingVar_clause(lits);
++               PL.write_linkingVar_clause(lits, i, answerNew);
 +               PL.check_last_constraint(lits);
 +	           S.addClause(lits);
 +	       }
@@ -449,7 +449,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 --- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-08-24 09:44:21.849533700 +0200
++++ src/core/Prooflogger.C	2022-08-24 09:56:56.958305100 +0200
 @@ -0,0 +1,399 @@
 +#include "Prooflogger.h"
 +#include <string>
@@ -606,13 +606,13 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 +    proof << "del id " << constraint_id << "\n";
 +}
 +
-+void Prooflogger::write_linkingVar_clause(vec<Lit> &clause)
++void Prooflogger::write_linkingVar_clause(vec<Lit> &clause, int n, int answerNew)
 +{
 +    int variable = var(clause[0]);
 +    int constraint_id = P2_store[variable];
 +    if (constraint_id != 0)
 +    {
-+        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n";
++        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + " << n-answerNew+1  << " d s\n";
 +        constraint_counter++;
 +        // The P2-constraint is not necessary anymore and can therefore be deleted.
 +        delete_constraint(constraint_id);
@@ -853,7 +853,7 @@ diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
 \ No newline at end of file
 diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 --- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-08-24 09:19:22.438083700 +0200
++++ src/core/Prooflogger.h	2022-08-24 09:56:24.158647000 +0200
 @@ -0,0 +1,99 @@
 +#ifndef Prooflogger_h
 +#define Prooflogger_h
@@ -932,7 +932,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +    void check_last_constraint          (vec<Lit>& c);    
 +    void delete_learnt_clause           (Clause& clause);
 +    void delete_constraint              (int constraint_id);
-+    void write_linkingVar_clause        (vec<Lit>& clause);
++    void write_linkingVar_clause        (vec<Lit>& clause, int n, int answerNew);
 +    void write_bound_update             (vec<lbool>& model); 
 +    void write_sub_red                  (vec<Lit>& clause);
 +    void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
@@ -956,7 +956,7 @@ diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
 +#endif
 \ No newline at end of file
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-08-24 09:44:26.306185100 +0200
+--- src_tmp/core/Solver.C	2022-08-24 09:57:19.296877500 +0200
 +++ src/core/Solver.C	2022-08-08 15:39:39.847841700 +0200
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
@@ -1127,7 +1127,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-08-24 09:44:26.305241100 +0200
+--- src_tmp/core/Solver.h	2022-08-24 09:57:19.295763300 +0200
 +++ src/core/Solver.h	2022-08-04 10:02:30.646621200 +0200
 @@ -21,12 +21,15 @@
  #define Solver_h
