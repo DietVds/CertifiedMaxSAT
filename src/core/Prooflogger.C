@@ -131,6 +131,16 @@ void Prooflogger::overwrite_learnt_clause(vec<Lit> &clause)
     proof << "del id " << to_delete << "\n";
 }
 
+void Prooflogger::implies_rule(int constraint_id, vec<Lit>& c){
+    proof << "e " << constraint_id << " ";
+    write_clause(c);
+    proof << " >= 1;" << std::endl;
+}
+
+void Prooflogger::check_last_constraint(vec<Lit>& c){
+    implies_rule(constraint_counter, c);
+}
+
 void Prooflogger::delete_learnt_clause(Clause &clause)
 {
     proof << "del find ";

@@ -71,6 +71,8 @@ public:
     void write_clause                   (Clause& clause);
     void write_learnt_clause            (vec<Lit>& clause);
     void overwrite_learnt_clause        (vec<Lit>& clause);
+    void implies_rule                   (int constraint_id, vec<Lit>& c);
+    void check_last_constraint          (vec<Lit>& c);    
     void delete_learnt_clause           (Clause& clause);
     void delete_constraint              (int constraint_id);
     void write_linkingVar_clause        (vec<Lit>& clause);
