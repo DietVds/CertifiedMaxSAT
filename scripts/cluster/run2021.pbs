@@ -11,6 +11,9 @@ module load CMake/3.20.1-GCCcore-10.3.0
 module load Python/3.9.5-GCCcore-10.3.0
 module load parallel/20210622-GCCcore-10.3.0
 
+running_scripts=$VSC_SCRATCH_VO_USER/running_scripts2021
+results_folder=$VSC_SCRATCH_VO_USER/results
+
 # Build Veripb
 virtualenv --system-site-packages /tmp/env
 source /tmp/env/bin/activate
@@ -30,18 +33,18 @@ done
 
 for filename in $(ls "$instances")
 do
-    sed "s/TIME_L/3600/g" single.sh > running_scripts2021/${filename}.sh
-    sed -i "s/MEM_L/32768/g" running_scripts2021/${filename}.sh
-    sed -i "s/FILENAME/$filename/g" running_scripts2021/${filename}.sh
-    sed -i "s/INSTANCES/$instances_escaped/g" running_scripts2021/${filename}.sh
-    chmod +x running_scripts2021/${filename}.sh
+    sed "s/TIME_L/3600/g" single.sh > $running_scripts/${filename}.sh
+    sed -i "s/MEM_L/32768/g" $running_scripts/${filename}.sh
+    sed -i "s/FILENAME/$filename/g" $running_scripts/${filename}.sh
+    sed -i "s/INSTANCES/$instances_escaped/g" $running_scripts/${filename}.sh
+    chmod +x $running_scripts/${filename}.sh
 done
 
 # Make results folder if it does not exist yet
-if [ ! -d ./results ]; then
-    mkdir results
+if [ ! -d $results_folder ]; then
+    mkdir $results_folder
 fi
 
 # Start running
-parallel --delay 0.2 -j $SLURM_NTASKS --joblog runtask.log --resume srun -N1 -n1 -c1 --exclusive ::: $(ls -1 ./running_scripts2021/*.sh)
+parallel --delay 0.2 -j $SLURM_NTASKS --joblog runtask.log --resume srun -N1 -n1 -c1 --exclusive ::: $(ls -1 $running_scripts/*.sh)
 wait

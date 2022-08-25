@@ -1,6 +1,8 @@
 #!/bin/bash
 
-instances=INSTANCES
+results_folder=$VSC_SCRATCH_VO_USER/results
+
+instances=$VSC_DATA/problems2021
 filename=FILENAME
 extension="${filename##*.}"
 filename="${filename%.*}"
@@ -29,19 +31,19 @@ res_proofsize="NA"
 ## VANILLA
 
 # run
-./runlim -r $TIMEOUT_SOLVER -s $MEMOUT_SOLVER -o $VSC_SCRATCH/${filename}.txt ./qmaxsat -log_duration_totalizer=$VSC_SCRATCH/${filename}_totalizer.txt $instances/${filename}.${extension}
+./runlim -r $TIMEOUT_SOLVER -s $MEMOUT_SOLVER -o $VSC_SCRATCH_VO_USER/output/${filename}.txt ./qmaxsat -log_duration_totalizer=$VSC_SCRATCH_VO_USER/output/${filename}_totalizer.txt $instances/${filename}.${extension}
 
 # extract time
-res_runtime_without_prooflogging=$(cat $VSC_SCRATCH/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+res_runtime_without_prooflogging=$(cat $VSC_SCRATCH_VO_USER/output/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
 # extract space
-res_mem_without_prooflogging=$(cat $VSC_SCRATCH/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+res_mem_without_prooflogging=$(cat $VSC_SCRATCH_VO_USER/output/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
 #extract time for genCardinals
-res_time_genCardinals_without_PL=$(cat $VSC_SCRATCH/${filename}_totalizer.txt | grep 'genCardinals:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+res_time_genCardinals_without_PL=$(cat $VSC_SCRATCH_VO_USER/output/${filename}_totalizer.txt | grep 'genCardinals:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
 # status
-status=$(cat $VSC_SCRATCH/${filename}.txt | grep 'status:' | awk '{print $3}');
+status=$(cat $VSC_SCRATCH_VO_USER/output/${filename}.txt | grep 'status:' | awk '{print $3}');
 
 echo "$filename without prooflogging:"
 echo "runtime: $res_runtime_without_prooflogging "
@@ -54,16 +56,16 @@ then
     ## PROOFLOGGED
     
     # run
-    ./runlim -r $TIMEOUT_SOLVER_PL -s $MEMOUT_SOLVER_PL -o $VSC_SCRATCH/${filename}.txt ./qmaxsat_prooflogging -log_duration_totalizer=$VSC_SCRATCH/${filename}_totalizer.txt -proof-file=$VSC_SCRATCH/${filename}_proof.pbp $instances/${filename}.${extension} 
+    ./runlim -r $TIMEOUT_SOLVER_PL -s $MEMOUT_SOLVER_PL -o $VSC_SCRATCH_VO_USER/output/${filename}.txt ./qmaxsat_prooflogging -log_duration_totalizer=$VSC_SCRATCH_VO_USER/output/${filename}_totalizer.txt -proof-file=$VSC_SCRATCH_VO_USER/output/${filename}_proof.pbp $instances/${filename}.${extension} 
 
     # extract time
-    res_runtime_with_prooflogging=$(cat $VSC_SCRATCH/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+    res_runtime_with_prooflogging=$(cat $VSC_SCRATCH_VO_USER/output/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
     # extract space
-    res_mem_with_prooflogging=$(cat $VSC_SCRATCH/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+    res_mem_with_prooflogging=$(cat $VSC_SCRATCH_VO_USER/output/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
     #extract time for genCardinals
-    res_time_genCardinals=$(cat $VSC_SCRATCH/${filename}_totalizer.txt | grep 'genCardinals:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+    res_time_genCardinals=$(cat $VSC_SCRATCH_VO_USER/output/${filename}_totalizer.txt | grep 'genCardinals:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
    	
     if [[ "$res_time_genCardinals" == "" ]]
     then
@@ -71,7 +73,7 @@ then
     fi
 
     #extract time for genCardinalDefinitions
-    res_time_genCardinalDefinitions=$(cat $VSC_SCRATCH/${filename}_totalizer.txt | grep 'genCardinalDefinitions:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+    res_time_genCardinalDefinitions=$(cat $VSC_SCRATCH_VO_USER/output/${filename}_totalizer.txt | grep 'genCardinalDefinitions:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
     	
     if [[ "$res_time_genCardinalDefinitions" == "" ]]
     then
@@ -79,7 +81,7 @@ then
     fi
 	    	
     # extract proof size
-    res_proofsize=$(stat --printf="%s" $VSC_SCRATCH/${filename}_proof.pbp)
+    res_proofsize=$(stat --printf="%s" $VSC_SCRATCH_VO_USER/output/${filename}_proof.pbp)
     
     if [[ "$res_proofsize" == "" ]]
     then
@@ -87,7 +89,7 @@ then
     fi
 
     # status
-    status=$(cat $VSC_SCRATCH/${filename}.txt | grep 'status:' | awk '{print $3}');
+    status=$(cat $VSC_SCRATCH_VO_USER/output/${filename}.txt | grep 'status:' | awk '{print $3}');
 
     echo "$filename with prooflogging:"
     echo "runtime: $res_runtime_with_prooflogging "
@@ -102,19 +104,19 @@ then
         ## VERIFICATION
 
         # run
-        ./runlim -r $TIMEOUT_VERIPB -s $MEMOUT_VERIPB -o $VSC_SCRATCH/${filename}.txt python -m veripb --wcnf $instances/${filename}.${extension} $VSC_SCRATCH/${filename}_proof.pbp > $VSC_SCRATCH/${filename}_verification.txt
+        ./runlim -r $TIMEOUT_VERIPB -s $MEMOUT_VERIPB -o $VSC_SCRATCH_VO_USER/output/${filename}.txt python -m veripb --wcnf $instances/${filename}.${extension} $VSC_SCRATCH/${filename}_proof.pbp > $VSC_SCRATCH_VO_USER/output/${filename}_verification.txt
 
         # extract time
-        res_runtime_verification=$(cat $VSC_SCRATCH/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+        res_runtime_verification=$(cat $VSC_SCRATCH_VO_USER/output/${filename}.txt | grep 'real:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
         # extract space
-        res_mem_verification=$(cat $VSC_SCRATCH/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
+        res_mem_verification=$(cat $VSC_SCRATCH_VO_USER/output/${filename}.txt | grep 'space:' | grep -Eo '[+-]?[0-9]+([.][0-9]+)?');
 
   	    echo "$filename verification:"
 	    echo "runtime: $res_runtime_verification "
     	echo "mem: $res_mem_verification"
 
-    	if grep -q "succeeded" $VSC_SCRATCH/${filename}_verification.txt; then
+    	if grep -q "succeeded" $VSC_SCRATCH_VO_USER/output/${filename}_verification.txt; then
     		res_verification_succeeded=1
     	else
     		res_verification_succeeded=0	
@@ -122,6 +124,6 @@ then
     fi
 fi
 
-rm -f $VSC_SCRATCH/${filename}*
+rm -f $VSC_SCRATCH_VO_USER/output/${filename}*
 rm core*
-echo "$filename, $res_runtime_without_prooflogging, $res_time_genCardinals_without_PL, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $res_proofsize, $res_time_genCardinals, $res_time_genCardinalDefinitions, $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> ./results/"$filename"_result.csv
+echo "$filename, $res_runtime_without_prooflogging, $res_time_genCardinals_without_PL, $res_mem_without_prooflogging, $res_runtime_with_prooflogging, $res_proofsize, $res_time_genCardinals, $res_time_genCardinalDefinitions, $res_mem_with_prooflogging, $res_runtime_verification, $res_mem_verification, $res_verification_succeeded" >> $results_folder/"$filename"_result.csv
