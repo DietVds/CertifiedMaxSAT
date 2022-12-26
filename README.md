@@ -27,4 +27,4 @@ The [prooflogging.patch](patches/prooflogging.patch) patch extends the (fixed) Q
 
 ## Citation
 
-D. Vandesande, W. De Wulf, B. Bogaerts. A Certified MaxSAT Solver. (to be submitted at LPNMR2022)
+Vandesande, D., De Wulf, W., Bogaerts, B. (2022). QMaxSATpb: A Certified MaxSAT Solver. In: Gottlob, G., Inclezan, D., Maratea, M. (eds) Logic Programming and Nonmonotonic Reasoning. LPNMR 2022. Lecture Notes in Computer Science(), vol 13416. Springer, Cham. https://doi.org/10.1007/978-3-031-15707-3_33
