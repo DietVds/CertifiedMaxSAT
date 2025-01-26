@@ -31,8 +31,10 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #include <chrono>
 #include <string>
 
+#include <forward_list>
+
 #include "Solver.h"
-#include "Prooflogger.h"
+#include "prooflogging/QMaxSATProoflogger.h"
 
 /*************************************************************************************/
 #ifdef _MSC_VER
@@ -137,15 +139,14 @@ static int parseInt(B& in) {
     return neg ? -val : val; }
 
 template<class B>
-static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits, 
-		       int nbvar, int top, int& nbsoft) { // koshi 10.01.04
+static void readClause(B& in, Solver& S, VeriPbProofLogger& vPL, MaxSATProoflogger& mPL, vec<Lit>& lits, 
+		       int nbvar, int top, int& nbsoft, constraintid lineWCNF) { // koshi 10.01.04
 
     int parsed_lit, var, weight;
     lits.clear();
     weight = parseInt(in); // koshi 10.01.04
     if (weight == 1) { // soft clause
       nbsoft++;
-      PL.n_variables++;
       lits.push(Lit(S.newVar()));
     } else if (weight != top) { // weight of hard clause must be top
       reportf("Unexpected weight %c\n", *in), exit(3);
@@ -157,6 +158,18 @@ static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits,
         var = abs(parsed_lit)-1;
 	// koshi 10.01.04        while (var >= S.nVars()) S.newVar();
         lits.push( (parsed_lit > 0) ? Lit(var) : ~Lit(var) );
+    }
+
+    if(weight == 1){
+        vPL.increase_n_variables();
+        if(lits.size() > 1){
+            mPL.add_blocking_literal(lits[0], lineWCNF);
+            vPL.add_objective_literal(lits[0], 1);
+        }
+        else{
+            mPL.add_unit_clause_blocking_literal(lits[0], lineWCNF, lits[1], 1, true);
+            vPL.add_objective_literal(lits[0],1);
+        }
     }
 }
 
@@ -170,7 +183,7 @@ static bool match(B& in, char* str) {
 
 
 template<class B>
-static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL, 
+static void parse_DIMACS_main(B& in, Solver& S, VeriPbProofLogger &vPL, MaxSATProoflogger& mPL, 
 			      int& out_nbvar, int& out_top, int& out_nbsoft) {
     vec<Lit> lits;
     int vars, clauses;
@@ -186,11 +199,8 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
 		    out_nbvar   = vars;
 		    out_top     = top;
 
-            PL.write_proof_header(clauses);  
-            PL.n_variables = vars;
-            PL.variable_counter = PL.n_variables;
-            PL.formula_length = clauses;
-            PL.constraint_counter = clauses;
+            vPL.write_proof_header();
+            vPL.set_n_variables(vars);
             
             reportf("|  Number of variables:    %-12d                                       |\n", vars);
             reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
@@ -202,26 +212,27 @@ static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL,
     } else reportf("PARSE ERROR! No header given!");
 
     // Read clauses
+    constraintid i = 0; // The index of the clause in the wcnf format.
     for (;;){
+        i++;
         skipWhitespace(in);
         if (*in == EOF)
             break;
         else if (*in == 'c' || *in == 'p') skipLine(in);
         else {
-	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
+	        readClause(in, S, vPL, mPL, lits, out_nbvar,out_top,out_nbsoft, i),
             S.addClauseInput(lits);
         }
     }
     reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
-    PL.variable_counter = PL.n_variables;
 }
 
 // Inserts problem into solver.
 //
-static void parse_DIMACS(gzFile input_stream, Solver& S, Prooflogger &PL, 
+static void parse_DIMACS(gzFile input_stream, Solver& S, VeriPbProofLogger &vPL, MaxSATProoflogger& mPL,
 			 int& out_nbvar, int& out_top, int& out_nbsoft) { // koshi 10.01.04
     StreamBuffer in(input_stream);
-    parse_DIMACS_main(in, S, PL, out_nbvar, out_top, out_nbsoft); }
+    parse_DIMACS_main(in, S, vPL, mPL, out_nbvar, out_top, out_nbsoft); }
 
 
 //=================================================================================================
@@ -274,9 +285,163 @@ const char* hasPrefix(const char* str, const char* prefix)
         return NULL;
 }
 
+void delete_P1(VeriPbProofLogger& vPL, std::forward_list<int>& constraint_ids_to_delete, const vec<Lit>& reification_literals){
+    for(int i = 0; i < reification_literals.size(); i++){
+        int variable = var(reification_literals[i]);
+        int constraint_id = vPL.getReifiedConstraintRightImpl(variable);
+
+        if(constraint_id != 0) // Only remove constraint if it is one that can be deleted.
+                                // We did not create the P1/P2 constraint definitions for the trivial v_0 and v_(vars(n)+1) variables.
+            constraint_ids_to_delete.push_front(constraint_id);
+            // proof << "del id " << constraint_id << "\n";
+
+        vPL.removeReifiedConstraintRightImplFromConstraintStore(variable);
+    }
+}
+
+void delete_P2(VeriPbProofLogger& vPL, std::forward_list<int>& constraint_ids_to_delete, const vec<Lit>& reification_literals){
+    for(int i = 0; i < reification_literals.size(); i++){
+        int variable = var(reification_literals[i]);
+        int constraint_id = vPL.getReifiedConstraintLeftImpl(variable);
+
+        if(constraint_id != 0) // Only remove constraint if it is one that can be deleted.
+                                // We did not create the P1/P2 constraint definitions for the trivial v_0 and v_(vars(n)+1) variables.
+            constraint_ids_to_delete.push_front(constraint_id);
+            // proof << "del id " << constraint_id << "\n";
+
+        vPL.removeReifiedConstraintLeftImplFromConstraintStore(variable);
+    }
+}
+
+void delete_cardinality_defs(VeriPbProofLogger& vPL, std::forward_list<int>& constraint_ids_to_delete, const vec<Lit>& reification_literals){
+    delete_P1(vPL, constraint_ids_to_delete, reification_literals);
+    delete_P2(vPL, constraint_ids_to_delete, reification_literals);
+}
+
+void genCardinalDefinitions(int var_counter, VeriPbProofLogger& vPL,  int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {
+  int inputSize = to - from + 1;
+  linkingVar.clear();
+
+  vec<Lit> linkingAlpha;
+  vec<Lit> linkingBeta;
+
+  Var varZero = var_counter++; 
+  Var varLast = var_counter++;    
+
+  if (inputSize > 2) {
+    int middle = from+inputSize/2;
+    genCardinalDefinitions(var_counter, vPL, from, middle, lits, linkingAlpha);
+    genCardinalDefinitions(var_counter, vPL, middle+1, to, lits, linkingBeta);
+  } else if (inputSize == 2) {
+    genCardinalDefinitions(var_counter, vPL, from, from, lits, linkingAlpha);
+    genCardinalDefinitions(var_counter, vPL, to, to, lits, linkingBeta);
+  }
+
+  vec<Lit> litsC; 
+  for(Var v = from; v <= to; v++ ){
+    litsC.push(create_literal(v, false));
+  }
+
+  // First and last lit are not special cases. They have the same definition 
+  // (except that in some cases terms might disappear becase of zero coefficient)
+  // Note: P1 = right implication, P2 = left implication
+  vPL.reificationLiteralLeftImpl(Lit(varZero), litsC, 0, true);
+  vPL.reificationLiteralRightImpl(Lit(varZero), litsC, 0, true);
+
+  vPL.reificationLiteralLeftImpl(Lit(varLast), litsC, inputSize+1, true);
+  vPL.reificationLiteralRightImpl(Lit(varLast), litsC, inputSize+1, true);
+
+  if (inputSize == 1) {
+    linkingVar.push(Lit(varZero));
+    linkingVar.push(Lit(from));
+    linkingVar.push(Lit(varLast));
+  } else { // inputSize >= 2
+
+    vPL.write_comment("- Node clauses:");
+    linkingVar.push(Lit(varZero));
+    for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(var_counter++)); 
+    linkingVar.push(Lit(varLast));
+
+    for (int sigma = 0; sigma <= inputSize; sigma++) {
+        vPL.reificationLiteralLeftImpl(linkingVar[sigma], litsC, sigma, true);
+        vPL.reificationLiteralRightImpl(linkingVar[sigma], litsC, sigma, true);
+    }
+    vPL.write_comment("-------------------------------------------");
+  }
+  linkingAlpha.clear();
+  linkingBeta.clear();
+}
+
+void write_C1(VeriPbProofLogger& vPL, vec<Lit>& definition, int sigma, int from, int to) {
+    int first = var(definition[0]);
+    int second = var(definition[1]);
+    int third = var(definition[2]);
+
+    constraintid deffirst = vPL.getReifiedConstraintRightImpl(first);
+    constraintid defsecond = vPL.getReifiedConstraintRightImpl(second);
+    constraintid defthird = vPL.getReifiedConstraintLeftImpl(third);
+
+    vPL.start_intCP_derivation(defthird);
+    if(deffirst != undefcxn)
+        vPL.intCP_add_constraint(deffirst);
+    if(defsecond != undefcxn)
+        vPL.intCP_add_constraint(defsecond);
+    vPL.intCP_saturate();
+    vPL.end_intCP_derivation();
+    
+    // // Write derivation of parts
+    // proof << "p " << C1_store[third];
+    // if(C2_store.find(first) != C2_store.end()) {
+    //     proof << " " << C2_store[first] << " + " ;
+    // } 
+    // if(C2_store.find(second) != C2_store.end()) {
+    //     proof << " " << C2_store[second] << " +" ;
+    // }
+    
+    // //In any case, we print the result. So that addClause does not ahve to  do logging afterwards
+    // proof << " s\n" ;
+    // constraint_counter++;
+    // //Should not be deleted! Goes to solver
+    // //constraint_ids_to_delete.push_front(constraint_counter);
+    
+}
+
+
+
+void write_C2(VeriPbProofLogger& vPL, vec<Lit>& definition, int sigma, int from, int to) {
+    int first = var(definition[0]);
+    int second = var(definition[1]);
+    int third = var(definition[2]);
+
+    constraintid deffirst = vPL.getReifiedConstraintLeftImpl(first);
+    constraintid defsecond = vPL.getReifiedConstraintLeftImpl(second);
+    constraintid defthird = vPL.getReifiedConstraintRightImpl(third);
+
+    vPL.start_intCP_derivation(defthird);
+    if(deffirst != undefcxn)
+        vPL.intCP_add_constraint(deffirst);
+    if(defsecond != undefcxn)
+        vPL.intCP_add_constraint(defsecond);
+    vPL.intCP_saturate();
+    vPL.end_intCP_derivation();
+
+    // // Write derivation of parts
+    // proof << "p " << C2_store[third];
+    // if(C1_store.find(first) != C1_store.end()) {
+    //     proof  << " " << C1_store[first] << " + " ;
+    // } 
+    // if(C1_store.find(second) != C1_store.end()) {
+    //     proof << " " << C1_store[second] << " + " ;
+    // } 
+    // proof << " s\n" ;
+    // constraint_counter++;
+    // //Should not be deleted! Goes to solver
+    // //constraint_ids_to_delete.push_front(constraint_counter);
+}    
+
 // koshi 10.01.08
 void genCardinals(int from, int to, 
-		  Solver& S, Prooflogger& PL, vec<Lit>& lits, vec<Lit>& linkingVar) {
+		  Solver& S, VeriPbProofLogger& vPL, vec<Lit>& lits, vec<Lit>& linkingVar, std::forward_list<int>& constraint_ids_to_delete) {
   //It would probably be a lot better if "genCardinals" and "genCardinalDefinitions" were merged
   int inputSize = to - from + 1;
   linkingVar.clear();
@@ -292,7 +457,10 @@ void genCardinals(int from, int to,
   //Logger already knows this clause but it is in the P1/P2 store. 
   //We issue instructions to recover it (for in case it gets deleted from that store). 
   //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
-  PL.proof << "p "<< PL.C1_store[var(Lit(varZero))]<<"\n"; PL.constraint_counter++;
+  vPL.start_intCP_derivation(
+        vPL.getReifiedConstraintRightImpl(var(Lit(varZero))));
+  vPL.end_intCP_derivation();
+//   PL.proof << "p "<< PL.C1_store[var(Lit(varZero))]<<"\n"; PL.constraint_counter++;
   S.addClause(lits);
 
   // Last
@@ -300,16 +468,19 @@ void genCardinals(int from, int to,
   //Logger already knows this clause but it is in the P1/P2 store. 
   //We issue instructions to recover it (for in case it gets deleted from that store). 
   //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
-  PL.proof << "p "<< PL.C2_store[var(Lit(varLast))]<<"\n"; PL.constraint_counter++;
+  vPL.start_intCP_derivation(
+        vPL.getReifiedConstraintRightImpl(var(Lit(varLast))));
+  vPL.end_intCP_derivation();
+//   PL.proof << "p "<< PL.C2_store[var(Lit(varLast))]<<"\n"; PL.constraint_counter++;
   S.addClause(lits);
 
   if (inputSize > 2) {
     int middle = inputSize/2;
-    genCardinals(from, from+middle, S,PL,lits,linkingAlpha);
-    genCardinals(from+middle+1, to, S,PL,lits,linkingBeta);
+    genCardinals(from, from+middle, S,vPL,lits,linkingAlpha, constraint_ids_to_delete);
+    genCardinals(from+middle+1, to, S,vPL,lits,linkingBeta, constraint_ids_to_delete);
   } else if (inputSize == 2) {
-    genCardinals(from, from, S,PL,lits,linkingAlpha);
-    genCardinals(to, to, S,PL,lits,linkingBeta);
+    genCardinals(from, from, S,vPL,lits,linkingAlpha, constraint_ids_to_delete);
+    genCardinals(to, to, S,vPL,lits,linkingBeta, constraint_ids_to_delete);
   }
   if (inputSize == 1) {
     linkingVar.push(Lit(varZero));
@@ -317,7 +488,7 @@ void genCardinals(int from, int to,
     linkingVar.push(Lit(varLast));
   } else { // inputSize >= 2
 
-    PL.write_comment("- Node clauses:");
+    vPL.write_comment("- Node clauses:");
     linkingVar.push(Lit(varZero));
     for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
     linkingVar.push(Lit(varLast));
@@ -330,21 +501,21 @@ void genCardinals(int from, int to,
 	            lits.push(~linkingAlpha[alpha]);
 	            lits.push(~linkingBeta[beta]);
 	            lits.push(linkingVar[sigma]);
-                PL.write_C1(lits, sigma, from, to);
+                write_C1(vPL, lits, sigma, from, to);
 	            S.addClause(lits); 
 	            lits.clear();
 	            lits.push(linkingAlpha[alpha+1]);
 	            lits.push(linkingBeta[beta+1]);
 	            lits.push(~linkingVar[sigma+1]);
-                PL.write_C2(lits, sigma+1, from, to);
+                write_C2(vPL, lits, sigma+1, from, to);
 	            S.addClause(lits); 
 	        }
         }
     }
-    PL.write_comment("-------------------------------------------");
+    vPL.write_comment("-------------------------------------------");
   }
-  PL.delete_cardinality_defs(linkingAlpha);
-  PL.delete_cardinality_defs(linkingBeta);
+  delete_cardinality_defs(vPL, constraint_ids_to_delete, linkingAlpha);
+  delete_cardinality_defs(vPL, constraint_ids_to_delete, linkingBeta);
   linkingAlpha.clear();
   linkingBeta.clear();
 }
@@ -364,10 +535,38 @@ class MyChrono{
 
 };
 
+void write_deletes(VeriPbProofLogger& vPL, std::forward_list<int>& constraint_ids_to_delete){
+    while(! constraint_ids_to_delete.empty()){
+        int constraint_id = constraint_ids_to_delete.front();
+
+        vPL.delete_constraint_by_id(constraint_id);
+        constraint_ids_to_delete.pop_front();
+    }
+}
+
+void write_linkingVar_clause(VeriPbProofLogger& vPL, Lit& clause, std::forward_list<int>& constraint_ids_to_delete) {
+    int variable = var(clause);
+    int defvar = vPL.getReifiedConstraintLeftImpl(variable);
+    if(defvar != 0) {
+        vPL.start_intCP_derivation(defvar);
+        vPL.intCP_add_constraint(vPL.get_model_improving_constraint());
+        vPL.end_intCP_derivation();
+        // The used constraints are deleted before the next MiniSAT-call
+        // The new constraint is NOT deleted: it will be given to minisat (in case minisat simplifies; it will take care of deletion)
+        // constraint_ids_to_delete.push_front(constraint_counter);
+        constraint_ids_to_delete.push_front(defvar);
+        vPL.removeReifiedConstraintLeftImplFromConstraintStore(variable);
+    }    
+}
+
 int main(int argc, char** argv)
 {
-    Prooflogger PL;
-    Solver      S(&PL);
+    VeriPbProofLogger vPL;
+    MaxSATProoflogger mPL(&vPL);
+    const char* prooffile = "maxsat_proof.pbp";
+    std::forward_list<int> constraint_ids_to_delete;
+    // Prooflogger PL;
+    Solver      S(&vPL);
     S.verbosity = 1;
 
     // Duration file
@@ -414,15 +613,15 @@ int main(int argc, char** argv)
             exit(0);
 
         } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
-            PL.set_proof_name(value);
+            prooffile = value;
 
         } else if ((value = hasPrefix(argv[i], "-log_duration_totalizer="))) {
             log_duration_totalizer = true;
             duration_file_name = value;
 
         }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
-            PL.meaningful_names = true;
-
+            reportf("c NOTE: Meaningful names not supported.");
+            // PL.meaningful_names = true;
         }else if (strncmp(argv[i], "-", 1) == 0){
             reportf("ERROR! unknown flag %s\n", argv[i]);
             exit(0);
@@ -453,7 +652,10 @@ int main(int argc, char** argv)
         reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
 
     // Open proof file
-    PL.open_proof_file();
+    std::ofstream prooffilestream;
+    prooffilestream.open(prooffile);
+    vPL.set_proof_stream(&prooffilestream);
+
     
     reportf("============================[ Problem Statistics ]=============================\n");
     reportf("|                                                                             |\n");
@@ -462,7 +664,7 @@ int main(int argc, char** argv)
     int nbvar  = 0; // number of original variables
     int top    = 0; // weight of hard clause
     int nbsoft = 0; // number of soft clauses
-    parse_DIMACS(in, S, PL, nbvar, top, nbsoft);
+    parse_DIMACS(in, S, vPL, mPL, nbvar, top, nbsoft);
     
     // Initialise PL constraint counter
     //PL.constraint_counter = S.nClauses();
@@ -479,8 +681,8 @@ int main(int argc, char** argv)
     if (!S.simplify()){
         reportf("Solved by unit propagation\n");
         if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
-        PL.write_empty_clause();
-        PL.close_proof_file();
+        vPL.rup_empty_clause();
+        vPL.write_conclusion_UNSAT_optimization();
         printf("UNSATISFIABLE\n");
         exit(20);
     }
@@ -490,9 +692,9 @@ int main(int argc, char** argv)
     int lcnt = 0; // loop count
     vec<Lit> linkingVar;
  solve:
-    PL.write_deletes();
-    PL.write_comment("==============================================================");
-    PL.write_comment("Call to MiniSAT:"); 
+    write_deletes(vPL, constraint_ids_to_delete);
+    // PL.write_comment("==============================================================");
+    // PL.write_comment("Call to MiniSAT:"); 
     bool ret = S.solve();
     if (ret) { // koshi 09.12.25
       lcnt++;
@@ -502,25 +704,25 @@ int main(int argc, char** argv)
       
       for (int i = nbvar; i < nbvar+nbsoft; i++) if (S.model[i] == l_True) answerNew++;   // count the number ofunsatisfied soft clauses
       if (lcnt == 1) { // first model: generate cardinality constraints
-          PL.write_comment("==============================================================");
-          PL.write_comment("First model found:"); 
-          PL.write_bound_update(S.model);
-          PL.write_comment("==============================================================");
-          PL.write_comment("Cardinality definitions:"); 
+          vPL.write_comment("==============================================================");
+          vPL.write_comment("First model found:"); 
+          vPL.log_solution_lbools(S.model);
+          vPL.write_comment("==============================================================");
+          vPL.write_comment("Cardinality definitions:"); 
 
           start = MyChrono::startClock();
 
-	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
+	      genCardinalDefinitions(vPL.constraint_counter, vPL, nbvar, nbvar+nbsoft-1, lits, linkingVar);
           
           auto duration_genCardinalDefinitions = "genCardinalDefinitions: " + MyChrono::duration_since(start) + "s";
           
-          PL.write_comment("==============================================================");
-          PL.write_comment("Tree derivation:"); 
+          vPL.write_comment("==============================================================");
+          vPL.write_comment("Tree derivation:"); 
 	      
           start = MyChrono::startClock();
           
-          genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
-          PL.delete_P1(linkingVar); // Only need P2-card defs to derive the C3-constraints
+          genCardinals(nbvar,nbvar+nbsoft-1, S, vPL, lits, linkingVar, constraint_ids_to_delete);
+          delete_P1(vPL, constraint_ids_to_delete, linkingVar); // Only need P2-card defs to derive the C3-constraints
 
           auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
           
@@ -531,30 +733,30 @@ int main(int argc, char** argv)
               log_duration_totalizer_stream.close();
           }
 
-          PL.write_comment("==============================================================");
-          PL.write_comment("Constraining through linking variables:"); 
+          vPL.write_comment("==============================================================");
+          vPL.write_comment("Constraining through linking variables:"); 
 	      
            for (int i = answerNew; i < linkingVar.size()-1; i++) {
 	         lits.clear();
 	         lits.push(~linkingVar[i]);
-             PL.write_linkingVar_clause(lits);
+             write_linkingVar_clause(vPL, lits[0], constraint_ids_to_delete);
 	         S.addClause(lits);
 	       }
-          PL.write_comment("==============================================================");
+          vPL.write_comment("==============================================================");
           answer = answerNew;
       } else { // lcnt > 1 
-          PL.write_comment("==============================================================");
-          PL.write_comment("New model found:"); 
-          PL.write_bound_update(S.model);
-          PL.write_comment("==============================================================");
-          PL.write_comment("Constraining through linking variables:"); 
+          vPL.write_comment("==============================================================");
+          vPL.write_comment("New model found:");
+          vPL.log_solution_lbools(S.model);
+          vPL.write_comment("==============================================================");
+          vPL.write_comment("Constraining through linking variables:"); 
 	       for (int i = answerNew; i < answer; i++) {
 	           lits.clear();
 	           lits.push(~linkingVar[i]);
-               PL.write_linkingVar_clause(lits);
+               write_linkingVar_clause(vPL, lits[0], constraint_ids_to_delete);
 	           S.addClause(lits);
 	       }
-          PL.write_comment("==============================================================");
+          vPL.write_comment("==============================================================");
           answer = answerNew;
       }
       reportf("Current answer = %d\n",answer);
@@ -576,7 +778,7 @@ int main(int argc, char** argv)
             fprintf(res, "UNSAT\n");
         fclose(res);
     }
-    PL.close_proof_file();
+    prooffilestream.close();
 
 #ifdef NDEBUG
     exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')

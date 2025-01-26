@@ -1,7 +1,9 @@
 MTL       = ../mtl
-CHDRS     = $(wildcard *.h) $(wildcard $(MTL)/*.h)
+VPL 	  = ../../VeriPB_Prooflogger/core
+CHDRS     = $(wildcard *.h) $(wildcard prooflogging/*.h) $(wildcard $(MTL)/*.h) $(wildcard $(VPL)/*.h) 
+CSRCS     = $(wildcard *.C) $(wildcard prooflogging/*.cc)
 EXEC      = qmaxsat
-CFLAGS    = -I$(MTL) -Wall -ffloat-store
+CFLAGS    = -I$(MTL) -I.  -I$(VPL) -I$(prooflogging) -Wall -ffloat-store
 LFLAGS    = -lz
 
 include ../mtl/template.mk

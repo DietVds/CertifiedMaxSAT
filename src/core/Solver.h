@@ -29,7 +29,8 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #include "Alg.h"
 
 #include "SolverTypes.h"
-#include "Prooflogger.h"
+// #include "Prooflogger.h"
+#include "prooflogging/QMaxSATProoflogger.h"
 
 
 //=================================================================================================
@@ -41,12 +42,12 @@ public:
 
     // Constructor/Destructor:
     //
-    Solver(Prooflogger *PL);
+    Solver(VeriPbProofLogger *PL);
     ~Solver();
 
     // Proof logging:
     //
-    Prooflogger* PL;
+    VeriPbProofLogger* PL;
 
     // Problem specification:
     //

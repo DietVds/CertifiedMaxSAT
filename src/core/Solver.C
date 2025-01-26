@@ -26,7 +26,7 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 // Constructor/Destructor:
 
 
-Solver::Solver(Prooflogger *PL) :
+Solver::Solver(VeriPbProofLogger *PL) :
 
     // Parameters: (formerly in 'SearchParams')
     var_decay(1 / 0.95), clause_decay(1 / 0.999), random_var_freq(0.02)
@@ -124,7 +124,8 @@ bool Solver::addClause(vec<Lit>& ps, bool write_proof)
     if(write_proof && changed){
         //TODO: it might be that this is triggered a bit too often. Some simplifications will ALSO have happened on the 
         //veripb side, especially when related to the edge cases. 
-        PL->overwrite_learnt_clause(ps);       
+        PL->rup(ps);
+        PL->delete_constraint_by_id(-2);       
     }
 
     if (ps.size() == 0)
@@ -163,7 +164,8 @@ void Solver::detachClause(Clause& c) {
 
 void Solver::removeClause(Clause& c) {
     detachClause(c);
-    PL->delete_learnt_clause(c);
+    PL->delete_clause(c);
+    // PL->delete_learnt_clause(c);
     free(&c); 
 }
 
@@ -471,7 +473,8 @@ Clause* Solver::propagate()
                     if(decisionLevel() == 0){
                         vec<Lit> c;
                         c.push(first);
-                        PL->write_learnt_clause(c);
+                        PL->rup(c);
+                        // PL->write_learnt_clause(c);
                     }
 
                     uncheckedEnqueue(first, &c);  
@@ -595,7 +598,8 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
             // CONFLICT
             conflicts++; conflictC++;
             if (decisionLevel() == 0) {
-                PL->write_empty_clause();
+                PL->rup_empty_clause();
+                // PL->write_empty_clause();
                 return l_False;
             }
 
@@ -605,7 +609,8 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
             analyze(confl, learnt_clause, backtrack_level);
 
             // Write the learnt clause to the proof file
-            PL->write_learnt_clause(learnt_clause);
+            PL->rup(learnt_clause);
+            // PL->write_learnt_clause(learnt_clause);
 
             cancelUntil(backtrack_level);
             assert(value(learnt_clause[0]) == l_Undef);
@@ -634,7 +639,8 @@ lbool Solver::search(int nof_conflicts, int nof_learnts)
 
             // Simplify the set of problem clauses:
             if (decisionLevel() == 0 && !simplify()) {
-                PL->write_empty_clause();
+                PL->rup_empty_clause();
+                // PL->write_empty_clause();
                 return l_False;
             }
 
@@ -698,7 +704,8 @@ bool Solver::solve(const vec<Lit>& assumps)
     conflict.clear();
 
     if (!ok) {
-        PL->write_empty_clause();
+        PL->rup_empty_clause();
+        // PL->write_empty_clause();
         return false;
     }
 

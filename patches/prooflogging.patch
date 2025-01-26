@@ -1,7 +1,159 @@
+diff -ruN src_tmp/core/depend.mk src/core/depend.mk
+--- src_tmp/core/depend.mk	2025-01-26 11:36:30.951058594 +0100
++++ src/core/depend.mk	2025-01-26 11:35:39.230465870 +0100
+@@ -1,16 +1,140 @@
+ Main.o: Main.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
+- ../mtl/Alg.h SolverTypes.h
++ ../mtl/Alg.h SolverTypes.h prooflogging/QMaxSATProoflogger.h \
++ SolverTypes.h ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h
+ Solver.o: Solver.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
+- ../mtl/Alg.h SolverTypes.h ../mtl/Sort.h
++ ../mtl/Alg.h SolverTypes.h prooflogging/QMaxSATProoflogger.h \
++ SolverTypes.h ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h ../mtl/Sort.h
++VeriPBProoflogger_Minisat.o: prooflogging/VeriPBProoflogger_Minisat.cc \
++ prooflogging/QMaxSATProoflogger.h SolverTypes.h ../mtl/Alg.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h ../mtl/Vec.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.hpp
++MaxSATProoflogger_Minisat.o: prooflogging/MaxSATProoflogger_Minisat.cc \
++ prooflogging/QMaxSATProoflogger.h SolverTypes.h ../mtl/Alg.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h ../mtl/Vec.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.hpp \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h
+ Main.op: Main.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
+- ../mtl/Alg.h SolverTypes.h
++ ../mtl/Alg.h SolverTypes.h prooflogging/QMaxSATProoflogger.h \
++ SolverTypes.h ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h
+ Solver.op: Solver.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
+- ../mtl/Alg.h SolverTypes.h ../mtl/Sort.h
++ ../mtl/Alg.h SolverTypes.h prooflogging/QMaxSATProoflogger.h \
++ SolverTypes.h ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h ../mtl/Sort.h
++VeriPBProoflogger_Minisat.op: prooflogging/VeriPBProoflogger_Minisat.cc \
++ prooflogging/QMaxSATProoflogger.h SolverTypes.h ../mtl/Alg.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h ../mtl/Vec.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.hpp
++MaxSATProoflogger_Minisat.op: prooflogging/MaxSATProoflogger_Minisat.cc \
++ prooflogging/QMaxSATProoflogger.h SolverTypes.h ../mtl/Alg.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h ../mtl/Vec.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.hpp \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h
+ Main.od: Main.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
+- ../mtl/Alg.h SolverTypes.h
++ ../mtl/Alg.h SolverTypes.h prooflogging/QMaxSATProoflogger.h \
++ SolverTypes.h ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h
+ Solver.od: Solver.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
+- ../mtl/Alg.h SolverTypes.h ../mtl/Sort.h
++ ../mtl/Alg.h SolverTypes.h prooflogging/QMaxSATProoflogger.h \
++ SolverTypes.h ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h ../mtl/Sort.h
++VeriPBProoflogger_Minisat.od: prooflogging/VeriPBProoflogger_Minisat.cc \
++ prooflogging/QMaxSATProoflogger.h SolverTypes.h ../mtl/Alg.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h ../mtl/Vec.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.hpp
++MaxSATProoflogger_Minisat.od: prooflogging/MaxSATProoflogger_Minisat.cc \
++ prooflogging/QMaxSATProoflogger.h SolverTypes.h ../mtl/Alg.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h ../mtl/Vec.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.hpp \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h
+ Main.or: Main.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
+- ../mtl/Alg.h SolverTypes.h
++ ../mtl/Alg.h SolverTypes.h prooflogging/QMaxSATProoflogger.h \
++ SolverTypes.h ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h
+ Solver.or: Solver.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
+- ../mtl/Alg.h SolverTypes.h ../mtl/Sort.h
++ ../mtl/Alg.h SolverTypes.h prooflogging/QMaxSATProoflogger.h \
++ SolverTypes.h ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h ../mtl/Sort.h
++VeriPBProoflogger_Minisat.or: prooflogging/VeriPBProoflogger_Minisat.cc \
++ prooflogging/QMaxSATProoflogger.h SolverTypes.h ../mtl/Alg.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h ../mtl/Vec.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.hpp
++MaxSATProoflogger_Minisat.or: prooflogging/MaxSATProoflogger_Minisat.cc \
++ prooflogging/QMaxSATProoflogger.h SolverTypes.h ../mtl/Alg.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ prooflogging/SolverTypesInt_Minisat.h ../mtl/Vec.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPbSolverTypes.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h \
++ ../../VeriPB_Prooflogger/core/VeriPBProoflogger.h \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.hpp \
++ ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2022-06-20 10:20:55.841802379 +0200
-+++ src/core/Main.C	2022-06-20 10:19:47.577324004 +0200
-@@ -26,7 +26,13 @@
+--- src_tmp/core/Main.C	2025-01-26 11:36:30.951058594 +0100
++++ src/core/Main.C	2025-01-26 10:33:12.014180086 +0100
+@@ -26,7 +26,15 @@
  #include <signal.h>
  #include <zlib.h>
  
@@ -10,18 +162,21 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +#include <chrono>
 +#include <string>
 +
++#include <forward_list>
++
  #include "Solver.h"
-+#include "Prooflogger.h"
++#include "prooflogging/QMaxSATProoflogger.h"
  
  /*************************************************************************************/
  #ifdef _MSC_VER
-@@ -131,18 +137,19 @@
+@@ -131,18 +139,18 @@
      return neg ? -val : val; }
  
  template<class B>
 -static void readClause(B& in, Solver& S, vec<Lit>& lits, 
-+static void readClause(B& in, Solver& S, Prooflogger& PL, vec<Lit>& lits, 
- 		       int nbvar, int top, int& nbsoft) { // koshi 10.01.04
+-		       int nbvar, int top, int& nbsoft) { // koshi 10.01.04
++static void readClause(B& in, Solver& S, VeriPbProofLogger& vPL, MaxSATProoflogger& mPL, vec<Lit>& lits, 
++		       int nbvar, int top, int& nbsoft, constraintid lineWCNF) { // koshi 10.01.04
  
 -    int     parsed_lit, var;
 +    int parsed_lit, var, weight;
@@ -31,7 +186,6 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +    weight = parseInt(in); // koshi 10.01.04
 +    if (weight == 1) { // soft clause
        nbsoft++;
-+      PL.n_variables++;
        lits.push(Lit(S.newVar()));
 -    } else if (parsed_lit != top) { // weight of hard clause must be top
 +    } else if (weight != top) { // weight of hard clause must be top
@@ -41,12 +195,31 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
      for (;;){
          parsed_lit = parseInt(in);
-@@ -163,42 +170,58 @@
+@@ -151,6 +159,18 @@
+ 	// koshi 10.01.04        while (var >= S.nVars()) S.newVar();
+         lits.push( (parsed_lit > 0) ? Lit(var) : ~Lit(var) );
+     }
++
++    if(weight == 1){
++        vPL.increase_n_variables();
++        if(lits.size() > 1){
++            mPL.add_blocking_literal(lits[0], lineWCNF);
++            vPL.add_objective_literal(lits[0], 1);
++        }
++        else{
++            mPL.add_unit_clause_blocking_literal(lits[0], lineWCNF, lits[1], 1, true);
++            vPL.add_objective_literal(lits[0],1);
++        }
++    }
+ }
+ 
+ template<class B>
+@@ -163,42 +183,56 @@
  
  
  template<class B>
 -static void parse_DIMACS_main(B& in, Solver& S, 
-+static void parse_DIMACS_main(B& in, Solver& S, Prooflogger &PL, 
++static void parse_DIMACS_main(B& in, Solver& S, VeriPbProofLogger &vPL, MaxSATProoflogger& mPL, 
  			      int& out_nbvar, int& out_top, int& out_nbsoft) {
      vec<Lit> lits;
 +    int vars, clauses;
@@ -62,11 +235,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +		    out_nbvar   = vars;
 +		    out_top     = top;
 +
-+            PL.write_proof_header(clauses);  
-+            PL.n_variables = vars;
-+            PL.variable_counter = PL.n_variables;
-+            PL.formula_length = clauses;
-+            PL.constraint_counter = clauses;
++            vPL.write_proof_header();
++            vPL.set_n_variables(vars);
 +            
 +            reportf("|  Number of variables:    %-12d                                       |\n", vars);
 +            reportf("|  Number of clauses:      %-12d                                       |\n", clauses);
@@ -78,7 +248,9 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +    } else reportf("PARSE ERROR! No header given!");
 +
 +    // Read clauses
++    constraintid i = 0; // The index of the clause in the wcnf format.
      for (;;){
++        i++;
          skipWhitespace(in);
          if (*in == EOF)
              break;
@@ -103,26 +275,25 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 -            S.addClause(lits);
 +        else if (*in == 'c' || *in == 'p') skipLine(in);
 +        else {
-+	        readClause(in, S, PL, lits, out_nbvar,out_top,out_nbsoft),
++	        readClause(in, S, vPL, mPL, lits, out_nbvar,out_top,out_nbsoft, i),
 +            S.addClauseInput(lits);
 +        }
      }
      reportf("|  Number of soft clauses: %-12d                                       |\n", out_nbsoft);
-+    PL.variable_counter = PL.n_variables;
  }
  
  // Inserts problem into solver.
  //
 -static void parse_DIMACS(gzFile input_stream, Solver& S, 
-+static void parse_DIMACS(gzFile input_stream, Solver& S, Prooflogger &PL, 
++static void parse_DIMACS(gzFile input_stream, Solver& S, VeriPbProofLogger &vPL, MaxSATProoflogger& mPL,
  			 int& out_nbvar, int& out_top, int& out_nbsoft) { // koshi 10.01.04
      StreamBuffer in(input_stream);
 -    parse_DIMACS_main(in, S, out_nbvar, out_top, out_nbsoft); }
-+    parse_DIMACS_main(in, S, PL, out_nbvar, out_top, out_nbsoft); }
++    parse_DIMACS_main(in, S, vPL, mPL, out_nbvar, out_top, out_nbsoft); }
  
  
  //=================================================================================================
-@@ -232,10 +255,12 @@
+@@ -232,10 +266,12 @@
  {
      reportf("USAGE: %s [options] <input-file> <result-output-file>\n\n  where input may be either in plain or gzipped DIMACS.\n\n", argv[0]);
      reportf("OPTIONS:\n\n");
@@ -139,17 +310,173 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      reportf("\n");
  }
  
-@@ -251,7 +276,8 @@
+@@ -249,9 +285,164 @@
+         return NULL;
+ }
  
++void delete_P1(VeriPbProofLogger& vPL, std::forward_list<int>& constraint_ids_to_delete, const vec<Lit>& reification_literals){
++    for(int i = 0; i < reification_literals.size(); i++){
++        int variable = var(reification_literals[i]);
++        int constraint_id = vPL.getReifiedConstraintRightImpl(variable);
++
++        if(constraint_id != 0) // Only remove constraint if it is one that can be deleted.
++                                // We did not create the P1/P2 constraint definitions for the trivial v_0 and v_(vars(n)+1) variables.
++            constraint_ids_to_delete.push_front(constraint_id);
++            // proof << "del id " << constraint_id << "\n";
++
++        vPL.removeReifiedConstraintRightImplFromConstraintStore(variable);
++    }
++}
++
++void delete_P2(VeriPbProofLogger& vPL, std::forward_list<int>& constraint_ids_to_delete, const vec<Lit>& reification_literals){
++    for(int i = 0; i < reification_literals.size(); i++){
++        int variable = var(reification_literals[i]);
++        int constraint_id = vPL.getReifiedConstraintLeftImpl(variable);
++
++        if(constraint_id != 0) // Only remove constraint if it is one that can be deleted.
++                                // We did not create the P1/P2 constraint definitions for the trivial v_0 and v_(vars(n)+1) variables.
++            constraint_ids_to_delete.push_front(constraint_id);
++            // proof << "del id " << constraint_id << "\n";
++
++        vPL.removeReifiedConstraintLeftImplFromConstraintStore(variable);
++    }
++}
++
++void delete_cardinality_defs(VeriPbProofLogger& vPL, std::forward_list<int>& constraint_ids_to_delete, const vec<Lit>& reification_literals){
++    delete_P1(vPL, constraint_ids_to_delete, reification_literals);
++    delete_P2(vPL, constraint_ids_to_delete, reification_literals);
++}
++
++void genCardinalDefinitions(int var_counter, VeriPbProofLogger& vPL,  int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {
++  int inputSize = to - from + 1;
++  linkingVar.clear();
++
++  vec<Lit> linkingAlpha;
++  vec<Lit> linkingBeta;
++
++  Var varZero = var_counter++; 
++  Var varLast = var_counter++;    
++
++  if (inputSize > 2) {
++    int middle = from+inputSize/2;
++    genCardinalDefinitions(var_counter, vPL, from, middle, lits, linkingAlpha);
++    genCardinalDefinitions(var_counter, vPL, middle+1, to, lits, linkingBeta);
++  } else if (inputSize == 2) {
++    genCardinalDefinitions(var_counter, vPL, from, from, lits, linkingAlpha);
++    genCardinalDefinitions(var_counter, vPL, to, to, lits, linkingBeta);
++  }
++
++  vec<Lit> litsC; 
++  for(Var v = from; v <= to; v++ ){
++    litsC.push(create_literal(v, false));
++  }
++
++  // First and last lit are not special cases. They have the same definition 
++  // (except that in some cases terms might disappear becase of zero coefficient)
++  // Note: P1 = right implication, P2 = left implication
++  vPL.reificationLiteralLeftImpl(Lit(varZero), litsC, 0, true);
++  vPL.reificationLiteralRightImpl(Lit(varZero), litsC, 0, true);
++
++  vPL.reificationLiteralLeftImpl(Lit(varLast), litsC, inputSize+1, true);
++  vPL.reificationLiteralRightImpl(Lit(varLast), litsC, inputSize+1, true);
++
++  if (inputSize == 1) {
++    linkingVar.push(Lit(varZero));
++    linkingVar.push(Lit(from));
++    linkingVar.push(Lit(varLast));
++  } else { // inputSize >= 2
++
++    vPL.write_comment("- Node clauses:");
++    linkingVar.push(Lit(varZero));
++    for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(var_counter++)); 
++    linkingVar.push(Lit(varLast));
++
++    for (int sigma = 0; sigma <= inputSize; sigma++) {
++        vPL.reificationLiteralLeftImpl(linkingVar[sigma], litsC, sigma, true);
++        vPL.reificationLiteralRightImpl(linkingVar[sigma], litsC, sigma, true);
++    }
++    vPL.write_comment("-------------------------------------------");
++  }
++  linkingAlpha.clear();
++  linkingBeta.clear();
++}
++
++void write_C1(VeriPbProofLogger& vPL, vec<Lit>& definition, int sigma, int from, int to) {
++    int first = var(definition[0]);
++    int second = var(definition[1]);
++    int third = var(definition[2]);
++
++    constraintid deffirst = vPL.getReifiedConstraintRightImpl(first);
++    constraintid defsecond = vPL.getReifiedConstraintRightImpl(second);
++    constraintid defthird = vPL.getReifiedConstraintLeftImpl(third);
++
++    vPL.start_intCP_derivation(defthird);
++    if(deffirst != undefcxn)
++        vPL.intCP_add_constraint(deffirst);
++    if(defsecond != undefcxn)
++        vPL.intCP_add_constraint(defsecond);
++    vPL.intCP_saturate();
++    vPL.end_intCP_derivation();
++    
++    // // Write derivation of parts
++    // proof << "p " << C1_store[third];
++    // if(C2_store.find(first) != C2_store.end()) {
++    //     proof << " " << C2_store[first] << " + " ;
++    // } 
++    // if(C2_store.find(second) != C2_store.end()) {
++    //     proof << " " << C2_store[second] << " +" ;
++    // }
++    
++    // //In any case, we print the result. So that addClause does not ahve to  do logging afterwards
++    // proof << " s\n" ;
++    // constraint_counter++;
++    // //Should not be deleted! Goes to solver
++    // //constraint_ids_to_delete.push_front(constraint_counter);
++    
++}
++
++
++
++void write_C2(VeriPbProofLogger& vPL, vec<Lit>& definition, int sigma, int from, int to) {
++    int first = var(definition[0]);
++    int second = var(definition[1]);
++    int third = var(definition[2]);
++
++    constraintid deffirst = vPL.getReifiedConstraintLeftImpl(first);
++    constraintid defsecond = vPL.getReifiedConstraintLeftImpl(second);
++    constraintid defthird = vPL.getReifiedConstraintRightImpl(third);
++
++    vPL.start_intCP_derivation(defthird);
++    if(deffirst != undefcxn)
++        vPL.intCP_add_constraint(deffirst);
++    if(defsecond != undefcxn)
++        vPL.intCP_add_constraint(defsecond);
++    vPL.intCP_saturate();
++    vPL.end_intCP_derivation();
++
++    // // Write derivation of parts
++    // proof << "p " << C2_store[third];
++    // if(C1_store.find(first) != C1_store.end()) {
++    //     proof  << " " << C1_store[first] << " + " ;
++    // } 
++    // if(C1_store.find(second) != C1_store.end()) {
++    //     proof << " " << C1_store[second] << " + " ;
++    // } 
++    // proof << " s\n" ;
++    // constraint_counter++;
++    // //Should not be deleted! Goes to solver
++    // //constraint_ids_to_delete.push_front(constraint_counter);
++}    
++
  // koshi 10.01.08
  void genCardinals(int from, int to, 
 -		  Solver& S, vec<Lit>& lits, vec<Lit>& linkingVar) {
-+		  Solver& S, Prooflogger& PL, vec<Lit>& lits, vec<Lit>& linkingVar) {
++		  Solver& S, VeriPbProofLogger& vPL, vec<Lit>& lits, vec<Lit>& linkingVar, std::forward_list<int>& constraint_ids_to_delete) {
 +  //It would probably be a lot better if "genCardinals" and "genCardinalDefinitions" were merged
    int inputSize = to - from + 1;
    linkingVar.clear();
  
-@@ -261,52 +287,92 @@
+@@ -261,52 +452,126 @@
    Var varZero = S.newVar();
    Var varLast = S.newVar();
  
@@ -160,7 +487,10 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +  //Logger already knows this clause but it is in the P1/P2 store. 
 +  //We issue instructions to recover it (for in case it gets deleted from that store). 
 +  //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
-+  PL.proof << "p "<< PL.C1_store[var(Lit(varZero))]<<"\n"; PL.constraint_counter++;
++  vPL.start_intCP_derivation(
++        vPL.getReifiedConstraintRightImpl(var(Lit(varZero))));
++  vPL.end_intCP_derivation();
++//   PL.proof << "p "<< PL.C1_store[var(Lit(varZero))]<<"\n"; PL.constraint_counter++;
 +  S.addClause(lits);
 +
 +  // Last
@@ -168,20 +498,23 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +  //Logger already knows this clause but it is in the P1/P2 store. 
 +  //We issue instructions to recover it (for in case it gets deleted from that store). 
 +  //TODO MAKE METHOD OUT OF THIS. BOOKKEEPING WITH CONSTRAINTCOUNTERS IS TOO RISKY
-+  PL.proof << "p "<< PL.C2_store[var(Lit(varLast))]<<"\n"; PL.constraint_counter++;
++  vPL.start_intCP_derivation(
++        vPL.getReifiedConstraintRightImpl(var(Lit(varLast))));
++  vPL.end_intCP_derivation();
++//   PL.proof << "p "<< PL.C2_store[var(Lit(varLast))]<<"\n"; PL.constraint_counter++;
 +  S.addClause(lits);
  
    if (inputSize > 2) {
      int middle = inputSize/2;
 -    genCardinals(from, from+middle, S,lits,linkingAlpha);
 -    genCardinals(from+middle+1, to, S,lits,linkingBeta);
-+    genCardinals(from, from+middle, S,PL,lits,linkingAlpha);
-+    genCardinals(from+middle+1, to, S,PL,lits,linkingBeta);
++    genCardinals(from, from+middle, S,vPL,lits,linkingAlpha, constraint_ids_to_delete);
++    genCardinals(from+middle+1, to, S,vPL,lits,linkingBeta, constraint_ids_to_delete);
    } else if (inputSize == 2) {
 -    genCardinals(from, from, S,lits,linkingAlpha);
 -    genCardinals(to, to, S,lits,linkingBeta);
-+    genCardinals(from, from, S,PL,lits,linkingAlpha);
-+    genCardinals(to, to, S,PL,lits,linkingBeta);
++    genCardinals(from, from, S,vPL,lits,linkingAlpha, constraint_ids_to_delete);
++    genCardinals(to, to, S,vPL,lits,linkingBeta, constraint_ids_to_delete);
    }
    if (inputSize == 1) {
      linkingVar.push(Lit(varZero));
@@ -189,7 +522,7 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      linkingVar.push(Lit(varLast));
    } else { // inputSize >= 2
 +
-+    PL.write_comment("- Node clauses:");
++    vPL.write_comment("- Node clauses:");
      linkingVar.push(Lit(varZero));
      for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(S.newVar()));
      linkingVar.push(Lit(varLast));
@@ -217,21 +550,21 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +	            lits.push(~linkingAlpha[alpha]);
 +	            lits.push(~linkingBeta[beta]);
 +	            lits.push(linkingVar[sigma]);
-+                PL.write_C1(lits, sigma, from, to);
++                write_C1(vPL, lits, sigma, from, to);
 +	            S.addClause(lits); 
 +	            lits.clear();
 +	            lits.push(linkingAlpha[alpha+1]);
 +	            lits.push(linkingBeta[beta+1]);
 +	            lits.push(~linkingVar[sigma+1]);
-+                PL.write_C2(lits, sigma+1, from, to);
++                write_C2(vPL, lits, sigma+1, from, to);
 +	            S.addClause(lits); 
 +	        }
 +        }
      }
-+    PL.write_comment("-------------------------------------------");
++    vPL.write_comment("-------------------------------------------");
    }
-+  PL.delete_cardinality_defs(linkingAlpha);
-+  PL.delete_cardinality_defs(linkingBeta);
++  delete_cardinality_defs(vPL, constraint_ids_to_delete, linkingAlpha);
++  delete_cardinality_defs(vPL, constraint_ids_to_delete, linkingBeta);
    linkingAlpha.clear();
    linkingBeta.clear();
  }
@@ -251,11 +584,39 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +
 +};
 +
++void write_deletes(VeriPbProofLogger& vPL, std::forward_list<int>& constraint_ids_to_delete){
++    while(! constraint_ids_to_delete.empty()){
++        int constraint_id = constraint_ids_to_delete.front();
++
++        vPL.delete_constraint_by_id(constraint_id);
++        constraint_ids_to_delete.pop_front();
++    }
++}
++
++void write_linkingVar_clause(VeriPbProofLogger& vPL, Lit& clause, std::forward_list<int>& constraint_ids_to_delete) {
++    int variable = var(clause);
++    int defvar = vPL.getReifiedConstraintLeftImpl(variable);
++    if(defvar != 0) {
++        vPL.start_intCP_derivation(defvar);
++        vPL.intCP_add_constraint(vPL.get_model_improving_constraint());
++        vPL.end_intCP_derivation();
++        // The used constraints are deleted before the next MiniSAT-call
++        // The new constraint is NOT deleted: it will be given to minisat (in case minisat simplifies; it will take care of deletion)
++        // constraint_ids_to_delete.push_front(constraint_counter);
++        constraint_ids_to_delete.push_front(defvar);
++        vPL.removeReifiedConstraintLeftImplFromConstraintStore(variable);
++    }    
++}
++
  int main(int argc, char** argv)
  {
 -    Solver      S;
-+    Prooflogger PL;
-+    Solver      S(&PL);
++    VeriPbProofLogger vPL;
++    MaxSATProoflogger mPL(&vPL);
++    const char* prooffile = "maxsat_proof.pbp";
++    std::forward_list<int> constraint_ids_to_delete;
++    // Prooflogger PL;
++    Solver      S(&vPL);
      S.verbosity = 1;
  
 +    // Duration file
@@ -264,24 +625,24 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  
      int         i, j;
      const char* value;
-@@ -347,6 +413,16 @@
+@@ -347,6 +612,16 @@
              printUsage(argv);
              exit(0);
  
 +        } else if ((value = hasPrefix(argv[i], "-proof-file="))) {
-+            PL.set_proof_name(value);
++            prooffile = value;
 +
 +        } else if ((value = hasPrefix(argv[i], "-log_duration_totalizer="))) {
 +            log_duration_totalizer = true;
 +            duration_file_name = value;
 +
 +        }else if (strcmp(argv[i], "-mn") == 0 || strcmp(argv[i], "-meaningful_names") == 0 || strcmp(argv[i], "--meaningful_names") == 0){
-+            PL.meaningful_names = true;
-+
++            reportf("c NOTE: Meaningful names not supported.");
++            // PL.meaningful_names = true;
          }else if (strncmp(argv[i], "-", 1) == 0){
              reportf("ERROR! unknown flag %s\n", argv[i]);
              exit(0);
-@@ -357,7 +433,7 @@
+@@ -357,7 +632,7 @@
      argc = j;
  
  
@@ -290,22 +651,25 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #if defined(__linux__)
      fpu_control_t oldcw, newcw;
      _FPU_GETCW(oldcw); newcw = (oldcw & ~_FPU_EXTENDED) | _FPU_DOUBLE; _FPU_SETCW(newcw);
-@@ -376,6 +452,9 @@
+@@ -376,6 +651,12 @@
      if (in == NULL)
          reportf("ERROR! Could not open file: %s\n", argc == 1 ? "<stdin>" : argv[1]), exit(1);
  
 +    // Open proof file
-+    PL.open_proof_file();
++    std::ofstream prooffilestream;
++    prooffilestream.open(prooffile);
++    vPL.set_proof_stream(&prooffilestream);
++
 +    
      reportf("============================[ Problem Statistics ]=============================\n");
      reportf("|                                                                             |\n");
  
-@@ -383,8 +462,15 @@
+@@ -383,8 +664,15 @@
      int nbvar  = 0; // number of original variables
      int top    = 0; // weight of hard clause
      int nbsoft = 0; // number of soft clauses
 -    parse_DIMACS(in, S, nbvar, top, nbsoft);
-+    parse_DIMACS(in, S, PL, nbvar, top, nbsoft);
++    parse_DIMACS(in, S, vPL, mPL, nbvar, top, nbsoft);
 +    
 +    // Initialise PL constraint counter
 +    //PL.constraint_counter = S.nClauses();
@@ -317,22 +681,22 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
      FILE* res = (argc >= 3) ? fopen(argv[2], "wb") : NULL;
  
      double parse_time = cpuTime() - cpu_time;
-@@ -393,6 +479,8 @@
+@@ -393,6 +681,8 @@
      if (!S.simplify()){
          reportf("Solved by unit propagation\n");
          if (res != NULL) fprintf(res, "UNSAT\n"), fclose(res);
-+        PL.write_empty_clause();
-+        PL.close_proof_file();
++        vPL.rup_empty_clause();
++        vPL.write_conclusion_UNSAT_optimization();
          printf("UNSATISFIABLE\n");
          exit(20);
      }
-@@ -402,27 +490,72 @@
+@@ -402,27 +692,72 @@
      int lcnt = 0; // loop count
      vec<Lit> linkingVar;
   solve:
-+    PL.write_deletes();
-+    PL.write_comment("==============================================================");
-+    PL.write_comment("Call to MiniSAT:"); 
++    write_deletes(vPL, constraint_ids_to_delete);
++    // PL.write_comment("==============================================================");
++    // PL.write_comment("Call to MiniSAT:"); 
      bool ret = S.solve();
      if (ret) { // koshi 09.12.25
        lcnt++;
@@ -352,25 +716,25 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +      
 +      for (int i = nbvar; i < nbvar+nbsoft; i++) if (S.model[i] == l_True) answerNew++;   // count the number ofunsatisfied soft clauses
 +      if (lcnt == 1) { // first model: generate cardinality constraints
-+          PL.write_comment("==============================================================");
-+          PL.write_comment("First model found:"); 
-+          PL.write_bound_update(S.model);
-+          PL.write_comment("==============================================================");
-+          PL.write_comment("Cardinality definitions:"); 
++          vPL.write_comment("==============================================================");
++          vPL.write_comment("First model found:"); 
++          vPL.log_solution_lbools(S.model);
++          vPL.write_comment("==============================================================");
++          vPL.write_comment("Cardinality definitions:"); 
 +
 +          start = MyChrono::startClock();
 +
-+	      PL.genCardinalDefinitions(nbvar, nbvar+nbsoft-1, lits, linkingVar);
++	      genCardinalDefinitions(vPL.constraint_counter, vPL, nbvar, nbvar+nbsoft-1, lits, linkingVar);
 +          
 +          auto duration_genCardinalDefinitions = "genCardinalDefinitions: " + MyChrono::duration_since(start) + "s";
 +          
-+          PL.write_comment("==============================================================");
-+          PL.write_comment("Tree derivation:"); 
++          vPL.write_comment("==============================================================");
++          vPL.write_comment("Tree derivation:"); 
 +	      
 +          start = MyChrono::startClock();
 +          
-+          genCardinals(nbvar,nbvar+nbsoft-1, S, PL, lits, linkingVar);
-+          PL.delete_P1(linkingVar); // Only need P2-card defs to derive the C3-constraints
++          genCardinals(nbvar,nbvar+nbsoft-1, S, vPL, lits, linkingVar, constraint_ids_to_delete);
++          delete_P1(vPL, constraint_ids_to_delete, linkingVar); // Only need P2-card defs to derive the C3-constraints
 +
 +          auto duration_genCardinals = "genCardinals: " + MyChrono::duration_since(start) + "s";
 +          
@@ -381,16 +745,16 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 +              log_duration_totalizer_stream.close();
 +          }
 +
-+          PL.write_comment("==============================================================");
-+          PL.write_comment("Constraining through linking variables:"); 
++          vPL.write_comment("==============================================================");
++          vPL.write_comment("Constraining through linking variables:"); 
 +	      
 +           for (int i = answerNew; i < linkingVar.size()-1; i++) {
 +	         lits.clear();
 +	         lits.push(~linkingVar[i]);
-+             PL.write_linkingVar_clause(lits);
++             write_linkingVar_clause(vPL, lits[0], constraint_ids_to_delete);
 +	         S.addClause(lits);
 +	       }
-+          PL.write_comment("==============================================================");
++          vPL.write_comment("==============================================================");
 +          answer = answerNew;
        } else { // lcnt > 1 
 -	for (int i = answerNew; i < answer; i++) {
@@ -399,23 +763,23 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
 -	  S.addClause(lits);
 -	}
 -	answer = answerNew;
-+          PL.write_comment("==============================================================");
-+          PL.write_comment("New model found:"); 
-+          PL.write_bound_update(S.model);
-+          PL.write_comment("==============================================================");
-+          PL.write_comment("Constraining through linking variables:"); 
++          vPL.write_comment("==============================================================");
++          vPL.write_comment("New model found:");
++          vPL.log_solution_lbools(S.model);
++          vPL.write_comment("==============================================================");
++          vPL.write_comment("Constraining through linking variables:"); 
 +	       for (int i = answerNew; i < answer; i++) {
 +	           lits.clear();
 +	           lits.push(~linkingVar[i]);
-+               PL.write_linkingVar_clause(lits);
++               write_linkingVar_clause(vPL, lits[0], constraint_ids_to_delete);
 +	           S.addClause(lits);
 +	       }
-+          PL.write_comment("==============================================================");
++          vPL.write_comment("==============================================================");
 +          answer = answerNew;
        }
        reportf("Current answer = %d\n",answer);
        goto solve;
-@@ -439,10 +572,11 @@
+@@ -439,10 +774,11 @@
                  if (S.model[i] != l_Undef)
                      fprintf(res, "%s%s%d", (i==0)?"":" ", (S.model[i]==l_True)?"":"-", i+1);
              fprintf(res, " 0\n");
@@ -424,490 +788,139 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
              fprintf(res, "UNSAT\n");
          fclose(res);
      }
-+    PL.close_proof_file();
++    prooffilestream.close();
  
  #ifdef NDEBUG
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
-diff -ruN src_tmp/core/Prooflogger.C src/core/Prooflogger.C
---- src_tmp/core/Prooflogger.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.C	2022-06-20 10:19:47.577324004 +0200
-@@ -0,0 +1,368 @@
-+#include "Prooflogger.h"
-+#include<string>
-+
-+//=================================================================================================
-+// Proof file
-+
-+void Prooflogger::write_proof_header(int nbclause) {
-+    proof << "pseudo-Boolean proof version 1.0\n";
-+    proof << "f " << nbclause << "\n" ;
-+}
-+
-+void Prooflogger::write_comment(const char* comment) {
-+    proof<< "* " << comment << "\n" ;
-+}
-+
-+void Prooflogger::write_contradiction() {
-+    proof << "c " << constraint_counter << "\n" ;
-+}
-+
-+void Prooflogger::write_empty_clause() {
-+    proof<< "u >= 1;\n" ;
-+    constraint_counter++;
-+    write_contradiction();
-+}
-+
-+bool Prooflogger::is_aux_var(int var) {
-+    return var + 1 > n_variables;
-+}
-+
-+std::string Prooflogger::var_name(int var) {
-+    std::string name;
-+    if(meaningful_names && meaningful_name_UB.find(var) != meaningful_name_UB.end()) {
-+        int lb = meaningful_name_LB[var];
-+        int ub = meaningful_name_UB[var];
-+        int n = meaningful_name_n[var];
-+        name = "v" + std::to_string(n) + "_x" + std::to_string(lb) + "_x" + std::to_string(ub); 
-+    } else if(is_aux_var(var)) {
-+        name = "y";
-+        name += std::to_string(var+1);
-+    } else {
-+        name = "x";
-+        name += std::to_string(var+1);
-+    } 
-+    return name;
-+}
-+
-+void Prooflogger::write_literal(Lit literal) {
-+
-+    // Weight and sign
-+    std::string weight_and_sign = "1 ";
-+    weight_and_sign += (sign(literal) == 1 ? "~" : "");
-+
-+    // Variable symbol
-+    std::string name = var_name(var(literal));
-+
-+    // Write
-+    proof << weight_and_sign << name << " " ;
-+}
-+
-+void Prooflogger::write_literal_assignment(lbool assignment, int var) {
-+
-+    // Sign
-+    std::string sign = assignment == l_True? "" : "~";
-+
-+    // Variable symbol
-+    std::string symbol = var_name(var);
-+
-+    // Write
-+    proof << sign << symbol << " " ;
-+}
-+
-+void Prooflogger::write_witness(Lit literal) {
-+    std::string name = var_name(var(literal));
-+    proof<< name << " -> " << std::to_string(sign(literal) == 0) ;
-+}
-+
-+void Prooflogger::write_clause(vec<Lit>& clause) {
-+    for (int i = 0; i < clause.size(); i++) write_literal(clause[i]);
-+}
-+
-+void Prooflogger::write_clause(Clause& clause) {
-+    for(int i = 0; i < clause.size(); i++){
-+        write_literal(clause[i]);
-+    } 
-+}
-+
-+void Prooflogger::write_learnt_clause(vec<Lit>& clause) {
-+    proof << "u ";
-+    write_clause(clause);
-+    proof << " >= 1;\n" ;
-+    constraint_counter++;
-+}
-+
-+void Prooflogger::overwrite_learnt_clause(vec<Lit>& clause) {
-+    //FIRST: add new clause. THEN, remove old one, THEN increment counter
-+    auto to_delete = constraint_counter;
-+
-+    proof << "u ";
-+    write_clause(clause);
-+    proof << " >= 1;\n" ;
-+    constraint_counter++;
-+
-+    proof << "del id "<< to_delete << "\n";
-+}
-+
-+void Prooflogger::delete_learnt_clause(Clause& clause) {
-+    proof << "del find ";
-+    write_clause(clause);
-+    proof << " >= 1;\n" ;
-+}
-+
-+void Prooflogger::write_linkingVar_clause(vec<Lit>& clause) {
-+    int variable = var(clause[0]);
-+    int constraint_id = C2_store[variable];
-+    if(constraint_id != 0) {
-+        proof << "p " << constraint_id << " " << last_bound_constraint_id << " + s\n" ;
-+        constraint_counter++;
-+        // The used constraints are deleted before the next MiniSAT-call
-+        // The new constraint is NOT deleted: it will be given to minisat (in case minisat simplifies; it will take care of deletion)
-+        // constraint_ids_to_delete.push_front(constraint_counter);
-+        constraint_ids_to_delete.push_front(constraint_id);
-+        C2_store.erase(constraint_id);
-+    }    
-+}
-+
-+void Prooflogger::write_bound_update(vec<lbool>& model) {
-+    proof<< "o ";
-+    for(int i = 0; i < model.size(); i++) write_literal_assignment(model[i], i);
-+    proof << "\n" ;
-+
-+    // Veripb automatically adds an improvement constraint so counter needs to be incremented
-+    last_bound_constraint_id = ++constraint_counter;
-+}
-+
-+void Prooflogger::write_unit_sub_red(vec<Lit>& definition, int sigma, int from, int to) {
-+
-+    if(meaningful_names) {
-+
-+        // If variable does not already have a meaningful name
-+        if(meaningful_name_LB.find(var(definition[0])) == meaningful_name_LB.end()) {
-+            meaningful_name_LB[var(definition[0])] = from+1;
-+            meaningful_name_UB[var(definition[0])] = to+1;
-+            meaningful_name_n[var(definition[0])] = sigma;
-+        }
-+    }
-+
-+    proof << "red ";
-+    write_clause(definition);
-+    proof << ">= 1; ";
-+    write_witness(definition[0]);
-+    proof << "\n" ;
-+    constraint_counter++;
-+
-+}
-+
-+void Prooflogger::write_P1_sub_red_cardinality(int var, int sigma, int from, int to) {
-+
-+    if(meaningful_names) {
-+
-+        // If variable does not already have a meaningful name
-+        // TODO: this should be abstracted
-+        if(meaningful_name_LB.find(var) == meaningful_name_LB.end()) {
-+            meaningful_name_LB[var] = from+1;
-+            meaningful_name_UB[var] = to+1;
-+            meaningful_name_n[var] = sigma;
-+        }
-+    }
-+
-+    int weight = (to-from+1)-(sigma - 1);
-+    proof << "red ";
-+    if(sigma > 0){
-+        for(int i = from; i < to+1; i++) {
-+            write_literal(~Lit(i));
-+        }
-+    } else{
-+        weight = 1;
-+    }
-+    if(weight > 0 ){
-+        proof << weight << " " << var_name(var);
-+    }
-+    proof << " >= " << weight << "; ";
-+    write_witness(Lit(var));
-+    proof << "\n" ;
-+    constraint_counter++;
-+    C1_store[var] = constraint_counter;
-+}
-+
-+void Prooflogger::write_P2_sub_red_cardinality(int var, int sigma, int from, int to) {
-+
-+    if(meaningful_names) {
-+
-+        // If variable does not already have a meaningful name
-+        if(meaningful_name_LB.find(var) == meaningful_name_LB.end()) {
-+            meaningful_name_LB[var] = from+1;
-+            meaningful_name_UB[var] = to+1;
-+            meaningful_name_n[var] = sigma;
-+        }
-+    }
-+
-+    int weight = sigma;
-+    proof << "red ";
-+    if(weight <= (to-from+1)){
-+        for(int i = from; i < to+1; i++) {
-+            write_literal(Lit(i));
-+        }
-+    } else{
-+        weight = 1;
-+    }
-+    if(weight > 0){
-+        proof << weight << " ~" << var_name(var);
-+    }
-+    proof << " >= " << weight << "; ";
-+    write_witness(~Lit(var));
-+    proof << "\n" ;
-+    constraint_counter++;
-+    C2_store[var] = constraint_counter;
-+}
-+
-+void Prooflogger::delete_P(const vec<Lit>& reification_literals, std::map<int,int>& constraint_store){
-+    for(int i = 0; i < reification_literals.size(); i++){
-+        int variable = var(reification_literals[i]);
-+        int constraint_id = constraint_store[variable];
-+
-+        if(constraint_id != 0) // Only remove constraint if it is one that can be deleted.
-+                                // We did not create the P1/P2 constraint definitions for the trivial v_0 and v_(vars(n)+1) variables.
-+            constraint_ids_to_delete.push_front(constraint_id);
-+            // proof << "del id " << constraint_id << "\n";
-+
-+        constraint_store.erase(variable);
-+    }
-+}
-+
-+void Prooflogger::delete_P1(const vec<Lit>& reification_literals){
-+    delete_P(reification_literals, C1_store);
-+}
-+
-+void Prooflogger::delete_P2(const vec<Lit>& reification_literals){
-+    delete_P(reification_literals, C2_store);
-+}
-+
-+void Prooflogger::delete_cardinality_defs(const vec<Lit>& reification_literals){
-+    delete_P1(reification_literals);
-+    delete_P2(reification_literals);
-+}
-+
-+void Prooflogger::write_deletes(){
-+    while(! constraint_ids_to_delete.empty()){
-+        int constraint_id = constraint_ids_to_delete.front();
-+
-+        proof << "del id " << constraint_id << "\n";
-+        constraint_ids_to_delete.pop_front();
-+    }
-+}
-+
-+
-+void Prooflogger::write_C1(vec<Lit>& definition, int sigma, int from, int to) {
-+    int first = var(definition[0]);
-+    int second = var(definition[1]);
-+    int third = var(definition[2]);
-+    // Write derivation of parts
-+    proof << "p " << C1_store[third];
-+    if(C2_store.find(first) != C2_store.end()) {
-+        proof << " " << C2_store[first] << " + " ;
-+    } 
-+    if(C2_store.find(second) != C2_store.end()) {
-+        proof << " " << C2_store[second] << " +" ;
-+    }
-+    
-+    //In any case, we print the result. So that addClause does not ahve to  do logging afterwards
-+    proof << " s\n" ;
-+    constraint_counter++;
-+    //Should not be deleted! Goes to solver
-+    //constraint_ids_to_delete.push_front(constraint_counter);
-+    
-+}
-+
-+
-+
-+void Prooflogger::write_C2(vec<Lit>& definition, int sigma, int from, int to) {
-+    int first = var(definition[0]);
-+    int second = var(definition[1]);
-+    int third = var(definition[2]);
-+
-+    // Write derivation of parts
-+    proof << "p " << C2_store[third];
-+    if(C1_store.find(first) != C1_store.end()) {
-+        proof  << " " << C1_store[first] << " + " ;
-+    } 
-+    if(C1_store.find(second) != C1_store.end()) {
-+        proof << " " << C1_store[second] << " + " ;
-+    } 
-+    proof << " s\n" ;
-+    constraint_counter++;
-+    //Should not be deleted! Goes to solver
-+    //constraint_ids_to_delete.push_front(constraint_counter);
-+}    
-+
-+void Prooflogger::genCardinalDefinitions(int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar) {
-+  int inputSize = to - from + 1;
-+  linkingVar.clear();
-+
-+  vec<Lit> linkingAlpha;
-+  vec<Lit> linkingBeta;
-+
-+  Var varZero = variable_counter++;
-+  Var varLast = variable_counter++;
-+
-+  // First and last lit are not special cases. They have the same definition 
-+  // (except that in some cases terms might disappear becase of zero coefficient)
-+  write_P1_sub_red_cardinality(var(Lit(varZero)), 0, from, to);
-+  write_P2_sub_red_cardinality(var(Lit(varZero)), 0, from, to);
-+    
-+  write_P1_sub_red_cardinality(var(Lit(varLast)), inputSize+1, from, to);
-+  write_P2_sub_red_cardinality(var(Lit(varLast  )), inputSize+1, from, to);
-+   
-+
-+  if (inputSize > 2) {
-+    int middle = inputSize/2;
-+    genCardinalDefinitions(from, from+middle, lits, linkingAlpha);
-+    genCardinalDefinitions(from+middle+1, to, lits, linkingBeta);
-+  } else if (inputSize == 2) {
-+    genCardinalDefinitions(from, from, lits, linkingAlpha);
-+    genCardinalDefinitions(to, to, lits, linkingBeta);
-+  }
-+  if (inputSize == 1) {
-+    linkingVar.push(Lit(varZero));
-+    linkingVar.push(Lit(from));
-+    linkingVar.push(Lit(varLast));
-+  } else { // inputSize >= 2
-+
-+    write_comment("- Node clauses:");
-+    linkingVar.push(Lit(varZero));
-+    for (int i = 0; i < inputSize; i++) linkingVar.push(Lit(variable_counter++));
-+    linkingVar.push(Lit(varLast));
-+
-+    for (int sigma = 0; sigma <= inputSize; sigma++) {
-+
-+        // Verify if PB cardinality definition exists
-+        if(C1_store.find(var(linkingVar[sigma])) == C1_store.end()) {
-+
-+            // Write a substitution redundancy PB cardinality definition
-+            write_P1_sub_red_cardinality(var(linkingVar[sigma]), sigma, from, to);
-+        }
-+
-+        // Verify if PB cardinality definition exists
-+        if(C2_store.find(var(~linkingVar[sigma+1])) == C2_store.end()) {
-+
-+            // Write a substitution redundancy PB cardinality definition
-+            write_P2_sub_red_cardinality(var(~linkingVar[sigma+1]), sigma+1, from, to);
-+        }
-+    }
-+    write_comment("-------------------------------------------");
-+  }
-+  linkingAlpha.clear();
-+  linkingBeta.clear();
-+}
-+
-+void Prooflogger::write_clause_as_comment(vec<Lit>& clause) {
-+    proof << "* ";
-+    write_clause(clause);
-+    proof << ">= 1;\n" ;
-+}
-+
-+void Prooflogger::write_clause_as_comment(Clause& clause){
-+    proof << "* ";
-+    write_clause(clause);
-+    proof << " >= 1;\n" ;
-+}
+diff -ruN src_tmp/core/Makefile src/core/Makefile
+--- src_tmp/core/Makefile	2025-01-26 11:36:30.951058594 +0100
++++ src/core/Makefile	2025-01-26 10:33:12.018180121 +0100
+@@ -1,7 +1,9 @@
+ MTL       = ../mtl
+-CHDRS     = $(wildcard *.h) $(wildcard $(MTL)/*.h)
++VPL 	  = ../../VeriPB_Prooflogger/core
++CHDRS     = $(wildcard *.h) $(wildcard prooflogging/*.h) $(wildcard $(MTL)/*.h) $(wildcard $(VPL)/*.h) 
++CSRCS     = $(wildcard *.C) $(wildcard prooflogging/*.cc)
+ EXEC      = qmaxsat
+-CFLAGS    = -I$(MTL) -Wall -ffloat-store
++CFLAGS    = -I$(MTL) -I.  -I$(VPL) -I$(prooflogging) -Wall -ffloat-store
+ LFLAGS    = -lz
+ 
+ include ../mtl/template.mk
+diff -ruN src_tmp/core/prooflogging/MaxSATProoflogger_Minisat.cc src/core/prooflogging/MaxSATProoflogger_Minisat.cc
+--- src_tmp/core/prooflogging/MaxSATProoflogger_Minisat.cc	1970-01-01 01:00:00.000000000 +0100
++++ src/core/prooflogging/MaxSATProoflogger_Minisat.cc	2025-01-26 10:58:36.826479310 +0100
+@@ -0,0 +1,5 @@
++#include "QMaxSATProoflogger.h"
++#include "MaxSATProoflogger.hpp"
++
++template int MaxSATProoflogger::add_unit_clause_blocking_literal<Lit>(Lit, int, Lit, long, bool);
++template void MaxSATProoflogger::add_blocking_literal<Lit>(Lit, int);
 \ No newline at end of file
-diff -ruN src_tmp/core/Prooflogger.h src/core/Prooflogger.h
---- src_tmp/core/Prooflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/Prooflogger.h	2022-06-20 10:19:47.577324004 +0200
-@@ -0,0 +1,93 @@
-+#ifndef Prooflogger_h
-+#define Prooflogger_h
-+
-+#include <cstdio>
-+#include <fstream>
-+#include <iostream>
-+#include <sstream>
-+#include <map>
-+#include <forward_list>
-+#include <string>
-+#include <regex>
-+
-+#include "Vec.h"
-+#include "Heap.h"
-+#include "Alg.h"
-+
+diff -ruN src_tmp/core/prooflogging/QMaxSATProoflogger.h src/core/prooflogging/QMaxSATProoflogger.h
+--- src_tmp/core/prooflogging/QMaxSATProoflogger.h	1970-01-01 01:00:00.000000000 +0100
++++ src/core/prooflogging/QMaxSATProoflogger.h	2025-01-24 22:00:17.889075775 +0100
+@@ -0,0 +1,8 @@
++#ifndef QMaxSATProoflogger_h
++#define QMaxSATProoflogger_h
 +#include "SolverTypes.h"
-+
-+//=================================================================================================
-+// Prooflogger 
-+
-+
-+class Prooflogger {
-+public:
-+
-+    // Formula information
-+    //
-+    int formula_length = 0;
-+    int n_variables = 0;
-+
-+    // Constraint counter
-+    //
-+    int constraint_counter = 0;
-+    int last_bound_constraint_id;
-+
-+    // Tree derivation
-+    //
-+    int variable_counter = 0;
-+
-+    // Meaningful variable names
-+    bool meaningful_names = false;
-+    std::map<int, int> meaningful_name_LB;
-+    std::map<int, int> meaningful_name_UB;
-+    std::map<int, int> meaningful_name_n;
-+
-+    // Constraint stores
-+    //TODO STRANGE NAMES: THEY ARE RELATED TO THE P-CONSTRAINTS, NOT THE C-CONSTRAINTS
-+    std::map<int, int> C1_store;
-+    std::map<int, int> C2_store;
-+
-+    std::forward_list<int> constraint_ids_to_delete;
-+
-+    // Proof file
-+    std::ofstream proof;
-+    const char *proof_file_name         = "maxsat_proof.pbp";
-+    void set_proof_name                 (const char* name) {proof_file_name = name;};
-+    void open_proof_file                (){proof.open(proof_file_name);};
-+    void close_proof_file               (){proof.close();};
-+    void write_tree_derivation          ();
-+    void write_proof_header             (int nbclause);
-+    void write_comment                  (const char* comment);
-+    void write_contradiction            ();
-+    void write_empty_clause             ();
-+    bool is_aux_var                     (int var); 
-+    std::string var_name                (int var); 
-+    void write_literal                  (Lit literal);
-+    void write_literal_assignment       (lbool assignment, int var);
-+    void write_witness                  (Lit literal);
-+    void write_clause                   (vec<Lit>& clause);
-+    void write_clause                   (Clause& clause);
-+    void write_learnt_clause            (vec<Lit>& clause);
-+    void overwrite_learnt_clause        (vec<Lit>& clause);
-+    void delete_learnt_clause           (Clause& clause);
-+    void write_linkingVar_clause        (vec<Lit>& clause);
-+    void write_bound_update             (vec<lbool>& model); 
-+    void write_unit_sub_red             (vec<Lit>& definition, int sigma, int from, int to);
-+    void write_C1                       (vec<Lit>& definition, int sigma, int from, int to);
-+    void write_P1_sub_red_cardinality   (int var, int sigma, int from, int to);
-+    void delete_P1                      (const vec<Lit>& reification_literals);
-+    void write_C2                       (vec<Lit>& definition, int sigma, int from, int to);
-+    void write_P2_sub_red_cardinality   (int var, int sigma, int from, int to);
-+    void delete_P2                      (const vec<Lit>& reification_literals);
-+    void genCardinalDefinitions         (int from, int to, vec<Lit>& lits, vec<Lit>& linkingVar); 
-+    void delete_P                       (const vec<Lit>& reification_literals, std::map<int,int>& constraint_store);
-+    void delete_cardinality_defs        (const vec<Lit>& reification_literals);
-+    void write_deletes                  ();
-+
-+    void write_clause_as_comment        (vec<Lit>& clause);
-+    void write_clause_as_comment        (Clause& clause);
-+};
-+
-+//=================================================================================================
++#include "VeriPbSolverTypes.h"
++#include "SolverTypesInt_Minisat.h"
++#include "VeriPBProoflogger.h"
++#include "MaxSATProoflogger.h"
 +#endif
 \ No newline at end of file
+diff -ruN src_tmp/core/prooflogging/SolverTypesInt_Minisat.h src/core/prooflogging/SolverTypesInt_Minisat.h
+--- src_tmp/core/prooflogging/SolverTypesInt_Minisat.h	1970-01-01 01:00:00.000000000 +0100
++++ src/core/prooflogging/SolverTypesInt_Minisat.h	2025-01-24 18:24:47.968533586 +0100
+@@ -0,0 +1,47 @@
++//==========================================================================
++// What is needed to integrate with the VeriPB prooflogging library:
++// ------------------------------------------------------------------
++// A type for the variable and for a literal. Suppose Var is the type for the variable and Lit for the literal. 
++// Then, the following functions should be present:
++//
++// 1. Var variable(Lit l) - gets the variable out of the literal
++// 2. bool is_negated(Lit l) - true if the literal is negated, false otherwise
++// 3. Lit neg(Lit l) - returns a literal that is the negation of l
++// 4. VeriPB::Var toVeriPbVar(Var v) - converts a variable to a VeriPB variable
++// 5. VeriPB::Lit toVeriPbLit(Lit l) - converts a literal to a VeriPB literal
++// 
++// To use the TotalizerProoflogger:
++// ------------------------------------------------------------------
++// 6. Lit create_literal(Var var, bool negated) - Every Literal type should have a mkLit function that creates a literal for a given variable.
++//==========================================================================
++//prooflogging Library
++
++#ifndef SolverTypes_Int_h
++#define SolverTypes_Int_h
++
++#include "SolverTypes.h"
++#include "VeriPbSolverTypes.h"
++#include "Vec.h"
++
++// the type that is presenting weights in the solver. This should be defined by the solver developer.
++#define wght int64_t
++#define wght_max LLONG_MAX
++#define signedWght int64_t 
++
++
++inline Var variable(Lit l){return (var(l));}
++inline bool is_negated(Lit l){return sign(l);}
++inline Lit neg(Lit l){return ~l;};
++inline Lit create_literal(Var var, bool negated){return Lit(var, negated);}
++
++// Glucose's variables start from 0, whereas VeriPB counts their variables from 1. Therefore, the conversion needs to be done.
++// Problem: if we would use them both, then it would be a problem. However, pysat already solves this by not using the 0 variable in the solvers.
++inline VeriPB::Var toVeriPbVar(Var v){VeriPB::Var pbv; pbv.v= v+1; return pbv;}
++inline VeriPB::Lit toVeriPbLit(Lit l){VeriPB::Lit pbl; pbl.negated = is_negated(l); pbl.v = toVeriPbVar(variable(l)); return pbl;}
++
++// Glucose uses the LBool datatype. This should be able to be converted to boolean.
++inline bool toBool(lbool v){return (toInt(v) == 0);}
++
++// TODO: varidx function.
++
++#endif
+\ No newline at end of file
+diff -ruN src_tmp/core/prooflogging/VeriPBProoflogger_Minisat.cc src/core/prooflogging/VeriPBProoflogger_Minisat.cc
+--- src_tmp/core/prooflogging/VeriPBProoflogger_Minisat.cc	1970-01-01 01:00:00.000000000 +0100
++++ src/core/prooflogging/VeriPBProoflogger_Minisat.cc	2025-01-26 10:57:47.426094486 +0100
+@@ -0,0 +1,26 @@
++#include "QMaxSATProoflogger.h"
++#include "VeriPBProoflogger.hpp"
++//=================================================================================================
++
++template void VeriPbProofLogger::add_objective_literal<Lit>(Lit&, long);
++template void VeriPbProofLogger::removeReifiedConstraintRightImplFromConstraintStore<int>(int const&);
++template int VeriPbProofLogger::getReifiedConstraintRightImpl<int>(int const&);
++template void VeriPbProofLogger::removeReifiedConstraintLeftImplFromConstraintStore<int>(int const&);
++template int VeriPbProofLogger::getReifiedConstraintLeftImpl<int>(int const&);
++template int VeriPbProofLogger::reificationLiteralLeftImpl<vec<Lit>, Lit>(Lit const&, vec<Lit> const&, long, bool);
++template int VeriPbProofLogger::reificationLiteralRightImpl<vec<Lit>, Lit>(Lit const&, vec<Lit> const&, long, bool);
++template int VeriPbProofLogger::log_solution_lbools<vec<lbool> >(vec<lbool>&, long);
++template void VeriPbProofLogger::delete_clause<Clause>(Clause const&, bool);
++template int VeriPbProofLogger::rup<vec<Lit> >(vec<Lit> const&, long);
++template void VeriPbProofLogger::store_meaningful_name<VeriPB::Var>(VeriPB::Var const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&);
++template void VeriPbProofLogger::rewrite_variable_by_literal<VeriPB::Var, VeriPB::Lit>(VeriPB::Var const&, VeriPB::Lit const&);
++template void VeriPbProofLogger::store_meaningful_name<int>(int const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&);
++template void VeriPbProofLogger::rewrite_variable_by_literal<int, Lit>(int const&, Lit const&);
++template int VeriPbProofLogger::rup<std::vector<VeriPB::Lit, std::allocator<VeriPB::Lit> > >(std::vector<VeriPB::Lit, std::allocator<VeriPB::Lit> > const&, long);
++template void VeriPbProofLogger::add_boolean_assignment<VeriPB::Var>(std::pair<std::vector<std::pair<VeriPB::Var, VeriPB::Lit>, std::allocator<std::pair<VeriPB::Var, VeriPB::Lit> > >, std::vector<std::pair<VeriPB::Var, bool>, std::allocator<std::pair<VeriPB::Var, bool> > > >&, VeriPB::Var const&, bool);
++template int VeriPbProofLogger::redundanceBasedStrengthening<std::vector<VeriPB::Lit, std::allocator<VeriPB::Lit> > >(std::vector<VeriPB::Lit, std::allocator<VeriPB::Lit> > const&, long, std::pair<std::vector<std::pair<VeriPB::Var, VeriPB::Lit>, std::allocator<std::pair<VeriPB::Var, VeriPB::Lit> > >, std::vector<std::pair<VeriPB::Var, bool>, std::allocator<std::pair<VeriPB::Var, bool> > > > const&);
++template bool VeriPbProofLogger::remove_objective_literal<Lit>(Lit&);
++template void VeriPbProofLogger::write_objective_update_diff<std::vector<VeriPB::Lit, std::allocator<VeriPB::Lit> >, std::vector<long, std::allocator<long> > >(std::vector<VeriPB::Lit, std::allocator<VeriPB::Lit> >&, std::vector<long, std::allocator<long> >&, long);
++template void VeriPbProofLogger::delete_constraint<std::vector<VeriPB::Lit, std::allocator<VeriPB::Lit> > >(std::vector<VeriPB::Lit, std::allocator<VeriPB::Lit> > const&, long, std::pair<std::vector<std::pair<VeriPB::Var, VeriPB::Lit>, std::allocator<std::pair<VeriPB::Var, VeriPB::Lit> > >, std::vector<std::pair<VeriPB::Var, bool>, std::allocator<std::pair<VeriPB::Var, bool> > > > const&, bool);
++template void VeriPbProofLogger::add_objective_literal<VeriPB::Lit>(VeriPB::Lit&, long);
++template bool VeriPbProofLogger::remove_objective_literal<VeriPB::Lit>(VeriPB::Lit&);
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2022-06-20 10:20:55.841802379 +0200
-+++ src/core/Solver.C	2022-06-20 10:19:47.577324004 +0200
+--- src_tmp/core/Solver.C	2025-01-26 11:36:30.951058594 +0100
++++ src/core/Solver.C	2025-01-26 10:33:12.018180121 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
  
 -Solver::Solver() :
-+Solver::Solver(Prooflogger *PL) :
++Solver::Solver(VeriPbProofLogger *PL) :
  
      // Parameters: (formerly in 'SearchParams')
      var_decay(1 / 0.95), clause_decay(1 / 0.999), random_var_freq(0.02)
@@ -938,7 +951,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  
      if (!ok)
          return false;
-@@ -102,9 +110,21 @@
+@@ -102,9 +110,22 @@
          for (i = j = 0, p = lit_Undef; i < ps.size(); i++)
              if (value(ps[i]) == l_True || ps[i] == ~p)
                  return true;
@@ -957,22 +970,24 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
 +    if(write_proof && changed){
 +        //TODO: it might be that this is triggered a bit too often. Some simplifications will ALSO have happened on the 
 +        //veripb side, especially when related to the edge cases. 
-+        PL->overwrite_learnt_clause(ps);       
++        PL->rup(ps);
++        PL->delete_constraint_by_id(-2);       
      }
  
      if (ps.size() == 0)
-@@ -143,7 +163,9 @@
+@@ -143,7 +164,10 @@
  
  void Solver::removeClause(Clause& c) {
      detachClause(c);
 -    free(&c); }
-+    PL->delete_learnt_clause(c);
++    PL->delete_clause(c);
++    // PL->delete_learnt_clause(c);
 +    free(&c); 
 +}
  
  
  bool Solver::satisfied(const Clause& c) const {
-@@ -228,7 +250,7 @@
+@@ -228,7 +252,7 @@
      out_learnt.push();      // (leave room for the asserting literal)
      int index   = trail.size() - 1;
      out_btlevel = 0;
@@ -981,7 +996,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      do{
          assert(confl != NULL);          // (otherwise should be UIP)
          Clause& c = *confl;
-@@ -385,6 +407,8 @@
+@@ -385,6 +409,8 @@
      level   [var(p)] = decisionLevel();
      reason  [var(p)] = from;
      trail.push(p);
@@ -990,7 +1005,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  }
  
  
-@@ -440,8 +464,18 @@
+@@ -440,8 +466,19 @@
                      // Copy the remaining watches:
                      while (i < end)
                          *j++ = *i++;
@@ -1003,7 +1018,8 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
 +                    if(decisionLevel() == 0){
 +                        vec<Lit> c;
 +                        c.push(first);
-+                        PL->write_learnt_clause(c);
++                        PL->rup(c);
++                        // PL->write_learnt_clause(c);
 +                    }
 +
 +                    uncheckedEnqueue(first, &c);  
@@ -1011,7 +1027,7 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
              }
          FoundWatch:;
          }
-@@ -544,7 +578,7 @@
+@@ -544,7 +581,7 @@
  |    all variables are decision variables, this means that the clause set is satisfiable. 'l_False'
  |    if the clause set is unsatisfiable. 'l_Undef' if the bound on number of conflicts is reached.
  |________________________________________________________________________________________________@*/
@@ -1020,13 +1036,14 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
  {
      assert(ok);
      int         backtrack_level;
-@@ -560,12 +594,19 @@
+@@ -560,12 +597,21 @@
          if (confl != NULL){
              // CONFLICT
              conflicts++; conflictC++;
 -            if (decisionLevel() == 0) return l_False;
 +            if (decisionLevel() == 0) {
-+                PL->write_empty_clause();
++                PL->rup_empty_clause();
++                // PL->write_empty_clause();
 +                return l_False;
 +            }
  
@@ -1036,39 +1053,42 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
              analyze(confl, learnt_clause, backtrack_level);
 +
 +            // Write the learnt clause to the proof file
-+            PL->write_learnt_clause(learnt_clause);
++            PL->rup(learnt_clause);
++            // PL->write_learnt_clause(learnt_clause);
 +
              cancelUntil(backtrack_level);
              assert(value(learnt_clause[0]) == l_Undef);
  
-@@ -592,8 +633,10 @@
+@@ -592,8 +638,11 @@
                  return l_Undef; }
  
              // Simplify the set of problem clauses:
 -            if (decisionLevel() == 0 && !simplify())
 +            if (decisionLevel() == 0 && !simplify()) {
-+                PL->write_empty_clause();
++                PL->rup_empty_clause();
++                // PL->write_empty_clause();
                  return l_False;
 +            }
  
              if (nof_learnts >= 0 && learnts.size()-nAssigns() >= nof_learnts)
                  // Reduce the set of learnt clauses:
-@@ -654,7 +697,10 @@
+@@ -654,7 +703,11 @@
      model.clear();
      conflict.clear();
  
 -    if (!ok) return false;
 +    if (!ok) {
-+        PL->write_empty_clause();
++        PL->rup_empty_clause();
++        // PL->write_empty_clause();
 +        return false;
 +    }
  
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2022-06-20 10:20:55.841802379 +0200
-+++ src/core/Solver.h	2022-06-20 10:19:03.913017738 +0200
-@@ -21,12 +21,15 @@
+--- src_tmp/core/Solver.h	2025-01-26 11:36:30.951058594 +0100
++++ src/core/Solver.h	2025-01-26 10:33:12.018180121 +0100
+@@ -21,12 +21,16 @@
  #define Solver_h
  
  #include <cstdio>
@@ -1080,21 +1100,22 @@ diff -ruN src_tmp/core/Solver.h src/core/Solver.h
  #include "Alg.h"
  
  #include "SolverTypes.h"
-+#include "Prooflogger.h"
++// #include "Prooflogger.h"
++#include "prooflogging/QMaxSATProoflogger.h"
  
  
  //=================================================================================================
-@@ -38,13 +41,18 @@
+@@ -38,13 +42,18 @@
  
      // Constructor/Destructor:
      //
 -    Solver();
-+    Solver(Prooflogger *PL);
++    Solver(VeriPbProofLogger *PL);
      ~Solver();
  
 +    // Proof logging:
 +    //
-+    Prooflogger* PL;
++    VeriPbProofLogger* PL;
 +
      // Problem specification:
      //
@@ -1106,7 +1127,7 @@ diff -ruN src_tmp/core/Solver.h src/core/Solver.h
  
      // Solving:
      //
-@@ -146,19 +154,19 @@
+@@ -146,19 +155,19 @@
  
      // Main internal methods:
      //
@@ -1139,9 +1160,21 @@ diff -ruN src_tmp/core/Solver.h src/core/Solver.h
  
      // Maintaining Variable/Clause activity:
      //
+diff -ruN src_tmp/core/SolverTypes.h src/core/SolverTypes.h
+--- src_tmp/core/SolverTypes.h	2025-01-26 11:36:30.951058594 +0100
++++ src/core/SolverTypes.h	2025-01-26 10:39:49.514256536 +0100
+@@ -24,6 +24,8 @@
+ #include <cassert>
+ #include <stdint.h>
+ 
++#include "Alg.h"
++
+ //=================================================================================================
+ // Variables, literals, lifted booleans, clauses:
+ 
 diff -ruN src_tmp/minisat/core/depend.mk src/minisat/core/depend.mk
 --- src_tmp/minisat/core/depend.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/depend.mk	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/depend.mk	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,16 @@
 +Main.o: Main.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
 + ../mtl/Alg.h SolverTypes.h
@@ -1161,7 +1194,7 @@ diff -ruN src_tmp/minisat/core/depend.mk src/minisat/core/depend.mk
 + ../mtl/Alg.h SolverTypes.h ../mtl/Sort.h
 diff -ruN src_tmp/minisat/core/Dimacs.h src/minisat/core/Dimacs.h
 --- src_tmp/minisat/core/Dimacs.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Dimacs.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Dimacs.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,89 @@
 +/****************************************************************************************[Dimacs.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -1254,7 +1287,7 @@ diff -ruN src_tmp/minisat/core/Dimacs.h src/minisat/core/Dimacs.h
 +#endif
 diff -ruN src_tmp/minisat/core/Main.C src/minisat/core/Main.C
 --- src_tmp/minisat/core/Main.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Main.C	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Main.C	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,450 @@
 +/******************************************************************************************[Main.C]
 +QMaxSAT -- Copyright (c) 2010-2011, Miyuki Koshimura
@@ -1708,7 +1741,7 @@ diff -ruN src_tmp/minisat/core/Main.C src/minisat/core/Main.C
 +}
 diff -ruN src_tmp/minisat/core/Makefile src/minisat/core/Makefile
 --- src_tmp/minisat/core/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Makefile	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Makefile	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,7 @@
 +MTL       = ../mtl
 +CHDRS     = $(wildcard *.h) $(wildcard $(MTL)/*.h)
@@ -1719,7 +1752,7 @@ diff -ruN src_tmp/minisat/core/Makefile src/minisat/core/Makefile
 +include ../mtl/template.mk
 diff -ruN src_tmp/minisat/core/Solver.C src/minisat/core/Solver.C
 --- src_tmp/minisat/core/Solver.C	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Solver.C	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Solver.C	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,741 @@
 +/****************************************************************************************[Solver.C]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2464,7 +2497,7 @@ diff -ruN src_tmp/minisat/core/Solver.C src/minisat/core/Solver.C
 +}
 diff -ruN src_tmp/minisat/core/Solver.h src/minisat/core/Solver.h
 --- src_tmp/minisat/core/Solver.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/Solver.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/Solver.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,302 @@
 +/****************************************************************************************[Solver.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2770,7 +2803,7 @@ diff -ruN src_tmp/minisat/core/Solver.h src/minisat/core/Solver.h
 +#endif
 diff -ruN src_tmp/minisat/core/SolverTypes.h src/minisat/core/SolverTypes.h
 --- src_tmp/minisat/core/SolverTypes.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/core/SolverTypes.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/core/SolverTypes.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,200 @@
 +/***********************************************************************************[SolverTypes.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -2974,7 +3007,7 @@ diff -ruN src_tmp/minisat/core/SolverTypes.h src/minisat/core/SolverTypes.h
 +#endif
 diff -ruN src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt src/minisat/doc/ReleaseNotes-2.2.0.txt
 --- src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/doc/ReleaseNotes-2.2.0.txt	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/doc/ReleaseNotes-2.2.0.txt	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,79 @@
 +Release Notes for MiniSat 2.2.0
 +===============================
@@ -3057,7 +3090,7 @@ diff -ruN src_tmp/minisat/doc/ReleaseNotes-2.2.0.txt src/minisat/doc/ReleaseNote
 +    elimination, and the longest clause used in backward subsumption).
 diff -ruN src_tmp/minisat/LICENSE src/minisat/LICENSE
 --- src_tmp/minisat/LICENSE	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/LICENSE	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/LICENSE	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,21 @@
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
 +           Copyright (c) 2007-2010  Niklas Sorensson
@@ -3082,7 +3115,7 @@ diff -ruN src_tmp/minisat/LICENSE src/minisat/LICENSE
 +WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 diff -ruN src_tmp/minisat/mtl/Alg.h src/minisat/mtl/Alg.h
 --- src_tmp/minisat/mtl/Alg.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Alg.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Alg.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,57 @@
 +/*******************************************************************************************[Alg.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3143,7 +3176,7 @@ diff -ruN src_tmp/minisat/mtl/Alg.h src/minisat/mtl/Alg.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Alloc.h src/minisat/mtl/Alloc.h
 --- src_tmp/minisat/mtl/Alloc.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Alloc.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Alloc.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,131 @@
 +/*****************************************************************************************[Alloc.h]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -3278,7 +3311,7 @@ diff -ruN src_tmp/minisat/mtl/Alloc.h src/minisat/mtl/Alloc.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/BasicHeap.h src/minisat/mtl/BasicHeap.h
 --- src_tmp/minisat/mtl/BasicHeap.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/BasicHeap.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/BasicHeap.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,98 @@
 +/******************************************************************************************[Heap.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3380,7 +3413,7 @@ diff -ruN src_tmp/minisat/mtl/BasicHeap.h src/minisat/mtl/BasicHeap.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/BoxedVec.h src/minisat/mtl/BoxedVec.h
 --- src_tmp/minisat/mtl/BoxedVec.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/BoxedVec.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/BoxedVec.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,147 @@
 +/*******************************************************************************************[Vec.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3531,7 +3564,7 @@ diff -ruN src_tmp/minisat/mtl/BoxedVec.h src/minisat/mtl/BoxedVec.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/config.mk src/minisat/mtl/config.mk
 --- src_tmp/minisat/mtl/config.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/config.mk	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/mtl/config.mk	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,6 @@
 +##
 +##  This file is for system specific configurations. For instance, on
@@ -3541,7 +3574,7 @@ diff -ruN src_tmp/minisat/mtl/config.mk src/minisat/mtl/config.mk
 +##  LFLAGS += -L/usr/local/lib
 diff -ruN src_tmp/minisat/mtl/Heap.h src/minisat/mtl/Heap.h
 --- src_tmp/minisat/mtl/Heap.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Heap.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Heap.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,169 @@
 +/******************************************************************************************[Heap.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3714,7 +3747,7 @@ diff -ruN src_tmp/minisat/mtl/Heap.h src/minisat/mtl/Heap.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/IntTypes.h src/minisat/mtl/IntTypes.h
 --- src_tmp/minisat/mtl/IntTypes.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/IntTypes.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/IntTypes.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,42 @@
 +/**************************************************************************************[IntTypes.h]
 +Copyright (c) 2009-2010, Niklas Sorensson
@@ -3760,7 +3793,7 @@ diff -ruN src_tmp/minisat/mtl/IntTypes.h src/minisat/mtl/IntTypes.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Map.h src/minisat/mtl/Map.h
 --- src_tmp/minisat/mtl/Map.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Map.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Map.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,118 @@
 +/*******************************************************************************************[Map.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3882,7 +3915,7 @@ diff -ruN src_tmp/minisat/mtl/Map.h src/minisat/mtl/Map.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Queue.h src/minisat/mtl/Queue.h
 --- src_tmp/minisat/mtl/Queue.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Queue.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Queue.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,82 @@
 +/*****************************************************************************************[Queue.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -3968,7 +4001,7 @@ diff -ruN src_tmp/minisat/mtl/Queue.h src/minisat/mtl/Queue.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/Sort.h src/minisat/mtl/Sort.h
 --- src_tmp/minisat/mtl/Sort.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Sort.h	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/mtl/Sort.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,93 @@
 +/******************************************************************************************[Sort.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -4065,7 +4098,7 @@ diff -ruN src_tmp/minisat/mtl/Sort.h src/minisat/mtl/Sort.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/template.mk src/minisat/mtl/template.mk
 --- src_tmp/minisat/mtl/template.mk	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/template.mk	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/mtl/template.mk	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,90 @@
 +##
 +##  Template makefile for Standard, Profile, Debug, Release, and Release-static versions
@@ -4159,7 +4192,7 @@ diff -ruN src_tmp/minisat/mtl/template.mk src/minisat/mtl/template.mk
 +-include depend.mk
 diff -ruN src_tmp/minisat/mtl/Vec.h src/minisat/mtl/Vec.h
 --- src_tmp/minisat/mtl/Vec.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/Vec.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/mtl/Vec.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,133 @@
 +/*******************************************************************************************[Vec.h]
 +MiniSat -- Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -4296,7 +4329,7 @@ diff -ruN src_tmp/minisat/mtl/Vec.h src/minisat/mtl/Vec.h
 +#endif
 diff -ruN src_tmp/minisat/mtl/XAlloc.h src/minisat/mtl/XAlloc.h
 --- src_tmp/minisat/mtl/XAlloc.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/mtl/XAlloc.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/mtl/XAlloc.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,45 @@
 +/****************************************************************************************[XAlloc.h]
 +Copyright (c) 2009-2010, Niklas Sorensson
@@ -4345,7 +4378,7 @@ diff -ruN src_tmp/minisat/mtl/XAlloc.h src/minisat/mtl/XAlloc.h
 +#endif
 diff -ruN src_tmp/minisat/README src/minisat/README
 --- src_tmp/minisat/README	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/README	2022-06-20 10:19:03.913017738 +0200
++++ src/minisat/README	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,24 @@
 +================================================================================
 +DIRECTORY OVERVIEW:
@@ -4373,7 +4406,7 @@ diff -ruN src_tmp/minisat/README src/minisat/README
 +> minisat <cnf-file> -no-luby -rinc=1.5 -phase-saving=0 -rnd-freq=0.02
 diff -ruN src_tmp/minisat/simp/Main.cc src/minisat/simp/Main.cc
 --- src_tmp/minisat/simp/Main.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/Main.cc	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/simp/Main.cc	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,211 @@
 +/*****************************************************************************************[Main.cc]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -4588,7 +4621,7 @@ diff -ruN src_tmp/minisat/simp/Main.cc src/minisat/simp/Main.cc
 +}
 diff -ruN src_tmp/minisat/simp/Makefile src/minisat/simp/Makefile
 --- src_tmp/minisat/simp/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/Makefile	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/simp/Makefile	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,4 @@
 +EXEC      = minisat
 +DEPDIR    = mtl utils core
@@ -4596,7 +4629,7 @@ diff -ruN src_tmp/minisat/simp/Makefile src/minisat/simp/Makefile
 +include $(MROOT)/mtl/template.mk
 diff -ruN src_tmp/minisat/simp/SimpSolver.cc src/minisat/simp/SimpSolver.cc
 --- src_tmp/minisat/simp/SimpSolver.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/SimpSolver.cc	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/simp/SimpSolver.cc	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,717 @@
 +/***********************************************************************************[SimpSolver.cc]
 +Copyright (c) 2006,      Niklas Een, Niklas Sorensson
@@ -5317,7 +5350,7 @@ diff -ruN src_tmp/minisat/simp/SimpSolver.cc src/minisat/simp/SimpSolver.cc
 +}
 diff -ruN src_tmp/minisat/simp/SimpSolver.h src/minisat/simp/SimpSolver.h
 --- src_tmp/minisat/simp/SimpSolver.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/simp/SimpSolver.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/simp/SimpSolver.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,197 @@
 +/************************************************************************************[SimpSolver.h]
 +Copyright (c) 2006,      Niklas Een, Niklas Sorensson
@@ -5518,7 +5551,7 @@ diff -ruN src_tmp/minisat/simp/SimpSolver.h src/minisat/simp/SimpSolver.h
 +#endif
 diff -ruN src_tmp/minisat/utils/Makefile src/minisat/utils/Makefile
 --- src_tmp/minisat/utils/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Makefile	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/Makefile	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,4 @@
 +EXEC      = system_test
 +DEPDIR    = mtl
@@ -5526,7 +5559,7 @@ diff -ruN src_tmp/minisat/utils/Makefile src/minisat/utils/Makefile
 +include $(MROOT)/mtl/template.mk
 diff -ruN src_tmp/minisat/utils/Options.cc src/minisat/utils/Options.cc
 --- src_tmp/minisat/utils/Options.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Options.cc	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/Options.cc	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,91 @@
 +/**************************************************************************************[Options.cc]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -5621,7 +5654,7 @@ diff -ruN src_tmp/minisat/utils/Options.cc src/minisat/utils/Options.cc
 +
 diff -ruN src_tmp/minisat/utils/Options.h src/minisat/utils/Options.h
 --- src_tmp/minisat/utils/Options.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/Options.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/Options.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,386 @@
 +/***************************************************************************************[Options.h]
 +Copyright (c) 2008-2010, Niklas Sorensson
@@ -6011,7 +6044,7 @@ diff -ruN src_tmp/minisat/utils/Options.h src/minisat/utils/Options.h
 +#endif
 diff -ruN src_tmp/minisat/utils/ParseUtils.h src/minisat/utils/ParseUtils.h
 --- src_tmp/minisat/utils/ParseUtils.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/ParseUtils.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/ParseUtils.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,122 @@
 +/************************************************************************************[ParseUtils.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -6137,7 +6170,7 @@ diff -ruN src_tmp/minisat/utils/ParseUtils.h src/minisat/utils/ParseUtils.h
 +#endif
 diff -ruN src_tmp/minisat/utils/System.cc src/minisat/utils/System.cc
 --- src_tmp/minisat/utils/System.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/System.cc	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/System.cc	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,95 @@
 +/***************************************************************************************[System.cc]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -6236,7 +6269,7 @@ diff -ruN src_tmp/minisat/utils/System.cc src/minisat/utils/System.cc
 +#endif
 diff -ruN src_tmp/minisat/utils/System.h src/minisat/utils/System.h
 --- src_tmp/minisat/utils/System.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/minisat/utils/System.h	2022-06-20 10:19:03.917017766 +0200
++++ src/minisat/utils/System.h	2025-01-23 09:10:08.669760984 +0100
 @@ -0,0 +1,60 @@
 +/****************************************************************************************[System.h]
 +Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
@@ -6298,3 +6331,17 @@ diff -ruN src_tmp/minisat/utils/System.h src/minisat/utils/System.h
 +#endif
 +
 +#endif
+diff -ruN src_tmp/mtl/template.mk src/mtl/template.mk
+--- src_tmp/mtl/template.mk	2025-01-26 11:36:30.951058594 +0100
++++ src/mtl/template.mk	2025-01-26 10:33:12.018180121 +0100
+@@ -61,6 +61,10 @@
+ 	@echo Compiling: "$@ ( $< )"
+ 	@$(CXX) $(CFLAGS) -c -o $@ $<
+ 
++%.o %.op %.od %.or:	%.cc
++	@echo Compiling: "$@ ( $< )"
++	@$(CXX) $(CFLAGS) -c -o $@ $<
++
+ ## Linking rules (standard/profile/debug/release)
+ $(EXEC) $(EXEC)_profile $(EXEC)_debug $(EXEC)_release $(EXEC)_static:
+ 	@echo Linking: "$@ ( $^ )"
