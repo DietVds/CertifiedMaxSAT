@@ -1,6 +1,6 @@
 diff -ruN src_tmp/core/depend.mk src/core/depend.mk
---- src_tmp/core/depend.mk	2025-01-26 11:36:30.951058594 +0100
-+++ src/core/depend.mk	2025-01-26 11:35:39.230465870 +0100
+--- src_tmp/core/depend.mk	2025-01-27 12:06:19.641876548 +0100
++++ src/core/depend.mk	2025-01-26 12:02:09.739794661 +0100
 @@ -1,16 +1,140 @@
  Main.o: Main.C Solver.h ../mtl/Vec.h ../mtl/Heap.h ../mtl/Vec.h \
 - ../mtl/Alg.h SolverTypes.h
@@ -151,8 +151,8 @@ diff -ruN src_tmp/core/depend.mk src/core/depend.mk
 + ../../VeriPB_Prooflogger/core/MaxSATProoflogger.hpp \
 + ../../VeriPB_Prooflogger/core/MaxSATProoflogger.h
 diff -ruN src_tmp/core/Main.C src/core/Main.C
---- src_tmp/core/Main.C	2025-01-26 11:36:30.951058594 +0100
-+++ src/core/Main.C	2025-01-26 10:33:12.014180086 +0100
+--- src_tmp/core/Main.C	2025-01-27 12:06:19.641876548 +0100
++++ src/core/Main.C	2025-01-26 12:02:09.735794640 +0100
 @@ -26,7 +26,15 @@
  #include <signal.h>
  #include <zlib.h>
@@ -793,8 +793,8 @@ diff -ruN src_tmp/core/Main.C src/core/Main.C
  #ifdef NDEBUG
      exit(ret ? 10 : 20);     // (faster than "return", which will invoke the destructor for 'Solver')
 diff -ruN src_tmp/core/Makefile src/core/Makefile
---- src_tmp/core/Makefile	2025-01-26 11:36:30.951058594 +0100
-+++ src/core/Makefile	2025-01-26 10:33:12.018180121 +0100
+--- src_tmp/core/Makefile	2025-01-27 12:06:19.641876548 +0100
++++ src/core/Makefile	2025-01-26 12:02:09.735794640 +0100
 @@ -1,7 +1,9 @@
  MTL       = ../mtl
 -CHDRS     = $(wildcard *.h) $(wildcard $(MTL)/*.h)
@@ -809,7 +809,7 @@ diff -ruN src_tmp/core/Makefile src/core/Makefile
  include ../mtl/template.mk
 diff -ruN src_tmp/core/prooflogging/MaxSATProoflogger_Minisat.cc src/core/prooflogging/MaxSATProoflogger_Minisat.cc
 --- src_tmp/core/prooflogging/MaxSATProoflogger_Minisat.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/prooflogging/MaxSATProoflogger_Minisat.cc	2025-01-26 10:58:36.826479310 +0100
++++ src/core/prooflogging/MaxSATProoflogger_Minisat.cc	2025-01-26 12:02:09.739794661 +0100
 @@ -0,0 +1,5 @@
 +#include "QMaxSATProoflogger.h"
 +#include "MaxSATProoflogger.hpp"
@@ -819,7 +819,7 @@ diff -ruN src_tmp/core/prooflogging/MaxSATProoflogger_Minisat.cc src/core/proofl
 \ No newline at end of file
 diff -ruN src_tmp/core/prooflogging/QMaxSATProoflogger.h src/core/prooflogging/QMaxSATProoflogger.h
 --- src_tmp/core/prooflogging/QMaxSATProoflogger.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/prooflogging/QMaxSATProoflogger.h	2025-01-24 22:00:17.889075775 +0100
++++ src/core/prooflogging/QMaxSATProoflogger.h	2025-01-26 12:02:09.739794661 +0100
 @@ -0,0 +1,8 @@
 +#ifndef QMaxSATProoflogger_h
 +#define QMaxSATProoflogger_h
@@ -832,7 +832,7 @@ diff -ruN src_tmp/core/prooflogging/QMaxSATProoflogger.h src/core/prooflogging/Q
 \ No newline at end of file
 diff -ruN src_tmp/core/prooflogging/SolverTypesInt_Minisat.h src/core/prooflogging/SolverTypesInt_Minisat.h
 --- src_tmp/core/prooflogging/SolverTypesInt_Minisat.h	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/prooflogging/SolverTypesInt_Minisat.h	2025-01-24 18:24:47.968533586 +0100
++++ src/core/prooflogging/SolverTypesInt_Minisat.h	2025-01-26 12:02:09.739794661 +0100
 @@ -0,0 +1,47 @@
 +//==========================================================================
 +// What is needed to integrate with the VeriPB prooflogging library:
@@ -884,7 +884,7 @@ diff -ruN src_tmp/core/prooflogging/SolverTypesInt_Minisat.h src/core/proofloggi
 \ No newline at end of file
 diff -ruN src_tmp/core/prooflogging/VeriPBProoflogger_Minisat.cc src/core/prooflogging/VeriPBProoflogger_Minisat.cc
 --- src_tmp/core/prooflogging/VeriPBProoflogger_Minisat.cc	1970-01-01 01:00:00.000000000 +0100
-+++ src/core/prooflogging/VeriPBProoflogger_Minisat.cc	2025-01-26 10:57:47.426094486 +0100
++++ src/core/prooflogging/VeriPBProoflogger_Minisat.cc	2025-01-26 12:02:09.739794661 +0100
 @@ -0,0 +1,26 @@
 +#include "QMaxSATProoflogger.h"
 +#include "VeriPBProoflogger.hpp"
@@ -913,8 +913,8 @@ diff -ruN src_tmp/core/prooflogging/VeriPBProoflogger_Minisat.cc src/core/proofl
 +template void VeriPbProofLogger::add_objective_literal<VeriPB::Lit>(VeriPB::Lit&, long);
 +template bool VeriPbProofLogger::remove_objective_literal<VeriPB::Lit>(VeriPB::Lit&);
 diff -ruN src_tmp/core/Solver.C src/core/Solver.C
---- src_tmp/core/Solver.C	2025-01-26 11:36:30.951058594 +0100
-+++ src/core/Solver.C	2025-01-26 10:33:12.018180121 +0100
+--- src_tmp/core/Solver.C	2025-01-27 12:06:19.641876548 +0100
++++ src/core/Solver.C	2025-01-26 12:02:09.735794640 +0100
 @@ -26,7 +26,7 @@
  // Constructor/Destructor:
  
@@ -1086,8 +1086,8 @@ diff -ruN src_tmp/core/Solver.C src/core/Solver.C
      assumps.copyTo(assumptions);
  
 diff -ruN src_tmp/core/Solver.h src/core/Solver.h
---- src_tmp/core/Solver.h	2025-01-26 11:36:30.951058594 +0100
-+++ src/core/Solver.h	2025-01-26 10:33:12.018180121 +0100
+--- src_tmp/core/Solver.h	2025-01-27 12:06:19.641876548 +0100
++++ src/core/Solver.h	2025-01-26 12:02:09.739794661 +0100
 @@ -21,12 +21,16 @@
  #define Solver_h
  
@@ -1161,8 +1161,8 @@ diff -ruN src_tmp/core/Solver.h src/core/Solver.h
      // Maintaining Variable/Clause activity:
      //
 diff -ruN src_tmp/core/SolverTypes.h src/core/SolverTypes.h
---- src_tmp/core/SolverTypes.h	2025-01-26 11:36:30.951058594 +0100
-+++ src/core/SolverTypes.h	2025-01-26 10:39:49.514256536 +0100
+--- src_tmp/core/SolverTypes.h	2025-01-27 12:06:19.641876548 +0100
++++ src/core/SolverTypes.h	2025-01-26 12:02:09.739794661 +0100
 @@ -24,6 +24,8 @@
  #include <cassert>
  #include <stdint.h>
@@ -6332,8 +6332,8 @@ diff -ruN src_tmp/minisat/utils/System.h src/minisat/utils/System.h
 +
 +#endif
 diff -ruN src_tmp/mtl/template.mk src/mtl/template.mk
---- src_tmp/mtl/template.mk	2025-01-26 11:36:30.951058594 +0100
-+++ src/mtl/template.mk	2025-01-26 10:33:12.018180121 +0100
+--- src_tmp/mtl/template.mk	2025-01-27 12:06:19.641876548 +0100
++++ src/mtl/template.mk	2025-01-26 12:02:09.739794661 +0100
 @@ -61,6 +61,10 @@
  	@echo Compiling: "$@ ( $< )"
  	@$(CXX) $(CFLAGS) -c -o $@ $<
